@@ -1,11 +1,7 @@
-import styles from './Button.module.scss'
+import styles from './Button.module.scss';
 
 const Button = () => {
-  return (
-    <button className={styles.btn}>
-      Hi 👋
-    </button>
-  );
+  return <button className={styles.btn}>Hi 👋</button>;
 };
 
 const App = () => {
@@ -14,7 +10,7 @@ const App = () => {
       <h1>Hello world</h1>
       <Button />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
