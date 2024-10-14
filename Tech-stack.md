@@ -1,26 +1,26 @@
 ### Project's Tech Stack
 
 #### Overall Configuration:
-- **Client Deployment**: Vercel
-- **API Deployment**: Render
-- **Build Tool**: Vite
-- **ESLint**: For linting and maintaining code quality
-- **Prettier**: For consistent code formatting
+- **[Vercel](https://vercel.com/docs)**: For client deployment
+- **[Render](https://render.com/docs)**: For API deployment
+- **[Vite](https://vitejs.dev/guide/)**: Build tool for fast configuration
+- **[ESLint](https://eslint.org/docs/latest/)**: Linting and maintaining code quality
+- **[Prettier](https://prettier.io/docs/en/)**: For consistent code formatting
 
 #### Frontend:
-- **React**: For building user interfaces
-- **Redux**: For state management
-- **React Router**: For routing and navigation
-- **SCSS**: Modular and maintainable styling
-- **Tailwind CSS**: Combined with SCSS using `@apply` directive
+- **[React](https://react.dev/learn)**: For building user interfaces
+- **[Redux](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)**: For state management
+- **[React Router](https://reactrouter.com/en/main/start/overview)**: For routing and navigation
+- **[SCSS](https://sass-lang.com/documentation)**: Modular and maintainable styling
+- **[Tailwind CSS](https://tailwindcss.com/docs)**: Combined with SCSS using `@apply` directive
 
 #### Backend:
-- **Node.js**: Server-side JavaScript
-- **Express**: For building APIs
-- **MongoDB**: NoSQL database
-- **Mongoose**: ODM for MongoDB
-- **JWT (JSON Web Tokens)**: For token-based authentication
-- **Passport.js**: For flexible authentication strategies
-- **Morgan**: For logging HTTP requests
-- **Postman**: For API testing
-- **OAuth**: Following guides for authentication
+- **[Node.js](https://nodejs.org/en/docs/)**: Server-side JavaScript
+- **[Express](https://expressjs.com/en/starter/installing.html)**: For building APIs
+- **[MongoDB](https://www.mongodb.com/docs/)**: NoSQL database
+- **[Mongoose](https://mongoosejs.com/docs/)**: ODM for MongoDB
+- **[JWT (JSON Web Tokens)](https://jwt.io/introduction/)**: For token-based authentication
+- **[Passport.js](https://www.passportjs.org/docs/)**: For flexible authentication strategies
+- **[Morgan](https://expressjs.com/en/resources/middleware/morgan.html)**: For logging HTTP requests
+- **[Postman](https://learning.postman.com/docs/getting-started/introduction/)**: For API testing
+- **[OAuth](https://oauth.net/2/)**: Following guides for authentication
