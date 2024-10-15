@@ -5,3 +5,7 @@
 body {
   @apply bg-black text-white;
 }
+
+button {
+  transition: all 0.1s ease-in-out;
+}

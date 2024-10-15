@@ -4,4 +4,8 @@
   &:hover {
     @apply scale-105;
   }
+
+  &:active {
+    @apply scale-100;
+  }
 }

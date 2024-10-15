@@ -1,5 +1,9 @@
 .nav {
   @apply p-2 flex items-center justify-between;
+
+  &__center {
+    @apply flex items-center gap-2;
+  }
 }
 
 .logo {
