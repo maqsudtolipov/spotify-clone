@@ -1,0 +1,9 @@
+.nav {
+  @apply p-2 flex items-center justify-between;
+
+  min-height: 48px;
+}
+
+.logo {
+  @apply text-2xl font-semibold;
+}

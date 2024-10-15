@@ -1,10 +1,20 @@
-import styles from './Button.module.scss';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Nav from './layout/Nav/Nav.jsx';
 
 const AppRoutes = () => {
   return (
-    <div>
-      <h1>Hello world</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Nav />
+            </>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
