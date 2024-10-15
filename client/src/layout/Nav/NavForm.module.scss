@@ -3,8 +3,16 @@
   min-width: 440px;
   height: 48px;
 
-  svg {
+  .searchIcon {
     @apply absolute left-3 text-2xl;
+  }
+
+  .closeIcon {
+    @apply absolute right-4 text-2xl;
+
+    &:hover {
+      @apply text-white;
+    }
   }
 
   input {
@@ -16,7 +24,7 @@
   }
 
   input:focus {
-    @apply text-white outline outline-2 outline-white  outline-offset-[-2px];
+    @apply text-white outline outline-2 outline-white outline-offset-[-2px];
   }
 
   input:hover + svg,
