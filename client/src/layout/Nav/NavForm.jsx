@@ -4,11 +4,7 @@ import { RiSearchLine } from 'react-icons/ri';
 const NavForm = () => {
   return (
     <div className={styles.form}>
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="What do you want to play?"
-      />
+      <input type="text" placeholder="What do you want to play?" />
       <RiSearchLine />
     </div>
   );
