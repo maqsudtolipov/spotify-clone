@@ -1,6 +1,7 @@
 import styles from './Nav.module.scss';
 import NavButton from './NavButton.jsx';
 import NavForm from './NavForm.jsx';
+import Button from '../../components/Button/Button.jsx';
 
 const Nav = () => {
   return (
@@ -11,7 +12,10 @@ const Nav = () => {
         <NavButton />
         <NavForm />
       </div>
-      <div>profile</div>
+
+      <div>
+        <Button>Login</Button>
+      </div>
     </div>
   );
 };
