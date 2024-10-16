@@ -15,7 +15,7 @@ const Nav = () => {
         <NavForm />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex items-center gap-4">
         <Button>Login</Button>
         <NavButton
           isTransparent={true}
