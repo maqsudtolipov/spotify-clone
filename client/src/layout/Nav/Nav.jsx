@@ -3,6 +3,7 @@ import NavButton from './NavButton.jsx';
 import NavForm from './NavForm.jsx';
 import Button from '../../components/Button/Button.jsx';
 import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
+import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
 
 const Nav = () => {
   return (
@@ -21,6 +22,9 @@ const Nav = () => {
           isSmall={true}
           icon={<RiNotification3Line />}
         />
+        <Avatar>
+          <AvatarFallback>M</AvatarFallback>
+        </Avatar>
       </div>
     </div>
   );
