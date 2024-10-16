@@ -4,6 +4,7 @@ import NavForm from './NavForm.jsx';
 import Button from '../../components/Button/Button.jsx';
 import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
 import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
+import Tooltip from '../../components/Tooltip/Tooltip.jsx';
 
 const Nav = () => {
   return (
@@ -22,9 +23,15 @@ const Nav = () => {
           isSmall={true}
           icon={<RiNotification3Line />}
         />
-        <Avatar>
-          <AvatarFallback>M</AvatarFallback>
-        </Avatar>
+
+        <Tooltip>
+          <Tooltip.Trigger>
+            <Avatar>
+              <AvatarFallback>M</AvatarFallback>
+            </Avatar>
+          </Tooltip.Trigger>
+          <Tooltip.Content>Maqsud Tolipov</Tooltip.Content>
+        </Tooltip>
       </div>
     </div>
   );
