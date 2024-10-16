@@ -6,23 +6,36 @@ import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
 import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
 import Tooltip from '../../components/Tooltip/Tooltip.jsx';
 
+// TODO: Needs better refactoring for readability, maybe folder for component references? Or hook maybe?
 const Nav = () => {
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>Spotify</div>
 
       <div className={styles.nav__center}>
-        <NavButton icon={<RiHome4Line />} />
+        <Tooltip>
+          <Tooltip.Trigger>
+            <NavButton icon={<RiHome4Line />} />
+          </Tooltip.Trigger>
+          <Tooltip.Content position="bottom">Home</Tooltip.Content>
+        </Tooltip>
+
         <NavForm />
       </div>
 
       <div className="flex items-center gap-4">
         <Button>Login</Button>
-        <NavButton
-          isTransparent={true}
-          isSmall={true}
-          icon={<RiNotification3Line />}
-        />
+
+        <Tooltip>
+          <Tooltip.Trigger>
+            <NavButton
+              isTransparent={true}
+              isSmall={true}
+              icon={<RiNotification3Line />}
+            />
+          </Tooltip.Trigger>
+          <Tooltip.Content position="bottom">Whats New</Tooltip.Content>
+        </Tooltip>
 
         <Tooltip>
           <Tooltip.Trigger>
@@ -30,7 +43,9 @@ const Nav = () => {
               <AvatarFallback>M</AvatarFallback>
             </Avatar>
           </Tooltip.Trigger>
-          <Tooltip.Content position="top-left">Maqsud Tolipov</Tooltip.Content>
+          <Tooltip.Content position="bottom-left">
+            Maqsud Tolipov
+          </Tooltip.Content>
         </Tooltip>
       </div>
     </div>
