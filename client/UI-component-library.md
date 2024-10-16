@@ -1,4 +1,4 @@
-# Component Library
+# UI Component Library
 
 I created a reusable component library for the whole app. It includes simple components, components you can change using props, or complext compound components.
 
