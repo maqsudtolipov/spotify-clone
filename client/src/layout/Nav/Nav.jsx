@@ -30,7 +30,7 @@ const Nav = () => {
               <AvatarFallback>M</AvatarFallback>
             </Avatar>
           </Tooltip.Trigger>
-          <Tooltip.Content>Maqsud Tolipov</Tooltip.Content>
+          <Tooltip.Content position="top-left">Maqsud Tolipov</Tooltip.Content>
         </Tooltip>
       </div>
     </div>

@@ -26,10 +26,12 @@ const Trigger = ({ children }) => {
   );
 };
 
-const Content = ({ children }) => {
+const Content = ({ position = 'bottom', children }) => {
   const { isOpen } = useContext(TooltipContext);
 
-  return isOpen ? <span className={styles.content}>{children}</span> : null;
+  return isOpen ? (
+    <span className={`${styles.content} ${styles[position]}`}>{children}</span>
+  ) : null;
 };
 
 Tooltip.Trigger = Trigger;
