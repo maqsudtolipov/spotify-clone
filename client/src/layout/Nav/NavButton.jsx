@@ -1,10 +1,18 @@
 import styles from './NavButton.module.scss';
-import { RiHome4Fill } from 'react-icons/ri';
 
-const NavButton = () => {
+const NavButton = ({
+  isTransparent = false,
+  isSmall = false,
+  icon = 'icon is required',
+  rest,
+}) => {
   return (
-    <button className={styles.btn} role="button">
-      <RiHome4Fill />
+    <button
+      className={`${styles.btn} ${isTransparent ? styles.transparent : ''} ${isSmall ? styles.small : ''}`}
+      role="button"
+      {...rest}
+    >
+      {icon}
     </button>
   );
 };
