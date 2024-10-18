@@ -1,5 +1,6 @@
 import styles from './Dropdown.module.scss';
 import { createContext, useContext, useState } from 'react';
+import { RiMovie2Line, RiShareForwardBoxFill } from 'react-icons/ri';
 
 const DropdownContext = createContext(null);
 
@@ -33,7 +34,9 @@ const DropdownList = ({ children }) => {
 
 const DropdownItem = ({ children, underline = false }) => (
   <li className={`${styles.item} ${underline ? styles.underline : ''}`}>
-    {children}
+    <RiMovie2Line className={styles.icon} />
+    <span>{children}</span>
+    <RiShareForwardBoxFill className={`${styles.icon} ${styles.iconRight}`} />
   </li>
 );
 
