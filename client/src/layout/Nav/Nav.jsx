@@ -2,16 +2,15 @@ import styles from './Nav.module.scss';
 import NavButton from './NavButton.jsx';
 import NavForm from './NavForm.jsx';
 import Button from '../../components/Button/Button.jsx';
-import {
-  RiHome4Line,
-  RiLogoutBoxRLine,
-  RiNotification3Line,
-} from 'react-icons/ri';
+import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
 import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
 import NavTooltip from './NavTooltip.jsx';
 import Dropdown from '../../components/Dropdown/Dropdown.jsx';
+import useOutsideClick from '../../hooks/useOutsideClick.jsx';
 
 const Nav = () => {
+  useOutsideClick();
+
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>Spotify</div>
@@ -40,22 +39,16 @@ const Nav = () => {
           content="Whats New"
         />
 
-        <NavTooltip
-          trigger={
-            <Avatar>
-              <AvatarFallback>M</AvatarFallback>
-            </Avatar>
-          }
-          position="bottom-left"
-          content="Maqsud Tolipov"
-        />
-
         <Dropdown>
           <Dropdown.Trigger>
-            <NavButton
-              isTransparent={true}
-              isSmall={true}
-              icon={<RiHome4Line />}
+            <NavTooltip
+              trigger={
+                <Avatar>
+                  <AvatarFallback>M</AvatarFallback>
+                </Avatar>
+              }
+              position="bottom-left"
+              content="Maqsud Tolipov"
             />
           </Dropdown.Trigger>
 

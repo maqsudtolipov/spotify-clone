@@ -1,6 +1,6 @@
 import styles from './Dropdown.module.scss';
 import { createContext, useContext, useState } from 'react';
-import { RiMovie2Line, RiShareForwardBoxFill } from 'react-icons/ri';
+import useOutsideClick from '../../hooks/useOutsideClick.jsx';
 
 const DropdownContext = createContext(null);
 
@@ -23,22 +23,46 @@ const Dropdown = ({ children }) => {
 const DropdownTrigger = ({ children }) => {
   const { toggleDropdown } = useContext(DropdownContext);
 
-  return <div onClick={toggleDropdown}>{children}</div>;
+  const handleClick = (event) => {
+    event.stopPropagation();
+    toggleDropdown();
+  };
+
+  return <div onClick={handleClick}>{children}</div>;
 };
 
 const DropdownList = ({ children }) => {
-  const { isOpen } = useContext(DropdownContext);
+  const { isOpen, closeDropdown } = useContext(DropdownContext);
+  const ref = useOutsideClick(closeDropdown);
 
-  return isOpen ? <ul className={styles.list}>{children}</ul> : null;
+  return isOpen ? (
+    <ul ref={ref} className={styles.list}>
+      {children}
+    </ul>
+  ) : null;
 };
 
-const DropdownItem = ({ children, underline = false, PreIcon, PostIcon }) => (
-  <li className={`${styles.item} ${underline ? styles.underline : ''}`}>
-    {PreIcon && <PreIcon className={styles.icon} />}
-    <span>{children}</span>
-    {PostIcon && <PostIcon className={`${styles.icon} ${styles.iconRight}`} />}
-  </li>
-);
+// TODO: Add onClick prop
+const DropdownItem = ({ children, underline = false, PreIcon, PostIcon }) => {
+  const { closeDropdown } = useContext(DropdownContext);
+
+  const handleClick = () => {
+    closeDropdown();
+  };
+
+  return (
+    <li
+      className={`${styles.item} ${underline ? styles.underline : ''}`}
+      onClick={handleClick}
+    >
+      {PreIcon && <PreIcon className={styles.icon} />}
+      <span>{children}</span>
+      {PostIcon && (
+        <PostIcon className={`${styles.icon} ${styles.iconRight}`} />
+      )}
+    </li>
+  );
+};
 
 Dropdown.Trigger = DropdownTrigger;
 Dropdown.List = DropdownList;
