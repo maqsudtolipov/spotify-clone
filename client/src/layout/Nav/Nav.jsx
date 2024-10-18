@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button.jsx';
 import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
 import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
 import NavTooltip from './NavTooltip.jsx';
+import Dropdown from '../../components/Dropdown/Dropdown.jsx';
 
 const Nav = () => {
   return (
@@ -34,6 +35,7 @@ const Nav = () => {
           position="bottom"
           content="Whats New"
         />
+
         <NavTooltip
           trigger={
             <Avatar>
@@ -43,6 +45,23 @@ const Nav = () => {
           position="bottom-left"
           content="Maqsud Tolipov"
         />
+
+        <Dropdown>
+          <Dropdown.Trigger>
+            <NavButton
+              isTransparent={true}
+              isSmall={true}
+              icon={<RiHome4Line />}
+            />
+          </Dropdown.Trigger>
+
+          <Dropdown.List>
+            <li>Home</li>
+            <li>Profile</li>
+            <li>Settings</li>
+            <li>Logout</li>
+          </Dropdown.List>
+        </Dropdown>
       </div>
     </div>
   );

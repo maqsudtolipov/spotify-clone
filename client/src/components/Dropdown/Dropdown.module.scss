@@ -1,0 +1,11 @@
+.dropdown {
+  @apply relative;
+}
+
+.list {
+  @apply absolute z-20 bg-green-500;
+
+  bottom: 0;
+  right: 0;
+  transform: translate(0, calc(100% + 8px));
+}
