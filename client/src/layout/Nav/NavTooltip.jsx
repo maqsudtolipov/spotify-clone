@@ -10,11 +10,4 @@ const NavTooltip = ({ trigger, position, content }) => {
   );
 };
 
-// <Tooltip>
-//   <Tooltip.Trigger>
-//     <NavButton icon={<RiHome4Line />} />
-//   </Tooltip.Trigger>
-//   <Tooltip.Content position="bottom">Home</Tooltip.Content>
-// </Tooltip>
-
 export default NavTooltip;
