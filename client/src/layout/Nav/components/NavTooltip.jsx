@@ -1,4 +1,4 @@
-import Tooltip from '../../components/Tooltip/Tooltip.jsx';
+import Tooltip from '../../../components/Tooltip/Tooltip.jsx';
 
 // Referenced from Tooltip.jsx
 const NavTooltip = ({ trigger, position, content }) => {
