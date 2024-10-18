@@ -1,0 +1,35 @@
+.dropdown {
+  @apply relative;
+}
+
+.list {
+  @apply p-1 absolute bg-neutral-800 rounded shadow-lg shadow-black/[0.5]  z-20;
+
+  bottom: 0;
+  right: 0;
+  transform: translate(0, calc(100% + 8px));
+}
+
+.item {
+  @apply w-48 p-3 pr-2 flex items-center gap-3 text-sm text-neutral-100 rounded-sm  cursor-pointer;
+
+  span {
+    @apply w-full;
+  }
+
+  &:hover {
+    @apply bg-white bg-opacity-10;
+  }
+}
+
+.underline {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+  @apply text-base text-neutral-400 scale-150; // it is scaled, because it appeared smaller
+}
+
+.iconRight {
+  @apply text-neutral-100;
+}
