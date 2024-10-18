@@ -56,10 +56,10 @@ const Nav = () => {
           </Dropdown.Trigger>
 
           <Dropdown.List>
-            <li>Home</li>
-            <li>Profile</li>
-            <li>Settings</li>
-            <li>Logout</li>
+            <Dropdown.Item>Home</Dropdown.Item>
+            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item underline={true}>Settings</Dropdown.Item>
+            <Dropdown.Item>Logout</Dropdown.Item>
           </Dropdown.List>
         </Dropdown>
       </div>

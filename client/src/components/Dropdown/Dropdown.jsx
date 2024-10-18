@@ -28,12 +28,17 @@ const DropdownTrigger = ({ children }) => {
 const DropdownList = ({ children }) => {
   const { isOpen } = useContext(DropdownContext);
 
-  return isOpen ? (
-    <ul className={styles.list}>{children} hello where</ul>
-  ) : null;
+  return isOpen ? <ul className={styles.list}>{children}</ul> : null;
 };
+
+const DropdownItem = ({ children, underline = false }) => (
+  <li className={`${styles.item} ${underline ? styles.underline : ''}`}>
+    {children}
+  </li>
+);
 
 Dropdown.Trigger = DropdownTrigger;
 Dropdown.List = DropdownList;
+Dropdown.Item = DropdownItem;
 
 export default Dropdown;
