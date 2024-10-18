@@ -6,6 +6,14 @@ I created all the components code and functionality form zero for learning purpo
 
 The examples below shows the usage of them with given default props.
 
+### Avatar
+
+```jsx
+<Avatar>
+  <AvatarFallback>M</AvatarFallback>
+</Avatar>
+```
+
 ### Button
 
 ```jsx
@@ -14,10 +22,30 @@ The examples below shows the usage of them with given default props.
 </button>
 ```
 
-### Avatar
+### Dropdown
 
 ```jsx
-<Avatar>
-  <AvatarFallback>M</AvatarFallback>
-</Avatar>
+<Dropdown>
+  <Dropdown.Trigger>
+    <NavButton isTransparent={true} isSmall={true} icon={<RiHome4Line />} />
+  </Dropdown.Trigger>
+
+  <Dropdown.List>
+    <Dropdown.Item>Home</Dropdown.Item>
+    <Dropdown.Item>Profile</Dropdown.Item>
+    <Dropdown.Item underline={true}>Settings</Dropdown.Item>
+    <Dropdown.Item>Logout</Dropdown.Item>
+  </Dropdown.List>
+</Dropdown>
+```
+
+### Tooltip
+
+```jsx
+<Tooltip>
+  <Tooltip.Trigger>
+    <span>Profile</span>
+  </Tooltip.Trigger>
+  <Tooltip.Content position="bottom-left">'John Doe'</Tooltip.Content>
+</Tooltip>
 ```
