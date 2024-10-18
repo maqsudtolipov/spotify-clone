@@ -2,7 +2,11 @@ import styles from './Nav.module.scss';
 import NavButton from './NavButton.jsx';
 import NavForm from './NavForm.jsx';
 import Button from '../../components/Button/Button.jsx';
-import { RiHome4Line, RiNotification3Line } from 'react-icons/ri';
+import {
+  RiHome4Line,
+  RiLogoutBoxRLine,
+  RiNotification3Line,
+} from 'react-icons/ri';
 import Avatar, { AvatarFallback } from '../../components/Avatar/Avatar.jsx';
 import NavTooltip from './NavTooltip.jsx';
 import Dropdown from '../../components/Dropdown/Dropdown.jsx';

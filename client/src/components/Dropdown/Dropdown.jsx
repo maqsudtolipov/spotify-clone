@@ -32,11 +32,11 @@ const DropdownList = ({ children }) => {
   return isOpen ? <ul className={styles.list}>{children}</ul> : null;
 };
 
-const DropdownItem = ({ children, underline = false }) => (
+const DropdownItem = ({ children, underline = false, PreIcon, PostIcon }) => (
   <li className={`${styles.item} ${underline ? styles.underline : ''}`}>
-    <RiMovie2Line className={styles.icon} />
+    {PreIcon && <PreIcon className={styles.icon} />}
     <span>{children}</span>
-    <RiShareForwardBoxFill className={`${styles.icon} ${styles.iconRight}`} />
+    {PostIcon && <PostIcon className={`${styles.icon} ${styles.iconRight}`} />}
   </li>
 );
 
