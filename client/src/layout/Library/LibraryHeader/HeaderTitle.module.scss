@@ -8,4 +8,16 @@
   svg {
     @apply text-2xl;
   }
+
+  &:hover {
+    @apply text-white cursor-pointer;
+  }
+}
+
+// Collapsed
+.titleCollapsed {
+  span,
+  button {
+    display: none;
+  }
 }
