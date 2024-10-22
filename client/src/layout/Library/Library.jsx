@@ -1,6 +1,6 @@
 import styles from './Library.module.scss';
-import LibraryHeader from './components/LibraryHeader.jsx';
-import LibraryList from './components/LibraryList.jsx';
+import LibraryHeader from './LibraryHeader/LibraryHeader.jsx';
+import LibraryList from './LibraryList/LibraryList.jsx';
 
 const Library = () => {
   return (
