@@ -1,4 +1,6 @@
 .library {
-  grid-column: 1/2;
+  @apply overflow-hidden bg-neutral-900 rounded-xl;
+
   width: 330px;
+  grid-column: 1/2;
 }
