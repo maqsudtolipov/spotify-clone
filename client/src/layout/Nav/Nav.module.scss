@@ -1,5 +1,6 @@
 .nav {
-  @apply p-2 flex items-center justify-between;
+  @apply flex items-center justify-between;
+  grid-column: 1/-1;
 
   &__center {
     @apply flex items-center gap-2;
