@@ -1,0 +1,9 @@
+.app {
+  min-height: 100vh;
+  padding: 8px;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+}
