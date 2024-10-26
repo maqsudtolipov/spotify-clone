@@ -29,7 +29,7 @@ const LibraryList = () => {
   return (
     <div className={styles.list}>
       <div className={showShadow ? styles.shadow : ''}></div>
-      <div ref={ref} className="h-full overflow-y-scroll">
+      <div ref={ref} className="h-full px-1 overflow-y-scroll">
         {[
           0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
           3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,

@@ -1,5 +1,7 @@
 .list {
-  @apply w-full h-full px-1 relative;
+  @apply w-full relative;
+
+  height: calc(100% - 60px);
 }
 
 .shadow {
