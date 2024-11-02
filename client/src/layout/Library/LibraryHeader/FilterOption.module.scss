@@ -9,3 +9,15 @@
     @apply bg-opacity-5;
   }
 }
+
+.selected {
+  @apply text-black bg-opacity-100;
+
+  &:hover {
+    @apply bg-opacity-90;
+  }
+
+  &:active {
+    @apply bg-opacity-80;
+  }
+}

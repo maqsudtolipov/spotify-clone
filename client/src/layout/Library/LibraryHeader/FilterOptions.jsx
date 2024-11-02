@@ -6,8 +6,8 @@ const options = ['Artists', 'Playlists', 'Podcasts'];
 const FilterOptions = () => {
   return (
     <div className={styles.filterOptions}>
-      {options.map((option) => (
-        <FilterOption key={option} name={option} />
+      {options.map((option, index) => (
+        <FilterOption key={option} name={option} index={index} />
       ))}
     </div>
   );
