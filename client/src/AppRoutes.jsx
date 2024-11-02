@@ -13,8 +13,10 @@ const AppRoutes = () => {
             <div className={styles.app}>
               <Nav />
               <Library />
-              <main>Main</main>
-              <div>Player</div>
+              <main className="bg-gradient-to-b from-purple-500/[0.2] to-neutral-900 rounded-lg p-4">
+                Main
+              </main>
+              <div className="p-4">Player</div>
             </div>
           }
         />
