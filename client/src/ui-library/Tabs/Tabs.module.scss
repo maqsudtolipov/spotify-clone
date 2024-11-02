@@ -1,6 +1,9 @@
 // Tabs
 
 // Tabs List
+.tabsList {
+  @apply flex gap-2;
+}
 
 // Tab
 .tab {
