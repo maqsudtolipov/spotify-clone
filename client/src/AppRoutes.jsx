@@ -19,10 +19,10 @@ const AppRoutes = () => {
               <main className="bg-gradient-to-b from-purple-500/[0.2] to-neutral-900 rounded-lg p-4">
                 <Tabs defaultValue="songs">
                   <TabsList>
-                    <Tab value="artists">All</Tab>
+                    <Tab value="all">All</Tab>
                     <Tab value="artists">Artists</Tab>
-                    <Tab value="artists">Playlists</Tab>
-                    <Tab value="artists">Songs</Tab>
+                    <Tab value="playlsits">Playlists</Tab>
+                    <Tab value="songs">Songs</Tab>
                   </TabsList>
                 </Tabs>
               </main>

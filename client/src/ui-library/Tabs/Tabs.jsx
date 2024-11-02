@@ -1,12 +1,14 @@
 import { createContext, useState } from 'react';
 
-const TabsContext = createContext(null);
+export const TabsContext = createContext(null);
 
 const Tabs = ({ defaultValue = '', children, ...props }) => {
-  const [value, setValue] = useState(defaultValue);
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
+
+  const handleSetValue = (value) => setSelectedValue(value);
 
   return (
-    <TabsContext.Provider value={value} {...props}>
+    <TabsContext.Provider value={{ selectedValue, handleSetValue }} {...props}>
       {children}
     </TabsContext.Provider>
   );
