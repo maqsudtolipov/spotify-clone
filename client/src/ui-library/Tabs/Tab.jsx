@@ -6,7 +6,7 @@ const Tab = ({ value, children, ...rest }) => {
   if (!value)
     alert('🚨 Please provide value for Tab component to work properly.');
 
-  const { defaultValue, selectedValue, handleSetValue } =
+  const { defaultValue, selectedValue, hideUnselected, handleSetValue } =
     useContext(TabsContext);
 
   const handleClick = () => {
@@ -16,6 +16,10 @@ const Tab = ({ value, children, ...rest }) => {
       handleSetValue(value);
     }
   };
+
+  if (hideUnselected && selectedValue.length && selectedValue !== value) {
+    return null;
+  }
 
   return (
     <button

@@ -5,7 +5,7 @@ import { RiCloseLargeFill } from 'react-icons/ri';
 
 const HeaderTabs = () => {
   return (
-    <Tabs>
+    <Tabs hideUnselected={true}>
       <TabsList>
         <Tab value="all">
           <RiCloseLargeFill />
