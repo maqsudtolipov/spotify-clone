@@ -17,7 +17,7 @@ const AppRoutes = () => {
               <Nav />
               <Library />
               <main className="bg-gradient-to-b from-purple-500/[0.2] to-neutral-900 rounded-lg p-4">
-                <Tabs defaultValue="songs">
+                <Tabs defaultValue="all">
                   <TabsList>
                     <Tab value="all">All</Tab>
                     <Tab value="artists">Artists</Tab>

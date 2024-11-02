@@ -8,7 +8,10 @@ const Tabs = ({ defaultValue = '', children, ...props }) => {
   const handleSetValue = (value) => setSelectedValue(value);
 
   return (
-    <TabsContext.Provider value={{ selectedValue, handleSetValue }} {...props}>
+    <TabsContext.Provider
+      value={{ defaultValue, selectedValue, handleSetValue }}
+      {...props}
+    >
       {children}
     </TabsContext.Provider>
   );

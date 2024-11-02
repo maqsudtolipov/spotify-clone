@@ -6,12 +6,21 @@ const Tab = ({ value, children, ...rest }) => {
   if (!value)
     alert('🚨 Please provide value for Tab component to work properly.');
 
-  const { selectedValue, handleSetValue } = useContext(TabsContext);
+  const { defaultValue, selectedValue, handleSetValue } =
+    useContext(TabsContext);
+
+  const handleClick = () => {
+    if (value === selectedValue) {
+      handleSetValue(defaultValue);
+    } else {
+      handleSetValue(value);
+    }
+  };
 
   return (
     <button
       className={`${styles.tab} ${value === selectedValue ? styles.tabSelected : ''}`}
-      onClick={() => handleSetValue(value)}
+      onClick={handleClick}
       {...rest}
     >
       {children}
