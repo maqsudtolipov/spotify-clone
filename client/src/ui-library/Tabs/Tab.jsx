@@ -4,13 +4,14 @@ import { TabsContext } from './Tabs.jsx';
 
 const Tab = ({ value, children, ...rest }) => {
   if (!value)
-    return alert('🚨 Please provide value for Tab component to work properly.');
+    alert('🚨 Please provide value for Tab component to work properly.');
 
-  const { selectedValue, handleChangeValue } = useContext(TabsContext);
+  const { selectedValue, handleSetValue } = useContext(TabsContext);
 
   return (
     <button
       className={`${styles.tab} ${value === selectedValue ? styles.tabSelected : ''}`}
+      onClick={() => handleSetValue(value)}
       {...rest}
     >
       {children}
