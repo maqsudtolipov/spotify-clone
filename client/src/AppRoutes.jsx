@@ -25,6 +25,30 @@ const AppRoutes = () => {
                     <Tab value="songs">Songs</Tab>
                   </TabsList>
                 </Tabs>
+
+                <Tabs defaultValue="one">
+                  <TabsList>
+                    <Tab value="one">One</Tab>
+                    <Tab value="two">Two</Tab>
+                    <Tab value="three">Three</Tab>
+                    <Tab value="four">Four</Tab>
+                    <Tab value="five">Five</Tab>
+                    <Tab value="six">Six</Tab>
+                    <Tab value="seven">Seven</Tab>
+                    <Tab value="eight">Eight</Tab>
+                    <Tab value="nine">Nine</Tab>
+                    <Tab value="ten">Ten</Tab>
+                    <Tab value="eleven">Eleven</Tab>
+                    <Tab value="twelve">Twelve</Tab>
+                    <Tab value="thirteen">Thirteen</Tab>
+                    <Tab value="sixteen">Sixteen</Tab>
+                    <Tab value="seventeen">Seventeen</Tab>
+                    <Tab value="eighteen">Eighteen</Tab>
+                    <Tab value="nineteen">Nineteen</Tab>
+                    <Tab value="tenteen">Tenteen</Tab>
+                    <Tab value="eleventeen">Eleventeen</Tab>
+                  </TabsList>
+                </Tabs>
               </main>
               <div className="p-4">Player</div>
             </div>
