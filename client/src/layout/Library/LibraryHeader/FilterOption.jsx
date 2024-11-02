@@ -1,7 +1,7 @@
 import styles from './FilterOption.module.scss';
 
 const FilterOption = ({ name }) => {
-  return <div className={styles.filterOption}>{name}</div>;
+  return <button className={styles.filterOption}>{name}</button>;
 };
 
 export default FilterOption;
