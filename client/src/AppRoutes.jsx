@@ -16,7 +16,7 @@ const AppRoutes = () => {
             <div className={styles.app}>
               <Nav />
               <Library />
-              <main className="bg-gradient-to-b from-purple-500/[0.2] to-neutral-900 rounded-lg p-4 overflow-hidden">
+              <main className="bg-gradient-to-b from-sky-500/[0.5] to-neutral-900 rounded-lg p-4 overflow-hidden">
                 <div className="mb-2">
                   <Tabs defaultValue="all">
                     <TabsList>

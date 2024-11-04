@@ -4,7 +4,7 @@
 }
 
 .tabsList {
-  @apply flex gap-2 overflow-x-scroll;
+  @apply flex gap-2 overflow-x-scroll scroll-smooth rounded-full;
 
   &::-webkit-scrollbar {
     display: none;

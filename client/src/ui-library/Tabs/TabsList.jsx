@@ -3,7 +3,7 @@ import ArrowButton from './ArrowButton.jsx';
 import { useEffect, useRef, useState } from 'react';
 
 const TabsList = ({ children, ...rest }) => {
-  const [showRightArrow, setshowRightArrow] = useState();
+  const [showRightArrow, setShowRightArrow] = useState();
   const [showLeftArrow, setShowLeftArrow] = useState();
   const ref = useRef(null);
 
@@ -13,19 +13,15 @@ const TabsList = ({ children, ...rest }) => {
     const eventListener = () => {
       const differenceRight =
         el.scrollWidth - el.getBoundingClientRect().width - el.scrollLeft;
-      console.log(
-        el.scrollWidth,
-        el.getBoundingClientRect().width,
-        el.scrollLeft,
-      );
+      const differenceLeft = el.scrollLeft;
 
       if (differenceRight >= 10) {
-        setshowRightArrow(true);
+        setShowRightArrow(true);
       } else {
-        setshowRightArrow(false);
+        setShowRightArrow(false);
       }
 
-      if (el.scrollLeft >= 10) {
+      if (differenceLeft >= 10) {
         setShowLeftArrow(true);
       } else {
         setShowLeftArrow(false);
@@ -38,14 +34,27 @@ const TabsList = ({ children, ...rest }) => {
     };
   }, []);
 
+  const handleScrollRight = () => {
+    ref.current.scrollLeft =
+      ref.current.scrollWidth - ref.current.getBoundingClientRect().width;
+  };
+
+  const handleScrollLeft = () => {
+    ref.current.scrollLeft = 0;
+  };
+
   return (
     <div className="relative" {...rest}>
       <div className={styles.tabsList} ref={ref}>
         {children}
       </div>
 
-      {showLeftArrow && <ArrowButton position="left" />}
-      {showRightArrow && <ArrowButton position="right" />}
+      {showLeftArrow && (
+        <ArrowButton position="left" onClick={handleScrollLeft} />
+      )}
+      {showRightArrow && (
+        <ArrowButton position="right" onClick={handleScrollRight} />
+      )}
     </div>
   );
 };

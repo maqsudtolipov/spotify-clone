@@ -9,6 +9,7 @@ const ArrowButton = ({ position = '', ...rest }) => {
         {...rest}
       >
         <RiArrowLeftSLine />
+        <div className={styles.shadow}></div>
       </button>
     );
   } else {
@@ -18,6 +19,7 @@ const ArrowButton = ({ position = '', ...rest }) => {
         {...rest}
       >
         <RiArrowRightSLine />
+        <div className={styles.shadow}></div>
       </button>
     );
   }
