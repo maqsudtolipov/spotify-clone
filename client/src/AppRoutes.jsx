@@ -17,15 +17,16 @@ const AppRoutes = () => {
               <Nav />
               <Library />
               <main className="bg-gradient-to-b from-purple-500/[0.2] to-neutral-900 rounded-lg p-4 overflow-hidden">
-                <Tabs defaultValue="all">
-                  <TabsList>
-                    <Tab value="all">All</Tab>
-                    <Tab value="artists">Artists</Tab>
-                    <Tab value="playlsits">Playlists</Tab>
-                    <Tab value="songs">Songs</Tab>
-                  </TabsList>
-                </Tabs>
-
+                <div className="mb-2">
+                  <Tabs defaultValue="all">
+                    <TabsList>
+                      <Tab value="all">All</Tab>
+                      <Tab value="artists">Artists</Tab>
+                      <Tab value="playlsits">Playlists</Tab>
+                      <Tab value="songs">Songs</Tab>
+                    </TabsList>
+                  </Tabs>
+                </div>
                 <Tabs defaultValue="one">
                   <TabsList>
                     <Tab value="one">One</Tab>

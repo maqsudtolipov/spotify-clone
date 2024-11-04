@@ -1,6 +1,10 @@
 // Tabs
 
 // Tabs List
+.tabListWrapper {
+  @apply relative;
+}
+
 .tabsList {
   @apply flex gap-2 overflow-x-auto;
 
@@ -32,4 +36,22 @@
   &:active {
     @apply bg-opacity-80;
   }
+}
+
+.arrowButton {
+  @apply absolute top-0 text-xl bg-neutral-800 rounded-full;
+
+  svg {
+    height: 32px;
+    width: 32px;
+    padding: 4px;
+  }
+}
+
+.arrowButtonRight {
+  @apply right-0;
+}
+
+.arrowButtonLeft {
+  @apply left-0;
 }
