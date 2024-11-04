@@ -39,12 +39,14 @@
 }
 
 .arrowButton {
-  @apply absolute top-0 text-xl bg-neutral-800 rounded-full;
+  @apply absolute top-0 text-neutral-400 bg-neutral-800 rounded-full;
 
   svg {
-    height: 32px;
-    width: 32px;
-    padding: 4px;
+    @apply size-8 p-1;
+  }
+
+  &:hover {
+    @apply text-white bg-neutral-700;
   }
 }
 
