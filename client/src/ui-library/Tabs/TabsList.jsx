@@ -10,7 +10,7 @@ const TabsList = ({ children, ...rest }) => {
   useEffect(() => {
     const el = ref.current;
 
-    const eventListener = () => {
+    const updateArrowVisibility = () => {
       const differenceRight =
         el.scrollWidth - el.getBoundingClientRect().width - el.scrollLeft;
       const differenceLeft = el.scrollLeft;
@@ -28,9 +28,11 @@ const TabsList = ({ children, ...rest }) => {
       }
     };
 
-    el.addEventListener('scroll', eventListener);
+    el.addEventListener('scroll', updateArrowVisibility);
+    updateArrowVisibility();
+
     return () => {
-      el.removeEventListener('scroll', eventListener);
+      el.removeEventListener('scroll', updateArrowVisibility);
     };
   }, []);
 

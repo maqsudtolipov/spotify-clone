@@ -3,30 +3,22 @@ import { useContext } from 'react';
 import { TabsContext } from './Tabs.jsx';
 
 const Tab = ({ value, children, ...rest }) => {
-  if (!value)
-    alert('🚨 Please provide value for Tab component to work properly.');
-
   const { defaultValue, selectedValue, hideUnselected, handleSetValue } =
     useContext(TabsContext);
 
   const handleClick = () => {
-    if (value === selectedValue) {
-      handleSetValue(defaultValue);
-    } else {
-      handleSetValue(value);
-    }
+    handleSetValue(value === selectedValue ? defaultValue : value);
   };
 
   if (hideUnselected && selectedValue.length && selectedValue !== value) {
     return null;
   }
 
+  const isSelected = value === selectedValue;
+  const buttonClass = `${styles.tab} ${isSelected ? styles.tabSelected : ''}`;
+
   return (
-    <button
-      className={`${styles.tab} ${value === selectedValue ? styles.tabSelected : ''}`}
-      onClick={handleClick}
-      {...rest}
-    >
+    <button className={buttonClass} onClick={handleClick} {...rest}>
       {children}
     </button>
   );

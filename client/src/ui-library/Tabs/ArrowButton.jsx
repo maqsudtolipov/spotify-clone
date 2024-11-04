@@ -2,27 +2,15 @@ import styles from './Tabs.module.scss';
 import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 const ArrowButton = ({ position = '', ...rest }) => {
-  if (position === 'left') {
-    return (
-      <button
-        className={`${styles.arrowButton} ${styles.arrowButtonLeft}`}
-        {...rest}
-      >
-        <RiArrowLeftSLine />
-        <div className={styles.shadow}></div>
-      </button>
-    );
-  } else {
-    return (
-      <button
-        className={`${styles.arrowButton} ${position === 'left' ? styles.arrowButtonLeft : styles.arrowButtonRight}`}
-        {...rest}
-      >
-        <RiArrowRightSLine />
-        <div className={styles.shadow}></div>
-      </button>
-    );
-  }
+  const isLeft = position === 'left';
+  const icon = isLeft ? <RiArrowLeftSLine /> : <RiArrowRightSLine />;
+  const buttonClass = `${styles.arrowButton} ${isLeft ? styles.arrowButtonLeft : styles.arrowButtonRight}`;
+
+  return (
+    <button className={buttonClass} {...rest}>
+      {icon}
+    </button>
+  );
 };
 
 export default ArrowButton;
