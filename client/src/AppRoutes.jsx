@@ -2,9 +2,6 @@ import styles from './AppRoutes.module.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Nav from './layout/Nav/Nav.jsx';
 import Library from './layout/Library/Library.jsx';
-import Tabs from './ui-library/Tabs/Tabs.jsx';
-import TabsList from './ui-library/Tabs/TabsList.jsx';
-import Tab from './ui-library/Tabs/Tab.jsx';
 
 const AppRoutes = () => {
   return (
