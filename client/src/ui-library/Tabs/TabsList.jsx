@@ -3,8 +3,8 @@ import ArrowButton from './ArrowButton.jsx';
 import { useEffect, useRef, useState } from 'react';
 
 const TabsList = ({ children, ...rest }) => {
-  const [showRightArrow, setShowRightArrow] = useState();
-  const [showLeftArrow, setShowLeftArrow] = useState();
+  const [showRightArrow, setShowRightArrow] = useState(false);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
