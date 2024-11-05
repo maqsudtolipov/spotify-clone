@@ -1,6 +1,6 @@
 import styles from './HeaderTitle.module.scss';
 import { RiAddLargeFill, RiArchiveStackLine } from 'react-icons/ri';
-import ButtonIcon from '../../../ui-library/ButtonIcon/ButtonIcon.jsx';
+import IconButton from '../../../ui-library/IconButton/IconButton.jsx';
 
 const HeaderTitle = ({ isCollapsed, onCollapse }) => {
   // INFO: Collapse hides "Your Library" text and "+" buttons
@@ -13,9 +13,9 @@ const HeaderTitle = ({ isCollapsed, onCollapse }) => {
         <span>Your Library</span>
       </div>
 
-      <ButtonIcon>
+      <IconButton>
         <RiAddLargeFill />
-      </ButtonIcon>
+      </IconButton>
     </div>
   );
 };
