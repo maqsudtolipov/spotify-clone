@@ -1,4 +1,4 @@
-import Button from '../../../components/Button/Button.jsx';
+import Button from '../../../ui-library/Button/Button.jsx';
 import NavTooltip from './NavTooltip.jsx';
 import NavButton from './NavButton.jsx';
 import { RiNotification3Line } from 'react-icons/ri';
