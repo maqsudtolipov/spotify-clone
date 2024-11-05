@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styles from './Tooltip.module.scss';
 import { TooltipContext } from './Tooltip.jsx';
 
-const Content = ({ position = 'bottom', children, ...rest }) => {
+const TooltipContent = ({ position = 'bottom', children, ...rest }) => {
   const { isOpen } = useContext(TooltipContext);
 
   return isOpen ? (
@@ -12,4 +12,4 @@ const Content = ({ position = 'bottom', children, ...rest }) => {
   ) : null;
 };
 
-export default Content;
+export default TooltipContent;

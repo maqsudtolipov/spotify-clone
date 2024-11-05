@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { TooltipContext } from './Tooltip.jsx';
 
-const Trigger = ({ children, rest }) => {
+const TooltipTrigger = ({ children, rest }) => {
   const { handleOpen, handleClose } = useContext(TooltipContext);
 
   return (
@@ -11,4 +11,4 @@ const Trigger = ({ children, rest }) => {
   );
 };
 
-export default Trigger;
+export default TooltipTrigger;
