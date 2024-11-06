@@ -1,11 +1,13 @@
-import Tooltip from '../../../components/Tooltip/Tooltip.jsx';
+import Tooltip from '../../../ui-library/Tooltip/Tooltip.jsx';
+import TooltipTrigger from '../../../ui-library/Tooltip/TooltipTrigger.jsx';
+import TooltipContent from '../../../ui-library/Tooltip/TooltipContent.jsx';
 
 // Referenced from Tooltip.jsx
 const NavTooltip = ({ trigger, position, content }) => {
   return (
     <Tooltip>
-      <Tooltip.Trigger>{trigger}</Tooltip.Trigger>
-      <Tooltip.Content position={position}>{content}</Tooltip.Content>
+      <TooltipTrigger>{trigger}</TooltipTrigger>
+      <TooltipContent position={position}>{content}</TooltipContent>
     </Tooltip>
   );
 };

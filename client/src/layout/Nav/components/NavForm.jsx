@@ -1,5 +1,5 @@
 import styles from './NavForm.module.scss';
-import { RiCloseFill, RiCloseLargeLine, RiSearchLine } from 'react-icons/ri';
+import { RiCloseLargeLine, RiSearchLine } from 'react-icons/ri';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 

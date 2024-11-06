@@ -6,7 +6,7 @@ const Tabs = ({
   defaultValue = '',
   hideUnselected = false,
   children,
-  ...props
+  ...rest
 }) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const handleSetValue = (value) => setSelectedValue(value);
@@ -19,7 +19,7 @@ const Tabs = ({
         selectedValue,
         handleSetValue,
       }}
-      {...props}
+      {...rest}
     >
       {children}
     </TabsContext.Provider>
