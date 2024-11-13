@@ -3,6 +3,7 @@ import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownTriggerProps {
   children: ReactNode;
+  className?: string;
 }
 
 const DropdownTrigger = ({ children, ...rest }: DropdownTriggerProps) => {

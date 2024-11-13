@@ -1,3 +1,4 @@
+import styles from './LibrarySearch.module.scss';
 import Dropdown from '../../../ui-library/Dropdown/Dropdown';
 import { RiListUnordered } from 'react-icons/ri';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
@@ -6,11 +7,11 @@ import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 
 const LibrarySearchFilter = () => {
   return (
-    <div>
+    <div className={styles.librarySearch}>
       <Dropdown>
-        <DropdownTrigger>
-          <span></span>
-          Sort <RiListUnordered />
+        <DropdownTrigger className={styles.librarySearchButton}>
+          <span>Sort</span>
+          <RiListUnordered />
         </DropdownTrigger>
         <DropdownList>
           <DropdownItem>Alphabetical</DropdownItem>
