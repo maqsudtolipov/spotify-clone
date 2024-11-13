@@ -1,6 +1,6 @@
 import Dropdown from '../../../ui-library/Dropdown/Dropdown.jsx';
 import NavTooltip from './NavTooltip.jsx';
-import Avatar, { AvatarFallback } from '../../../ui-library/Avatar/Avatar.jsx';
+import Avatar, { AvatarFallback } from '../../../ui-library/Avatar/Avatar.tsx';
 
 const UserDropdown = () => {
   return (
