@@ -1,3 +1,4 @@
+import styles from './Dropdown.module.scss';
 import { createContext, ReactNode, useState } from 'react';
 
 interface DropdownContextValue {
@@ -31,7 +32,7 @@ const Dropdown = ({ children }: DropdownProps) => {
 
   return (
     <DropdownContext.Provider value={contextValue}>
-      {children}
+      <div className={styles.dropdown}>{children}</div>
     </DropdownContext.Provider>
   );
 };

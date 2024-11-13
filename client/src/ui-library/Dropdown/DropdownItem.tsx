@@ -3,7 +3,7 @@ import styles from './Dropdown.module.scss';
 import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownItemProps {
-  underline: boolean;
+  underline?: boolean;
   PreIcon?: ElementType;
   PostIcon?: ElementType;
   children: ReactNode;

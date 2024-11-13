@@ -2,7 +2,7 @@ import Button from '../../../ui-library/Button/Button.jsx';
 import NavTooltip from './NavTooltip.jsx';
 import NavButton from './NavButton.jsx';
 import { RiNotification3Line } from 'react-icons/ri';
-import UserDropdown from './UserDropdown.jsx';
+import UserDropdown from './UserDropdown.tsx';
 
 const UserActions = () => {
   return (
