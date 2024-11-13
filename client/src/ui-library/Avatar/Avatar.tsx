@@ -1,6 +1,11 @@
 import styles from './Avatar.module.scss';
+import { ReactNode } from 'react';
 
-const Avatar = ({ children, ...rest }) => {
+interface AvatarProps {
+  children?: ReactNode;
+}
+
+const Avatar = ({ children, ...rest }: AvatarProps) => {
   return (
     <div className={styles.avatar} {...rest}>
       {children}
@@ -8,7 +13,11 @@ const Avatar = ({ children, ...rest }) => {
   );
 };
 
-const AvatarFallback = ({ children, ...rest }) => {
+interface AvatarFallbackProps {
+  children?: ReactNode;
+}
+
+const AvatarFallback = ({ children, ...rest }: AvatarFallbackProps) => {
   return (
     <span className={styles.fallback} {...rest}>
       {children}
