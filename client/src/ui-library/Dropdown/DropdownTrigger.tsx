@@ -5,7 +5,7 @@ interface DropdownTriggerProps {
   children: ReactNode;
 }
 
-const DropdownTrigger = ({ children }: DropdownTriggerProps) => {
+const DropdownTrigger = ({ children, ...rest }: DropdownTriggerProps) => {
   const { toggleDropdown } = useContext(DropdownContext);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -13,7 +13,11 @@ const DropdownTrigger = ({ children }: DropdownTriggerProps) => {
     toggleDropdown();
   };
 
-  return <div onClick={handleClick}>{children}</div>;
+  return (
+    <div onClick={handleClick} {...rest}>
+      {children}
+    </div>
+  );
 };
 
 export default DropdownTrigger;

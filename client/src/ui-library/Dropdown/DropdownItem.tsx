@@ -14,6 +14,7 @@ const DropdownItem = ({
   PreIcon,
   PostIcon,
   children,
+  ...rest
 }: DropdownItemProps) => {
   const { closeDropdown } = useContext(DropdownContext);
 
@@ -21,6 +22,7 @@ const DropdownItem = ({
     <li
       className={`${styles.item} ${underline ? styles.underline : ''}`}
       onClick={closeDropdown}
+      {...rest}
     >
       {PreIcon && <PreIcon className={styles.icon} />}
       <span>{children}</span>

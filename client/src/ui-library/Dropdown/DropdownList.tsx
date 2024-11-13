@@ -7,12 +7,12 @@ interface DropdownListProps {
   children: ReactNode;
 }
 
-const DropdownList = ({ children }: DropdownListProps) => {
+const DropdownList = ({ children, ...rest }: DropdownListProps) => {
   const { isOpen, closeDropdown } = useContext(DropdownContext);
   const ref = useOutsideClick(closeDropdown);
 
   return isOpen ? (
-    <ul ref={ref} className={styles.list}>
+    <ul ref={ref} className={styles.list} {...rest}>
       {children}
     </ul>
   ) : null;

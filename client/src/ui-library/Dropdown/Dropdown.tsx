@@ -16,7 +16,7 @@ interface DropdownProps {
   children: ReactNode;
 }
 
-const Dropdown = ({ children }: DropdownProps) => {
+const Dropdown = ({ children, ...rest }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const openDropdown = () => setIsOpen(true);
@@ -31,7 +31,7 @@ const Dropdown = ({ children }: DropdownProps) => {
   };
 
   return (
-    <DropdownContext.Provider value={contextValue}>
+    <DropdownContext.Provider value={contextValue} {...rest}>
       <div className={styles.dropdown}>{children}</div>
     </DropdownContext.Provider>
   );
