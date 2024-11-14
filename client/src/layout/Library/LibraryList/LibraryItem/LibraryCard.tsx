@@ -1,13 +1,13 @@
-interface LibraryItemData {
+interface LibraryCardData {
   img: string;
   name: string;
 }
 
-interface LibraryItemProps {
-  data: LibraryItemData;
+interface LibraryCardProps {
+  data: LibraryCardData;
 }
 
-const LibraryItem = ({ data }: LibraryItemProps) => {
+const LibraryCard = ({ data }: LibraryCardProps) => {
   const { img, name } = data;
 
   return (
@@ -18,4 +18,4 @@ const LibraryItem = ({ data }: LibraryItemProps) => {
   );
 };
 
-export default LibraryItem;
+export default LibraryCard;

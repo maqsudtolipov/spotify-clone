@@ -1,7 +1,7 @@
 import styles from './LibraryList.module.scss';
 import { faker } from '@faker-js/faker';
 import { useEffect, useRef, useState } from 'react';
-import LibraryItem from './LibraryItem/LibraryItem.tsx';
+import LibraryCard from './LibraryItem/LibraryCard.tsx';
 
 const LibraryList = () => {
   const [fakeList, setFakeList] = useState([]);
@@ -47,7 +47,7 @@ const LibraryList = () => {
       <div className={showShadow ? styles.shadow : ''}></div>
       <div ref={ref} className="h-full px-1 overflow-y-scroll">
         {fakeList.map((el) => (
-          <LibraryItem key={el.name} data={el} />
+          <LibraryCard key={el.name} data={el} />
         ))}
       </div>
     </div>
