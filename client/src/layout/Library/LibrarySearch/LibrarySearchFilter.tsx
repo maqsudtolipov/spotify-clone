@@ -7,7 +7,7 @@ import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 
 const LibrarySearchFilter = () => {
   return (
-    <div className={styles.librarySearch}>
+    <div className={styles.librarySearchFilter}>
       <Dropdown>
         <DropdownTrigger className={styles.librarySearchButton}>
           <span>Sort</span>

@@ -1,8 +1,11 @@
+import styles from './LibrarySearch.module.scss';
 import LibrarySearchFilter from './LibrarySearchFilter.tsx';
+import LibrarySearchForm from './LibrarySearchForm.tsx';
 
 const LibrarySearch = () => {
   return (
-    <div>
+    <div className={styles.librarySearch}>
+      <LibrarySearchForm />
       <LibrarySearchFilter />
     </div>
   );
