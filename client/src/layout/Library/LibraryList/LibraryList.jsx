@@ -1,11 +1,10 @@
 import styles from './LibraryList.module.scss';
+import { faker } from '@faker-js/faker';
 import { useEffect, useRef, useState } from 'react';
-
-const Placeholder = () => {
-  return <div className="size-16 bg-green-600 rounded mb-2"></div>;
-};
+import LibraryItem from './LibraryItem/LibraryItem.tsx';
 
 const LibraryList = () => {
+  const [fakeList, setFakeList] = useState([]);
   const [showShadow, setShowShadow] = useState(false);
   const ref = useRef(null);
 
@@ -26,15 +25,29 @@ const LibraryList = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const arr = [];
+
+    for (let i = 0; i < 12; i++) {
+      const img = faker.image.url({
+        category: 'nature',
+        height: 120,
+        width: 120,
+      });
+      const name = `${faker.word.adjective()} ${faker.word.noun()}`;
+
+      arr.push({ img, name });
+    }
+
+    setFakeList(arr);
+  }, []);
+
   return (
     <div className={styles.list}>
       <div className={showShadow ? styles.shadow : ''}></div>
       <div ref={ref} className="h-full px-1 overflow-y-scroll">
-        {[
-          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
-          3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-        ].map((el) => (
-          <Placeholder key={el}>test</Placeholder>
+        {fakeList.map((el) => (
+          <LibraryItem key={el.name} data={el} />
         ))}
       </div>
     </div>
