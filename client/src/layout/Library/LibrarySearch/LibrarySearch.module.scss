@@ -13,14 +13,28 @@
   &:hover {
     @apply text-white bg-white/[0.10];
   }
-}
-
-.librarySearchFormInput {
-  @apply w-full p-2 pl-8 text-sm leading-none bg-white/[0.10] rounded-sm;
 
   &:focus {
     @apply outline-none;
   }
+}
+
+.librarySearchButtonNoHover:hover {
+    @apply bg-transparent;
+  }
+
+.librarySearchFormInput {
+  @apply w-8 p-2 text-sm text-transparent placeholder-transparent bg-transparent leading-none rounded-sm;
+
+  transition: width 0.3s;
+
+  &:focus {
+    @apply outline-none;
+  }
+}
+
+.librarySearchFormInputOpen {
+  @apply w-full pl-8 text-neutral-400 placeholder-neutral-400 bg-white/[0.10];
 }
 
 // Filter
