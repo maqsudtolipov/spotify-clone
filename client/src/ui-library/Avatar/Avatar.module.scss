@@ -1,0 +1,7 @@
+.avatar {
+  @apply flex items-center justify-center bg-neutral-800 size-12 rounded-full;
+}
+
+.fallback {
+  @apply flex items-center justify-center bg-green-500 size-8 rounded-full;
+}
