@@ -16,7 +16,7 @@ const Library = () => {
       className={`${styles.library} ${isCollapsed ? styles.libraryCollapsed : ''}`}
     >
       <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse} />
-      <LibrarySearch />
+      {!isCollapsed && <LibrarySearch />}
       <LibraryList />
     </div>
   );
