@@ -2,6 +2,29 @@
   @apply p-2 flex items-center gap-3;
 }
 
+// Image
+.cardImageContainer {
+  @apply relative rounded rounded-s overflow-hidden cursor-pointer;
+
+  svg {
+    @apply hidden absolute size-6;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    img {
+      @apply brightness-50;
+    }
+
+    svg {
+      @apply inline-block;
+    }
+  }
+}
+
 .cardImage {
-  @apply size-12 aspect-square object-cover object-center rounded rounded-s overflow-hidden;
+  @apply size-12 aspect-square object-cover object-center;
 }
