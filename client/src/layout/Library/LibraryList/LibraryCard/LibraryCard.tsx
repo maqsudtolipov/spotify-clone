@@ -1,5 +1,6 @@
 import styles from './LibraryCard.module.scss';
 import CardImage from './CardImage.tsx';
+import CardInfo from './CardInfo.tsx';
 
 interface LibraryCardData {
   img: string;
@@ -16,7 +17,7 @@ const LibraryCard = ({ data }: LibraryCardProps) => {
   return (
     <li className={styles.libraryCard}>
       <CardImage src={img} name={`Cover for ${name}`} />
-      <span>name</span>
+      <CardInfo name={name} type={'playlist'} />
     </li>
   );
 };

@@ -32,3 +32,15 @@
 .cardImage {
   @apply size-12 aspect-square object-cover object-center;
 }
+
+// Info
+.cardInfo {
+}
+
+.cardInfoName {
+  @apply text-base mb-0.5;
+}
+
+.cardInfoDescription {
+  @apply text-sm text-neutral-400 capitalize;
+}
