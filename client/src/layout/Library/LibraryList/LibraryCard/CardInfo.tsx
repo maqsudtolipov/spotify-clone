@@ -11,11 +11,17 @@ interface CardInfoProps {
 // TODO: style Info descriptions
 // TODO: add playing styles
 
+const combineDescription = (arr: string[]): string => {
+  return arr.join(' • ');
+};
+
 const CardInfo = ({ name, isPinned, type, length, owner }: CardInfoProps) => {
   return (
     <div>
       <span>{name}</span>
-      <div className={styles.cardInfoDescription}>{type}</div>
+      <div className={styles.cardInfoDescription}>
+        <span>{combineDescription(['Playlist', 'Christina', '12 songs'])}</span>
+      </div>
     </div>
   );
 };
