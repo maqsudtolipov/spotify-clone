@@ -1,4 +1,5 @@
 import styles from './LibraryCard.module.scss';
+import { RiPlayLargeFill } from 'react-icons/ri';
 
 interface CardImageProps {
   src: string;
@@ -6,7 +7,12 @@ interface CardImageProps {
 }
 
 const CardImage = ({ src, name }: CardImageProps) => {
-  return <img className={styles.cardImage} src={src} alt={name} />;
+  return (
+    <div className={styles.cardImageContainer}>
+      <img className={styles.cardImage} src={src} alt={name} />
+      <RiPlayLargeFill />
+    </div>
+  );
 };
 
 export default CardImage;
