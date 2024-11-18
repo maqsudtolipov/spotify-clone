@@ -28,7 +28,7 @@ const LibraryList = () => {
   useEffect(() => {
     const arr = [];
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 20; i++) {
       const img = faker.image.url({
         category: 'nature',
         height: 120,
@@ -36,9 +36,12 @@ const LibraryList = () => {
       });
       const name = `${faker.word.adjective()} ${faker.word.noun()}`;
       const type = faker.datatype.boolean() ? 'artist' : 'playlist';
+      const isPinned = faker.number.int(20) <= 1;
 
-      arr.push({ img, name, type });
+      arr.push({ img, name, isPinned, type });
     }
+
+    arr.sort((a, b) => b.isPinned - a.isPinned);
 
     setFakeList(arr);
   }, []);
