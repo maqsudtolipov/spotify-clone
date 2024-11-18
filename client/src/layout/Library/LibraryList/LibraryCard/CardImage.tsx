@@ -4,12 +4,17 @@ import { RiPlayLargeFill } from 'react-icons/ri';
 interface CardImageProps {
   src: string;
   name: string;
+  isArtist: boolean;
 }
 
-const CardImage = ({ src, name }: CardImageProps) => {
+const CardImage = ({ src, name, isArtist }: CardImageProps) => {
   return (
     <div className={styles.cardImageContainer}>
-      <img className={styles.cardImage} src={src} alt={name} />
+      <img
+        className={`${styles.cardImage} ${isArtist ? styles.cardImageRounded : ''}`}
+        src={src}
+        alt={name}
+      />
       <RiPlayLargeFill />
     </div>
   );

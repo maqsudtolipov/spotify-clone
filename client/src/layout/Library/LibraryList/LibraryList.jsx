@@ -35,8 +35,9 @@ const LibraryList = () => {
         width: 120,
       });
       const name = `${faker.word.adjective()} ${faker.word.noun()}`;
+      const type = faker.datatype.boolean() ? 'artist' : 'playlist';
 
-      arr.push({ img, name });
+      arr.push({ img, name, type });
     }
 
     setFakeList(arr);

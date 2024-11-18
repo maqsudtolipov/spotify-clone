@@ -6,6 +6,7 @@ import { RiVolumeDownFill } from 'react-icons/ri';
 interface LibraryCardData {
   img: string;
   name: string;
+  type: string;
 }
 
 interface LibraryCardProps {
@@ -15,14 +16,16 @@ interface LibraryCardProps {
 const LibraryCard = ({ data }: LibraryCardProps) => {
   const isPlaying = false;
 
-  const { img, name } = data;
+  const { img, name, type } = data;
 
   return (
-    <li
-      className={`${styles.libraryCard} ${isPlaying ? styles.libraryCardPlaying : ''}`}
-    >
-      <CardImage src={img} name={`Cover for ${name}`} />
-      <CardInfo name={name} type={'playlist'} />
+    <li className={styles.libraryCard}>
+      <CardImage
+        src={img}
+        name={`Cover for ${name}`}
+        isArtist={type === 'artist'}
+      />
+      <CardInfo name={name} type={type} />
       {isPlaying && <RiVolumeDownFill className={styles.cardIcon} />}
     </li>
   );

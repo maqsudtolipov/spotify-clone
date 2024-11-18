@@ -40,6 +40,10 @@
   @apply size-12 aspect-square object-cover object-center;
 }
 
+.cardImageRounded {
+  @apply rounded-full;
+}
+
 // Info
 .cardInfo {
   @apply grow;
