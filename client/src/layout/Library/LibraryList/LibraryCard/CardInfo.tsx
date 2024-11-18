@@ -4,20 +4,28 @@ interface CardInfoProps {
   name: string;
   isPinned?: boolean;
   type: string;
-  length?: string;
   owner?: string;
+  length?: string;
 }
 
 const combineDescription = (arr: string[]): string => {
-  return arr.join(' • ');
+  return arr.filter((el) => el.length).join(' • ');
 };
 
-const CardInfo = ({ name, isPinned, type, length, owner }: CardInfoProps) => {
+const CardInfo = ({
+  name,
+  isPinned,
+  type,
+  owner = '',
+  length = '',
+}: CardInfoProps) => {
+  const description = combineDescription([type, owner, length]);
+
   return (
     <div className={styles.cardInfo}>
       <span className={styles.cardInfoName}>{name}</span>
       <div className={styles.cardInfoDescription}>
-        <span>{combineDescription(['Playlist', 'Christina', '12 songs'])}</span>
+        <span>{description}</span>
       </div>
     </div>
   );
