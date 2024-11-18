@@ -48,4 +48,12 @@
   svg {
     @apply text-base;
   }
+
+  &:hover {
+    @apply text-white scale-105;
+  }
+
+  &:active {
+    @apply text-neutral-500 scale-100;
+  }
 }
