@@ -1,3 +1,6 @@
+import styles from './LibraryCard.module.scss';
+import CardImage from './CardImage.tsx';
+
 interface LibraryCardData {
   img: string;
   name: string;
@@ -11,8 +14,8 @@ const LibraryCard = ({ data }: LibraryCardProps) => {
   const { img, name } = data;
 
   return (
-    <li>
-      <img src={img} alt={`Cover for ${name}`} />
+    <li className={styles.libraryCard}>
+      <CardImage src={img} name={`Cover for ${name}`} />
       <span>name</span>
     </li>
   );
