@@ -42,5 +42,5 @@
 }
 
 .cardInfoDescription {
-  @apply text-sm text-neutral-400 capitalize;
+  @apply flex items-center gap-2 text-sm text-neutral-400 capitalize;
 }
