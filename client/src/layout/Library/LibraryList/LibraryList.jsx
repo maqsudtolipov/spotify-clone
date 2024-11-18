@@ -1,7 +1,7 @@
 import styles from './LibraryList.module.scss';
 import { faker } from '@faker-js/faker';
 import { useEffect, useRef, useState } from 'react';
-import LibraryCard from './LibraryItem/LibraryCard.tsx';
+import LibraryCard from './LibraryCard/LibraryCard.tsx';
 
 const LibraryList = () => {
   const [fakeList, setFakeList] = useState([]);
