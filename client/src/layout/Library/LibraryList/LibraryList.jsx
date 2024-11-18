@@ -45,7 +45,7 @@ const LibraryList = () => {
   return (
     <div className={styles.list}>
       <div className={showShadow ? styles.shadow : ''}></div>
-      <div ref={ref} className="h-full px-1 overflow-y-scroll">
+      <div ref={ref} className="h-full p-2 overflow-y-scroll">
         {fakeList.map((el) => (
           <LibraryCard key={el.name} data={el} />
         ))}
