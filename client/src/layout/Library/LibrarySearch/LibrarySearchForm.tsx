@@ -16,7 +16,7 @@ const LibrarySearchForm = () => {
   return (
     <form className={styles.librarySearchForm} onSubmit={handleSubmit}>
       <button
-        className={`${styles.librarySearchFormButton} ${isOpen ? styles.librarySearchButtonNoHover : ''}`}
+        className={`${styles.librarySearchFormButton} ${isOpen ? styles.librarySearchButtonHover : ''}`}
         onClick={handleToggleForm}
       >
         <RiSearchLine />
