@@ -4,14 +4,16 @@ import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownItemProps {
   underline?: boolean;
-  PreIcon?: ElementType;
-  PostIcon?: ElementType;
+  isHighlighted?: boolean;
+  PreIcon?: ElementType | null;
+  PostIcon?: ElementType | null;
   onClick?: () => void;
   children: ReactNode;
 }
 
 const DropdownItem = ({
   underline = false,
+  isHighlighted = false,
   PreIcon,
   PostIcon,
   children,
@@ -21,7 +23,7 @@ const DropdownItem = ({
 
   return (
     <li
-      className={`${styles.item} ${underline ? styles.underline : ''}`}
+      className={`${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`}
       onClick={closeDropdown}
       {...rest}
     >
