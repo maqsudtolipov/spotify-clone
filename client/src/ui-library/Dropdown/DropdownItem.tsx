@@ -6,6 +6,7 @@ interface DropdownItemProps {
   underline?: boolean;
   PreIcon?: ElementType;
   PostIcon?: ElementType;
+  onClick?: () => void;
   children: ReactNode;
 }
 
