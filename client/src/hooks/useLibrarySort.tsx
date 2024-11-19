@@ -15,9 +15,9 @@ interface Item {
   createdAt: string;
 }
 
-type SortBy = 'alphabetical' | 'recentlyAdded';
+type SortByType = 'alphabetical' | 'recentlyAdded';
 
-const sortItems = (items: Item[], sortBy: SortBy): Item[] =>
+const sortItems = (items: Item[], sortBy: SortByType): Item[] =>
   [...items].sort((a, b) => {
     const pinComparison = +b.isPinned - +a.isPinned;
     if (pinComparison !== 0) return pinComparison;
@@ -33,8 +33,8 @@ const sortItems = (items: Item[], sortBy: SortBy): Item[] =>
 
 interface LibrarySortContextTypes {
   items: Item[];
-  sortBy: SortBy;
-  handleSortItems: (sortBy: SortBy) => void;
+  sortBy: SortByType;
+  handleSortItems: (sortBy: SortByType) => void;
 }
 
 export const LibrarySortContext = createContext<LibrarySortContextTypes | null>(
@@ -46,7 +46,7 @@ interface LibrarySortProviderProps {
 }
 
 export const LibrarySortProvider = ({ children }: LibrarySortProviderProps) => {
-  const [sortBy, setSortBy] = useState<SortBy>('alphabetical');
+  const [sortBy, setSortBy] = useState<SortByType>('alphabetical');
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const LibrarySortProvider = ({ children }: LibrarySortProviderProps) => {
     setItems(sortItems(fetchedItems, 'alphabetical'));
   }, []);
 
-  const handleSortItems = (sortBy: SortBy) => {
+  const handleSortItems = (sortBy: SortByType) => {
     setItems(sortItems(items, sortBy));
     setSortBy(sortBy);
   };
@@ -78,9 +78,9 @@ export const LibrarySortProvider = ({ children }: LibrarySortProviderProps) => {
 const useLibrarySort = () => {
   const context = useContext(LibrarySortContext);
   if (!context)
-    return new Error('useLibrarySort must be used inside LibrarySortProvider');
+    throw new Error('useLibrarySort must be used inside LibrarySortProvider');
 
-  return useContext(LibrarySortContext);
+  return context;
 };
 
 export default useLibrarySort;

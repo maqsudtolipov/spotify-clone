@@ -9,6 +9,21 @@ import useLibrarySort from '../../../hooks/useLibrarySort.tsx';
 const LibrarySearchFilter = () => {
   const { sortBy, handleSortItems } = useLibrarySort();
 
+  const renderDropdownItem = (
+    label: string,
+    sortType: 'alphabetical' | 'recentlyAdded',
+  ) => {
+    return (
+      <DropdownItem
+        isHighlighted={sortBy === sortType}
+        onClick={() => handleSortItems(sortType)}
+        PostIcon={sortBy === sortType ? RiCheckFill : null}
+      >
+        {label}
+      </DropdownItem>
+    );
+  };
+
   return (
     <div className={styles.librarySearchFilter}>
       <Dropdown>
@@ -17,20 +32,8 @@ const LibrarySearchFilter = () => {
           <RiListUnordered />
         </DropdownTrigger>
         <DropdownList>
-          <DropdownItem
-            isHighlighted={sortBy === 'alphabetical'}
-            onClick={() => handleSortItems('alphabetical')}
-            PostIcon={sortBy === 'alphabetical' ? RiCheckFill : null}
-          >
-            Alphabetical
-          </DropdownItem>
-          <DropdownItem
-            isHighlighted={sortBy === 'recentlyAdded'}
-            onClick={() => handleSortItems('recentlyAdded')}
-            PostIcon={sortBy === 'recentlyAdded' ? RiCheckFill : null}
-          >
-            Recently Added
-          </DropdownItem>
+          {renderDropdownItem('Alphabetical', 'alphabetical')}
+          {renderDropdownItem('Recently Added', 'recentlyAdded')}
         </DropdownList>
       </Dropdown>
     </div>
