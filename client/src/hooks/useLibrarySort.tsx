@@ -7,71 +7,65 @@ import {
 } from 'react';
 import { faker } from '@faker-js/faker';
 
-interface LibrarySortOptions {
-  items: object[];
-  sortBy: string;
-  handleSortItems: (sortBy: string) => void;
+interface Item {
+  img: string;
+  name: string;
+  type: string;
+  isPinned: boolean;
+  createdAt: string;
 }
 
-export const LibrarySortContext = createContext({} as LibrarySortOptions);
+type SortBy = 'alphabetical' | 'recentlyAdded';
+
+const sortItems = (items: Item[], sortBy: SortBy): Item[] =>
+  [...items].sort((a, b) => {
+    const pinComparison = +b.isPinned - +a.isPinned;
+    if (pinComparison !== 0) return pinComparison;
+
+    if (sortBy === 'alphabetical') {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === 'recentlyAdded') {
+      return +new Date(b.createdAt) - +new Date(a.createdAt);
+    }
+
+    return 0;
+  });
+
+interface LibrarySortContextTypes {
+  items: Item[];
+  sortBy: SortBy;
+  handleSortItems: (sortBy: SortBy) => void;
+}
+
+export const LibrarySortContext = createContext<LibrarySortContextTypes | null>(
+  null,
+);
 
 interface LibrarySortProviderProps {
   children: ReactNode;
 }
 
 export const LibrarySortProvider = ({ children }: LibrarySortProviderProps) => {
-  const [sortBy, setSortBy] = useState<string>('alphabetical'); // alphabetical | date added
-  const [items, setItems] = useState<object[]>([]);
+  const [sortBy, setSortBy] = useState<SortBy>('alphabetical');
+  const [items, setItems] = useState<Item[]>([]);
 
-  // Fake data fetch
   useEffect(() => {
-    const arr = [];
+    const fetchedItems = Array.from({ length: 20 }, () => ({
+      img: faker.image.url({ height: 120, width: 120 }),
+      name: `${faker.word.adjective()} ${faker.word.noun()}`,
+      type: faker.datatype.boolean() ? 'artist' : 'playlist',
+      isPinned: faker.number.int(20) <= 1,
+      createdAt: faker.date
+        .between({ from: '2020-01-01', to: Date.now() })
+        .toUTCString(),
+    }));
 
-    for (let i = 0; i < 20; i++) {
-      const img = faker.image.url({
-        height: 120,
-        width: 120,
-      });
-      const name = `${faker.word.adjective()} ${faker.word.noun()}`;
-      const type = faker.datatype.boolean() ? 'artist' : 'playlist';
-      const isPinned = faker.number.int(20) <= 1;
-
-      const createdAt = faker.date
-        .between({
-          from: '2020-01-01',
-          to: Date.now(),
-        })
-        .toUTCString()
-        .toLocaleString();
-
-      arr.push({ img, name, isPinned, type, createdAt });
-    }
-
-    arr.sort(
-      (a, b) => +b.isPinned - +a.isPinned || a.name.localeCompare(b.name),
-    );
-    setItems(arr);
+    setItems(sortItems(fetchedItems, 'alphabetical'));
   }, []);
 
-  const handleSortItems = (sortBy: 'alphabetical' | 'recentlyAdded'): void => {
-    const arr = [...items];
-
-    if (sortBy === 'alphabetical') {
-      arr.sort(
-        (a, b) => +b.isPinned - +a.isPinned || a.name.localeCompare(b.name),
-      );
-    } else if (sortBy === 'recentlyAdded') {
-      arr.sort(
-        (a, b) =>
-          +b.isPinned - +a.isPinned ||
-          +new Date(b.createdAt) - +new Date(a.createdAt),
-      );
-    } else {
-      console.error('cannot sort items');
-    }
-
+  const handleSortItems = (sortBy: SortBy) => {
+    setItems(sortItems(items, sortBy));
     setSortBy(sortBy);
-    setItems(arr);
   };
 
   return (
@@ -82,6 +76,10 @@ export const LibrarySortProvider = ({ children }: LibrarySortProviderProps) => {
 };
 
 const useLibrarySort = () => {
+  const context = useContext(LibrarySortContext);
+  if (!context)
+    return new Error('useLibrarySort must be used inside LibrarySortProvider');
+
   return useContext(LibrarySortContext);
 };
 
