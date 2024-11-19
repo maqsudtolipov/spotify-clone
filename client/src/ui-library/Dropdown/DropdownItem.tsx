@@ -11,11 +11,13 @@ interface DropdownItemProps {
   children: ReactNode;
 }
 
+// FIXME: 😁 I don't know whats happening here
 const DropdownItem = ({
   underline = false,
   isHighlighted = false,
   PreIcon,
   PostIcon,
+  onClick: propOnClick,
   children,
   ...rest
 }: DropdownItemProps) => {
@@ -24,7 +26,10 @@ const DropdownItem = ({
   return (
     <li
       className={`${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`}
-      onClick={closeDropdown}
+      onClick={() => {
+        propOnClick && propOnClick();
+        closeDropdown();
+      }}
       {...rest}
     >
       {PreIcon && <PreIcon className={styles.icon} />}
