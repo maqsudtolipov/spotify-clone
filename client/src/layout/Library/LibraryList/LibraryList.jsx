@@ -6,7 +6,7 @@ import { setLibraryItems } from '../../../features/library/librarySlice.ts';
 import { faker } from '@faker-js/faker';
 
 const LibraryList = () => {
-  const items = useAppSelector((state) => state.library.items);
+  const { items } = useAppSelector((state) => state.library);
   const dispatch = useAppDispatch();
 
   const [showShadow, setShowShadow] = useState(false);
@@ -25,7 +25,6 @@ const LibraryList = () => {
 
     dispatch(setLibraryItems(fetchedItems));
   }, [dispatch]);
-
   useEffect(() => {
     const listEl = ref.current;
 

@@ -10,52 +10,68 @@ interface Item {
 
 interface LibraryState {
   items: Item[];
+  modifiedItems: Item[];
   sortBy: 'alphabetical' | 'recentlyAdded';
   filter: 'artist' | 'playlist' | 'none';
+  searchQuery: string;
 }
 
 const initialState: LibraryState = {
   items: [],
+  modifiedItems: [],
   sortBy: 'alphabetical',
   filter: 'none',
+  searchQuery: '',
 };
 
-const sortItems = (
+const processItems = (
   items: Item[],
   sortBy: 'alphabetical' | 'recentlyAdded',
-): Item[] =>
-  [...items].sort((a, b) => {
+  filter: 'artist' | 'playlist' | 'none',
+  searchQuery: string,
+): Item[] => {
+  let arr = [...items];
+
+  // 1. Sort items
+  arr = arr.sort((a, b) => {
     const pinComparison = +b.isPinned - +a.isPinned;
     if (pinComparison !== 0) return pinComparison;
 
-    if (sortBy === 'alphabetical') {
-      return a.name.localeCompare(b.name);
-    } else if (sortBy === 'recentlyAdded') {
+    if (sortBy === 'recentlyAdded') {
       return +new Date(b.createdAt) - +new Date(a.createdAt);
+    } else {
+      // sort alphabetically by default
+      return a.name.localeCompare(b.name);
     }
-
-    return 0;
   });
+
+  return arr;
+};
 
 const librarySlice = createSlice({
   name: 'library',
   initialState,
   reducers: {
-    setLibraryItems: (state, action: PayloadAction<[]>) => {
-      state.items = sortItems(action.payload, 'alphabetical');
-    },
     sortLibraryItems: (
       state,
       action: PayloadAction<'alphabetical' | 'recentlyAdded'>,
     ) => {
       state.sortBy = action.payload;
-      state.items = sortItems(state.items, state.sortBy);
+      state.items = processItems(state.items, state.sortBy, state.filter, '');
     },
     filterLibraryItems: (
       state,
       action: PayloadAction<'artist' | 'playlist' | 'none'>,
     ) => {
       state.filter = action.payload;
+    },
+    setLibraryItems: (state, action: PayloadAction<[]>) => {
+      state.items = processItems(
+        action.payload,
+        state.sortBy,
+        state.filter,
+        '',
+      );
     },
   },
 });
