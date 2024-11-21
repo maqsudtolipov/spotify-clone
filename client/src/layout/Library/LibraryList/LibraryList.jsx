@@ -1,12 +1,30 @@
 import styles from './LibraryList.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import LibraryCard from './LibraryCard/LibraryCard.tsx';
-import useLibrarySort from '../../../hooks/useLibrarySort.tsx';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { setLibraryItems } from '../../../features/library/librarySlice.ts';
+import { faker } from '@faker-js/faker';
 
 const LibraryList = () => {
-  const { items } = useLibrarySort();
+  const items = useAppSelector((state) => state.library.items);
+  const dispatch = useAppDispatch();
+
   const [showShadow, setShowShadow] = useState(false);
   const ref = useRef(null);
+
+  useEffect(() => {
+    const fetchedItems = Array.from({ length: 20 }, () => ({
+      img: faker.image.url({ height: 120, width: 120 }),
+      name: `${faker.word.adjective()} ${faker.word.noun()}`,
+      type: faker.datatype.boolean() ? 'artist' : 'playlist',
+      isPinned: faker.number.int(20) <= 1,
+      createdAt: faker.date
+        .between({ from: '2020-01-01', to: Date.now() })
+        .toUTCString(),
+    }));
+
+    dispatch(setLibraryItems(fetchedItems));
+  }, [dispatch]);
 
   useEffect(() => {
     const listEl = ref.current;

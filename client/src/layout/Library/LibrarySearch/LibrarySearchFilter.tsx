@@ -4,10 +4,12 @@ import { RiCheckFill, RiListUnordered } from 'react-icons/ri';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
-import useLibrarySort from '../../../hooks/useLibrarySort.tsx';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { sortLibraryItems } from '../../../features/library/librarySlice.ts';
 
 const LibrarySearchFilter = () => {
-  const { sortBy, handleSortItems } = useLibrarySort();
+  const sortBy = useAppSelector((state) => state.library.sortBy);
+  const dispatch = useAppDispatch();
 
   const renderDropdownItem = (
     label: string,
@@ -16,7 +18,7 @@ const LibrarySearchFilter = () => {
     return (
       <DropdownItem
         isHighlighted={sortBy === sortType}
-        onClick={() => handleSortItems(sortType)}
+        onClick={() => dispatch(sortLibraryItems(sortType))}
         PostIcon={sortBy === sortType ? RiCheckFill : null}
       >
         {label}
