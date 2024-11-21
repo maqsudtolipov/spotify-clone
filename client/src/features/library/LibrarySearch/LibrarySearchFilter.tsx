@@ -1,11 +1,11 @@
 import styles from './LibrarySearch.module.scss';
-import Dropdown from '../../../ui-library/Dropdown/Dropdown';
+import Dropdown from '../../../ui-library/Dropdown/Dropdown.tsx';
 import { RiCheckFill, RiListUnordered } from 'react-icons/ri';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
-import { sortLibraryItems } from '../../../features/library/librarySlice.ts';
+import { sortLibraryItems } from '../librarySlice.ts';
 
 const LibrarySearchFilter = () => {
   const sortBy = useAppSelector((state) => state.library.sortBy);

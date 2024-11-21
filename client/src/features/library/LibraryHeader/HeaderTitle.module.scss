@@ -1,0 +1,23 @@
+.title {
+  @apply flex items-center justify-between;
+}
+
+.content {
+  @apply p-2 flex items-center justify-between gap-3 text-base font-bold text-neutral-400;
+
+  svg {
+    @apply text-2xl;
+  }
+
+  &:hover {
+    @apply text-white cursor-pointer;
+  }
+}
+
+// Collapsed
+.titleCollapsed {
+  span,
+  button {
+    display: none;
+  }
+}

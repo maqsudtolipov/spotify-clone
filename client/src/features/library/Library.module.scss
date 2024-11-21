@@ -1,0 +1,11 @@
+.library {
+  @apply overflow-hidden bg-neutral-900 rounded-xl;
+
+  width: 330px;
+  grid-column: 1/2;
+}
+
+// Collapsed
+.libraryCollapsed {
+  width: 72px;
+}
