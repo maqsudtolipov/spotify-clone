@@ -6,7 +6,6 @@ const LibraryHeader = ({ isCollapsed, onCollapse }) => {
   return (
     <div className={styles.header}>
       <HeaderTitle isCollapsed={isCollapsed} onCollapse={onCollapse} />
-
       {!isCollapsed && <HeaderTabs />}
     </div>
   );
