@@ -1,4 +1,4 @@
-import styles from './LibrarySearch.module.scss';
+import styles from './LibrarySort.module.scss';
 import Dropdown from '../../../ui-library/Dropdown/Dropdown.tsx';
 import { RiCheckFill, RiListUnordered } from 'react-icons/ri';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
@@ -7,7 +7,7 @@ import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { sortLibraryItems } from '../librarySlice.ts';
 
-const LibrarySearchFilter = () => {
+const LibrarySort = () => {
   const sortBy = useAppSelector((state) => state.library.sortBy);
   const dispatch = useAppDispatch();
 
@@ -42,4 +42,4 @@ const LibrarySearchFilter = () => {
   );
 };
 
-export default LibrarySearchFilter;
+export default LibrarySort;
