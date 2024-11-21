@@ -1,10 +1,10 @@
-import Tabs from '../../../ui-library/Tabs/Tabs.jsx';
-import TabsList from '../../../ui-library/Tabs/TabsList.jsx';
-import Tab from '../../../ui-library/Tabs/Tab.jsx';
-import { useAppDispatch } from '../../../app/hooks.ts';
-import { filterLibraryItems } from '../../../features/library/librarySlice.ts';
+import Tabs from '../../../../ui-library/Tabs/Tabs.jsx';
+import TabsList from '../../../../ui-library/Tabs/TabsList.jsx';
+import Tab from '../../../../ui-library/Tabs/Tab.jsx';
+import { useAppDispatch } from '../../../../app/hooks.ts';
+import { filterLibraryItems } from '../../../../features/library/librarySlice.ts';
 
-const HeaderTabs = () => {
+const LibraryFilter = () => {
   const dispatch = useAppDispatch();
 
   const handleSwitchTab = (value: 'artist' | 'playlist' | 'none') => {
@@ -25,4 +25,4 @@ const HeaderTabs = () => {
   );
 };
 
-export default HeaderTabs;
+export default LibraryFilter;

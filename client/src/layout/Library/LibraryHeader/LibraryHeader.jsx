@@ -1,12 +1,12 @@
 import styles from './LibraryHeader.module.scss';
 import HeaderTitle from './HeaderTitle.jsx';
-import HeaderTabs from './HeaderTabs.tsx';
+import LibraryFilter from './LibraryFilter/LibraryFilter.tsx';
 
 const LibraryHeader = ({ isCollapsed, onCollapse }) => {
   return (
     <div className={styles.header}>
       <HeaderTitle isCollapsed={isCollapsed} onCollapse={onCollapse} />
-      {!isCollapsed && <HeaderTabs />}
+      {!isCollapsed && <LibraryFilter />}
     </div>
   );
 };
