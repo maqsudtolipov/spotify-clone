@@ -2,7 +2,7 @@ import styles from './LibraryList.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import LibraryCard from './LibraryCard/LibraryCard.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
-import { setLibraryItems } from '../../../features/library/librarySlice.ts';
+import { setLibraryItems } from '../librarySlice.ts';
 import { faker } from '@faker-js/faker';
 
 const LibraryList = () => {
