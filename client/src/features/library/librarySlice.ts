@@ -11,11 +11,13 @@ interface Item {
 interface LibraryState {
   items: Item[];
   sortBy: 'alphabetical' | 'recentlyAdded';
+  filter: 'artist' | 'playlist' | 'none';
 }
 
 const initialState: LibraryState = {
   items: [],
   sortBy: 'alphabetical',
+  filter: 'none',
 };
 
 const sortItems = (
@@ -49,8 +51,15 @@ const librarySlice = createSlice({
       state.sortBy = action.payload;
       state.items = sortItems(state.items, state.sortBy);
     },
+    filterLibraryItems: (
+      state,
+      action: PayloadAction<'artist' | 'playlist' | 'none'>,
+    ) => {
+      state.filter = action.payload;
+    },
   },
 });
 
-export const { setLibraryItems, sortLibraryItems } = librarySlice.actions;
+export const { setLibraryItems, sortLibraryItems, filterLibraryItems } =
+  librarySlice.actions;
 export default librarySlice.reducer;

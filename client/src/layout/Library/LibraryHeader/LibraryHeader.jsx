@@ -1,6 +1,6 @@
 import styles from './LibraryHeader.module.scss';
 import HeaderTitle from './HeaderTitle.jsx';
-import HeaderTabs from './HeaderTabs.jsx';
+import HeaderTabs from './HeaderTabs.tsx';
 
 const LibraryHeader = ({ isCollapsed, onCollapse }) => {
   return (
