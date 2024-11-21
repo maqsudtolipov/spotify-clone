@@ -48,6 +48,14 @@ const processItems = (
   // 2. Filter items
   arr = filter !== 'none' ? arr.filter((item) => item.type === filter) : arr;
 
+  // 3. Search items
+  arr =
+    searchQuery.length >= 3
+      ? arr.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+      : arr;
+
   return arr;
 };
 
@@ -64,7 +72,7 @@ const librarySlice = createSlice({
         state.originalItems,
         state.sortBy,
         state.filter,
-        '',
+        state.searchQuery,
       );
     },
     filterLibraryItems: (
@@ -76,7 +84,16 @@ const librarySlice = createSlice({
         state.originalItems,
         state.sortBy,
         state.filter,
-        '',
+        state.searchQuery,
+      );
+    },
+    searchLibraryItems: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload;
+      state.items = processItems(
+        state.originalItems,
+        state.sortBy,
+        state.filter,
+        state.searchQuery,
       );
     },
     setLibraryItems: (state, action: PayloadAction<[]>) => {
@@ -85,12 +102,16 @@ const librarySlice = createSlice({
         state.originalItems,
         state.sortBy,
         state.filter,
-        '',
+        state.searchQuery,
       );
     },
   },
 });
 
-export const { setLibraryItems, sortLibraryItems, filterLibraryItems } =
-  librarySlice.actions;
+export const {
+  setLibraryItems,
+  sortLibraryItems,
+  filterLibraryItems,
+  searchLibraryItems,
+} = librarySlice.actions;
 export default librarySlice.reducer;

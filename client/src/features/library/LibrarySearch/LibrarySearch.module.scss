@@ -1,13 +1,8 @@
 .librarySearch {
-  @apply px-6 py-2.5 pl-4 flex items-center gap-8;
-}
-
-// Form
-.librarySearchForm {
   @apply flex-grow relative text-neutral-400;
 }
 
-.librarySearchFormButton {
+.librarySearchButton {
   @apply p-2 rounded-full absolute left-0;
 
   &:hover {
@@ -23,7 +18,7 @@
     @apply bg-transparent;
   }
 
-.librarySearchFormInput {
+.librarySearchInput {
   @apply w-8 p-2 text-sm text-transparent placeholder-transparent bg-transparent leading-none rounded-sm;
 
   transition: width 0.3s;
@@ -33,6 +28,6 @@
   }
 }
 
-.librarySearchFormInputOpen {
+.librarySearchInputOpen {
   @apply w-full pl-8 text-neutral-400 placeholder-neutral-400 bg-white/[0.10];
 }
