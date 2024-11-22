@@ -1,10 +1,9 @@
 import styles from './LibraryList.module.scss';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { setLibraryItems } from '../librarySlice.ts';
 import { faker } from '@faker-js/faker';
-
-const LibraryCard = lazy(() => import('./LibraryCard/LibraryCard.tsx'));
+import LibraryCard from './LibraryCard/LibraryCard.tsx';
 
 const LibraryList = () => {
   const { items } = useAppSelector((state) => state.library);
@@ -45,16 +44,14 @@ const LibraryList = () => {
   }, []);
 
   return (
-    <Suspense fallback={null}>
-      <div className={styles.list}>
-        <div className={showShadow ? styles.shadow : ''}></div>
-        <div ref={ref} className="h-full p-2 overflow-y-scroll">
-          {items?.map((el) => (
-            <LibraryCard key={el.name} data={el} />
-          ))}
-        </div>
+    <div className={styles.list}>
+      <div className={showShadow ? styles.shadow : ''}></div>
+      <div ref={ref} className="h-full p-2 overflow-y-scroll">
+        {items?.map((el) => (
+          <LibraryCard key={el.name} data={el} />
+        ))}
       </div>
-    </Suspense>
+    </div>
   );
 };
 
