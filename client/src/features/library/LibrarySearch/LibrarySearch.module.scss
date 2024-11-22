@@ -2,7 +2,7 @@
   @apply flex-grow relative text-neutral-400;
 }
 
-.librarySearchButton {
+.button {
   @apply p-2 rounded-full absolute left-0;
 
   &:hover {
@@ -12,13 +12,13 @@
   &:focus {
     @apply outline-none;
   }
+
+  &:disabled {
+    @apply pointer-events-none;
+  }
 }
 
-.librarySearchButtonHover:hover {
-    @apply bg-transparent;
-  }
-
-.librarySearchInput {
+.input {
   @apply w-8 p-2 text-sm text-transparent placeholder-transparent bg-transparent leading-none rounded-sm;
 
   transition: width 0.3s;
@@ -28,6 +28,18 @@
   }
 }
 
-.librarySearchInputOpen {
-  @apply w-full pl-8 text-neutral-400 placeholder-neutral-400 bg-white/[0.10];
+.inputOpen {
+  @apply w-full px-8 text-neutral-400 placeholder-neutral-400 bg-white/[0.10];
+}
+
+.closeIcon {
+  @apply size-8 p-2 hidden absolute top-0 right-0 text-base;
+
+  &:hover {
+    @apply text-white;
+  }
+}
+
+.closeIconOpen {
+  @apply inline-block;
 }

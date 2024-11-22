@@ -1,41 +1,48 @@
 import styles from './LibrarySearch.module.scss';
-import { RiSearchLine } from 'react-icons/ri';
+import { RiCloseLargeLine, RiSearchLine } from 'react-icons/ri';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { searchLibraryItems } from '../librarySlice.ts';
 
 const LibrarySearch = () => {
-  // const { searchQuery } = useAppSelector((state) => state.library);
+  const { searchQuery } = useAppSelector((state) => state.library);
   const dispatch = useAppDispatch();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
     dispatch(searchLibraryItems(e.target.value));
   };
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-  };
-
   const handleToggleForm = () => {
-    setIsOpen((prev) => !prev);
+    if (isOpen) {
+      dispatch(searchLibraryItems(''));
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
   };
 
   return (
-    <form className={styles.librarySearch} onSubmit={handleSubmit}>
+    <form className={styles.librarySearch}>
       <button
-        className={`${styles.librarySearchButton} ${isOpen ? styles.librarySearchButtonHover : ''}`}
+        className={styles.button}
+        disabled={isOpen}
         onClick={handleToggleForm}
       >
         <RiSearchLine />
       </button>
       <input
-        className={`${styles.librarySearchInput} ${isOpen ? styles.librarySearchInputOpen : ''}`}
+        className={`${styles.input} ${isOpen ? styles.inputOpen : ''}`}
         type="text"
         placeholder="Search in Your Library"
+        value={searchQuery}
         onChange={handleInputChange}
+      />
+      <RiCloseLargeLine
+        className={`${styles.closeIcon} ${isOpen && searchQuery.length >= 3 ? styles.closeIconOpen : ''}`}
+        role="button"
+        onClick={handleToggleForm}
       />
     </form>
   );
