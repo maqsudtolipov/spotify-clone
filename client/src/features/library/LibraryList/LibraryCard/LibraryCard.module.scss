@@ -37,7 +37,7 @@
 }
 
 .cardImage {
-  @apply size-12 aspect-square object-cover object-center;
+  @apply size-12 aspect-square object-cover object-center bg-neutral-800;
 }
 
 .cardImageRounded {
