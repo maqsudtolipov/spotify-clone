@@ -12,9 +12,10 @@ interface LibraryCardData {
 
 interface LibraryCardProps {
   data: LibraryCardData;
+  isCollapsed: boolean;
 }
 
-const LibraryCard = ({ data }: LibraryCardProps) => {
+const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
   const isPlaying = false;
 
   const { img, name, isPinned, type } = data;
@@ -26,7 +27,7 @@ const LibraryCard = ({ data }: LibraryCardProps) => {
         name={`Cover for ${name}`}
         isArtist={type === 'artist'}
       />
-      <CardInfo name={name} isPinned={isPinned} type={type} />
+      {!isCollapsed && <CardInfo name={name} isPinned={isPinned} type={type} />}
       {isPlaying && <RiVolumeDownFill className={styles.cardIcon} />}
     </li>
   );
