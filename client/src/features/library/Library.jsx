@@ -28,7 +28,7 @@ const Library = () => {
         </div>
       )}
 
-      <LibraryList />
+      <LibraryList isCollapsed={isCollapsed} />
     </div>
   );
 };

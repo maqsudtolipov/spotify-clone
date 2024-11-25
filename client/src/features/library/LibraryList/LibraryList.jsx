@@ -5,7 +5,7 @@ import { setLibraryItems } from '../librarySlice.ts';
 import { faker } from '@faker-js/faker';
 import LibraryCard from './LibraryCard/LibraryCard.tsx';
 
-const LibraryList = () => {
+const LibraryList = ({ isCollapsed }) => {
   const { items } = useAppSelector((state) => state.library);
   const dispatch = useAppDispatch();
 
@@ -44,11 +44,16 @@ const LibraryList = () => {
   }, []);
 
   return (
-    <div className={styles.list}>
+    <div
+      className={`${styles.listContainer} ${isCollapsed ? styles.listContainerCollapsed : ''}`}
+    >
       <div className={showShadow ? styles.shadow : ''}></div>
-      <div ref={ref} className="h-full p-2 overflow-y-scroll">
+      <div
+        ref={ref}
+        className={`${styles.list} ${isCollapsed ? styles.listCollapsed : ''}`}
+      >
         {items?.map((el) => (
-          <LibraryCard key={el.name} data={el} />
+          <LibraryCard key={el.name} data={el} isCollapsed={isCollapsed} />
         ))}
       </div>
     </div>

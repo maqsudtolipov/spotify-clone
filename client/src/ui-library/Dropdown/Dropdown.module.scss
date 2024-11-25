@@ -2,7 +2,7 @@
   @apply relative;
 }
 
-.list {
+.listContainer {
   @apply p-1 absolute bg-neutral-800 rounded shadow-lg shadow-black/[0.5]  z-20;
 
   bottom: 0;
