@@ -1,5 +1,6 @@
 import styles from './HistoryCard.module.scss';
 import CardImage from './CardImage.tsx';
+import CardInfo from './CardInfo.tsx';
 
 interface HistoryItem {
   img: string;
@@ -15,7 +16,7 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
   return (
     <div className={styles.historyCard}>
       <CardImage src={data.img} alt={data.name} />
-      <span>{data.name}</span>
+      <CardInfo>{data.name}</CardInfo>
     </div>
   );
 };
