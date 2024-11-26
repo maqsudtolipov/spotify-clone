@@ -1,13 +1,17 @@
 .card {
-  @apply p-3 bg-white bg-opacity-0 rounded-md cursor-pointer;
+  @apply p-3 relative bg-white bg-opacity-0 rounded-md cursor-pointer;
 
   &:hover {
     @apply bg-opacity-5;
   }
+
+  &:hover .imageIcon {
+    @apply inline-block;
+  }
 }
 
 .cardImage {
-  @apply mb-2 rounded-md overflow-hidden;
+  @apply mb-2 relative rounded-md overflow-hidden;
 
   img {
     @apply w-full aspect-square;
@@ -24,4 +28,12 @@
 
 .description {
   @apply block text-sm text-neutral-400;
+}
+
+.imageIcon {
+  @apply p-3 hidden absolute bottom-2 right-2 size-12 leading-none text-black bg-green-500 rounded-full cursor-pointer;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
 }
