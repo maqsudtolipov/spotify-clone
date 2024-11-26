@@ -10,6 +10,10 @@ button {
   transition: all 0.2s ease-in-out;
 }
 
+img {
+  @apply bg-neutral-800;
+}
+
 // Scrollbar
 ::-webkit-scrollbar {
   width: 8px;
