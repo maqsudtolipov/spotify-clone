@@ -1,5 +1,6 @@
 import styles from './Card.module.scss';
 import CardImage from './CardImage.tsx';
+import CardDescription from './CardDescription.tsx';
 
 interface Card {
   img: string;
@@ -16,7 +17,7 @@ const Card = ({ data }: CardProps) => {
   return (
     <div className={styles.card}>
       <CardImage img={data.img} alt={data.name} />
-      <span>{data.name}</span>
+      <CardDescription name={data.name} description={data.description} />
     </div>
   );
 };

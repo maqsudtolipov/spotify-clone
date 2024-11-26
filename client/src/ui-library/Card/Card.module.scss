@@ -7,9 +7,17 @@
 }
 
 .cardImage {
- @apply rounded-md overflow-hidden;
+  @apply mb-2 rounded-md overflow-hidden;
 
   img {
     @apply w-full aspect-square;
   }
+}
+
+.name {
+  @apply mb-1 block text-base text-white;
+}
+
+.description {
+  @apply block text-sm text-neutral-400;
 }
