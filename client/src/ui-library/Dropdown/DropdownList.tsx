@@ -12,7 +12,7 @@ const DropdownList = ({ children, ...rest }: DropdownListProps) => {
   const ref = useOutsideClick(closeDropdown);
 
   return isOpen ? (
-    <ul ref={ref} className={styles.list} {...rest}>
+    <ul ref={ref} className={styles.listContainer} {...rest}>
       {children}
     </ul>
   ) : null;
