@@ -11,7 +11,7 @@ const HistoryList = ({ items, handleNewColor }: HistoryListProps) => {
   return items?.length ? (
     <ul className={styles.historyList} onMouseEnter={handleNewColor}>
       {items.map((el) => (
-        <HistoryCard data={el} handleNewColor={handleNewColor} />
+        <HistoryCard key={el.name} data={el} handleNewColor={handleNewColor} />
       ))}
     </ul>
   ) : (
