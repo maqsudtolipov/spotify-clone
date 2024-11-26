@@ -2,7 +2,7 @@ import HistoryTabs from './HistoryTabs.tsx';
 import HistoryList from './HistoryList.tsx';
 
 interface HistoryProps {
-  handleNewColor?: () => void;
+  handleNewColor: () => void;
 }
 
 const History = ({ handleNewColor }: HistoryProps) => {
