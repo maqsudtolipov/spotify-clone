@@ -1,4 +1,5 @@
 import styles from './Card.module.scss';
+import { RiPlayLargeFill } from 'react-icons/ri';
 
 interface CardImageProps {
   img: string;
@@ -12,6 +13,7 @@ const CardImage = ({ img, alt, isRounded }: CardImageProps) => {
       className={`${styles.cardImage} ${isRounded ? styles.cardImageRounded : ''}`}
     >
       <img src={img} alt={alt} />
+      <RiPlayLargeFill className={styles.imageIcon} />
     </div>
   );
 };

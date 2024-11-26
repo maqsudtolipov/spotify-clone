@@ -26,9 +26,9 @@
 }
 
 .cardIcon {
-  @apply hidden absolute top-2 right-2 size-8 text-green-500 cursor-pointer;
+  @apply p-2 hidden absolute top-2 right-2 size-8  text-black bg-green-500 rounded-full cursor-pointer;
 
   &:hover {
-    @apply text-green-400 scale-105;
+    @apply bg-green-400 scale-105;
   }
 }
