@@ -14,10 +14,12 @@ interface CardProps {
 }
 
 const Card = ({ data }: CardProps) => {
+  const { img, name, description, type } = data;
+
   return (
     <div className={styles.card}>
-      <CardImage img={data.img} alt={data.name} />
-      <CardDescription name={data.name} description={data.description} />
+      <CardImage img={img} alt={name} isRounded={type === 'artist'} />
+      <CardDescription name={name} description={description} />
     </div>
   );
 };

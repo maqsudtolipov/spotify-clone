@@ -14,6 +14,10 @@
   }
 }
 
+.cardImageRounded img {
+  @apply rounded-full;
+}
+
 .name {
   @apply mb-1 block text-base text-white;
 }
