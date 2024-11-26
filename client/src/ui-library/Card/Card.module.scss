@@ -1,0 +1,15 @@
+.card {
+  @apply p-3 bg-white bg-opacity-0 rounded-md cursor-pointer;
+
+  &:hover {
+    @apply bg-opacity-5;
+  }
+}
+
+.cardImage {
+ @apply rounded-md overflow-hidden;
+
+  img {
+    @apply w-full aspect-square;
+  }
+}
