@@ -9,7 +9,6 @@ const CardImage = ({ src, alt }: CardImageProps) => {
   return (
     <div className={styles.cardImage}>
       <img src={src} alt={alt} />
-      {/*<RiPlayCircleFill />*/}
     </div>
   );
 };
