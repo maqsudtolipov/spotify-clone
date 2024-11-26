@@ -2,7 +2,7 @@ import styles from './Card.module.scss';
 import CardImage from './CardImage.tsx';
 import CardDescription from './CardDescription.tsx';
 
-interface CardData {
+interface Card {
   img: string;
   name: string;
   description: string;
@@ -10,7 +10,7 @@ interface CardData {
 }
 
 interface CardProps {
-  data: CardData;
+  data: Card;
 }
 
 const Card = ({ data }: CardProps) => {
