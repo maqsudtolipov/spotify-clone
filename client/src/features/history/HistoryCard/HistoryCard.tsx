@@ -18,7 +18,6 @@ const HistoryCard = ({ data }: HistoryCardProps) => {
     <div className={styles.historyCard}>
       <CardImage src={data.img} alt={data.name} />
       <CardInfo>{data.name}</CardInfo>
-
       <RiPlayCircleFill className={styles.cardIcon} />
     </div>
   );
