@@ -1,36 +1,17 @@
 import styles from './HistoryList.module.scss';
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
 import HistoryCard from './HistoryCard/HistoryCard.tsx';
-
-interface HistoryItem {
-  img: string;
-  name: string;
-  type: ('artist' | 'playlist' | 'song')[];
-}
+import { HistoryItem } from './History.tsx';
 
 interface HistoryListProps {
+  items?: HistoryItem[];
   handleNewColor: () => void;
 }
 
-const HistoryList = ({ handleNewColor }: HistoryListProps) => {
-  const [historyItems, setHistoryItems] = useState<HistoryItem[]>();
-
-  // Fetch history cards
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 8 }, () => ({
-      img: faker.image.url({ height: 120, width: 120 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: faker.helpers.arrayElements(['artist', 'playlist', 'song']),
-    }));
-
-    setHistoryItems(fetchedItems);
-  }, []);
-
+const HistoryList = ({ items, handleNewColor }: HistoryListProps) => {
   return (
     <ul className={styles.historyList} onMouseEnter={handleNewColor}>
-      {historyItems &&
-        historyItems.map((el) => (
+      {items &&
+        items.map((el) => (
           <HistoryCard data={el} handleNewColor={handleNewColor} />
         ))}
     </ul>
