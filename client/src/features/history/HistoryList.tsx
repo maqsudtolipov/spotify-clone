@@ -10,10 +10,11 @@ interface HistoryListProps {
 const HistoryList = ({ items, handleNewColor }: HistoryListProps) => {
   return (
     <ul className={styles.historyList} onMouseEnter={handleNewColor}>
-      {items &&
-        items.map((el) => (
-          <HistoryCard data={el} handleNewColor={handleNewColor} />
-        ))}
+      {items?.length
+        ? items.map((el) => (
+            <HistoryCard data={el} handleNewColor={handleNewColor} />
+          ))
+        : 'There are no items with current filter'}
     </ul>
   );
 };
