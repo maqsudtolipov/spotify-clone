@@ -1,5 +1,13 @@
 .historyCard {
-  @apply flex items-center bg-white bg-opacity-10 rounded overflow-hidden;
+  @apply flex items-center relative bg-white bg-opacity-10 rounded overflow-hidden cursor-pointer;
+
+  &:hover {
+    @apply bg-opacity-20;
+  }
+
+  &:hover .cardIcon {
+    @apply inline-block;
+  }
 }
 
 .cardImage {
@@ -7,7 +15,7 @@
 }
 
 .cardInfo {
-  @apply px-2 py-1 relative font-bold;
+  @apply px-2 py-1 font-bold;
 
   // Works only in webkit browser
   overflow: hidden;
@@ -18,5 +26,9 @@
 }
 
 .cardIcon {
-  @apply absolute;
+  @apply hidden absolute top-2 right-2 size-8 text-green-500 cursor-pointer;
+
+  &:hover {
+    @apply text-green-400 scale-105;
+  }
 }
