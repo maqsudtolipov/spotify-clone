@@ -4,7 +4,7 @@ import Tab from '../../ui-library/Tabs/Tab';
 
 interface HistoryTabsProps {
   selectedFilter: string;
-  handleChangeFilter: () => {};
+  handleChangeFilter: (filter: string) => void;
 }
 
 const HistoryTabs = ({
