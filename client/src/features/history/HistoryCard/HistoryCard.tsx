@@ -2,12 +2,7 @@ import styles from './HistoryCard.module.scss';
 import CardImage from './CardImage.tsx';
 import CardInfo from './CardInfo.tsx';
 import { RiPlayCircleFill } from 'react-icons/ri';
-
-interface HistoryItem {
-  img: string;
-  name: string;
-  type: ('artist' | 'playlist' | 'song')[];
-}
+import { HistoryItem } from '../History.tsx';
 
 interface HistoryCardProps {
   data: HistoryItem;
