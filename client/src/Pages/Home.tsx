@@ -15,7 +15,7 @@ const Home = () => {
     <div
       className={styles.home}
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgb(18, 18, 18) 40vh),
+        backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.6), rgb(23, 23, 23) 40vh),
         linear-gradient(
         ${gradientColor},
         ${gradientColor} 40vh,
