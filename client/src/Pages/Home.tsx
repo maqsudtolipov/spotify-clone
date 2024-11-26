@@ -13,7 +13,7 @@ interface CardItem {
 
 const Home = () => {
   const [gradientColor, setGradientColor] = useState<string>();
-  const [newReleases, setNewReleases] = useState<CardItem[]>([]);
+  const [items, setItems] = useState<CardItem[]>([]);
 
   const handleNewColor = () => {
     const randomHexColor =
@@ -22,14 +22,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const fetchedItems = Array.from({ length: 6 }, () => ({
+    const fetchedItems = Array.from({ length: 18 }, () => ({
       img: faker.image.url({ height: 160, width: 160 }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       description: `${faker.word.adjective()} ${faker.word.noun()}`,
       type: faker.datatype.boolean() ? 'artist' : 'playlist',
     }));
 
-    setNewReleases(fetchedItems);
+    setItems(fetchedItems);
   }, []);
 
   return (
@@ -47,10 +47,22 @@ const Home = () => {
     >
       <History handleNewColor={handleNewColor} />
 
+      <h2 className={styles.heading2}>Most Popular</h2>
+      <ul className="grid grid-cols-6">
+        {items &&
+          items.slice(0, 6).map((el) => <Card key={el.name} data={el} />)}
+      </ul>
+
       <h2 className={styles.heading2}>New Releases</h2>
       <ul className="grid grid-cols-6">
-        {newReleases &&
-          newReleases.map((el) => <Card key={el.name} data={el} />)}
+        {items &&
+          items.slice(6, 12).map((el) => <Card key={el.name} data={el} />)}
+      </ul>
+
+      <h2 className={styles.heading2}>Your Favourite Artists</h2>
+      <ul className="grid grid-cols-6">
+        {items &&
+          items.slice(12, 18).map((el) => <Card key={el.name} data={el} />)}
       </ul>
     </div>
   );
