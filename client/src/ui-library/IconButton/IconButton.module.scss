@@ -1,0 +1,11 @@
+.button {
+  @apply size-8 flex items-center justify-center text-base text-neutral-400;
+
+  &:hover {
+    @apply text-white bg-neutral-800 rounded-full;
+  }
+
+  &:active {
+    @apply bg-black;
+  }
+}
