@@ -6,18 +6,10 @@ const HistoryTabs = () => {
   return (
     <Tabs hideUnselected={false} defaultValue="all">
       <TabsList className="mb-5">
-        <Tab value="all" onClick={() => {}}>
-          All
-        </Tab>
-        <Tab value="songs" onClick={() => {}}>
-          Songs
-        </Tab>
-        <Tab value="artist" onClick={() => {}}>
-          Artists
-        </Tab>
-        <Tab value="playlist" onClick={() => {}}>
-          Playlists
-        </Tab>
+        <Tab value="all">All</Tab>
+        <Tab value="songs">Songs</Tab>
+        <Tab value="artist">Artists</Tab>
+        <Tab value="playlist">Playlists</Tab>
       </TabsList>
     </Tabs>
   );

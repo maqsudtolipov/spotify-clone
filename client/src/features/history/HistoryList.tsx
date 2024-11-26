@@ -28,12 +28,12 @@ const HistoryList = ({ handleNewColor }: HistoryListProps) => {
   }, []);
 
   return (
-    <div className={styles.historyList} onMouseEnter={handleNewColor}>
+    <ul className={styles.historyList} onMouseEnter={handleNewColor}>
       {historyItems &&
         historyItems.map((el) => (
           <HistoryCard data={el} handleNewColor={handleNewColor} />
         ))}
-    </div>
+    </ul>
   );
 };
 

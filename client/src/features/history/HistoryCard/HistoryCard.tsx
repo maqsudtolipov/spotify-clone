@@ -16,11 +16,11 @@ interface HistoryCardProps {
 
 const HistoryCard = ({ data, handleNewColor }: HistoryCardProps) => {
   return (
-    <div className={styles.historyCard} onMouseEnter={handleNewColor}>
+    <li className={styles.historyCard} onMouseEnter={handleNewColor}>
       <CardImage src={data.img} alt={data.name} />
       <CardInfo>{data.name}</CardInfo>
       <RiPlayCircleFill className={styles.cardIcon} />
-    </div>
+    </li>
   );
 };
 
