@@ -9,7 +9,11 @@ interface HistoryItem {
   type: ('artist' | 'playlist' | 'song')[];
 }
 
-const HistoryList = () => {
+interface HistoryListProps {
+  handleNewColor: () => void;
+}
+
+const HistoryList = ({ handleNewColor }: HistoryListProps) => {
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>();
 
   // Fetch history cards
@@ -24,8 +28,11 @@ const HistoryList = () => {
   }, []);
 
   return (
-    <div className={styles.historyList}>
-      {historyItems && historyItems.map((el) => <HistoryCard data={el} />)}
+    <div className={styles.historyList} onMouseEnter={handleNewColor}>
+      {historyItems &&
+        historyItems.map((el) => (
+          <HistoryCard data={el} handleNewColor={handleNewColor} />
+        ))}
     </div>
   );
 };

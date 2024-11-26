@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className={styles.app}>
       <Nav />
       <Library />
-      <main className="bg-gradient-to-b from-sky-500/[0.5] to-neutral-900 rounded-lg overflow-hidden">
+      <main className="bg-neutral-900 rounded-lg overflow-hidden">
         {children}
         <Footer />
       </main>

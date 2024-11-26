@@ -11,11 +11,12 @@ interface HistoryItem {
 
 interface HistoryCardProps {
   data: HistoryItem;
+  handleNewColor: () => void;
 }
 
-const HistoryCard = ({ data }: HistoryCardProps) => {
+const HistoryCard = ({ data, handleNewColor }: HistoryCardProps) => {
   return (
-    <div className={styles.historyCard}>
+    <div className={styles.historyCard} onMouseEnter={handleNewColor}>
       <CardImage src={data.img} alt={data.name} />
       <CardInfo>{data.name}</CardInfo>
       <RiPlayCircleFill className={styles.cardIcon} />
