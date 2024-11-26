@@ -1,6 +1,7 @@
+import styles from './HistoryList.module.scss';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import HistoryCard from './HistoryCard.tsx';
+import HistoryCard from './HistoryCard/HistoryCard.tsx';
 
 interface HistoryItem {
   img: string;
@@ -12,7 +13,6 @@ const HistoryList = () => {
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>();
 
   // Fetch history cards
-
   useEffect(() => {
     const fetchedItems = Array.from({ length: 8 }, () => ({
       img: faker.image.url({ height: 120, width: 120 }),
@@ -24,7 +24,7 @@ const HistoryList = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.historyList}>
       {historyItems && historyItems.map((el) => <HistoryCard data={el} />)}
     </div>
   );
