@@ -2,7 +2,7 @@ import styles from './Tabs.module.scss';
 import { useContext } from 'react';
 import { TabsContext } from './Tabs.jsx';
 
-const Tab = ({ value, children, onClick = () => {}, ...rest }) => {
+const Tab = ({ value, children, onClick, ...rest }) => {
   const { defaultValue, selectedValue, hideUnselected, handleSetValue } =
     useContext(TabsContext);
 

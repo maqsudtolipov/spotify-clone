@@ -9,21 +9,22 @@ export interface HistoryItem {
   type: ('artist' | 'playlist' | 'song')[];
 }
 
-interface HistoryProps {
-  handleNewColor: () => void;
-}
-
 interface ReducerState {
   filter: 'all' | 'song' | 'playlist' | 'artist';
   items: [];
   filteredItems: [];
-  filters: string[];
 }
 
 interface ReducerActions {
   type: 'initialize' | 'changeFilter';
   payload?: any;
 }
+
+const initialValue: ReducerState = {
+  filter: 'all',
+  items: [],
+  filteredItems: [],
+};
 
 const reducer = (state: ReducerState, action: ReducerActions) => {
   if (action.type === 'initialize') {
@@ -32,7 +33,9 @@ const reducer = (state: ReducerState, action: ReducerActions) => {
     if (action.payload === 'all') {
       return { ...state, filteredItems: state.items };
     } else {
-      const items = state.items.filter((el) => el.type === action.payload);
+      const items = state.items.filter(
+        (el: HistoryItem) => el.type === action.payload,
+      );
       return { ...state, filteredItems: items };
     }
   }
@@ -40,12 +43,12 @@ const reducer = (state: ReducerState, action: ReducerActions) => {
   return state;
 };
 
+interface HistoryProps {
+  handleNewColor: () => void;
+}
+
 const History = ({ handleNewColor }: HistoryProps) => {
-  const [state, dispatch] = useReducer(reducer, {
-    filters: [],
-    items: [],
-    filter: 'all',
-  });
+  const [state, dispatch] = useReducer(reducer, initialValue);
 
   // Fetch history cards
   useEffect(() => {
@@ -59,8 +62,6 @@ const History = ({ handleNewColor }: HistoryProps) => {
   }, []);
 
   const handleChangeFilter = (filter: string) => {
-    console.log(filter);
-
     dispatch({ type: 'changeFilter', payload: filter });
   };
 
