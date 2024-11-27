@@ -1,16 +1,13 @@
-import styles from './Table.module.scss';
 import { ReactNode } from 'react';
 
 interface TableCellProps {
-  position?: 'left' | 'right';
+  className?: string;
   children: ReactNode;
 }
 
-const TableCell = ({ position, children }: TableCellProps) => {
+const TableCell = ({ className, children, ...rest }: TableCellProps) => {
   return (
-    <td
-      className={`${styles.tableCell} ${position === 'right' ? styles.right : ''}`}
-    >
+    <td className={className} {...rest}>
       {children}
     </td>
   );

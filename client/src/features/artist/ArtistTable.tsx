@@ -3,6 +3,7 @@ import TableRow from '../../ui-library/Table/TableRow.tsx';
 import TableCell from '../../ui-library/Table/TableCell.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
+import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 
 interface Item {
   img: string;
@@ -27,13 +28,13 @@ const ArtistTable = () => {
     <Table>
       {items?.map((item, index) => (
         <TableRow key={item.name}>
-          <TableCell>{index + 1}</TableCell>
+          <IndexCell>{index + 1}</IndexCell>
           <TableCell>
             <img src={item.img} alt={item.name} />
             <span>{item.name}</span>
           </TableCell>
-          <TableCell position="right">{item.plays}</TableCell>
-          <TableCell position="right">
+          <TableCell>{item.plays}</TableCell>
+          <TableCell>
             <span>💚</span>
             <span>00:00</span>
           </TableCell>
