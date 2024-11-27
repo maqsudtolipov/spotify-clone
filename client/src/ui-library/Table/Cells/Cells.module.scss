@@ -1,3 +1,32 @@
 .indexCell {
-  @apply p-4 text-base text-neutral-400;
+  @apply w-1 p-4 text-base text-neutral-400 text-right;
+}
+
+.infoCell {
+  @apply py-2 flex items-center gap-3;
+
+  &Description {
+    @apply grid grid-rows-2;
+  }
+
+  &Name {
+    @apply text-base text-white;
+
+    // TODO: remove after adding Link
+    &:hover {
+      @apply underline cursor-pointer;
+    }
+  }
+
+  &Artist {
+    @apply text-sm;
+
+    &:hover {
+      @apply underline  cursor-pointer;
+    }
+  }
+
+  img {
+    @apply w-10 rounded;
+  }
 }

@@ -1,7 +1,15 @@
 .table {
-  @apply w-full table-auto border-collapse;
+  @apply w-full  text-sm text-neutral-500 border-collapse;
 
   td {
     @apply border border-blue-500;
+  }
+
+  tr {
+    @apply rounded;
+  }
+
+  tr:hover {
+    @apply bg-white bg-opacity-10;
   }
 }
