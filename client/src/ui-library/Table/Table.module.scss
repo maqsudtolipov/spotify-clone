@@ -31,3 +31,15 @@
     }
   }
 }
+
+.tableHeader {
+  @apply border-b border-neutral-500 border-opacity-20;
+}
+
+// Hack: space between thead and tbody
+.tableBody:before {
+  content:"@";
+  display:block;
+  line-height:8px;
+  text-indent:-99999px;
+}

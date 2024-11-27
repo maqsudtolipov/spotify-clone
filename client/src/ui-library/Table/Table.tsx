@@ -6,11 +6,7 @@ interface TableProps {
 }
 
 const Table = ({ children }: TableProps) => {
-  return (
-    <table className={styles.table}>
-      <tbody>{children}</tbody>
-    </table>
-  );
+  return <table className={styles.table}>{children}</table>;
 };
 
 export default Table;

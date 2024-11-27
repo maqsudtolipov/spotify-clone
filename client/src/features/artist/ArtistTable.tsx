@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
+import TableBody from '../../ui-library/Table/TableBody.tsx';
+import TableHeader from '../../ui-library/Table/TableHeader.tsx';
 
 interface Item {
   img: string;
@@ -27,17 +29,25 @@ const ArtistTable = () => {
 
   return (
     <Table>
-      {items?.map((item, index) => (
-        <TableRow key={item.name}>
-          <IndexCell>{index + 1}</IndexCell>
-          <InfoCell img={item.img} name={item.name} />
-          <TableCell alightRight={true}>{item.plays}</TableCell>
-          <TableCell alightRight={true}>
-            <span>💚</span>
-            <span>00:00</span>
-          </TableCell>
-        </TableRow>
-      ))}
+      <TableHeader>
+        <TableCell>#</TableCell>
+        <TableCell>Title</TableCell>
+        <TableCell>Plays</TableCell>
+        <TableCell alightRight={true}>Time</TableCell>
+      </TableHeader>
+      <TableBody>
+        {items?.map((item, index) => (
+          <TableRow key={item.name}>
+            <IndexCell>{index + 1}</IndexCell>
+            <InfoCell img={item.img} name={item.name} />
+            <TableCell>{item.plays}</TableCell>
+            <TableCell alightRight={true}>
+              <span>💚</span>
+              <span>00:00</span>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
     </Table>
   );
 };
