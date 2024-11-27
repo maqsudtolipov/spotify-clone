@@ -1,23 +1,19 @@
 .table {
-  @apply w-full  text-sm text-neutral-500 border-collapse;
+  @apply w-full text-sm text-neutral-500 border-spacing-0;
 
   td {
-    @apply p-2 border border-blue-500;
+    @apply p-2;
   }
 
   td:first-child {
-    @apply pl-4;
+    @apply pl-4 rounded-tl rounded-bl;
   }
 
   td:last-child {
-    @apply pr-4;
+    @apply pr-4 rounded-tr rounded-br;
   }
 
-  tr {
-    @apply rounded;
-  }
-
-  tr:hover {
-    @apply bg-white bg-opacity-10;
+  tr:hover > td {
+    @apply bg-white bg-opacity-10 text-white;
   }
 }

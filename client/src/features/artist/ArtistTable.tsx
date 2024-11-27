@@ -31,8 +31,8 @@ const ArtistTable = () => {
         <TableRow key={item.name}>
           <IndexCell>{index + 1}</IndexCell>
           <InfoCell img={item.img} name={item.name} />
-          <TableCell>{item.plays}</TableCell>
-          <TableCell>
+          <TableCell alightRight={true}>{item.plays}</TableCell>
+          <TableCell alightRight={true}>
             <span>💚</span>
             <span>00:00</span>
           </TableCell>
