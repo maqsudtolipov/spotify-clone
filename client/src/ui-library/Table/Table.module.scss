@@ -2,7 +2,15 @@
   @apply w-full  text-sm text-neutral-500 border-collapse;
 
   td {
-    @apply border border-blue-500;
+    @apply p-2 border border-blue-500;
+  }
+
+  td:first-child {
+    @apply pl-4;
+  }
+
+  td:last-child {
+    @apply pr-4;
   }
 
   tr {
