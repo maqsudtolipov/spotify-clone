@@ -3,17 +3,31 @@
 
   td {
     @apply p-2;
-  }
 
-  td:first-child {
-    @apply pl-4 rounded-tl rounded-bl;
-  }
+    svg {
+      @apply hidden;
+    }
 
-  td:last-child {
-    @apply pr-4 rounded-tr rounded-br;
+    &:first-child {
+      @apply pl-4 rounded-tl rounded-bl;
+    }
+
+    &:last-child {
+      @apply pr-4 rounded-tr rounded-br;
+    }
   }
 
   tr:hover > td {
     @apply bg-white bg-opacity-10 text-white;
+  }
+
+  tr:hover td:first-child {
+    span {
+      @apply hidden;
+    }
+
+    svg {
+      @apply block;
+    }
   }
 }
