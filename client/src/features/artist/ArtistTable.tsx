@@ -7,8 +7,8 @@ import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
 import TableHeader from '../../ui-library/Table/TableHeader.tsx';
-import { RiMoreFill } from 'react-icons/ri';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
+import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 
 interface Item {
   img: string;
@@ -49,9 +49,7 @@ const ArtistTable = () => {
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>
-            <TableCell minimize={true}>
-              <RiMoreFill />
-            </TableCell>
+            <ActionsCell />
           </TableRow>
         ))}
       </TableBody>

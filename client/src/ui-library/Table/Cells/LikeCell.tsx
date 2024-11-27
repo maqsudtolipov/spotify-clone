@@ -7,8 +7,6 @@ interface LikeCellProps {
 }
 
 const LikeCell = ({ isLiked }: LikeCellProps) => {
-  console.log(isLiked);
-
   return (
     <TableCell
       className={`${styles.likeCell} ${isLiked ? styles.likeCellHighlighted : ''}`}

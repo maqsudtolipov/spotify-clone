@@ -72,3 +72,12 @@ tr:hover .likeCell svg {
 .likeCellHighlighted {
   @apply text-green-500;
 }
+
+// Actions
+.actionsCell svg {
+  @apply w-4 text-white cursor-pointer scale-125 invisible;
+}
+
+tr:hover .actionsCell svg {
+  @apply visible;
+}
