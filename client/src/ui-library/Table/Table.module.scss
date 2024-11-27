@@ -5,7 +5,7 @@
     @apply p-2;
 
     svg {
-      @apply hidden;
+      @apply h-0 invisible pointer-events-none;
     }
 
     &:first-child {
@@ -21,7 +21,7 @@
     @apply bg-white bg-opacity-10 text-white;
 
     svg {
-      @apply block;
+      @apply h-4 visible pointer-events-auto;
     }
   }
 
