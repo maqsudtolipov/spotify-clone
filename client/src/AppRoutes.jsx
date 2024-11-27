@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
 import Search from './Pages/Search.tsx';
 import Playlist from './Pages/Playlist.tsx';
-import Artist from './Pages/Artist.tsx';
+import ArtistPage from './Pages/ArtistPage.tsx';
 import Profile from './Pages/Profile.tsx';
 import NotFound from './Pages/NotFound.tsx';
 import Login from './Pages/Login.tsx';
@@ -42,7 +42,7 @@ const AppRoutes = () => {
         path="/artist"
         element={
           <Layout>
-            <Artist />
+            <ArtistPage />
           </Layout>
         }
       />

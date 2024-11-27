@@ -1,3 +1,4 @@
+import styles from './Table.module.scss';
 import { ReactNode } from 'react';
 
 interface TableProps {
@@ -5,7 +6,11 @@ interface TableProps {
 }
 
 const Table = ({ children }: TableProps) => {
-  return <table>{children}</table>;
+  return (
+    <table className={styles.table}>
+      <tbody>{children}</tbody>
+    </table>
+  );
 };
 
 export default Table;

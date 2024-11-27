@@ -1,0 +1,19 @@
+.table {
+  @apply w-full table-auto border-collapse;
+}
+
+.tableRow {
+  //@apply py-2;
+
+  .right {
+    @apply text-right;
+  }
+
+  .left {
+    @apply text-left;
+  }
+}
+
+.tableCell {
+  @apply px-4 py-2 border;
+}
