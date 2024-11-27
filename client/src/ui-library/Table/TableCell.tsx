@@ -1,19 +1,24 @@
 import { ReactNode } from 'react';
 
 interface TableCellProps {
-  alightRight?: boolean;
   className?: string;
+  alightRight?: boolean;
+  minimize?: boolean;
   children: ReactNode;
 }
 
 const TableCell = ({
   className,
   alightRight,
+  minimize,
   children,
   ...rest
 }: TableCellProps) => {
   return (
-    <td className={`${className} ${alightRight ? 'text-right' : ''}`} {...rest}>
+    <td
+      className={`${className ? className : ''} ${alightRight ? 'text-right' : ''} ${minimize ? 'w-1' : ''}`}
+      {...rest}
+    >
       {children}
     </td>
   );

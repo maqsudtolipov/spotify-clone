@@ -1,7 +1,9 @@
+// Index
 table .indexCell {
   @apply w-1 text-base text-neutral-400 text-right;
 }
 
+// Info
 .infoCell {
   @apply py-2 flex items-center gap-3;
 
@@ -29,4 +31,10 @@ table .indexCell {
   img {
     @apply w-10 rounded;
   }
+}
+
+// Like
+// TODO: fix hover effects
+.likeCell {
+  @apply w-4 cursor-pointer;
 }

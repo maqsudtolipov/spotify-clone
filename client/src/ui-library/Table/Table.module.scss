@@ -17,8 +17,12 @@
     }
   }
 
-  tr:hover > td {
+  tr:hover td {
     @apply bg-white bg-opacity-10 text-white;
+
+    svg {
+      @apply block;
+    }
   }
 
   tr:hover td:first-child {
@@ -38,8 +42,8 @@
 
 // Hack: space between thead and tbody
 .tableBody:before {
-  content:"@";
-  display:block;
-  line-height:8px;
-  text-indent:-99999px;
+  content: '@';
+  display: block;
+  line-height: 8px;
+  text-indent: -99999px;
 }

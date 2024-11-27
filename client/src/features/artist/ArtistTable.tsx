@@ -7,6 +7,8 @@ import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
 import TableHeader from '../../ui-library/Table/TableHeader.tsx';
+import { RiMoreFill } from 'react-icons/ri';
+import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 
 interface Item {
   img: string;
@@ -33,7 +35,9 @@ const ArtistTable = () => {
         <TableCell>#</TableCell>
         <TableCell>Title</TableCell>
         <TableCell>Plays</TableCell>
-        <TableCell alightRight={true}>Time</TableCell>
+        <TableCell>&nbsp;</TableCell>
+        <TableCell>Time</TableCell>
+        <TableCell>&nbsp;</TableCell>
       </TableHeader>
       <TableBody>
         {items?.map((item, index) => (
@@ -41,9 +45,10 @@ const ArtistTable = () => {
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell img={item.img} name={item.name} />
             <TableCell>{item.plays}</TableCell>
-            <TableCell alightRight={true}>
-              <span>💚</span>
-              <span>00:00</span>
+            <LikeCell />
+            <TableCell minimize={true}>2:18</TableCell>
+            <TableCell minimize={true}>
+              <RiMoreFill />
             </TableCell>
           </TableRow>
         ))}
