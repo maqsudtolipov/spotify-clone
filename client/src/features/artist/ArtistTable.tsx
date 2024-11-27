@@ -14,6 +14,7 @@ interface Item {
   img: string;
   name: string;
   plays: number;
+  isLiked: boolean;
 }
 
 const ArtistTable = () => {
@@ -24,6 +25,7 @@ const ArtistTable = () => {
       img: faker.image.url({ height: 160, width: 160 }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       plays: faker.number.int(999),
+      isLiked: faker.datatype.boolean(),
     }));
 
     setItems(fetchedItems);
@@ -45,7 +47,7 @@ const ArtistTable = () => {
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell img={item.img} name={item.name} />
             <TableCell>{item.plays}</TableCell>
-            <LikeCell />
+            <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>
             <TableCell minimize={true}>
               <RiMoreFill />

@@ -4,9 +4,9 @@
   td {
     @apply p-2;
 
-    svg {
-      @apply h-0 invisible pointer-events-none;
-    }
+    //svg {
+    //  @apply h-0 invisible pointer-events-none;
+    //}
 
     &:first-child {
       @apply pl-4 rounded-tl rounded-bl;
@@ -18,22 +18,22 @@
   }
 
   tr:hover td {
-    @apply bg-white bg-opacity-10 text-white;
+    @apply bg-white bg-opacity-10;
 
-    svg {
-      @apply h-4 visible pointer-events-auto;
-    }
+    //svg {
+    //  @apply h-4 visible pointer-events-auto;
+    //}
   }
-
-  tr:hover td:first-child {
-    span {
-      @apply hidden;
-    }
-
-    svg {
-      @apply block;
-    }
-  }
+  //
+  //tr:hover td:first-child {
+  //  span {
+  //    @apply hidden;
+  //  }
+  //
+  //  svg {
+  //    @apply block;
+  //  }
+  //}
 }
 
 .tableHeader {

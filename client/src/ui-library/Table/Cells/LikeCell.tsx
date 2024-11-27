@@ -1,11 +1,20 @@
 import styles from './Cells.module.scss';
-import { RiHeartLine } from 'react-icons/ri';
+import { RiHeartFill } from 'react-icons/ri';
 import TableCell from '../TableCell.tsx';
 
-const LikeCell = () => {
+interface LikeCellProps {
+  isLiked: boolean;
+}
+
+const LikeCell = ({ isLiked }: LikeCellProps) => {
+  console.log(isLiked);
+
   return (
-    <TableCell className={styles.likeCell} minimize={true}>
-      <RiHeartLine />
+    <TableCell
+      className={`${styles.likeCell} ${isLiked ? styles.likeCellHighlighted : ''}`}
+      minimize={true}
+    >
+      <RiHeartFill />
     </TableCell>
   );
 };
