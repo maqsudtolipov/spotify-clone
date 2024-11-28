@@ -1,8 +1,7 @@
-import ArtistTable from './ArtistTable.tsx';
-import ArtistHeader from './ArtistHeader.tsx';
-import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
+import ArtistTable from '../features/artist/ArtistTable.tsx';
+import PlayHeader from '../components/PlayHeader/PlayHeader.tsx';
 
-const Artist = () => {
+const PlaylistPage = () => {
   const color =
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
@@ -10,7 +9,6 @@ const Artist = () => {
 
   return (
     <div>
-      <ArtistHeader color={color} />
       <div
         style={{
           backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
@@ -31,4 +29,4 @@ const Artist = () => {
   );
 };
 
-export default Artist;
+export default PlaylistPage;
