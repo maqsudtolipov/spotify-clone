@@ -8,13 +8,12 @@ interface Data {
   listeners: string;
 }
 
-const ArtistHeader = () => {
-  const [artist, setArtist] = useState<Data>();
+interface ArtistHeaderProps {
+  color: string;
+}
 
-  const randomHexColor =
-    '#' +
-    ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
-    '4d';
+const ArtistHeader = ({ color }: ArtistHeaderProps) => {
+  const [artist, setArtist] = useState<Data>();
 
   useEffect(() => {
     const data = {
@@ -32,7 +31,7 @@ const ArtistHeader = () => {
     <div
       className={styles.artistHeader}
       style={{
-        background: `linear-gradient(${randomHexColor}, ${randomHexColor}), linear-gradient(#171717, #171717)`,
+        background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
       }}
     >
       <div className={styles.artistVerified}>

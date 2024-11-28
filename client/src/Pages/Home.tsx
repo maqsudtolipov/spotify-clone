@@ -12,7 +12,9 @@ interface CardItem {
 }
 
 const Home = () => {
-  const [gradientColor, setGradientColor] = useState<string>();
+  const [gradientColor, setGradientColor] = useState<string>(
+    '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'),
+  );
   const [items, setItems] = useState<CardItem[]>([]);
 
   const handleNewColor = () => {
@@ -36,7 +38,7 @@ const Home = () => {
     <div
       className={styles.home}
       style={{
-        backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.6), rgb(23, 23, 23) 40vh),
+        backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
         linear-gradient(
         ${gradientColor},
         ${gradientColor} 40vh,
