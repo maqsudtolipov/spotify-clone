@@ -6,8 +6,10 @@ body {
   @apply bg-black text-white leading-tight;
 }
 
-button {
-  transition: all 0.2s ease-in-out;
+button,
+[role='button'] {
+  user-select: none;
+  transition: all 0050ms ease-in-out;
 }
 
 img {

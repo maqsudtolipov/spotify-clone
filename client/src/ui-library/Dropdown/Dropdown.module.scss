@@ -4,9 +4,17 @@
 
 .listContainer {
   @apply p-1 absolute bg-neutral-800 rounded shadow-lg shadow-black/[0.5]  z-20;
+}
 
+.bottom-left {
   bottom: 0;
   right: 0;
+  transform: translate(0, calc(100% + 8px));
+}
+
+.bottom-right {
+  bottom: 0;
+  left: 0;
   transform: translate(0, calc(100% + 8px));
 }
 
