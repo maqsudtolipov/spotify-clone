@@ -19,7 +19,7 @@
 }
 
 .playlistStatistics {
-  @apply flex items-center gap-1 text-white text-opacity-70;
+  @apply flex items-center gap-1 text-sm text-white text-opacity-70;
 }
 
 .playlistUser {
@@ -30,7 +30,7 @@
   }
 
   span {
-    @apply text-sm font-bold text-white text-opacity-100 cursor-pointer;
+    @apply font-bold text-white text-opacity-100 cursor-pointer;
   }
 
   span:hover {
