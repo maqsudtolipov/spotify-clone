@@ -6,7 +6,6 @@ import { faker } from '@faker-js/faker';
 import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
-import TableHeader from '../../ui-library/Table/TableHeader.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 
@@ -35,14 +34,6 @@ const ArtistTable = () => {
 
   return (
     <Table>
-      <TableHeader>
-        <TableCell>#</TableCell>
-        <TableCell>Title</TableCell>
-        <TableCell>Plays</TableCell>
-        <TableCell>&nbsp;</TableCell>
-        <TableCell>Time</TableCell>
-        <TableCell>&nbsp;</TableCell>
-      </TableHeader>
       <TableBody>
         {items?.map((item, index) => (
           <TableRow key={item.name}>

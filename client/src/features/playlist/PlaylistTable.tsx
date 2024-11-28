@@ -10,6 +10,14 @@ import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 
+interface Item {
+  img: string;
+  name: string;
+  artist: string;
+  plays: number;
+  isLiked: boolean;
+}
+
 const PlaylistTable = () => {
   const [items, setItems] = useState<Item[]>();
 

@@ -21,7 +21,7 @@ const Playlist = () => {
         }}
       >
         <PlayHeader />
-        <div className="p-5">
+        <div className="p-5 pt-0">
           <PlaylistTable />
         </div>
       </div>
