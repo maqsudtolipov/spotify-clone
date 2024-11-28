@@ -1,13 +1,12 @@
 import styles from './Artist.module.scss';
-import { RiPlayLargeFill } from 'react-icons/ri';
+import { RiMoreFill, RiPlayLargeFill } from 'react-icons/ri';
 
 const ArtistActions = () => {
   return (
     <div className={styles.artistActions}>
       <RiPlayLargeFill className={styles.playButton} role="button" />
-
-      <span>follow</span>
-      <span>...</span>
+      <button className={styles.followButton}>Follow</button>
+      <RiMoreFill className={styles.actionsButton} role="button" />
     </div>
   );
 };
