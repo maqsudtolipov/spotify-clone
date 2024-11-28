@@ -24,24 +24,40 @@ interface SortedTableProps {
 const SortedTable = ({ items }: SortedTableProps) => {
   const [sortedItems, setSortedItems] = useState<Item[]>([...items]);
   const [isAscending, setIsAscending] = useState<boolean>(true);
-  const [sortBy, setSortBy] = useState<string>('alphabetically');
+  const [sortBy, setSortBy] = useState<'alphabetically' | 'plays'>(
+    'alphabetically',
+  );
 
-  const changeSortBy = () => {
-    console.log('check sort');
+  const changeSortBy = (sortOption: 'alphabetically' | 'plays' | 'reset') => {
+    if (sortOption === 'plays') {
+      setSortedItems((prev) =>
+        [...prev].sort((a, b) =>
+          isAscending ? b.plays - a.plays : a.plays - b.plays,
+        ),
+      );
+    } else if (sortOption === 'alphabetically') {
+      setSortedItems((prev) =>
+        [...prev].sort((a, b) =>
+          isAscending
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name),
+        ),
+      );
+    } else if (sortOption === 'reset') {
+      setSortedItems([...items]);
+    }
+
     setIsAscending((prev) => !prev);
-    setSortedItems((prev) =>
-      [...prev].sort((a, b) =>
-        isAscending ? b.plays - a.plays : a.plays - b.plays,
-      ),
-    );
   };
 
   return (
     <Table>
       <TableHeader>
-        <TableCell>#</TableCell>
-        <TableCell>Title</TableCell>
-        <TableCell onClick={changeSortBy}>Plays</TableCell>
+        <TableCell onClick={() => changeSortBy('reset')}>#</TableCell>
+        <TableCell onClick={() => changeSortBy('alphabetically')}>
+          Title
+        </TableCell>
+        <TableCell onClick={() => changeSortBy('plays')}>Plays</TableCell>
         <TableCell>&nbsp;</TableCell>
         <TableCell>Time</TableCell>
         <TableCell>&nbsp;</TableCell>

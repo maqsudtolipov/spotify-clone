@@ -19,25 +19,19 @@
 
   tr:hover td {
     @apply bg-white bg-opacity-10;
-
-    //svg {
-    //  @apply h-4 visible pointer-events-auto;
-    //}
   }
-  //
-  //tr:hover td:first-child {
-  //  span {
-  //    @apply hidden;
-  //  }
-  //
-  //  svg {
-  //    @apply block;
-  //  }
-  //}
 }
 
 .tableHeader {
   @apply border-b border-neutral-500 border-opacity-20;
+
+  td {
+    @apply select-none cursor-pointer;
+  }
+
+  td:hover {
+    @apply text-white;
+  }
 }
 
 // Hack: space between thead and tbody
