@@ -34,7 +34,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
       setSortBy('plays');
       setSortedItems((prev) =>
         [...prev].sort((a, b) =>
-          isAscending ? b.plays - a.plays : a.plays - b.plays,
+          isAscending ? a.plays - b.plays : b.plays - a.plays,
         ),
       );
     } else if (sortOption === 'alphabetically') {
@@ -42,8 +42,8 @@ const SortedTable = ({ items }: SortedTableProps) => {
       setSortedItems((prev) =>
         [...prev].sort((a, b) =>
           isAscending
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name),
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name),
         ),
       );
     } else if (sortOption === 'reset') {
