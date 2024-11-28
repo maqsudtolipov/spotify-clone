@@ -8,6 +8,7 @@ import InfoCell from './Cells/InfoCell.tsx';
 import LikeCell from './Cells/LikeCell.tsx';
 import ActionsCell from './Cells/ActionsCell.tsx';
 import { useState } from 'react';
+import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
 
 interface Item {
   img: string;
@@ -24,18 +25,20 @@ interface SortedTableProps {
 const SortedTable = ({ items }: SortedTableProps) => {
   const [sortedItems, setSortedItems] = useState<Item[]>([...items]);
   const [isAscending, setIsAscending] = useState<boolean>(true);
-  const [sortBy, setSortBy] = useState<'alphabetically' | 'plays'>(
-    'alphabetically',
+  const [sortBy, setSortBy] = useState<'alphabetically' | 'plays' | 'reset'>(
+    'reset',
   );
 
   const changeSortBy = (sortOption: 'alphabetically' | 'plays' | 'reset') => {
     if (sortOption === 'plays') {
+      setSortBy('plays');
       setSortedItems((prev) =>
         [...prev].sort((a, b) =>
           isAscending ? b.plays - a.plays : a.plays - b.plays,
         ),
       );
     } else if (sortOption === 'alphabetically') {
+      setSortBy('alphabetically');
       setSortedItems((prev) =>
         [...prev].sort((a, b) =>
           isAscending
@@ -44,6 +47,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
         ),
       );
     } else if (sortOption === 'reset') {
+      setSortBy('reset');
       setSortedItems([...items]);
     }
 
@@ -53,11 +57,23 @@ const SortedTable = ({ items }: SortedTableProps) => {
   return (
     <Table>
       <TableHeader>
-        <TableCell onClick={() => changeSortBy('reset')}>#</TableCell>
-        <TableCell onClick={() => changeSortBy('alphabetically')}>
-          Title
+        <TableCell>
+          <span onClick={() => changeSortBy('reset')}>#</span>
         </TableCell>
-        <TableCell onClick={() => changeSortBy('plays')}>Plays</TableCell>
+        <TableCell>
+          <span onClick={() => changeSortBy('alphabetically')}>
+            Title
+            {sortBy === 'alphabetically' &&
+              (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
+          </span>
+        </TableCell>
+        <TableCell>
+          <span onClick={() => changeSortBy('plays')}>
+            Plays
+            {sortBy === 'plays' &&
+              (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
+          </span>
+        </TableCell>
         <TableCell>&nbsp;</TableCell>
         <TableCell>Time</TableCell>
         <TableCell>&nbsp;</TableCell>

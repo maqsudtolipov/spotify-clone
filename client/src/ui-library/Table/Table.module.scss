@@ -25,11 +25,15 @@
 .tableHeader {
   @apply border-b border-neutral-500 border-opacity-20;
 
-  td {
-    @apply select-none cursor-pointer;
+  td span {
+    @apply relative inline-flex items-center select-none cursor-pointer;
+
+    svg {
+      @apply absolute -right-6 text-green-500 scale-150;
+    }
   }
 
-  td:hover {
+  td span:hover {
     @apply text-white;
   }
 }
