@@ -13,6 +13,7 @@ import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 interface Item {
   img: string;
   name: string;
+  artist: string;
   plays: number;
   isLiked: boolean;
 }
@@ -24,6 +25,7 @@ const ArtistTable = () => {
     const fetchedItems = Array.from({ length: 18 }, () => ({
       img: faker.image.url({ height: 160, width: 160 }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
+      artist: faker.person.fullName(),
       plays: faker.number.int(999),
       isLiked: faker.datatype.boolean(),
     }));
@@ -45,7 +47,7 @@ const ArtistTable = () => {
         {items?.map((item, index) => (
           <TableRow key={item.name}>
             <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} />
+            <InfoCell img={item.img} name={item.name} artist={item.artist} />
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>
