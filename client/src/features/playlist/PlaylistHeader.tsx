@@ -17,7 +17,7 @@ interface ArtistHeaderProps {
 }
 
 const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
-  const [artist, setArtist] = useState<Data>();
+  const [playlist, setPlaylist] = useState<Data>();
 
   useEffect(() => {
     const data = {
@@ -38,7 +38,7 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
       songs: faker.number.int({ min: 1, max: 20 }),
     };
 
-    setArtist(data);
+    setPlaylist(data);
   }, []);
 
   return (
@@ -48,27 +48,32 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
         background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
       }}
     >
-      <img
-        className={styles.headerImage}
-        src={artist?.image}
-        alt={artist?.name}
-      />
-      <div>
-        <span>Playlist</span>
-        <h1 className={styles.playlistName}>{artist?.name}</h1>
-        <p className={styles.playlistDescription}>
-          {artist?.description} {artist?.description} {artist?.description}
-        </p>
-        <div className={styles.playlistStatistics}>
-          <div className={styles.playlistUser}>
-            <img src={artist?.userImage} alt={artist?.username} />
-            <span>{artist?.username}</span>
+      {playlist && (
+        <>
+          <img
+            className={styles.headerImage}
+            src={playlist.image}
+            alt={playlist.name}
+          />
+          <div>
+            <span>Playlist</span>
+            <h1 className={styles.playlistName}>{playlist.name}</h1>
+            <p className={styles.playlistDescription}>
+              {playlist.description} {playlist.description}{' '}
+              {playlist.description}
+            </p>
+            <div className={styles.playlistStatistics}>
+              <div className={styles.playlistUser}>
+                <img src={playlist.userImage} alt={playlist.username} />
+                <span>{playlist.username}</span>
+              </div>
+              <span>
+                • {playlist.saves} saves • {playlist.songs} songs
+              </span>
+            </div>
           </div>
-          <span>
-            • {artist?.saves} saves • {artist?.saves} songs
-          </span>
-        </div>
-      </div>
+        </>
+      )}
     </header>
   );
 };
