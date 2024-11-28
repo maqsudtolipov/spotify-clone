@@ -1,0 +1,39 @@
+.playerHeader {
+  @apply p-5 flex items-center gap-6;
+}
+
+.playButton {
+  @apply size-14 p-4 text-black bg-green-500 rounded-full cursor-pointer;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
+
+  &:active {
+    @apply bg-green-600 scale-100;
+  }
+}
+
+.followButton {
+  @apply px-4 py-1.5 text-sm border border-neutral-500 rounded-full;
+
+  &:hover {
+    @apply border-white scale-105;
+  }
+
+  &:active {
+    @apply border-neutral-600 scale-100;
+  }
+}
+
+.actionsButton {
+  @apply size-6 text-neutral-400;
+
+  &:hover {
+    @apply text-white scale-105;
+  }
+
+  &:active {
+    @apply text-neutral-500 scale-100;
+  }
+}

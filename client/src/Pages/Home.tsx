@@ -3,6 +3,7 @@ import History from '../features/history/History.tsx';
 import { useEffect, useState } from 'react';
 import Card from '../ui-library/Card/Card.tsx';
 import { faker } from '@faker-js/faker';
+import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
 
 interface CardItem {
   img: string;
@@ -35,18 +36,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div
-      className={styles.home}
-      style={{
-        backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
-        linear-gradient(
-        ${gradientColor},
-        ${gradientColor} 40vh,
-        transparent 40vh,
-        transparent 100%
-    )`,
-      }}
-    >
+    <GradientBackground className={styles.home} color={gradientColor}>
       <History handleNewColor={handleNewColor} />
 
       <h2 className={styles.heading2}>Most Popular</h2>
@@ -66,7 +56,7 @@ const Home = () => {
         {items &&
           items.slice(12, 18).map((el) => <Card key={el.name} data={el} />)}
       </ul>
-    </div>
+    </GradientBackground>
   );
 };
 

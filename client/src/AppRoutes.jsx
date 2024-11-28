@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
 import Search from './Pages/Search.tsx';
-import Playlist from './Pages/Playlist.tsx';
 import ArtistPage from './Pages/ArtistPage.tsx';
 import Profile from './Pages/Profile.tsx';
 import NotFound from './Pages/NotFound.tsx';
@@ -10,6 +9,7 @@ import SignUp from './Pages/SignUp.tsx';
 import ForgotPassword from './Pages/ForgotPassword.tsx';
 import ResetPassword from './Pages/ResetPassword.tsx';
 import Home from './Pages/Home.tsx';
+import PlaylistPage from './Pages/PlaylistPage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -34,7 +34,7 @@ const AppRoutes = () => {
         path="/playlist"
         element={
           <Layout>
-            <Playlist />
+            <PlaylistPage />
           </Layout>
         }
       />

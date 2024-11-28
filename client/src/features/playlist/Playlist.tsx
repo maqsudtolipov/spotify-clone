@@ -1,9 +1,9 @@
-import ArtistTable from './ArtistTable.tsx';
-import ArtistHeader from './ArtistHeader.tsx';
 import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
+import PlaylistTable from './PlaylistTable.tsx';
+import PlaylistHeader from './PlaylistHeader.tsx';
 import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
 
-const Artist = () => {
+const Playlist = () => {
   const color =
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
@@ -11,15 +11,15 @@ const Artist = () => {
 
   return (
     <div>
-      <ArtistHeader color={color} />
+      <PlaylistHeader color={color} />
       <GradientBackground color={color}>
         <PlayHeader />
         <div className="p-5 pt-0">
-          <ArtistTable />
+          <PlaylistTable />
         </div>
       </GradientBackground>
     </div>
   );
 };
 
-export default Artist;
+export default Playlist;
