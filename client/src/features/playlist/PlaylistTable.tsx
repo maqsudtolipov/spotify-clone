@@ -9,6 +9,7 @@ import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
 import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
+import SortedTable from '../../ui-library/Table/SortedTable.tsx';
 
 interface Item {
   img: string;
@@ -34,28 +35,33 @@ const PlaylistTable = () => {
   }, []);
 
   return (
-    <Table>
-      <TableHeader>
-        <TableCell>#</TableCell>
-        <TableCell>Title</TableCell>
-        <TableCell>Plays</TableCell>
-        <TableCell>&nbsp;</TableCell>
-        <TableCell>Time</TableCell>
-        <TableCell>&nbsp;</TableCell>
-      </TableHeader>
-      <TableBody>
-        {items?.map((item, index) => (
-          <TableRow key={item.name}>
-            <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} artist={item.artist} />
-            <TableCell>{item.plays}</TableCell>
-            <LikeCell isLiked={item.isLiked} />
-            <TableCell minimize={true}>2:18</TableCell>
-            <ActionsCell />
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      <h2 className="text-2xl font-bold p-2">Sorted</h2>
+      {items && <SortedTable items={items} />}
+      <h2 className="text-2xl font-bold p-2">Regular</h2>
+      <Table>
+        <TableHeader>
+          <TableCell>#</TableCell>
+          <TableCell>Title</TableCell>
+          <TableCell>Plays</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>Time</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableHeader>
+        <TableBody>
+          {items?.map((item, index) => (
+            <TableRow key={item.name}>
+              <IndexCell>{index + 1}</IndexCell>
+              <InfoCell img={item.img} name={item.name} artist={item.artist} />
+              <TableCell>{item.plays}</TableCell>
+              <LikeCell isLiked={item.isLiked} />
+              <TableCell minimize={true}>2:18</TableCell>
+              <ActionsCell />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 
