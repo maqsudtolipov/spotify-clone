@@ -74,7 +74,7 @@ tr:hover .likeCell svg {
 }
 
 // Actions
-.actionsCell svg {
+.actionsCell div > svg {
   @apply w-4 text-white cursor-pointer scale-125 invisible;
 }
 

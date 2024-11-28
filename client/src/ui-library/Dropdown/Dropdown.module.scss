@@ -11,7 +11,7 @@
 }
 
 .item {
-  @apply w-48 p-3 pr-2 flex items-center gap-3 text-sm text-neutral-100 rounded-sm  cursor-pointer;
+  @apply w-48 p-3 flex items-center gap-3 text-sm text-neutral-100 text-opacity-90 rounded-sm  cursor-pointer;
 
   span {
     @apply w-full;
@@ -31,7 +31,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.icon {
+.dropdown .icon {
   @apply text-base text-neutral-400 scale-150; // it is scaled, because it appeared smaller
 }
 
