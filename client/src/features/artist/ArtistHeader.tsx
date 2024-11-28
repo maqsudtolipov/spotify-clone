@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 
 interface Data {
   name: string;
-  listeners: number;
+  listeners: string;
 }
 
 const ArtistHeader = () => {
@@ -19,7 +19,7 @@ const ArtistHeader = () => {
   useEffect(() => {
     const data = {
       name: faker.person.fullName(),
-      listeners: +faker.number
+      listeners: faker.number
         .int({ min: 1000, max: 20000 })
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ','),

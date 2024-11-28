@@ -1,6 +1,6 @@
 // Header
 .artistHeader {
-  @apply flex flex-col justify-end p-5;
+  @apply p-5 flex flex-col justify-end;
 
   height: 300px;
 }
@@ -15,4 +15,21 @@
 
 .artistName {
   @apply mb-4 text-8xl font-extrabold;
+}
+
+// Actions
+.artistActions {
+  @apply p-5;
+}
+
+.playButton {
+  @apply size-14 p-4 text-black bg-green-500 rounded-full cursor-pointer;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
+
+  &:active {
+    @apply bg-green-600 scale-100;
+  }
 }
