@@ -28,7 +28,7 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
   }, []);
 
   return (
-    <div
+    <header
       className={styles.artistHeader}
       style={{
         background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
@@ -40,7 +40,7 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
       </div>
       <h1 className={styles.artistName}>{artist?.name}</h1>
       <span>{artist?.listeners} listeners</span>
-    </div>
+    </header>
   );
 };
 

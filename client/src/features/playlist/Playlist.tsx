@@ -1,5 +1,6 @@
 import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
 import PlaylistTable from './PlaylistTable.tsx';
+import PlaylistHeader from './PlaylistHeader.tsx';
 
 const Playlist = () => {
   const color =
@@ -9,6 +10,7 @@ const Playlist = () => {
 
   return (
     <div>
+      <PlaylistHeader color={color} />
       <div
         style={{
           backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
