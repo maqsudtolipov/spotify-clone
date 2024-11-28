@@ -1,0 +1,34 @@
+.historyCard {
+  @apply flex items-center relative bg-white bg-opacity-10 rounded overflow-hidden cursor-pointer;
+
+  &:hover {
+    @apply bg-opacity-20;
+  }
+
+  &:hover .cardIcon {
+    @apply inline-block;
+  }
+}
+
+.cardImage {
+  @apply min-w-12 w-12;
+}
+
+.cardInfo {
+  @apply px-2 py-1 font-bold;
+
+  // Works only in webkit browser
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cardIcon {
+  @apply p-2 hidden absolute top-2 right-2 size-8  text-black bg-green-500 rounded-full cursor-pointer;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
+}

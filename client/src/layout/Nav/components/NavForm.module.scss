@@ -1,0 +1,34 @@
+.form {
+  @apply flex items-center gap-2 relative text-neutral-400 bg-neutral-800 rounded-full;
+  min-width: 440px;
+  height: 48px;
+
+  .searchIcon {
+    @apply absolute left-3 text-2xl;
+  }
+
+  .closeIcon {
+    @apply absolute right-4 text-2xl;
+
+    &:hover {
+      @apply text-white;
+    }
+  }
+
+  input {
+    @apply w-full h-full p-3 pl-12 text-base bg-transparent rounded-full outline-0;
+  }
+
+  input:hover {
+    @apply outline outline-1 outline-neutral-500 outline-offset-[-1px];
+  }
+
+  input:focus {
+    @apply text-white outline outline-2 outline-white outline-offset-[-2px];
+  }
+
+  input:hover + svg,
+  input:focus + svg {
+    @apply text-white;
+  }
+}

@@ -1,0 +1,57 @@
+// Tabs List
+.tabListWrapper {
+  @apply relative;
+}
+
+.tabsList {
+  @apply flex gap-2 overflow-x-scroll scroll-smooth rounded-full;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Tab
+.tab {
+  @apply px-3 py-1.5 text-sm bg-white bg-opacity-10 rounded-full cursor-pointer;
+
+  &:hover {
+    @apply bg-opacity-15;
+  }
+
+  &:active {
+    @apply bg-opacity-5;
+  }
+}
+
+.tabSelected {
+  @apply text-black bg-opacity-100;
+
+  &:hover {
+    @apply bg-opacity-90;
+  }
+
+  &:active {
+    @apply bg-opacity-80;
+  }
+}
+
+.arrowButton {
+  @apply absolute top-0 text-neutral-400 bg-neutral-800 rounded-full;
+
+  svg {
+    @apply size-8 p-1;
+  }
+
+  &:hover {
+    @apply text-white bg-neutral-700;
+  }
+}
+
+.arrowButtonRight {
+  @apply right-0;
+}
+
+.arrowButtonLeft {
+  @apply left-0;
+}
