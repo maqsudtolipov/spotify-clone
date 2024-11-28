@@ -15,4 +15,5 @@
 
 .artistName {
   @apply mb-4 text-8xl font-extrabold overflow-hidden whitespace-nowrap text-ellipsis;
+  container-type: inline-size;
 }

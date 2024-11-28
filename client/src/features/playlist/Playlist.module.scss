@@ -9,11 +9,13 @@
 }
 
 .playlistName {
-  @apply mb-3 text-8xl font-extrabold;
+  @apply mb-3 text-8xl font-extrabold overflow-hidden whitespace-nowrap text-ellipsis;
+  container-type: inline-size;
 }
 
 .playlistDescription {
   @apply mb-3 text-sm text-white text-opacity-70 overflow-hidden whitespace-nowrap text-ellipsis;
+  container-type: inline-size;
 }
 
 .playlistStatistics {
