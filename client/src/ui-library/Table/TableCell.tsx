@@ -4,6 +4,7 @@ interface TableCellProps {
   className?: string;
   alignRight?: boolean;
   minimize?: boolean;
+  onClick?: () => void;
   children: ReactNode;
 }
 
