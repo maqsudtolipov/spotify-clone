@@ -30,27 +30,27 @@ const SortedTable = ({ items }: SortedTableProps) => {
   );
 
   const changeSortBy = (sortOption: 'alphabetically' | 'plays' | 'reset') => {
-    if (sortOption === 'plays') {
-      setSortBy('plays');
-      setSortedItems((prev) =>
-        [...prev].sort((a, b) =>
-          isAscending ? a.plays - b.plays : b.plays - a.plays,
-        ),
-      );
-    } else if (sortOption === 'alphabetically') {
-      setSortBy('alphabetically');
-      setSortedItems((prev) =>
-        [...prev].sort((a, b) =>
-          isAscending
-            ? b.name.localeCompare(a.name)
-            : a.name.localeCompare(b.name),
-        ),
-      );
-    } else if (sortOption === 'reset') {
-      setSortBy('reset');
-      setSortedItems([...items]);
+    switch (sortOption) {
+      case 'alphabetically':
+        setSortedItems((prev) =>
+          [...prev].sort((a, b) =>
+            isAscending
+              ? b.name.localeCompare(a.name)
+              : a.name.localeCompare(b.name),
+          ),
+        );
+        break;
+      case 'plays':
+        setSortedItems((prev) =>
+          [...prev].sort((a, b) =>
+            isAscending ? a.plays - b.plays : b.plays - a.plays,
+          ),
+        );
+        break;
+      default:
+        setSortedItems([...items]);
     }
-
+    setSortBy(sortOption);
     setIsAscending((prev) => !prev);
   };
 
