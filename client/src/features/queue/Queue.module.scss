@@ -7,12 +7,4 @@
 
 .header {
   @apply p-4 flex items-center justify-between;
-
-  span {
-    @apply font-bold;
-  }
-
-  svg {
-    @apply p-2 text-neutral-400 size-8 cursor-pointer;
-  }
 }
