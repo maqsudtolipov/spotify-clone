@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
-import Search from './Pages/Search.tsx';
-import ArtistPage from './Pages/ArtistPage.tsx';
-import Profile from './Pages/Profile.tsx';
-import NotFound from './Pages/NotFound.tsx';
-import Login from './Pages/Login.tsx';
-import SignUp from './Pages/SignUp.tsx';
-import ForgotPassword from './Pages/ForgotPassword.tsx';
-import ResetPassword from './Pages/ResetPassword.tsx';
-import Home from './Pages/Home.tsx';
-import PlaylistPage from './Pages/PlaylistPage.tsx';
+import Search from './pages/Search.tsx';
+import ArtistPage from './pages/ArtistPage.tsx';
+import Profile from './pages/Profile.tsx';
+import NotFound from './pages/NotFound.tsx';
+import Login from './pages/Login.tsx';
+import SignUp from './pages/SignUp.tsx';
+import ForgotPassword from './pages/ForgotPassword.tsx';
+import ResetPassword from './pages/ResetPassword.tsx';
+import Home from './pages/Home.tsx';
+import PlaylistPage from './pages/PlaylistPage.tsx';
+import UserPage from './pages/UserPage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -43,6 +44,14 @@ const AppRoutes = () => {
         element={
           <Layout>
             <ArtistPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/user"
+        element={
+          <Layout>
+            <UserPage />
           </Layout>
         }
       />
