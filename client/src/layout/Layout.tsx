@@ -3,6 +3,7 @@ import styles from '../AppRoutes.module.scss';
 import Nav from './Nav/Nav';
 import Library from '../features/library/Library';
 import Footer from './Footer/Footer.tsx';
+import Queue from '../features/queue/Queue.tsx';
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
         <Footer />
       </main>
-
+      <Queue />
       <div className="p-4">Player</div>
     </div>
   );
