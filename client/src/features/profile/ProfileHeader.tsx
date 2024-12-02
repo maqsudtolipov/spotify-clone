@@ -9,13 +9,12 @@ interface Data {
   statistics?: { name: string; value: number }[];
 }
 
-const ProfileHeader = () => {
-  const [data, setData] = useState<Data>();
+interface ProfileHeaderProps {
+  color: string;
+}
 
-  const color =
-    '#' +
-    ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
-    '4d';
+const ProfileHeader = ({ color }: ProfileHeaderProps) => {
+  const [data, setData] = useState<Data>();
 
   useEffect(() => {
     const data: Data = {
