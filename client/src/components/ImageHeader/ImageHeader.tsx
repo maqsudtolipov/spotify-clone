@@ -3,7 +3,7 @@ import { meta } from 'eslint-plugin-react/lib/rules/jsx-props-no-spread-multi';
 import description = meta.docs.description;
 
 interface Data {
-  type: 'playlist' | 'user';
+  type: 'playlist' | 'profile';
   img: string;
   name: string;
   description?: string;
@@ -28,7 +28,7 @@ const ImageHeader = ({ color, data }: ImageHeaderProps) => {
   return (
     <header className={styles.header} style={gradient}>
       <img
-        className={`${styles.img} ${data.type === 'user' ? styles.imgRounded : ''}`}
+        className={`${styles.img} ${data.type === 'profile' ? styles.imgRounded : ''}`}
         src={data.img}
         alt={data.name}
       />

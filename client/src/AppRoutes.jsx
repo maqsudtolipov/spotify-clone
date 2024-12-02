@@ -10,7 +10,7 @@ import ForgotPassword from './pages/ForgotPassword.tsx';
 import ResetPassword from './pages/ResetPassword.tsx';
 import Home from './pages/Home.tsx';
 import PlaylistPage from './pages/PlaylistPage.tsx';
-import UserPage from './pages/UserPage.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
 
 const AppRoutes = () => {
   return (
@@ -48,10 +48,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/user"
+        path="/profile"
         element={
           <Layout>
-            <UserPage />
+            <ProfilePage />
           </Layout>
         }
       />

@@ -3,13 +3,13 @@ import { faker } from '@faker-js/faker';
 import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
 
 interface Data {
-  type: 'playlist' | 'user';
+  type: 'playlist' | 'profile';
   img: string;
   name: string;
   statistics?: { name: string; value: number }[];
 }
 
-const UserHeader = () => {
+const ProfileHeader = () => {
   const [data, setData] = useState<Data>();
 
   const color =
@@ -19,7 +19,7 @@ const UserHeader = () => {
 
   useEffect(() => {
     const data: Data = {
-      type: 'user',
+      type: 'profile',
       img: faker.image.urlLoremFlickr({
         height: 240,
         width: 240,
@@ -38,4 +38,4 @@ const UserHeader = () => {
   return data && <ImageHeader color={color} data={data} />;
 };
 
-export default UserHeader;
+export default ProfileHeader;
