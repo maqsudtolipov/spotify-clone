@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import styles from './Playlist.module.scss';
+import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
 
 interface Data {
-  image: string;
+  type: 'playlist' | 'profile';
+  img: string;
   name: string;
-  description: string;
-  username: string;
-  userImage: string;
-  saves: number;
-  songs: number;
+  description?: string;
+  user?: {
+    img: string;
+    name: string;
+  };
+  statistics?: { name: string; value: number }[];
 }
 
 interface ArtistHeaderProps {
@@ -20,62 +22,33 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
   const [playlist, setPlaylist] = useState<Data>();
 
   useEffect(() => {
-    const data = {
-      image: faker.image.urlLoremFlickr({
+    let data: Data = {
+      type: 'playlist',
+      img: faker.image.urlLoremFlickr({
         height: 240,
         width: 240,
         category: 'nature',
       }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       description: faker.lorem.lines(2),
-      username: faker.lorem.words(2),
-      userImage: faker.image.urlLoremFlickr({
-        height: 24,
-        width: 24,
-        category: 'cat',
-      }),
-      saves: faker.number.int({ min: 20, max: 100 }),
-      songs: faker.number.int({ min: 1, max: 20 }),
+      user: {
+        name: faker.lorem.words(2),
+        img: faker.image.urlLoremFlickr({
+          height: 24,
+          width: 24,
+          category: 'cat',
+        }),
+      },
+      statistics: [
+        { name: 'saves', value: faker.number.int({ min: 20, max: 100 }) },
+        { name: 'songs', value: faker.number.int({ min: 20, max: 100 }) },
+      ],
     };
 
     setPlaylist(data);
   }, []);
 
-  return (
-    <header
-      className={styles.playlistHeader}
-      style={{
-        background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
-      }}
-    >
-      {playlist && (
-        <>
-          <img
-            className={styles.headerImage}
-            src={playlist.image}
-            alt={playlist.name}
-          />
-          <div>
-            <span>Playlist</span>
-            <h1 className={styles.playlistName}>{playlist.name}</h1>
-            <p className={styles.playlistDescription}>
-              {playlist.description} {playlist.description}{' '}
-              {playlist.description}
-            </p>
-            <div className={styles.playlistStatistics}>
-              <div className={styles.playlistUser}>
-                <img src={playlist.userImage} alt={playlist.username} />
-                <span>{playlist.username}</span>
-              </div>
-              <span>
-                • {playlist.saves} saves • {playlist.songs} songs
-              </span>
-            </div>
-          </div>
-        </>
-      )}
-    </header>
-  );
+  return playlist && <ImageHeader color={color} data={playlist} />;
 };
 
 export default PlaylistHeader;

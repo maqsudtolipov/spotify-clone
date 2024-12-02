@@ -48,7 +48,7 @@ const processItems = (
   // 2. Filter items
   arr = filter !== 'none' ? arr.filter((item) => item.type === filter) : arr;
 
-  // 3. Search items
+  // 3. SearchPage items
   arr =
     searchQuery.length >= 3
       ? arr.filter((item) =>
