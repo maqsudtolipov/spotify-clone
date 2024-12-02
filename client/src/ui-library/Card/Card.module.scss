@@ -33,7 +33,13 @@
 .imageIcon {
   @apply p-3 hidden absolute bottom-2 right-2 size-12 leading-none text-black bg-green-500 rounded-full cursor-pointer;
 
+  transition: all 0.1s ease-out;
+
   &:hover {
     @apply bg-green-400 scale-105;
+  }
+
+  &:active {
+    @apply bg-green-600 scale-100;
   }
 }
