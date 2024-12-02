@@ -47,7 +47,7 @@ const ImageHeader = ({ color, data }: ImageHeaderProps) => {
           )}
           {data.statistics && (
             <span>
-              {`• ${data.statistics
+              {`${data.user ? '• ' : ''}${data.statistics
                 .map((data) => `${data.value} ${data.name}`)
                 .join(' • ')}`}
             </span>
