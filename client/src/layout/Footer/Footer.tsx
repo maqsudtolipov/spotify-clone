@@ -11,6 +11,7 @@ const Footer = () => {
         <Link to="/search">Search</Link>
         <Link to="/artist">Artist</Link>
         <Link to="/playlist">Playlist</Link>
+        <Link to="/profile">Profile</Link>
       </div>
       <a href="https://github.com/maqsudtolipov/spotify-clone/" target="_blank">
         <RiGithubFill />
