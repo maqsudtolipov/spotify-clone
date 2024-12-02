@@ -2,13 +2,16 @@ import SearchTabs from './SearchTabs.tsx';
 import Heading2 from '../../ui-library/Typography/Heading2.tsx';
 import { useState } from 'react';
 import SearchSongs from './sub/SearchSongs.tsx';
+import SearchArtists from './sub/SearchArtists.tsx';
+import SearchPlaylists from './sub/SearchPlaylists.tsx';
+import SearchProfiles from './sub/SearchProfiles.tsx';
+
+type Tabs = 'all' | 'artists' | 'playlists' | 'songs' | 'profiles';
 
 const Search = () => {
-  const [tab, setTab] = useState<
-    'all' | 'artists' | 'playlists' | 'songs' | 'profiles'
-  >('all');
+  const [tab, setTab] = useState<Tabs>('all');
 
-  const handleTabChange = (tab): never => {
+  const handleTabChange = (tab: Tabs) => {
     setTab(tab);
   };
 
@@ -22,10 +25,10 @@ const Search = () => {
           <Heading2>Songs</Heading2>
         </div>
       )}
-      {tab === 'artists' && <p>Artists</p>}
-      {tab === 'playlists' && <p>Playlists</p>}
+      {tab === 'artists' && <SearchArtists />}
+      {tab === 'playlists' && <SearchPlaylists />}
       {tab === 'songs' && <SearchSongs />}
-      {tab === 'profiles' && <p>Profiles</p>}
+      {tab === 'profiles' && <SearchProfiles />}
     </div>
   );
 };
