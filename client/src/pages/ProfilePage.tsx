@@ -1,7 +1,7 @@
 import ProfileHeader from '../features/profile/ProfileHeader.tsx';
 import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
 import PlayHeader from '../components/PlayHeader/PlayHeader.tsx';
-import styles from './Home.module.scss';
+import styles from './HomePage.module.scss';
 import Card from '../ui-library/Card/Card.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';

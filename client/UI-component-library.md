@@ -27,7 +27,7 @@ This doc includes all the UI library components used across the app.
   </Dropdown.Trigger>
 
   <Dropdown.List>
-    <Dropdown.Item>Home</Dropdown.Item>
+    <Dropdown.Item>HomePage</Dropdown.Item>
     <Dropdown.Item>Profile</Dropdown.Item>
     <Dropdown.Item underline={true}>Settings</Dropdown.Item>
     <Dropdown.Item>Logout</Dropdown.Item>

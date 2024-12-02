@@ -1,4 +1,4 @@
-import styles from './Home.module.scss';
+import styles from './HomePage.module.scss';
 import History from '../features/history/History.tsx';
 import { useEffect, useState } from 'react';
 import Card from '../ui-library/Card/Card.tsx';
@@ -12,7 +12,7 @@ interface CardItem {
   type: string;
 }
 
-const Home = () => {
+const HomePage = () => {
   const [gradientColor, setGradientColor] = useState<string>(
     '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'),
   );
@@ -60,4 +60,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

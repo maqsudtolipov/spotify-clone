@@ -35,7 +35,7 @@ const LibrarySearch = () => {
       <input
         className={`${styles.input} ${isOpen ? styles.inputOpen : ''}`}
         type="text"
-        placeholder="Search in Your Library"
+        placeholder="SearchPage in Your Library"
         value={searchQuery}
         onChange={handleInputChange}
       />

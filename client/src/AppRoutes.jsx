@@ -1,14 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
-import Search from './pages/Search.tsx';
+import SearchPage from './pages/SearchPage.tsx';
 import ArtistPage from './pages/ArtistPage.tsx';
-import Profile from './pages/Profile.tsx';
-import NotFound from './pages/NotFound.tsx';
-import Login from './pages/Login.tsx';
-import SignUp from './pages/SignUp.tsx';
-import ForgotPassword from './pages/ForgotPassword.tsx';
-import ResetPassword from './pages/ResetPassword.tsx';
-import Home from './pages/Home.tsx';
+import NotFound from './pages/helper/NotFound.tsx';
+import Login from './pages/auth/Login.tsx';
+import SignUp from './pages/auth/SignUp.tsx';
+import ForgotPassword from './pages/auth/ForgotPassword.tsx';
+import ResetPassword from './pages/auth/ResetPassword.tsx';
+import HomePage from './pages/HomePage.tsx';
 import PlaylistPage from './pages/PlaylistPage.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
 
@@ -19,7 +18,7 @@ const AppRoutes = () => {
         path="/"
         element={
           <Layout>
-            <Home />
+            <HomePage />
           </Layout>
         }
       />
@@ -27,7 +26,7 @@ const AppRoutes = () => {
         path="/search"
         element={
           <Layout>
-            <Search />
+            <SearchPage />
           </Layout>
         }
       />
@@ -52,14 +51,6 @@ const AppRoutes = () => {
         element={
           <Layout>
             <ProfilePage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <Layout>
-            <Profile />
           </Layout>
         }
       />
