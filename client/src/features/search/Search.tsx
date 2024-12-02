@@ -1,10 +1,10 @@
 import SearchTabs from './SearchTabs.tsx';
-import Heading2 from '../../ui-library/Typography/Heading2.tsx';
 import { useState } from 'react';
 import SearchSongs from './sub/SearchSongs.tsx';
 import SearchArtists from './sub/SearchArtists.tsx';
 import SearchPlaylists from './sub/SearchPlaylists.tsx';
 import SearchProfiles from './sub/SearchProfiles.tsx';
+import SearchAll from './sub/SearchAll.tsx';
 
 type Tabs = 'all' | 'artists' | 'playlists' | 'songs' | 'profiles';
 
@@ -19,12 +19,7 @@ const Search = () => {
     <div className="px-4 py-5">
       <SearchTabs handleTabChange={handleTabChange} />
 
-      {tab === 'all' && (
-        <div className="grid grid-cols-[2fr_3fr]">
-          <Heading2>Top Result</Heading2>
-          <Heading2>Songs</Heading2>
-        </div>
-      )}
+      {tab === 'all' && <SearchAll />}
       {tab === 'artists' && <SearchArtists />}
       {tab === 'playlists' && <SearchPlaylists />}
       {tab === 'songs' && <SearchSongs />}
