@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Footer />
       </main>
       <Queue />
-      <div className="p-4">Player</div>
+      <div style={{ gridColumn: '1/-1', gridRow: '3/4' }}>Player</div>
     </div>
   );
 };

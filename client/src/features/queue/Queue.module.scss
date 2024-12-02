@@ -5,6 +5,10 @@
   grid-column: 3/4;
 }
 
+.queueHidden {
+  @apply hidden;
+}
+
 .header {
   @apply p-4 flex items-center justify-between;
 
