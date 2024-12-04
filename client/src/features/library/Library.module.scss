@@ -28,7 +28,7 @@
   @apply h-full w-full absolute;
 }
 
-// Collapsed
+// Collapsed - important needed to work with js, it also remembers last width
 .libraryCollapsed {
-  width: 72px;
+  width: 72px !important;
 }

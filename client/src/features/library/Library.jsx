@@ -1,7 +1,7 @@
 import styles from './Library.module.scss';
 import LibraryHeader from './LibraryHeader/LibraryHeader.jsx';
 import LibraryList from './LibraryList/LibraryList.jsx';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import LibraryFilter from './LibraryFilter/LibraryFilter.tsx';
 import LibrarySort from './LibrarySort/LibrarySort.tsx';
 import LibrarySearch from './LibrarySearch/LibrarySearch.tsx';
@@ -16,12 +16,13 @@ const Library = () => {
   };
 
   return (
-    <div ref={libraryEl} className={styles.libraryWrapper}>
+    <div
+      ref={libraryEl}
+      className={`${styles.libraryWrapper} ${isCollapsed ? styles.libraryCollapsed : ''}`}
+    >
       <div ref={resizeEl} className={styles.resize}></div>
 
-      <div
-        className={`${styles.library} ${isCollapsed ? styles.libraryCollapsed : ''}`}
-      >
+      <div className={styles.library}>
         <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>
           {!isCollapsed && <LibraryFilter />}
         </LibraryHeader>
