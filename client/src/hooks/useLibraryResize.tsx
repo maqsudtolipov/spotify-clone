@@ -1,38 +1,64 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const useLibraryResize = () => {
-  const resizeEl = useRef<HTMLElement>();
-  const libraryEl = useRef<HTMLElement>();
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [drag, setDrag] = useState<boolean>(false);
+  const resizeRef = useRef<HTMLElement>();
+  const libraryRef = useRef<HTMLElement>();
 
   useEffect(() => {
-    if (!libraryEl.current || !resizeEl.current) return;
-    let drag = false;
+    const resizeEl = resizeRef.current as HTMLElement;
+    const libraryEl = libraryRef.current as HTMLElement;
 
-    let moveX =
-      libraryEl.current.getBoundingClientRect().width +
-      resizeEl.current.getBoundingClientRect().width / 2;
+    if (resizeEl && libraryEl) {
+      const handleMouseDown = () => {
+        setDrag(true);
+      };
 
-    resizeEl.current.addEventListener('mousedown', function (e) {
-      drag = true;
-      moveX = e.x;
-    });
+      const handleMouseMove = (e: MouseEvent) => {
+        if (drag) {
+          const newWidth =
+            e.clientX - resizeEl.getBoundingClientRect().width / 2 - 10.5;
 
-    document.addEventListener('mousemove', function (e) {
-      moveX = e.x;
-      if (drag) {
-        libraryEl.current.style.width =
-          -10.5 +
-          moveX -
-          resizeEl.current.getBoundingClientRect().width / 2 +
-          'px';
-        e.preventDefault();
-      }
-    });
+          if (drag && newWidth >= 280 && newWidth <= 400) {
+            libraryEl.style.width = `${newWidth}px`;
+            e.preventDefault();
+          }
 
-    document.addEventListener('mouseup', function (e) {
-      drag = false;
-    });
-  }, []);
+          // If newWidth larger than 215 open library, else close
+          if (!isCollapsed && newWidth <= 215) {
+            setIsCollapsed(true);
+          } else if (isCollapsed && newWidth > 215) {
+            setIsCollapsed(false);
+          }
+        }
+      };
 
-  return { libraryEl, resizeEl };
+      const handleMouseUp = () => {
+        setDrag(false);
+      };
+
+      resizeEl.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        resizeEl.removeEventListener('mousedown', handleMouseDown);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [drag, isCollapsed, libraryRef, resizeRef]);
+
+  const handleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
+  return {
+    drag,
+    libraryEl: libraryRef,
+    resizeEl: resizeRef,
+    isCollapsed,
+    handleCollapse,
+  };
 };

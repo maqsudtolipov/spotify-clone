@@ -1,10 +1,13 @@
 .libraryWrapper {
   @apply relative bg-neutral-900 rounded-xl;
+
   width: 330px;
   grid-column: 1/2;
 }
 
 .resize {
+  @apply bg-white bg-opacity-0;
+
   position: absolute;
   margin-top: 8px;
   margin-bottom: 8px;
@@ -19,16 +22,25 @@
     @apply bg-white bg-opacity-50;
   }
 
-  &:active {
-    @apply bg-opacity-100 cursor-grabbing;
-  }
+  //&:active {
+  //  @apply bg-opacity-100 cursor-grabbing;
+  //}
+}
+
+.resizeActive,
+.resizeActive:hover {
+  @apply bg-opacity-100 cursor-grabbing;
+}
+
+.resizeHidden {
+  @apply hidden;
 }
 
 .library {
   @apply h-full w-full absolute;
 }
 
-// Collapsed
+// Collapsed - important needed to work with js, it also remembers last width
 .libraryCollapsed {
-  width: 72px;
+  width: 72px !important;
 }
