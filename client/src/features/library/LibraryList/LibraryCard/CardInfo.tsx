@@ -4,7 +4,7 @@ import { RiPushpinFill } from 'react-icons/ri';
 interface CardInfoProps {
   name: string;
   isPinned?: boolean;
-  type: string;
+  type?: string;
   owner?: string;
   length?: string;
 }
@@ -22,7 +22,9 @@ const CardInfo = ({
   owner = '',
   length = '',
 }: CardInfoProps) => {
-  const description = combineDescription([type, owner, length]);
+  const description = combineDescription(
+    type ? [type, owner, length] : [owner, length],
+  );
 
   return (
     <div className={styles.cardInfo}>

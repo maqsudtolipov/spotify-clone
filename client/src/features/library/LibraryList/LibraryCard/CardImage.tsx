@@ -4,7 +4,7 @@ import { RiPlayLargeFill } from 'react-icons/ri';
 interface CardImageProps {
   src: string;
   name: string;
-  isArtist: boolean;
+  isArtist?: boolean;
 }
 
 const CardImage = ({ src, name, isArtist }: CardImageProps) => {
