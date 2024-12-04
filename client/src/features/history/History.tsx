@@ -66,7 +66,7 @@ const History = ({ handleNewColor }: HistoryProps) => {
   };
 
   return (
-    <div>
+    <div style={{ containerType: 'inline-size' }}>
       <HistoryTabs
         selectedFilter={state.filter}
         handleChangeFilter={handleChangeFilter}
