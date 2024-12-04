@@ -1,6 +1,7 @@
 import styles from './Queue.module.scss';
 import QueueHeader from './QueueHeader.tsx';
 import { useEffect, useState } from 'react';
+import QueueList from './QueueList.tsx';
 
 const Queue = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -19,7 +20,7 @@ const Queue = () => {
   return (
     <div className={`${styles.queue} ${!isOpen ? styles.queueHidden : ''}`}>
       <QueueHeader onClick={handleToggle} />
-      <p>Queue</p>
+      <QueueList />
     </div>
   );
 };
