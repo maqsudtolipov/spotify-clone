@@ -1,3 +1,10 @@
 .historyList {
   @apply grid grid-cols-4 gap-2;
 }
+
+// 4 x 250 + 3 x 8
+@container (max-width: 1024px) {
+  .historyList {
+    @apply grid-cols-2;
+  }
+}

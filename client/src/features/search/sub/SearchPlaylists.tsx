@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import Card from '../../../ui-library/Card/Card.tsx';
+import CardsList from '../../../components/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -23,11 +23,7 @@ const SearchPlaylists = () => {
     setItems(fetchedItems);
   }, []);
 
-  return (
-    <ul className="grid grid-cols-6">
-      {items && items.map((el) => <Card key={el.name} data={el} />)}
-    </ul>
-  );
+  return <CardsList items={items} />;
 };
 
 export default SearchPlaylists;

@@ -1,8 +1,31 @@
-.library {
-  @apply overflow-hidden bg-neutral-900 rounded-xl;
-
+.libraryWrapper {
+  @apply relative bg-neutral-900 rounded-xl;
   width: 330px;
   grid-column: 1/2;
+}
+
+.resize {
+  position: absolute;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  top: 0;
+  right: -4.5px;
+  height: 100%;
+  width: 1px;
+  cursor: grab;
+  user-select: none;
+
+  &:hover {
+    @apply bg-white bg-opacity-50;
+  }
+
+  &:active {
+    @apply bg-opacity-100 cursor-grabbing;
+  }
+}
+
+.library {
+  @apply h-full w-full absolute;
 }
 
 // Collapsed

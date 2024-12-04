@@ -1,0 +1,18 @@
+.queue {
+  @apply overflow-hidden bg-neutral-900 rounded-xl;
+
+  width: 330px;
+  grid-column: 3/4;
+}
+
+.queueHidden {
+  @apply hidden;
+}
+
+.header {
+  @apply p-4 flex items-center justify-between;
+
+  span {
+    @apply font-bold;
+  }
+}

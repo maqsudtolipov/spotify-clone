@@ -1,10 +1,9 @@
 import ProfileHeader from '../features/profile/ProfileHeader.tsx';
 import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
 import PlayHeader from '../components/PlayHeader/PlayHeader.tsx';
-import styles from './HomePage.module.scss';
-import Card from '../ui-library/Card/Card.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
+import CardsList from '../components/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -38,23 +37,21 @@ const ProfilePage = () => {
         <PlayHeader />
 
         <div className="p-5 pt-0">
-          <h2 className={styles.heading2}>Public Playlists</h2>
-          <ul className="grid grid-cols-6">
-            {items &&
-              items.slice(6, 12).map((el) => <Card key={el.name} data={el} />)}
-          </ul>
-
-          <h2 className={styles.heading2}>Followers</h2>
-          <ul className="grid grid-cols-6">
-            {items &&
-              items.slice(6, 12).map((el) => <Card key={el.name} data={el} />)}
-          </ul>
-
-          <h2 className={styles.heading2}>Followings</h2>
-          <ul className="grid grid-cols-6">
-            {items &&
-              items.slice(6, 12).map((el) => <Card key={el.name} data={el} />)}
-          </ul>
+          <CardsList
+            title="Public Playlists"
+            shrink={true}
+            items={items.slice(0, 6)}
+          />
+          <CardsList
+            title="Followers"
+            shrink={true}
+            items={items.slice(6, 12)}
+          />
+          <CardsList
+            title="Followings"
+            shrink={true}
+            items={items.slice(12, 18)}
+          />
         </div>
       </GradientBackground>
     </div>
