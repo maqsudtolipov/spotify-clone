@@ -15,10 +15,7 @@ const Library = () => {
       ref={libraryEl}
       className={`${styles.libraryWrapper} ${isCollapsed ? styles.libraryCollapsed : ''}`}
     >
-      <div
-        ref={resizeEl}
-        className={`${styles.resize} ${isCollapsed ? styles.resizeHidden : ''}`}
-      ></div>
+      <div ref={resizeEl} className={styles.resize}></div>
 
       <div className={styles.library}>
         <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>

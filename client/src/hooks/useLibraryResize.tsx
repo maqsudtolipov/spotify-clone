@@ -31,8 +31,13 @@ export const useLibraryResize = () => {
             e.preventDefault();
           }
 
-          if (newWidth === 230) {
+          if (!isCollapsed && newWidth === 230) {
             setIsCollapsed(true);
+            setDrag(false);
+          }
+
+          if (isCollapsed && newWidth === 120) {
+            setIsCollapsed(false);
             setDrag(false);
           }
         }
