@@ -62,5 +62,5 @@ export const useLibraryResize = () => {
     setIsCollapsed((prev) => !prev);
   };
 
-  return { libraryEl, resizeEl, isCollapsed, handleCollapse };
+  return { drag, libraryEl, resizeEl, isCollapsed, handleCollapse };
 };

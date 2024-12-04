@@ -7,7 +7,7 @@ import LibrarySearch from './LibrarySearch/LibrarySearch.tsx';
 import { useLibraryResize } from '../../hooks/useLibraryResize.tsx';
 
 const Library = () => {
-  const { resizeEl, libraryEl, isCollapsed, handleCollapse } =
+  const { drag, resizeEl, libraryEl, isCollapsed, handleCollapse } =
     useLibraryResize();
 
   return (
@@ -15,7 +15,10 @@ const Library = () => {
       ref={libraryEl}
       className={`${styles.libraryWrapper} ${isCollapsed ? styles.libraryCollapsed : ''}`}
     >
-      <div ref={resizeEl} className={styles.resize}></div>
+      <div
+        ref={resizeEl}
+        className={`${styles.resize} ${drag ? styles.resizeActive : ''}`}
+      ></div>
 
       <div className={styles.library}>
         <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>
