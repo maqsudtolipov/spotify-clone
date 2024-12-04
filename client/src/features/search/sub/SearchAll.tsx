@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import Heading2 from '../../../ui-library/Typography/Heading2.tsx';
 import SortedTable from '../../../ui-library/Table/SortedTable.tsx';
-import Card from '../../../ui-library/Card/Card.tsx';
+import CardsList from '../../../components/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -85,34 +85,19 @@ const SearchAll = () => {
 
       {artists && (
         <div className="mb-10">
-          <Heading2>Artists</Heading2>
-          <ul className="grid grid-cols-6">
-            {artists.map((el) => (
-              <Card key={el.name} data={el} />
-            ))}
-          </ul>
+          <CardsList title="Artists" shrink={true} items={artists} />
         </div>
       )}
 
       {playlists && (
         <div className="mb-10">
-          <Heading2>Playlists</Heading2>
-          <ul className="grid grid-cols-6">
-            {playlists.map((el) => (
-              <Card key={el.name} data={el} />
-            ))}
-          </ul>
+          <CardsList title="Playlists" shrink={true} items={playlists} />
         </div>
       )}
 
       {profiles && (
         <div className="mb-10">
-          <Heading2>Profiles</Heading2>
-          <ul className="grid grid-cols-6">
-            {profiles.map((el) => (
-              <Card key={el.name} data={el} />
-            ))}
-          </ul>
+          <CardsList title="Profiles" shrink={true} items={profiles} />
         </div>
       )}
     </div>

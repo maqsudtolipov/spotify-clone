@@ -17,10 +17,10 @@ const Card = ({ data }: CardProps) => {
   const { img, name, description, type } = data;
 
   return (
-    <div className={styles.card}>
+    <li className={styles.card}>
       <CardImage img={img} alt={name} isRounded={type === 'artist'} />
       <CardDescription name={name} description={description} />
-    </div>
+    </li>
   );
 };
 

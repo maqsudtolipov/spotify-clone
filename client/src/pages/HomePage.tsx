@@ -1,9 +1,9 @@
 import styles from './HomePage.module.scss';
 import History from '../features/history/History.tsx';
 import { useEffect, useState } from 'react';
-import Card from '../ui-library/Card/Card.tsx';
 import { faker } from '@faker-js/faker';
 import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
+import CardsList from '../components/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -39,23 +39,13 @@ const HomePage = () => {
     <GradientBackground className={styles.home} color={gradientColor}>
       <History handleNewColor={handleNewColor} />
 
-      <h2 className={styles.heading2}>Most Popular</h2>
-      <ul className="grid grid-cols-6">
-        {items &&
-          items.slice(0, 6).map((el) => <Card key={el.name} data={el} />)}
-      </ul>
-
-      <h2 className={styles.heading2}>New Releases</h2>
-      <ul className="grid grid-cols-6">
-        {items &&
-          items.slice(6, 12).map((el) => <Card key={el.name} data={el} />)}
-      </ul>
-
-      <h2 className={styles.heading2}>Your Favourite Artists</h2>
-      <ul className="grid grid-cols-6">
-        {items &&
-          items.slice(12, 18).map((el) => <Card key={el.name} data={el} />)}
-      </ul>
+      <CardsList title="Most Popular" shrink={true} items={items.slice(0, 6)} />
+      <CardsList title="New Releases" shrink={true} items={items.slice(0, 6)} />
+      <CardsList
+        title="Your Favourite Artists"
+        shrink={true}
+        items={items.slice(12, 18)}
+      />
     </GradientBackground>
   );
 };
