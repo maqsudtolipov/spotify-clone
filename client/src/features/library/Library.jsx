@@ -14,21 +14,23 @@ const Library = () => {
   };
 
   return (
-    <div
-      className={`${styles.library} ${isCollapsed ? styles.libraryCollapsed : ''}`}
-    >
-      <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>
-        {!isCollapsed && <LibraryFilter />}
-      </LibraryHeader>
+    <div className={styles.libraryWrapper}>
+      <div
+        className={`${styles.library} ${isCollapsed ? styles.libraryCollapsed : ''}`}
+      >
+        <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>
+          {!isCollapsed && <LibraryFilter />}
+        </LibraryHeader>
 
-      {!isCollapsed && (
-        <div className="px-6 py-2.5 pl-4 flex items-center gap-8">
-          <LibrarySearch />
-          <LibrarySort />
-        </div>
-      )}
+        {!isCollapsed && (
+          <div className="px-6 py-2.5 pl-4 flex items-center gap-8">
+            <LibrarySearch />
+            <LibrarySort />
+          </div>
+        )}
 
-      <LibraryList isCollapsed={isCollapsed} />
+        <LibraryList isCollapsed={isCollapsed} />
+      </div>
     </div>
   );
 };
