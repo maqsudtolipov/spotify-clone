@@ -5,33 +5,45 @@ export const useLibraryResize = () => {
   const libraryEl = useRef<HTMLElement>();
 
   useEffect(() => {
-    if (!libraryEl.current || !resizeEl.current) return;
-    let drag = false;
+    if (libraryEl.current && resizeEl.current) {
+      let drag = false;
 
-    let moveX =
-      libraryEl.current.getBoundingClientRect().width +
-      resizeEl.current.getBoundingClientRect().width / 2;
+      let moveX =
+        libraryEl.current.getBoundingClientRect().width +
+        resizeEl.current.getBoundingClientRect().width / 2;
 
-    resizeEl.current.addEventListener('mousedown', function (e) {
-      drag = true;
-      moveX = e.x;
-    });
+      const handleMouseDown = (e) => {
+        drag = true;
+        moveX = e.x;
+      };
 
-    document.addEventListener('mousemove', function (e) {
-      moveX = e.x;
-      if (drag) {
-        libraryEl.current.style.width =
-          -10.5 +
-          moveX -
-          resizeEl.current.getBoundingClientRect().width / 2 +
-          'px';
-        e.preventDefault();
-      }
-    });
+      const handleMouseMove = (e) => {
+        moveX = e.x;
+        if (libraryEl.current) {
+          const newWidth =
+            -10.5 + moveX - resizeEl.current.getBoundingClientRect().width / 2;
 
-    document.addEventListener('mouseup', function (e) {
-      drag = false;
-    });
+          if (drag && newWidth <= 400) {
+            libraryEl.current.style.width = newWidth + 'px';
+            e.preventDefault();
+          }
+        }
+      };
+
+      const handleMouseUp = (e) => {
+        drag = false;
+      };
+
+      resizeEl.current.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        resizeEl.current.removeEventListener('mousedown', handleMouseDown);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
   }, []);
 
   return { libraryEl, resizeEl };
