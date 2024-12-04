@@ -1,26 +1,24 @@
 import styles from './Library.module.scss';
 import LibraryHeader from './LibraryHeader/LibraryHeader.jsx';
 import LibraryList from './LibraryList/LibraryList.jsx';
-import { useState } from 'react';
 import LibraryFilter from './LibraryFilter/LibraryFilter.tsx';
 import LibrarySort from './LibrarySort/LibrarySort.tsx';
 import LibrarySearch from './LibrarySearch/LibrarySearch.tsx';
 import { useLibraryResize } from '../../hooks/useLibraryResize.tsx';
 
 const Library = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const { resizeEl, libraryEl } = useLibraryResize();
-
-  const handleCollapse = () => {
-    setIsCollapsed((prev) => !prev);
-  };
+  const { resizeEl, libraryEl, isCollapsed, handleCollapse } =
+    useLibraryResize();
 
   return (
     <div
       ref={libraryEl}
       className={`${styles.libraryWrapper} ${isCollapsed ? styles.libraryCollapsed : ''}`}
     >
-      <div ref={resizeEl} className={styles.resize}></div>
+      <div
+        ref={resizeEl}
+        className={`${styles.resize} ${isCollapsed ? styles.resizeHidden : ''}`}
+      ></div>
 
       <div className={styles.library}>
         <LibraryHeader isCollapsed={isCollapsed} onCollapse={handleCollapse}>

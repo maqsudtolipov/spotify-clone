@@ -24,6 +24,10 @@
   }
 }
 
+.resizeHidden {
+  @apply hidden;
+}
+
 .library {
   @apply h-full w-full absolute;
 }

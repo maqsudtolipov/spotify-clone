@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const useLibraryResize = () => {
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const resizeEl = useRef<HTMLElement>();
   const libraryEl = useRef<HTMLElement>();
 
@@ -23,7 +24,7 @@ export const useLibraryResize = () => {
           const newWidth =
             -10.5 + moveX - resizeEl.current.getBoundingClientRect().width / 2;
 
-          if (drag && newWidth <= 400) {
+          if (drag && newWidth >= 270 && newWidth <= 400) {
             libraryEl.current.style.width = newWidth + 'px';
             e.preventDefault();
           }
@@ -46,5 +47,9 @@ export const useLibraryResize = () => {
     }
   }, []);
 
-  return { libraryEl, resizeEl };
+  const handleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
+  return { libraryEl, resizeEl, isCollapsed, handleCollapse };
 };
