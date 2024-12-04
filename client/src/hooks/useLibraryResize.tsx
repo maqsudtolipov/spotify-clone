@@ -3,64 +3,62 @@ import { useEffect, useRef, useState } from 'react';
 export const useLibraryResize = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [drag, setDrag] = useState<boolean>(false);
-  const resizeEl = useRef<HTMLElement>();
-  const libraryEl = useRef<HTMLElement>();
+  const resizeRef = useRef<HTMLElement>();
+  const libraryRef = useRef<HTMLElement>();
 
   useEffect(() => {
-    if (libraryEl.current && resizeEl.current) {
-      let moveX =
-        libraryEl.current.getBoundingClientRect().width +
-        resizeEl.current.getBoundingClientRect().width / 2;
+    const resizeEl = resizeRef.current as HTMLElement;
+    const libraryEl = libraryRef.current as HTMLElement;
 
-      const handleMouseDown = (e) => {
+    if (resizeEl && libraryEl) {
+      const handleMouseDown = () => {
         setDrag(true);
-        moveX = e.x;
       };
 
-      const handleMouseMove = (e) => {
-        if (drag && libraryEl.current) {
-          moveX = e.x;
-
+      const handleMouseMove = (e: MouseEvent) => {
+        if (drag) {
           const newWidth =
-            -10.5 + moveX - resizeEl.current.getBoundingClientRect().width / 2;
-
-          console.log(`Mouse x: ${e.clientX}, new width: ${newWidth}`);
+            e.clientX - resizeEl.getBoundingClientRect().width / 2 - 10.5;
 
           if (drag && newWidth >= 280 && newWidth <= 400) {
-            libraryEl.current.style.width = newWidth + 'px';
+            libraryEl.style.width = `${newWidth}px`;
             e.preventDefault();
           }
 
           // If newWidth larger than 215 open library, else close
           if (!isCollapsed && newWidth <= 215) {
             setIsCollapsed(true);
-          }
-
-          if (isCollapsed && newWidth > 215) {
+          } else if (isCollapsed && newWidth > 215) {
             setIsCollapsed(false);
           }
         }
       };
 
-      const handleMouseUp = (e) => {
+      const handleMouseUp = () => {
         setDrag(false);
       };
 
-      resizeEl.current.addEventListener('mousedown', handleMouseDown);
+      resizeEl.addEventListener('mousedown', handleMouseDown);
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
 
       return () => {
-        resizeEl.current.removeEventListener('mousedown', handleMouseDown);
+        resizeEl.removeEventListener('mousedown', handleMouseDown);
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [drag, isCollapsed]);
+  }, [drag, isCollapsed, libraryRef, resizeRef]);
 
   const handleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
 
-  return { drag, libraryEl, resizeEl, isCollapsed, handleCollapse };
+  return {
+    drag,
+    libraryEl: libraryRef,
+    resizeEl: resizeRef,
+    isCollapsed,
+    handleCollapse,
+  };
 };
