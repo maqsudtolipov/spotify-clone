@@ -18,27 +18,26 @@ export const useLibraryResize = () => {
       };
 
       const handleMouseMove = (e) => {
-        if (libraryEl.current) {
+        if (drag && libraryEl.current) {
           moveX = e.x;
 
           const newWidth =
             -10.5 + moveX - resizeEl.current.getBoundingClientRect().width / 2;
 
-          // console.log(e.clientX, newWidth);
+          console.log(`Mouse x: ${e.clientX}, new width: ${newWidth}`);
 
           if (drag && newWidth >= 280 && newWidth <= 400) {
             libraryEl.current.style.width = newWidth + 'px';
             e.preventDefault();
           }
 
-          if (!isCollapsed && newWidth === 230) {
+          // If newWidth larger than 215 open library, else close
+          if (!isCollapsed && newWidth <= 215) {
             setIsCollapsed(true);
-            setDrag(false);
           }
 
-          if (isCollapsed && newWidth === 120) {
+          if (isCollapsed && newWidth > 215) {
             setIsCollapsed(false);
-            setDrag(false);
           }
         }
       };
@@ -57,7 +56,7 @@ export const useLibraryResize = () => {
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [drag]);
+  }, [drag, isCollapsed]);
 
   const handleCollapse = () => {
     setIsCollapsed((prev) => !prev);
