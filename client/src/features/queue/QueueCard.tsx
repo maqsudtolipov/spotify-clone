@@ -1,7 +1,8 @@
-import styles from '../library/LibraryList/LibraryCard/LibraryCard.module.scss';
+import styles from './Queue.module.scss';
 import CardImage from '../library/LibraryList/LibraryCard/CardImage.tsx';
 import CardInfo from '../library/LibraryList/LibraryCard/CardInfo.tsx';
 import React from 'react';
+import { RiDraggable } from 'react-icons/ri';
 
 interface LibraryCardData {
   img: string;
@@ -18,6 +19,7 @@ interface QueueCardProps {
   onDragEnd: () => void;
 }
 
+// TODO: This should be separated form LibraryCard component
 const QueueCard = ({
   data,
   isActive,
@@ -40,6 +42,7 @@ const QueueCard = ({
     >
       <CardImage src={img} name={`Cover for ${name}`} />
       <CardInfo name={name} owner={artist} />
+      <RiDraggable className={styles.cardIcon} />
     </li>
   );
 };

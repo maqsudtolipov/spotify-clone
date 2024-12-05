@@ -25,3 +25,35 @@
 .shadow {
   @apply h-4 w-full absolute -translate-y-4 bg-transparent shadow-xl shadow-black z-10;
 }
+
+// Card
+.libraryCard {
+  @apply p-2 flex items-center gap-3 rounded-md  cursor-pointer;
+
+  &:hover {
+    @apply bg-neutral-800;
+
+    .cardImageContainer {
+      img {
+        @apply brightness-50;
+      }
+
+      svg {
+        @apply inline-block;
+      }
+    }
+
+    .cardIcon {
+      @apply inline-block;
+    }
+  }
+}
+
+.libraryCardActive {
+  @apply bg-black scale-105;
+  transition: all 0.1s;
+}
+
+.cardIcon {
+  @apply size-8 p-2 hidden text-neutral-400 scale-110;
+}
