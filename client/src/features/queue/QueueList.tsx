@@ -15,7 +15,7 @@ const QueueList = () => {
   const [dragOverId, setDragOverId] = useState<string>('');
 
   const [showShadow, setShowShadow] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const fetchedItems = Array.from({ length: 200 }, () => ({
@@ -44,18 +44,20 @@ const QueueList = () => {
   useEffect(() => {
     const listEl = ref.current;
 
-    const eventListener = () => {
-      if (listEl.scrollTop >= 5) {
-        setShowShadow(true);
-      } else {
-        setShowShadow(false);
-      }
-    };
+    if (listEl) {
+      const eventListener = () => {
+        if (listEl.scrollTop >= 5) {
+          setShowShadow(true);
+        } else {
+          setShowShadow(false);
+        }
+      };
 
-    listEl.addEventListener('scroll', eventListener);
-    return () => {
-      listEl.removeEventListener('scroll', eventListener);
-    };
+      listEl.addEventListener('scroll', eventListener);
+      return () => {
+        listEl.removeEventListener('scroll', eventListener);
+      };
+    }
   }, []);
 
   return (
