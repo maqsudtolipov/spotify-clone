@@ -16,6 +16,11 @@
   }
 }
 
+.libraryCardActive {
+  @apply bg-black scale-105;
+  transition: all 0.1s;
+}
+
 .libraryCardPlaying {
   .cardInfoName,
   .cardIcon {

@@ -9,14 +9,18 @@ interface LibraryCardData {
 }
 
 interface QueueCardProps {
+  isActive: boolean;
   data: LibraryCardData;
 }
 
-const QueueCard = ({ data }: QueueCardProps) => {
+const QueueCard = ({ isActive, data, ...rest }: QueueCardProps) => {
   const { img, name, artist } = data;
 
   return (
-    <li className={styles.libraryCard}>
+    <li
+      className={`${styles.libraryCard} ${isActive ? styles.libraryCardActive : ''}`}
+      {...rest}
+    >
       <CardImage src={img} name={`Cover for ${name}`} />
       <CardInfo name={name} owner={artist} />
     </li>
