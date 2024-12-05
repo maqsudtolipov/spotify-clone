@@ -18,6 +18,6 @@
 }
 
 .queueList {
-  @apply p-4 pr-5 overflow-y-scroll;
+  @apply p-2 overflow-y-scroll;
   height: calc(100% - 64px);
 }
