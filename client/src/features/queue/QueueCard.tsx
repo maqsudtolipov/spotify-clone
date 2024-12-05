@@ -10,15 +10,17 @@ interface LibraryCardData {
 
 interface QueueCardProps {
   isActive: boolean;
+  draggable: boolean;
   data: LibraryCardData;
 }
 
-const QueueCard = ({ isActive, data, ...rest }: QueueCardProps) => {
+const QueueCard = ({ isActive, draggable, data, ...rest }: QueueCardProps) => {
   const { img, name, artist } = data;
 
   return (
     <li
       className={`${styles.libraryCard} ${isActive ? styles.libraryCardActive : ''}`}
+      draggable={draggable}
       {...rest}
     >
       <CardImage src={img} name={`Cover for ${name}`} />

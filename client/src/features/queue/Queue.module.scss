@@ -16,3 +16,8 @@
     @apply font-bold;
   }
 }
+
+.queueList {
+  @apply p-4 pr-5 overflow-y-scroll;
+  height: calc(100% - 64px);
+}

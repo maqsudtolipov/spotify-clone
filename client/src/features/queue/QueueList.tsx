@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import styles from './Queue.module.scss';
+import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import QueueCard from './QueueCard.tsx';
 
@@ -38,14 +39,14 @@ const QueueList = () => {
   };
 
   return (
-    <ul className="p-4 pr-5">
+    <ul className={styles.queueList}>
       {items &&
         items.map((item) => (
           <QueueCard
             key={item.name}
             data={item}
             isActive={dragOverId === item.id}
-            draggable
+            draggable={true}
             onDragEnter={() => setDragOverId(item.id)}
             onDragEnd={() => handleSort(item.id)}
             onDragOver={(e: DragEvent) => {
