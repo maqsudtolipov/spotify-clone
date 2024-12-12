@@ -47,11 +47,11 @@ const LibraryList = ({ isCollapsed }) => {
     <div
       className={`${styles.listContainer} ${isCollapsed ? styles.listContainerCollapsed : ''}`}
     >
-      <div className={showShadow ? styles.shadow : ''}></div>
       <div
         ref={ref}
         className={`${styles.list} ${isCollapsed ? styles.listCollapsed : ''}`}
       >
+        <div className={showShadow ? styles.shadow : ''}></div>
         {items?.map((el) => (
           <LibraryCard key={el.name} data={el} isCollapsed={isCollapsed} />
         ))}
