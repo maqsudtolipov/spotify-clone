@@ -1,20 +1,36 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please provide a name"],
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please provide a name"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide a valid email address"],
+      unique: [true, "User with this email already exists"],
+    },
+    password: {
+      type: String,
+      required: [true, "Please provide a password"],
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, "Please provide a password"],
+      validate: {
+        validator: function (value) {
+          return this.password === value;
+        },
+        message: "Passwords do not match",
+      },
+    }
   },
-  email: {
-    type: String,
-    required: [true, "Please provide a valid email address"],
-    unique: true,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-  password: {
-    type: String,
-    required: [true, "Please provide a password"],
-  },
-});
+);
 
 const User = mongoose.model("User", userSchema);
 

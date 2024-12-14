@@ -7,7 +7,7 @@ dotenv.config({ path: "./.env" });
 
 // Uncaught Exception
 process.on("uncaughtException", (err) => {
-  console.log("Uncaught Exception: ", err.message);
+  console.log("🔴 Uncaught Exception: ", err.name, err.message, err);
   console.log("🔴 Closing server now...");
   process.exit(1);
 });
@@ -26,7 +26,7 @@ const server = app.listen(PORT, () =>
 
 // Uncaught Rejection
 process.on("unhandledRejection", (err) => {
-  console.log(err);
+  console.log("🔴 UNHANDLED REJECTION: ", err.name, err.message);
   console.log("🔴 Closing server now...");
   server.close(() => {
     process.exit(1);
