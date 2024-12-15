@@ -28,9 +28,9 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> $GITHUB_ENV
+          echo "DB_URL=${{ secrets.DB_URL }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
 
       - name: Run tests
         run: |
