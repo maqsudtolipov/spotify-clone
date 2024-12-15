@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 let server;
 
 beforeAll(async () => {
-  dotenv.config({ path: "./../../.env" });
+  dotenv.config();
 
   process.env.NODE_ENV = "production";
 

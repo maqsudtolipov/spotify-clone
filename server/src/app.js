@@ -8,7 +8,7 @@ const authRouter = require("./feature/auth/authRoutes");
 const app = express();
 
 // Env
-dotenv.config({ path: "./.env" });
+dotenv.config();
 
 // Middlewares
 app.use(express.json());
