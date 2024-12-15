@@ -6,34 +6,48 @@ const User = require("../../../src/feature/auth/userModel");
 let server;
 
 beforeAll(async () => {
-  process.env.NODE_ENV = "production";
-  console.log(process.env.DB_PASS)
+  try {
+    // Ensure DB_URL and DB_PASS are set in the environment variables
+    if (!process.env.DB_URL || !process.env.DB_PASS) {
+      throw new Error("Missing required environment variables: DB_URL or DB_PASS");
+    }
 
-  const DB = process.env.DB_URL.replace(
-    "<db_password>",
-    process.env.DB_PASS,
-  ).replace("<db_name>", "test");
+    process.env.NODE_ENV = "production";
 
-  console.log("Connecting to database:", DB);  // Log the database connection URL
+    // Construct the database URL
+    const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASS).replace("<db_name>", "test");
 
-  await mongoose.connect(DB);
+    console.log("Connecting to database:", DB); // Log the database connection URL
 
-  console.log("Connected to database");  // Log a success message
+    // Connect to the database
+    await mongoose.connect(DB);
 
-  server = app.listen(3009);
+    console.log("Connected to database"); // Log a success message
+
+    server = app.listen(3009);
+  } catch (error) {
+    console.error("Error in beforeAll setup:", error);
+    process.exit(1); // Exit if there's an error in setup
+  }
 });
 
 afterEach(async () => {
-  console.log(process.env.DB_PASS)
-  console.log("Deleting all users");  // Log a message before deleting users
-  await User.deleteMany();
+  try {
+    console.log("Deleting all users"); // Log a message before deleting users
+    await User.deleteMany();
+  } catch (error) {
+    console.error("Error in afterEach cleanup:", error);
+  }
 });
 
 afterAll(async () => {
-  console.log(process.env.DB_PASS)
-  console.log("Disconnecting from database");  // Log a message before disconnecting
-  await mongoose.disconnect();
-  server.close();
+  try {
+    console.log("Disconnecting from database"); // Log a message before disconnecting
+    await mongoose.disconnect();
+    server.close();
+  } catch (error) {
+    console.error("Error in afterAll cleanup:", error);
+  }
 });
 
 describe("AuthController - signUp", () => {
