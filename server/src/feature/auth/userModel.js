@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Please provide a name"],
+      minLength: [3, "Name must be at least 2 characters long"],
+      maxLength: [24, "Name must be at most 30 characters long"],
     },
     email: {
       type: String,
@@ -15,6 +17,7 @@ const userSchema = new mongoose.Schema(
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         "Please provide a valid email address",
       ],
+      select: false,
     },
     password: {
       type: String,
