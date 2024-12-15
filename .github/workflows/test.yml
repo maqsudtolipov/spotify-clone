@@ -28,13 +28,12 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          touch server/.env  # Create the .env file in the correct directory
           echo "DB_URL=${{ secrets.DB_URL }}" >> server/.env
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> server/.env
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> server/.env
-          cat server/.env  # Print out the content of .env to the logs
+          cat server/.env  # Output to logs for debugging
 
       - name: Run tests
         run: |
           cd server
-          node -r dotenv/config node_modules/.bin/jest  # Ensure dotenv is preloaded before running Jest
+          node -r dotenv/config node_modules/.bin/jest --runInBand  # Load dotenv explicitly
