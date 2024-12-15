@@ -6,8 +6,6 @@ const User = require("../../../src/feature/auth/userModel");
 let server;
 
 beforeAll(async () => {
-  process.env.NODE_ENV = "production";
-
   const DB = process.env.DB_URL.replace(
     "<db_password>",
     process.env.DB_PASS,
