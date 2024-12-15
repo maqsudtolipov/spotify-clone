@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env  NODE_ENV=development nodemon server.js",
     "prod": "cross-env  NODE_ENV=production nodemon server.js",
-    "test": "jest --config .jestrc --coverage"
+    "test": "jest -- --config=jest.config.js"
   },
   "author": "",
   "license": "ISC",
