@@ -28,7 +28,6 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          # Set the environment variables needed by your code
           echo "DB_URL=mongodb://exampleUser:examplePass@localhost:27017/test" >> $GITHUB_ENV
           echo "DB_PASS=examplePass" >> $GITHUB_ENV
           echo "NODE_ENV=production" >> $GITHUB_ENV
