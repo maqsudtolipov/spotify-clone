@@ -2,10 +2,13 @@ const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../../../src/app");
 const User = require("../../../src/feature/auth/userModel");
+const dotenv = require("dotenv");
 
 let server;
 
 beforeAll(async () => {
+  dotenv.config({ path: "./../../.env" });
+
   process.env.NODE_ENV = "production";
 
   const DB = process.env.DB_URL.replace(
