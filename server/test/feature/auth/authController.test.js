@@ -5,7 +5,8 @@ const User = require("../../../src/feature/auth/userModel");
 
 let server;
 
-jest.timeout(30000);
+jest.setTimeout(30000);
+
 
 beforeAll(async () => {
   try {
