@@ -30,6 +30,7 @@ jobs:
         run: |
           echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
