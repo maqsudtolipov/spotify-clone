@@ -28,10 +28,12 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "DB_URL=${{ secrets.DB_URL }}" >> server/.env
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> server/.env
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> server/.env
-          cat server/.env  # Output to logs for debugging
+          cd server
+          touch .env
+          echo "DB_URL=${{ secrets.DB_URL }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+          cat .env  # Output to logs for debugging
 
       - name: Run tests
         run: |
