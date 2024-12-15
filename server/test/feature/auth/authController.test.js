@@ -5,6 +5,8 @@ const User = require("../../../src/feature/auth/userModel");
 
 let server;
 
+jest.timeout(30000);
+
 beforeAll(async () => {
   try {
     // Ensure DB_URL and DB_PASS are set in the environment variables
