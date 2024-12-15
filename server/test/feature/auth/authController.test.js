@@ -3,54 +3,25 @@ const request = require("supertest");
 const app = require("../../../src/app");
 const User = require("../../../src/feature/auth/userModel");
 
-let server;
-
-jest.setTimeout(30000);
-
-
 beforeAll(async () => {
-  try {
-    // Ensure DB_URL and DB_PASS are set in the environment variables
-    if (!process.env.DB_URL || !process.env.DB_PASS) {
-      throw new Error("Missing required environment variables: DB_URL or DB_PASS");
-    }
+  process.env.NODE_ENV = "production";
 
-    process.env.NODE_ENV = "production";
+  const DB = process.env.DB_URL.replace(
+    "<db_password>",
+    process.env.DB_PASS,
+  ).replace("<db_name>", "test");
+  await mongoose.connect(DB);
 
-    // Construct the database URL
-    const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASS).replace("<db_name>", "test");
-
-    console.log("Connecting to database:", DB); // Log the database connection URL
-
-    // Connect to the database
-    await mongoose.connect(DB);
-
-    console.log("Connected to database"); // Log a success message
-
-    server = app.listen(3009);
-  } catch (error) {
-    console.error("Error in beforeAll setup:", error);
-    process.exit(1); // Exit if there's an error in setup
-  }
+  server = app.listen(3009);
 });
 
 afterEach(async () => {
-  try {
-    console.log("Deleting all users"); // Log a message before deleting users
-    await User.deleteMany();
-  } catch (error) {
-    console.error("Error in afterEach cleanup:", error);
-  }
+  await User.deleteMany();
 });
 
 afterAll(async () => {
-  try {
-    console.log("Disconnecting from database"); // Log a message before disconnecting
-    await mongoose.disconnect();
-    server.close();
-  } catch (error) {
-    console.error("Error in afterAll cleanup:", error);
-  }
+  await mongoose.disconnect();
+  server.close();
 });
 
 describe("AuthController - signUp", () => {
