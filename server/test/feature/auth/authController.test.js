@@ -7,21 +7,31 @@ let server;
 
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
+  console.log(process.env.DB_PASS)
 
   const DB = process.env.DB_URL.replace(
     "<db_password>",
     process.env.DB_PASS,
   ).replace("<db_name>", "test");
+
+  console.log("Connecting to database:", DB);  // Log the database connection URL
+
   await mongoose.connect(DB);
+
+  console.log("Connected to database");  // Log a success message
 
   server = app.listen(3009);
 });
 
 afterEach(async () => {
+  console.log(process.env.DB_PASS)
+  console.log("Deleting all users");  // Log a message before deleting users
   await User.deleteMany();
 });
 
 afterAll(async () => {
+  console.log(process.env.DB_PASS)
+  console.log("Disconnecting from database");  // Log a message before disconnecting
   await mongoose.disconnect();
   server.close();
 });
