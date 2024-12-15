@@ -32,7 +32,7 @@ jobs:
           touch .env
           echo "DB_URL=${{ secrets.DB_URL }}" >> .env
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+          echo "NODE_ENV=production" >> .env
           cat .env  # Output to logs for debugging
 
       - name: Run tests
