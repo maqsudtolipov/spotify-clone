@@ -38,4 +38,4 @@ jobs:
       - name: Run tests
         run: |
           cd server
-          node -r dotenv/config node_modules/.bin/jest --runInBand  # Load dotenv explicitly
+          npm test
