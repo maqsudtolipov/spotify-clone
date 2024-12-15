@@ -28,13 +28,11 @@ jobs:
 
       - name: Set up environment variables
         run: |
+          cd server
           touch .env
           echo "DB_URL=${{ secrets.DB_URL }}" >> .env
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-          echo "DB_URL=${{ secrets.DB_URL }}"
-          echo "DB_PASS=${{ secrets.DB_PASS }}"
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}"
           cat .env  # Ensure the .env file contains the expected values
 
       - name: Run tests
