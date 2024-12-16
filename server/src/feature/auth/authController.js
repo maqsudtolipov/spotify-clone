@@ -16,3 +16,13 @@ exports.signUp = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.login = async (req, res, next) => {
+  try {
+    res
+      .status(200)
+      .json({ status: "success", message: "Logged in successfully" });
+  } catch (e) {
+    next(e);
+  }
+};
