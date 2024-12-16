@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 const globalErrorHandler = require("./middleware/errorMiddleware");
-const authRouter = require("./feature/auth/authRoutes");
+const authRouter = require("./routes/authRoutes");
 
 // Express App setup
 const app = express();

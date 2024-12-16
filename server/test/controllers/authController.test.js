@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
-const app = require("../../../src/app");
-const User = require("../../../src/feature/auth/userModel");
+const app = require("../../src/app");
+const User = require("../../src/models/userModel");
 
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
