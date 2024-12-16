@@ -118,5 +118,18 @@ describe("AuthController", () => {
       expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
 
     });
+
+    it("should fail when email or password is missing", async () => {
+      const userData = {
+        email: "",
+        password: "",
+      };
+
+      const res = await request(app).post("/api/auth/login").send(userData);
+
+      expect(res.status).toBe(422);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Please provide email and password/i);
+    });
   });
 });
