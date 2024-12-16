@@ -116,7 +116,6 @@ describe("AuthController", () => {
       expect(refreshToken).toBeTruthy();
       expect(refreshToken).toMatch(/HttpOnly/i);
       expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
-
     });
 
     it("should fail when email or password is missing", async () => {
@@ -131,5 +130,22 @@ describe("AuthController", () => {
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Please provide email and password/i);
     });
+
+    it("should fail when user does not exist", async () => {
+      const userData = {
+        email: "nonexistent@example.com",
+        password: "Pa$$1234",
+      };
+
+      const res = await request(app).post("/api/auth/login").send(userData);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid email or password/i);
+    });
+
+    it("should fail when password is incorrect", async () => {
+
+    })
   });
 });
