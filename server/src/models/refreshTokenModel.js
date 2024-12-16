@@ -10,10 +10,6 @@ const refreshTokenSchema = mongoose.Schema({
     ref: "User",
     required: [true, "Please provide a user ID"],
   },
-  expiresAt: {
-    type: Date,
-    required: [true, "Please provide an expiration date"],
-  },
 });
 
 const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);

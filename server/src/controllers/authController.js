@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
+const RefreshToken = require("../models/refreshTokenModel");
 const AppError = require("../utils/AppError");
+const generateAccessToken = require("../utils/generateAccessToken");
+const generateRefreshToken = require("../utils/generateRefreshToken");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -39,12 +42,23 @@ exports.login = async (req, res, next) => {
       return next(new AppError("Invalid email or password", 401));
     }
 
+    // Generate access and refresh tokens
+    generateAccessToken(user.id, res);
+    const refreshToken = generateRefreshToken(user.id, res);
+
+    // Save refresh token in the database
+    await RefreshToken.create({
+      userId: user.id,
+      token: refreshToken,
+    });
+
     res.status(200).json({
       status: "success",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
       },
+      refreshToken,
     });
   } catch (e) {
     next(e);
