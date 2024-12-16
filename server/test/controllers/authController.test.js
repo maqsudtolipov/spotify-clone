@@ -145,7 +145,16 @@ describe("AuthController", () => {
     });
 
     it("should fail when password is incorrect", async () => {
+      const userData = {
+        email: "john@example.com",
+        password: "wrongpassword",
+      };
 
+      const res = await request(app).post("/api/auth/login").send(userData);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid email or password/i);
     })
   });
 });
