@@ -9,7 +9,7 @@ const generateAccessToken = (userId, res) => {
   res.cookie("accessToken", accessToken, {
     expires: new Date(Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION)),
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     path: "/",
   });
 

@@ -11,8 +11,8 @@ const generateRefreshToken = (userId, res) => {
       Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION),
     ),
     httpOnly: true,
-    secure: true,
-    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    path: "/api/auth/refresh-token",
   });
 
   return refreshToken;
