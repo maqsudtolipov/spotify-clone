@@ -64,3 +64,7 @@ exports.login = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.refreshToken = async (req, res, next) => {
+  res.status(200).json({ message: "This route not complete yet" });
+};
