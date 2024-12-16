@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
+const RefreshToken = require("../../src/models/refreshTokenModel");
 
+let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
 
@@ -15,73 +17,106 @@ beforeAll(async () => {
   server = app.listen(3009);
 });
 
-afterEach(async () => {
-  await User.deleteMany();
-});
-
 afterAll(async () => {
+  await User.deleteMany();
+  await RefreshToken.deleteMany();
   await mongoose.disconnect();
   server.close();
 });
 
-describe("AuthController - signUp", () => {
-  it("should create a new user", async () => {
-    const userData = {
-      name: "John Doe",
-      email: "john@example.com",
-      password: "Pa$$1234",
-      passwordConfirm: "Pa$$1234",
-    };
+describe("AuthController", () => {
+  describe("SignUp", () => {
+    it("should create a new user", async () => {
+      const userData = {
+        name: "John Doe",
+        email: "john@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      };
 
-    const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/sign-up").send(userData);
 
-    expect(res.status).toBe(201);
-    expect(res.body.status).toBe("success");
-    expect(res.body.data).toHaveProperty("name", "John Doe");
+      expect(res.status).toBe(201);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data).toHaveProperty("name", "John Doe");
+    });
+
+    it("should fail when email is invalid", async () => {
+      const userData = {
+        name: "John Doe",
+        email: "notanemail",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      };
+
+      const res = await request(app).post("/api/auth/sign-up").send(userData);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Please provide a valid email address/i);
+    });
+
+    it("should fail when password does not match", async () => {
+      const userData = {
+        name: "John Doe",
+        email: "john@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$12345",
+      };
+
+      const res = await request(app).post("/api/auth/sign-up").send(userData);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Passwords do not match/i);
+    });
+
+    it("should fail when required fields are missing", async () => {
+      const userData = {
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+      };
+
+      const res = await request(app).post("/api/auth/sign-up").send(userData);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Please provide a name/i);
+    });
   });
 
-  it("should fail when email is invalid", async () => {
-    const userData = {
-      name: "John Doe",
-      email: "notanemail",
-      password: "Pa$$1234",
-      passwordConfirm: "Pa$$1234",
-    };
+  describe("Login", () => {
+    it("should login a user", async () => {
+      const userData = {
+        name: "John Doe",
+        email: "john@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      };
 
-    const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/login").send(userData);
 
-    expect(res.status).toBe(400);
-    expect(res.body.status).toBe("fail");
-    expect(res.body.message).toMatch(/Please provide a valid email address/i);
-  });
+      const cookies = res.headers["set-cookie"];
+      const accessToken = cookies.find((cookie) =>
+        cookie.startsWith("accessToken="),
+      );
+      const refreshToken = cookies.find((cookie) =>
+        cookie.startsWith("refreshToken="),
+      );
 
-  it("should fail when password does not match", async () => {
-    const userData = {
-      name: "John Doe",
-      email: "john@example.com",
-      password: "Pa$$1234",
-      passwordConfirm: "Pa$$12345",
-    };
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.user).toHaveProperty("name", "John Doe");
+      expect(cookies.length).toBe(2);
 
-    const res = await request(app).post("/api/auth/sign-up").send(userData);
+      expect(accessToken).toBeTruthy();
+      expect(accessToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toBeTruthy();
+      expect(refreshToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
 
-    expect(res.status).toBe(400);
-    expect(res.body.status).toBe("fail");
-    expect(res.body.message).toMatch(/Passwords do not match/i);
-  });
-
-  it("should fail when required fields are missing", async () => {
-    const userData = {
-      name: "",
-      email: "",
-      password: "",
-      passwordConfirm: "",
-    };
-
-    const res = await request(app).post("/api/auth/sign-up").send(userData);
-
-    expect(res.status).toBe(400);
-    expect(res.body.status).toBe("fail");
-    expect(res.body.message).toMatch(/Please provide a name/i);
+    });
   });
 });
