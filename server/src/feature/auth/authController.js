@@ -27,8 +27,8 @@ exports.login = async (req, res, next) => {
       return next(new AppError("Please provide email and password", 422));
     }
 
-    // Check if user exists
-    const user = await User.findOne({ email }).select("+password");
+    // Check if the user exists
+    const user = await User.findOne({ email }, "id name password");
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
