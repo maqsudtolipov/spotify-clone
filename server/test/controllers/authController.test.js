@@ -233,5 +233,13 @@ describe("AuthController", () => {
       expect(refreshToken).toMatch(/HttpOnly/i);
       expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
     });
+
+    it("it should fail when refresh token is not provided", async () => {
+      const res = await request(app).post("/api/auth/refresh-token").send();
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/No refresh token provided/i);
+    });
   });
 });

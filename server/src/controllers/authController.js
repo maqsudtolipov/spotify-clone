@@ -88,7 +88,7 @@ exports.refreshToken = async (req, res, next) => {
 
     // Check if the refresh token provided
     if (!refreshToken) {
-      return res.status(401).json({ message: "No refresh token provided" });
+      return next(new AppError("No refresh token provided", 401));
     }
 
     const decodedRefreshToken = jwt.verify(
@@ -102,9 +102,7 @@ exports.refreshToken = async (req, res, next) => {
     });
 
     if (!userRefreshToken) {
-      return res
-        .status(401)
-        .json({ message: "Refresh token is invalid or expired" });
+      return next(new AppError("Refresh token is invalid or expired", 401));
     }
 
     // INFO: this logs out the user from all their devices
@@ -130,9 +128,7 @@ exports.refreshToken = async (req, res, next) => {
       e instanceof jwt.TokenExpiredError ||
       e instanceof jwt.JsonWebTokenError
     ) {
-      return res
-        .status(401)
-        .json({ message: "Refresh token invalid or expired" });
+      return next(new AppError("Refresh token is invalid or expired", 401));
     }
 
     next(e);
