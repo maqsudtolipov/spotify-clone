@@ -9,8 +9,8 @@ beforeAll(async () => {
   process.env.NODE_ENV = "production";
 
   if (
-    process.env.DB_TEST_URL &&
-    /test-database/.test(process.env.DB_TEST_URL)
+    !process.env.DB_TEST_URL &&
+    !(/test-database/.test(process.env.DB_TEST_URL))
   ) {
     console.log("Tests can only and must connect to a test database.");
   }
