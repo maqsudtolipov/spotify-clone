@@ -107,8 +107,9 @@ exports.refreshToken = async (req, res, next) => {
         .json({ message: "Refresh token is invalid or expired" });
     }
 
+    // INFO: this logs out the user from all their devices
     // Delete current refresh token from the database
-    await RefreshToken.findByIdAndDelete(userRefreshToken.id);
+    await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
 
     // Generate access and refresh tokens
     generateAccessToken(decodedRefreshToken.userId, res);
@@ -125,6 +126,15 @@ exports.refreshToken = async (req, res, next) => {
 
     res.status(200).json({ status: "success" });
   } catch (e) {
+    if (
+      e instanceof jwt.TokenExpiredError ||
+      e instanceof jwt.JsonWebTokenError
+    ) {
+      return res
+        .status(401)
+        .json({ message: "Refresh token invalid or expired" });
+    }
+
     next(e);
   }
 };
