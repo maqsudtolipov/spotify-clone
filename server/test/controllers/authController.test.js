@@ -241,5 +241,27 @@ describe("AuthController", () => {
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/No refresh token provided/i);
     });
+
+    it("it should fail when refresh token is modified", async () => {
+      console.log(accessToken, refreshToken);
+
+      const fakeRefreshToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxOTM5MzE1MDhhOGU1ZDVlM2NmY2IiLCJpYXQiOjE2MzQ0NDcyNTMsImV4cCI6MTYzNDQ0NzI2Mywic3ViIjoiYWNjZXNzVG9rZW4ifQ.WTMJCaoQ0h-nOXxh0bhvfhfQv0y_vgoyV98vjealhfs";
+      const modifiedRefreshToken = refreshToken.replace(
+        /(?<=refreshToken=)[^;]+/,
+        fakeRefreshToken,
+      );
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [modifiedRefreshToken])
+        .send();
+
+      console.log(res.body);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
+    });
   });
 });
