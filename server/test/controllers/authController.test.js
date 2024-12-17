@@ -10,7 +10,7 @@ beforeAll(async () => {
 
   if (
     !process.env.DB_TEST_URL &&
-    !(/test-database/.test(process.env.DB_TEST_URL))
+    !/test-database/.test(process.env.DB_TEST_URL)
   ) {
     console.log("Tests can only and must connect to a test database.");
   }
@@ -32,7 +32,7 @@ afterAll(async () => {
 });
 
 describe("AuthController", () => {
-  describe("SignUp", () => {
+  describe("/signup route", () => {
     it("should create a new user", async () => {
       const userData = {
         name: "John Doe",
@@ -128,18 +128,15 @@ describe("AuthController", () => {
     });
   });
 
-  describe("Login", () => {
+  describe("/login route", () => {
     it("should login a user", async () => {
       const userData = {
-        name: "John Doe",
         email: "john@example.com",
         password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
       };
 
       const res = await request(app).post("/api/auth/login").send(userData);
-
-      const cookies = res.headers["set-cookie"];
+      const cookies = res.get("set-cookie");
       const accessToken = cookies.find((cookie) =>
         cookie.startsWith("accessToken="),
       );
@@ -150,8 +147,8 @@ describe("AuthController", () => {
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(res.body.user).toHaveProperty("name", "John Doe");
-      expect(cookies.length).toBe(2);
 
+      expect(cookies.length).toBe(2);
       expect(accessToken).toBeTruthy();
       expect(accessToken).toMatch(/HttpOnly/i);
       expect(refreshToken).toBeTruthy();
@@ -196,6 +193,45 @@ describe("AuthController", () => {
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid email or password/i);
+    });
+  });
+
+  describe("/refresh-token route", () => {
+    let accessToken, refreshToken;
+
+    // Login user and save the refresh token
+    beforeAll(async () => {
+      const userData = {
+        email: "john@example.com",
+        password: "Pa$$1234",
+      };
+
+      const res = await request(app).post("/api/auth/login").send(userData);
+      const cookies = res.get("set-cookie");
+      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
+      refreshToken = cookies.find((cookie) =>
+        cookie.startsWith("refreshToken="),
+      );
+    });
+
+    it("it should send new access and refresh tokens", async () => {
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [refreshToken])
+        .send();
+
+      const cookies = res.get("set-cookie");
+      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
+      refreshToken = cookies.find((cookie) =>
+        cookie.startsWith("refreshToken="),
+      );
+
+      expect(cookies.length).toBe(2);
+      expect(accessToken).toBeTruthy();
+      expect(accessToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toBeTruthy();
+      expect(refreshToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
     });
   });
 });
