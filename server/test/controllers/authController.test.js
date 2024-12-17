@@ -8,10 +8,17 @@ let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
 
-  const DB = process.env.DB_URL.replace(
+  if (
+    process.env.DB_TEST_URL &&
+    /test-database/.test(process.env.DB_TEST_URL)
+  ) {
+    console.log("Tests can only and must connect to a test database.");
+  }
+
+  const DB = process.env.DB_TEST_URL.replace(
     "<db_password>",
     process.env.DB_PASS,
-  ).replace("<db_name>", "test");
+  );
   await mongoose.connect(DB);
 
   server = app.listen(3009);
@@ -115,7 +122,9 @@ describe("AuthController", () => {
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Please provide name, email, password and passwordConfirm/i);
+      expect(res.body.message).toMatch(
+        /Please provide name, email, password and passwordConfirm/i,
+      );
     });
   });
 
