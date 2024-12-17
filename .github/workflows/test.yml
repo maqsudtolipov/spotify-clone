@@ -30,7 +30,7 @@ jobs:
         run: |
           cd server
           touch .env
-          echo "DB_TEST_URL=${{ secrets.DB_URL }}" >> .env
+          echo "DB_TEST_URL=${{ secrets.DB_TEST_URL }}" >> .env
           echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
           echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
