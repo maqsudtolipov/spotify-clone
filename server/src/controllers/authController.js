@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const RefreshToken = require("../models/refreshTokenModel");
 const AppError = require("../utils/AppError");
@@ -62,7 +63,7 @@ exports.login = async (req, res, next) => {
     generateAccessToken(user.id, res);
     const refreshToken = generateRefreshToken(user.id, res);
 
-    // Save refresh token in the database
+    // Save refresh token to the database
     await RefreshToken.create({
       userId: user.id,
       token: refreshToken,
@@ -82,5 +83,48 @@ exports.login = async (req, res, next) => {
 };
 
 exports.refreshToken = async (req, res, next) => {
-  res.status(200).json({ message: "This route not complete yet" });
+  try {
+    const { refreshToken } = req.cookies;
+
+    // Check if the refresh token provided
+    if (!refreshToken) {
+      return res.status(401).json({ message: "No refresh token provided" });
+    }
+
+    const decodedRefreshToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+    );
+
+    const userRefreshToken = await RefreshToken.findOne({
+      token: refreshToken,
+      userId: decodedRefreshToken.userId,
+    });
+
+    if (!userRefreshToken) {
+      return res
+        .status(401)
+        .json({ message: "Refresh token is invalid or expired" });
+    }
+
+    // Delete current refresh token from the database
+    await RefreshToken.findByIdAndDelete(userRefreshToken.id);
+
+    // Generate access and refresh tokens
+    generateAccessToken(decodedRefreshToken.userId, res);
+    const newRefreshToken = generateRefreshToken(
+      decodedRefreshToken.userId,
+      res,
+    );
+
+    // Save new refresh token to the database
+    await RefreshToken.create({
+      userId: decodedRefreshToken.userId,
+      token: newRefreshToken,
+    });
+
+    res.status(200).json({ status: "success" });
+  } catch (e) {
+    next(e);
+  }
 };
