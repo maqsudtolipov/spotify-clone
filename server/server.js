@@ -13,7 +13,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // Connect to mongoDb
-const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASS).replace("<db_name>", process.env.DB_NAME);
+const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASS);
 mongoose.connect(DB).then(() => {
   console.log(`🟢 DATABASE CONNECTED`);
 });

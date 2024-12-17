@@ -8,10 +8,17 @@ let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
 
-  const DB = process.env.DB_URL.replace(
+  if (
+    process.env.DB_TEST_URL &&
+    /test-database/.test(process.env.DB_TEST_URL)
+  ) {
+    console.log("Tests can only and must connect to a test database.");
+  }
+
+  const DB = process.env.DB_TEST_URL.replace(
     "<db_password>",
     process.env.DB_PASS,
-  ).replace("<db_name>", "test");
+  );
   await mongoose.connect(DB);
 
   server = app.listen(3009);
@@ -34,11 +41,43 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/signup").send(userData);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
       expect(res.body.data).toHaveProperty("name", "John Doe");
+    });
+
+    it("should fail if required fields are missing", async () => {
+      const userData = {
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+      };
+
+      const res = await request(app).post("/api/auth/signup").send(userData);
+
+      expect(res.status).toBe(422);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(
+        /Please provide name, email, password and passwordConfirm/i,
+      );
+    });
+
+    it("should fail if the email already exists", async () => {
+      const userData = {
+        name: "John Doe",
+        email: "john@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      };
+
+      const res = await request(app).post("/api/auth/signup").send(userData);
+
+      expect(res.status).toBe(409);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Email already exists/i);
     });
 
     it("should fail when email is invalid", async () => {
@@ -49,7 +88,7 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/signup").send(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -58,13 +97,13 @@ describe("AuthController", () => {
 
     it("should fail when password does not match", async () => {
       const userData = {
-        name: "John Doe",
-        email: "john@example.com",
+        name: "Darren Jordan",
+        email: "sanforddarryl@example.com",
         password: "Pa$$1234",
         passwordConfirm: "Pa$$12345",
       };
 
-      const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/signup").send(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -79,11 +118,13 @@ describe("AuthController", () => {
         passwordConfirm: "",
       };
 
-      const res = await request(app).post("/api/auth/sign-up").send(userData);
+      const res = await request(app).post("/api/auth/signup").send(userData);
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Please provide a name/i);
+      expect(res.body.message).toMatch(
+        /Please provide name, email, password and passwordConfirm/i,
+      );
     });
   });
 
@@ -155,6 +196,6 @@ describe("AuthController", () => {
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid email or password/i);
-    })
+    });
   });
 });

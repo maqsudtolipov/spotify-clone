@@ -13,9 +13,25 @@ exports.signUp = async (req, res, next) => {
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
     };
+    const { email, name, password, passwordConfirm } = userData;
+
+    // Check if all required fields provided
+    if (!email || !name || !password || !passwordConfirm) {
+      return next(
+        new AppError(
+          "Please provide name, email, password and passwordConfirm",
+          422,
+        ),
+      );
+    }
+
+    // Check if the email already exists
+    const user = await User.findOne({ email });
+    if (user) {
+      return next(new AppError("Email already exists", 409));
+    }
 
     const newUser = await User.create(userData);
-
     res.status(201).json({ status: "success", data: newUser });
   } catch (e) {
     next(e);
