@@ -33,6 +33,9 @@ afterAll(async () => {
 
 describe("AuthController", () => {
   describe("/signup route", () => {
+    const signUp = async (userData) =>
+      request(app).post("/api/auth/signup").send(userData);
+
     it("should create a new user", async () => {
       const userData = {
         name: "John Doe",
@@ -41,14 +44,14 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
       expect(res.body.data).toHaveProperty("name", "John Doe");
     });
 
-    it("should fail if required fields are missing", async () => {
+    it("should fail when required fields are missing", async () => {
       const userData = {
         name: "",
         email: "",
@@ -56,7 +59,7 @@ describe("AuthController", () => {
         passwordConfirm: "",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -65,7 +68,7 @@ describe("AuthController", () => {
       );
     });
 
-    it("should fail if the email already exists", async () => {
+    it("should fail when the email already exists", async () => {
       const userData = {
         name: "John Doe",
         email: "john@example.com",
@@ -73,7 +76,7 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe("fail");
@@ -88,7 +91,7 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -103,39 +106,25 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$12345",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Passwords do not match/i);
     });
-
-    it("should fail when required fields are missing", async () => {
-      const userData = {
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      };
-
-      const res = await request(app).post("/api/auth/signup").send(userData);
-
-      expect(res.status).toBe(422);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(
-        /Please provide name, email, password and passwordConfirm/i,
-      );
-    });
   });
 
   describe("/login route", () => {
+    const login = async (userData) =>
+      request(app).post("/api/auth/login").send(userData);
+
     it("should login a user", async () => {
       const userData = {
         email: "john@example.com",
         password: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
       const cookies = res.get("set-cookie");
       const accessToken = cookies.find((cookie) =>
         cookie.startsWith("accessToken="),
@@ -162,7 +151,7 @@ describe("AuthController", () => {
         password: "",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -175,7 +164,7 @@ describe("AuthController", () => {
         password: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -188,7 +177,7 @@ describe("AuthController", () => {
         password: "wrongpassword",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
