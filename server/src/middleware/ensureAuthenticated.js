@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+
+const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 
 const ensureAuthenticated = async (req, res, next) => {
@@ -14,7 +16,15 @@ const ensureAuthenticated = async (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
     );
 
-    console.log(decodedAccessToken);
+    // Check if the user exists
+    const user = await User.findById(decodedAccessToken.userId);
+    if (!user) {
+      return next(
+        new AppError("The user belonging to this token does not exist", 401),
+      );
+    }
+
+    req.user = { id: user.id };
 
     next();
   } catch (e) {
@@ -26,10 +36,10 @@ const ensureAuthenticated = async (req, res, next) => {
       return res
         .status(401)
         .json({ message: "Access token invalid", code: "AccessTokenInvalid" });
+    } else {
+      next(e);
     }
-
-    next(e);
   }
 };
 
-module.exports = { ensureAuthenticated };
+module.exports = ensureAuthenticated;
