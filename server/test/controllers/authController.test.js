@@ -246,8 +246,6 @@ describe("AuthController", () => {
         .set("Cookie", [modifiedRefreshToken])
         .send();
 
-      console.log(res.body);
-
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
