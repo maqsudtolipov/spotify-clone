@@ -4,6 +4,6 @@ const { ensureAuthenticated } = require("../middleware/authMiddlewares");
 
 const router = express.Router();
 
-router.route("/me").get(userController.me);
+router.get("/me", ensureAuthenticated, userController.me);
 
 module.exports = router;
