@@ -10,7 +10,7 @@ beforeAll(async () => {
 
   if (
     !process.env.DB_TEST_URL &&
-    !(/test-database/.test(process.env.DB_TEST_URL))
+    !/test-database/.test(process.env.DB_TEST_URL)
   ) {
     console.log("Tests can only and must connect to a test database.");
   }
@@ -32,7 +32,10 @@ afterAll(async () => {
 });
 
 describe("AuthController", () => {
-  describe("SignUp", () => {
+  describe("/signup route", () => {
+    const signUp = async (userData) =>
+      request(app).post("/api/auth/signup").send(userData);
+
     it("should create a new user", async () => {
       const userData = {
         name: "John Doe",
@@ -41,14 +44,14 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
       expect(res.body.data).toHaveProperty("name", "John Doe");
     });
 
-    it("should fail if required fields are missing", async () => {
+    it("should fail when required fields are missing", async () => {
       const userData = {
         name: "",
         email: "",
@@ -56,7 +59,7 @@ describe("AuthController", () => {
         passwordConfirm: "",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -65,7 +68,7 @@ describe("AuthController", () => {
       );
     });
 
-    it("should fail if the email already exists", async () => {
+    it("should fail when the email already exists", async () => {
       const userData = {
         name: "John Doe",
         email: "john@example.com",
@@ -73,7 +76,7 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe("fail");
@@ -88,7 +91,7 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -103,43 +106,26 @@ describe("AuthController", () => {
         passwordConfirm: "Pa$$12345",
       };
 
-      const res = await request(app).post("/api/auth/signup").send(userData);
+      const res = await signUp(userData);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Passwords do not match/i);
     });
-
-    it("should fail when required fields are missing", async () => {
-      const userData = {
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      };
-
-      const res = await request(app).post("/api/auth/signup").send(userData);
-
-      expect(res.status).toBe(422);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(
-        /Please provide name, email, password and passwordConfirm/i,
-      );
-    });
   });
 
-  describe("Login", () => {
+  describe("/login route", () => {
+    const login = async (userData) =>
+      request(app).post("/api/auth/login").send(userData);
+
     it("should login a user", async () => {
       const userData = {
-        name: "John Doe",
         email: "john@example.com",
         password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
-
-      const cookies = res.headers["set-cookie"];
+      const res = await login(userData);
+      const cookies = res.get("set-cookie");
       const accessToken = cookies.find((cookie) =>
         cookie.startsWith("accessToken="),
       );
@@ -150,8 +136,8 @@ describe("AuthController", () => {
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(res.body.user).toHaveProperty("name", "John Doe");
-      expect(cookies.length).toBe(2);
 
+      expect(cookies.length).toBe(2);
       expect(accessToken).toBeTruthy();
       expect(accessToken).toMatch(/HttpOnly/i);
       expect(refreshToken).toBeTruthy();
@@ -165,7 +151,7 @@ describe("AuthController", () => {
         password: "",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -178,7 +164,7 @@ describe("AuthController", () => {
         password: "Pa$$1234",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -191,11 +177,78 @@ describe("AuthController", () => {
         password: "wrongpassword",
       };
 
-      const res = await request(app).post("/api/auth/login").send(userData);
+      const res = await login(userData);
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid email or password/i);
+    });
+  });
+
+  describe("/refresh-token route", () => {
+    let accessToken, refreshToken;
+
+    // Login user and save the refresh token
+    beforeAll(async () => {
+      const userData = {
+        email: "john@example.com",
+        password: "Pa$$1234",
+      };
+
+      const res = await request(app).post("/api/auth/login").send(userData);
+      const cookies = res.get("set-cookie");
+      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
+      refreshToken = cookies.find((cookie) =>
+        cookie.startsWith("refreshToken="),
+      );
+    });
+
+    it("it should send new access and refresh tokens", async () => {
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [refreshToken])
+        .send();
+
+      const cookies = res.get("set-cookie");
+      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
+      refreshToken = cookies.find((cookie) =>
+        cookie.startsWith("refreshToken="),
+      );
+
+      expect(cookies.length).toBe(2);
+      expect(accessToken).toBeTruthy();
+      expect(accessToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toBeTruthy();
+      expect(refreshToken).toMatch(/HttpOnly/i);
+      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
+    });
+
+    it("it should fail when refresh token is not provided", async () => {
+      const res = await request(app).post("/api/auth/refresh-token").send();
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/No refresh token provided/i);
+    });
+
+    it("it should fail when refresh token is modified", async () => {
+      console.log(accessToken, refreshToken);
+
+      const fakeRefreshToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxOTM5MzE1MDhhOGU1ZDVlM2NmY2IiLCJpYXQiOjE2MzQ0NDcyNTMsImV4cCI6MTYzNDQ0NzI2Mywic3ViIjoiYWNjZXNzVG9rZW4ifQ.WTMJCaoQ0h-nOXxh0bhvfhfQv0y_vgoyV98vjealhfs";
+      const modifiedRefreshToken = refreshToken.replace(
+        /(?<=refreshToken=)[^;]+/,
+        fakeRefreshToken,
+      );
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [modifiedRefreshToken])
+        .send();
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
     });
   });
 });
