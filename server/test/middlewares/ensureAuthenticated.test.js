@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const httpMocks = require("node-mocks-http");
+const jwt = require("jsonwebtoken");
 const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
@@ -77,5 +78,41 @@ describe("Ensure Authenticated Middleware", () => {
 
     expect(next.mock.calls[0][0].statusCode).toBe(401);
     expect(next.mock.calls[0][0].message).toMatch(/Access token not found/i);
+  });
+
+  it("should fail when access token is invalid", async () => {
+    const userId = new mongoose.Types.ObjectId();
+
+    const accessToken = jwt.sign(
+      {
+        userId,
+        subject: "accessToken",
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" },
+    );
+    const decodedAccessToken = jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET,
+    );
+    await InvalidAccessToken.create({
+      token: accessToken,
+      userId: decodedAccessToken.userId,
+      expiresAt: new Date(decodedAccessToken.exp),
+    });
+
+    const req = httpMocks.createRequest({
+      cookies: {
+        accessToken,
+      },
+    });
+    const res = httpMocks.createResponse();
+    const next = jest.fn();
+    await ensureAuthenticated(req, res, next);
+
+    console.log(next.mock.calls);
+    expect(next.mock.calls[0][0].statusCode).toBe(401);
+    expect(next.mock.calls[0][0].message).toMatch(/Access token invalid/i);
+    expect(next.mock.calls[0][0].code).toBe("AccessTokenInvalid");
   });
 });

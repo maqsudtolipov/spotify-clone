@@ -12,9 +12,9 @@ const ensureAuthenticated = async (req, res, next) => {
   }
 
   if (await InvalidAccessToken.findOne({ token: accessToken })) {
-    return res
-      .status(401)
-      .json({ message: "Access token invalid", code: "AccessTokenInvalid" });
+    return next(
+      new AppError("Access token invalid", 401, "AccessTokenInvalid"),
+    );
   }
 
   try {
