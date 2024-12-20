@@ -66,4 +66,16 @@ describe("Ensure Authenticated Middleware", () => {
     expect(req.user.id).toBeTruthy();
     expect(next).toHaveBeenCalled();
   });
+
+  it("should fail when access token is missing", async () => {
+    const req = httpMocks.createRequest({
+      cookies: {},
+    });
+    const res = httpMocks.createResponse();
+    const next = jest.fn();
+    await ensureAuthenticated(req, res, next);
+
+    expect(next.mock.calls[0][0].statusCode).toBe(401);
+    expect(next.mock.calls[0][0].message).toMatch(/Access token not found/i);
+  });
 });
