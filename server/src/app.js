@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
-const globalErrorHandler = require("./middleware/errorMiddleware");
+const globalErrorHandler = require("./middlewares/errorMiddleware");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 
@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 
-// Error handling middleware
+// Error handling middlewares
 app.use(globalErrorHandler);
 
 module.exports = app;
