@@ -1,1 +1,1 @@
-## Please not all the code is inside the dev branch
+## Please note all the code is inside the dev branch
