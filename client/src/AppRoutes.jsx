@@ -3,13 +3,13 @@ import Layout from './layout/Layout.tsx';
 import SearchPage from './pages/SearchPage.tsx';
 import ArtistPage from './pages/ArtistPage.tsx';
 import NotFound from './pages/helper/NotFound.tsx';
-import Login from './pages/auth/Login.tsx';
 import SignUp from './pages/auth/SignUp.tsx';
 import ForgotPassword from './pages/auth/ForgotPassword.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import HomePage from './pages/HomePage.tsx';
 import PlaylistPage from './pages/PlaylistPage.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
+import Login from './features/auth/Login.tsx';
 
 const AppRoutes = () => {
   return (
@@ -62,38 +62,10 @@ const AppRoutes = () => {
           </Layout>
         }
       />
-      <Route
-        path="/login"
-        element={
-          <Layout>
-            <Login />
-          </Layout>
-        }
-      />
-      <Route
-        path="/signup"
-        element={
-          <Layout>
-            <SignUp />
-          </Layout>
-        }
-      />
-      <Route
-        path="/forgot-password"
-        element={
-          <Layout>
-            <ForgotPassword />
-          </Layout>
-        }
-      />
-      <Route
-        path="/reset-password"
-        element={
-          <Layout>
-            <ResetPassword />
-          </Layout>
-        }
-      />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 };
