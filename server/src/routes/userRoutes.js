@@ -4,6 +4,6 @@ const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 
 const router = express.Router();
 
-router.get("/me", ensureAuthenticated, userController.me);
+router.get("/current", ensureAuthenticated, userController.current);
 
 module.exports = router;
