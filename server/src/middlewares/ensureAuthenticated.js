@@ -24,7 +24,7 @@ const ensureAuthenticated = async (req, res, next) => {
     );
 
     // Check if the user exists
-    const user = await User.findById(decodedAccessToken.userId);
+    const user = await User.findById(decodedAccessToken.userId, 'id name email role');
     if (!user) {
       return next(
         new AppError("The user belonging to this token does not exist", 401),
