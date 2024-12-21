@@ -34,6 +34,7 @@ const ensureAuthenticated = async (req, res, next) => {
     // TODO: Check if the user changed their password after the token was issued
 
     req.user = { id: user.id };
+    req.accessToken = { token: accessToken, exp: decodedAccessToken.exp };
 
     next();
   } catch (e) {
@@ -49,7 +50,6 @@ const ensureAuthenticated = async (req, res, next) => {
       next(e);
     }
   }
-
 };
 
 module.exports = ensureAuthenticated;
