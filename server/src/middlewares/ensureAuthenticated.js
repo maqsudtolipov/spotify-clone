@@ -49,6 +49,7 @@ const ensureAuthenticated = async (req, res, next) => {
       next(e);
     }
   }
+
 };
 
 module.exports = ensureAuthenticated;
