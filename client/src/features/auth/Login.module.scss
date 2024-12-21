@@ -1,0 +1,27 @@
+.form {
+  @apply w-72 bg-neutral-800 px-6 py-8 pt-6 rounded-2xl;
+}
+
+.title {
+  @apply mb-10 text-center text-3xl font-bold text-green-500;
+}
+
+.input {
+  @apply w-full px-3 py-2 mb-2.5 leading-none bg-neutral-900 border border-neutral-400 border-opacity-50 rounded-md;
+
+  &::placeholder {
+    @apply text-neutral-400;
+  }
+
+  &:focus {
+    @apply outline-none border-opacity-100;
+  }
+}
+
+.button {
+  @apply w-full py-2 px-4 mt-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
+
+  &:hover {
+    @apply bg-green-600;
+  }
+}
