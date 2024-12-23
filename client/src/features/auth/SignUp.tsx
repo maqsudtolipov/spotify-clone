@@ -5,6 +5,7 @@ import { RiLoaderFill } from 'react-icons/ri';
 import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { useState } from 'react';
+import { signUp } from './userThunks.ts';
 
 interface FormInput {
   name: string;
@@ -43,6 +44,7 @@ const validateInput = (data: FormInput) => {
 
 const Login = () => {
   const { isAuth, status } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [validInputs, setValidInputs] = useState<string[]>([]);
 
@@ -58,7 +60,8 @@ const Login = () => {
   const handleFormSubmit = async (input: FormInput) => {
     if (validateInput(input).errorMessages.length === 0) {
       setErrorMessages([])
-      setValidInputs(['name', 'email', 'password', 'passwordConfirm'])
+      setValidInputs(['name', 'email', 'password', 'passwordConfirm']);
+      dispatch(signUp(input));
     } else {
       setValidInputs(validateInput(input).validInputs);
       setErrorMessages(validateInput(input).errorMessages);

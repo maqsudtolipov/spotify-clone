@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCurrent, login, logout } from './userThunks.ts';
+import { getCurrent, login, logout, signUp } from './userThunks.ts';
+
+interface ApiStatus {
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
+  error: string | null;
+}
 
 interface User {
   id: string;
@@ -12,6 +17,9 @@ interface InitialState {
   isAuth: boolean;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   error: string | null;
+  api: {
+    signUp: ApiStatus;
+  }
 }
 
 const initialState: InitialState = {
@@ -19,6 +27,12 @@ const initialState: InitialState = {
   isAuth: false,
   status: 'idle',
   error: null,
+  api: {
+    signUp: {
+      status: 'idle',
+      error: null,
+    },
+  }
 };
 
 const userSlice = createSlice({
@@ -40,6 +54,16 @@ const userSlice = createSlice({
         state.status = 'rejected';
         state.data = null;
         state.isAuth = false;
+      })
+      // Sign up
+      .addCase(signUp.pending, (state) => {
+        state.api.signUp.status = 'pending';
+      })
+      .addCase(signUp.fulfilled, (state) => {
+        state.api.signUp.status = 'fulfilled';
+      })
+      .addCase(signUp.rejected, state => {
+        state.api.signUp.status  = 'rejected'
       })
       // Login
       .addCase(login.pending, (state) => {

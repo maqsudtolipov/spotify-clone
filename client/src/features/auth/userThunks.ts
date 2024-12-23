@@ -7,6 +7,19 @@ export const getCurrent = createAsyncThunk('user/getCurrent', async () => {
   return res.data.user;
 });
 
+interface SigUpInput {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export const signUp = createAsyncThunk('user/signup', async (input: SigUpInput) => {
+  const res = await axios.post('/auth/signup', input);
+  console.log(res);
+  return res.data;
+})
+
 interface LoginInput {
   email: string;
   password: string;
