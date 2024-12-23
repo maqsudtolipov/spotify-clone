@@ -5,6 +5,7 @@ const RefreshToken = require("../models/refreshTokenModel");
 const AppError = require("../utils/AppError");
 const generateAccessToken = require("../utils/generateAccessToken");
 const generateRefreshToken = require("../utils/generateRefreshToken");
+const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -75,7 +76,6 @@ exports.login = async (req, res, next) => {
         id: user.id,
         name: user.name,
       },
-      refreshToken,
     });
   } catch (e) {
     next(e);
@@ -131,6 +131,21 @@ exports.refreshToken = async (req, res, next) => {
       return next(new AppError("Refresh token is invalid or expired", 401));
     }
 
+    next(e);
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    await RefreshToken.deleteMany({ userId: req.user.id });
+    await InvalidAccessToken.create({
+      token: req.accessToken.token,
+      userId: req.user.id,
+      expiresAt: new Date(req.accessToken.exp),
+    });
+
+    res.status(204).send();
+  } catch (e) {
     next(e);
   }
 };
