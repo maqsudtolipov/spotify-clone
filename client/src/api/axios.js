@@ -5,18 +5,26 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// TODO: Check if the access token is invalid
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Logout user if token is invalid
-    const { data, status } = error.response;
-    console.log('interceptor', data, status);
-    if (status === 401 && data.code === 'AccessTokenInvalid') {
-      console.log('AccessTokenInvalid');
-    } else if (status === 401 && data.code === 'AccessTokenExpired') {
-      console.log('AccessTokenExpired');
-    }
+  async (error) => {
+    const originalRequest = error.config;
 
+    if (
+      error.response.status === 401 &&
+      error.response.data.code === 'AccessTokenExpired' &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        await axiosInstance.post('/auth/refresh-token');
+        return axiosInstance(originalRequest);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
     return Promise.reject(error);
   },
 );

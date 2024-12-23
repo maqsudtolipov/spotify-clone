@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
 import SearchPage from './pages/SearchPage.tsx';
 import ArtistPage from './pages/ArtistPage.tsx';
-import NotFound from './pages/helper/NotFound.tsx';
 import SignUp from './pages/auth/SignUp.tsx';
 import ForgotPassword from './pages/auth/ForgotPassword.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
@@ -19,8 +18,8 @@ const AppRoutes = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getCurrent());
-  }, [isAuth]);
+    if (!isAuth) dispatch(getCurrent());
+  }, [isAuth, dispatch]);
 
   return (
     <Routes>
