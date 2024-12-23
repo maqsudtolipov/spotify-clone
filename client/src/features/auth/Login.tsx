@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 import styles from './Login.module.scss';
 import AuthContainer from './AuthContainer.tsx';
-import axios from '../../api/axios';
-import { useState } from 'react';
 import { RiLoaderFill } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { login } from './userThunks.ts';
 
 interface FormInput {
   email: string;
@@ -12,14 +12,15 @@ interface FormInput {
 }
 
 const Login = () => {
+  const { isAuth } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       email: '',
       password: '',
     },
   });
-  const [status, setStatus] = useState<string>('idle');
-  const navigate = useNavigate();
 
   const watchedPassword = watch('password');
   const validatePassword = (password: string) => {
@@ -33,21 +34,11 @@ const Login = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handleFormSubmit = async (formInput: FormInput) => {
-    try {
-      setStatus('pending');
-
-      const { data } = await axios.post(
-        'http://localhost:3000/api/auth/login',
-        formInput,
-      );
-
-      setStatus('fulfilled');
-      navigate('/');
-    } catch (e) {
-      setStatus('rejected');
-    }
+  const handleFormSubmit = async (input: FormInput) => {
+    dispatch(login(input));
   };
+
+  if (isAuth) return <Navigate to="/" />;
 
   return (
     <AuthContainer>

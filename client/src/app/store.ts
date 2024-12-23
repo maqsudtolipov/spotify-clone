@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import libraryReducer from '../features/library/librarySlice.ts';
+import userReducer from '../features/auth/userSlice.ts';
 
 export const store = configureStore({
   reducer: {
     library: libraryReducer,
+    user: userReducer,
   },
 });
 
