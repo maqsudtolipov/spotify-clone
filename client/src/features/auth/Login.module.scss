@@ -6,8 +6,20 @@
   @apply mb-10 text-center text-3xl font-bold text-green-500;
 }
 
+.container {
+  @apply mb-2.5;
+}
+
 .input {
-  @apply w-full px-3 py-2 mb-2.5 leading-none bg-neutral-900 border border-neutral-400 border-opacity-50 rounded-md;
+  @apply w-full px-3 py-2 leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
+
+  &Invalid {
+    @apply border-red-500;
+  }
+
+  &Valid {
+    @apply border-green-500;
+  }
 
   &::placeholder {
     @apply text-neutral-400;
@@ -15,6 +27,16 @@
 
   &:focus {
     @apply outline-none border-opacity-100;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #232323;
   }
 }
 
@@ -24,4 +46,8 @@
   &:hover {
     @apply bg-green-600;
   }
+}
+
+.message {
+  @apply mt-1 text-sm text-neutral-400;
 }
