@@ -4,7 +4,6 @@ import axios from '../../api/axios';
 // Checks whether the user is authenticated using cookies
 export const getCurrent = createAsyncThunk('user/getCurrent', async () => {
   const res = await axios.get('/users/current');
-  console.log(res.data.user);
   return res.data.user;
 });
 
@@ -22,3 +21,8 @@ export const login = createAsyncThunk(
     return res.data;
   },
 );
+
+export const logout = createAsyncThunk('user/logout', async () => {
+  const res = await axios.get('/auth/logout');
+  return res.data;
+});

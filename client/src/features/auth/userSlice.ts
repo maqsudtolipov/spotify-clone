@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCurrent, login } from './userThunks.ts';
+import { getCurrent, login, logout } from './userThunks.ts';
 
 interface User {
   id: string;
@@ -51,6 +51,20 @@ const userSlice = createSlice({
         state.isAuth = true;
       })
       .addCase(login.rejected, (state) => {
+        state.status = 'rejected';
+        state.data = null;
+        state.isAuth = false;
+      })
+      // Logout
+      .addCase(logout.pending, (state) => {
+        state.status = 'pending';
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.status = 'fulfilled';
+        state.data = null;
+        state.isAuth = false;
+      })
+      .addCase(logout.rejected, (state) => {
         state.status = 'rejected';
         state.data = null;
         state.isAuth = false;
