@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login } from './userThunks.ts';
+import { getCurrent, login } from './userThunks.ts';
 
 interface User {
   id: string;
@@ -27,6 +27,21 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // Check authenticated
+      .addCase(getCurrent.pending, (state) => {
+        state.status = 'pending';
+      })
+      .addCase(getCurrent.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.data = action.payload;
+        state.isAuth = true;
+      })
+      .addCase(getCurrent.rejected, (state) => {
+        state.status = 'rejected';
+        state.data = null;
+        state.isAuth = false;
+      })
+      // Login
       .addCase(login.pending, (state) => {
         state.status = 'pending';
       })
