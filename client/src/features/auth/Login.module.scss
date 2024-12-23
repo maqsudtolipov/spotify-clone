@@ -32,7 +32,7 @@
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
-  &:-webkit-autofill:active{
+  &:-webkit-autofill:active {
     -webkit-background-clip: text;
     -webkit-text-fill-color: #ffffff;
     transition: background-color 5000s ease-in-out 0s;
@@ -41,7 +41,12 @@
 }
 
 .button {
-  @apply w-full py-2 px-4 mt-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
+  @apply w-full py-2 px-4 mt-2 flex items-center justify-center gap-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
+
+  svg {
+    animation: rotate 3s linear infinite;
+    scale: 1.3;
+  }
 
   &:hover {
     @apply bg-green-600;
@@ -50,4 +55,13 @@
 
 .message {
   @apply mt-1 text-sm text-neutral-400;
+}
+
+@keyframes rotate {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
 }
