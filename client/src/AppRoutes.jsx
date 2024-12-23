@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
 import SearchPage from './pages/SearchPage.tsx';
 import ArtistPage from './pages/ArtistPage.tsx';
-import SignUp from './pages/auth/SignUp.tsx';
 import ForgotPassword from './pages/auth/ForgotPassword.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import HomePage from './pages/HomePage.tsx';
@@ -12,6 +11,7 @@ import Login from './features/auth/Login.tsx';
 import { useAppDispatch, useAppSelector } from './app/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
+import SignUp from './features/auth/SignUp.tsx';
 
 const AppRoutes = () => {
   const { isAuth, status } = useAppSelector((state) => state.user);

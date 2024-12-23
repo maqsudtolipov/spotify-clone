@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
-import styles from './Login.module.scss';
+import styles from './AuthForm.module.scss';
 import AuthContainer from './AuthContainer.tsx';
 import { RiLoaderFill } from 'react-icons/ri';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { login } from './userThunks.ts';
 
@@ -75,6 +75,8 @@ const Login = () => {
             {status === 'pending' && <RiLoaderFill />}
             Login
           </button>
+
+          <Link className={styles.link} to="/signup">Sign Up here</Link>
         </form>
       </AuthContainer>
     );

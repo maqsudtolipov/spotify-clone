@@ -1,5 +1,5 @@
 .form {
-  @apply w-72 bg-neutral-800 px-6 py-8 pt-6 rounded-2xl;
+  @apply w-72  px-6 py-8 pt-6 flex flex-col gap-2.5 bg-neutral-800 rounded-2xl;
 }
 
 .title {
@@ -41,7 +41,7 @@
 }
 
 .button {
-  @apply w-full py-2 px-4 mt-2 flex items-center justify-center gap-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
+  @apply w-full py-2 px-4 flex items-center justify-center gap-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
 
   svg {
     animation: rotate 3s linear infinite;
@@ -54,7 +54,11 @@
 }
 
 .message {
-  @apply mt-1 text-sm text-neutral-400;
+  @apply text-sm text-neutral-400;
+}
+
+.link {
+  @apply mt-2.5 block text-sm text-center text-neutral-400 underline;
 }
 
 @keyframes rotate {
