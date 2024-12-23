@@ -2,6 +2,9 @@ import { useForm } from 'react-hook-form';
 import styles from './Login.module.scss';
 import AuthContainer from './AuthContainer.tsx';
 import axios from '../../api/axios';
+import { useState } from 'react';
+import { RiLoaderFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 interface FormInput {
   email: string;
@@ -9,16 +12,14 @@ interface FormInput {
 }
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-  } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       email: '',
       password: '',
     },
   });
+  const [status, setStatus] = useState<string>('idle');
+  const navigate = useNavigate();
 
   const watchedPassword = watch('password');
   const validatePassword = (password: string) => {
@@ -29,13 +30,24 @@ const Login = () => {
 
   const watchedEmail = watch('email');
   const validateEmail = (email: string) => {
-    return  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleFormSubmit = async (formInput: FormInput) => {
-    const { data } = await axios.post('http://localhost:3000/api/auth/login', formInput);
-    console.log(data);
-  }
+    try {
+      setStatus('pending');
+
+      const { data } = await axios.post(
+        'http://localhost:3000/api/auth/login',
+        formInput,
+      );
+
+      setStatus('fulfilled');
+      navigate('/');
+    } catch (e) {
+      setStatus('rejected');
+    }
+  };
 
   return (
     <AuthContainer>
@@ -60,16 +72,16 @@ const Login = () => {
             placeholder="Enter your password"
             {...register('password', {
               required: 'Password is required',
-              minLength: {
-                value: 4,
-                message: 'Min length 4',
-              },
             })}
           />
-          <p className={styles.message}>{validatePassword(watchedPassword)}</p>
+          <p className={styles.message}>
+            {!validatePassword(watchedPassword) &&
+              'Min 8 chars with uppercase, lowercase, number, and special ($, !, %, &, *).'}
+          </p>
         </div>
 
         <button className={styles.button} type="submit">
+          {status === 'pending' && <RiLoaderFill />}
           Login
         </button>
       </form>
