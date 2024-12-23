@@ -1,6 +1,12 @@
 import { useForm } from 'react-hook-form';
 import styles from './Login.module.scss';
 import AuthContainer from './AuthContainer.tsx';
+import axios from '../../api/axios';
+
+interface FormInput {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const {
@@ -16,7 +22,6 @@ const Login = () => {
 
   const watchedPassword = watch('password');
   const validatePassword = (password: string) => {
-    // if (password.length < 8) return 'Minimum 8 characters.';
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
       password,
     );
@@ -27,11 +32,16 @@ const Login = () => {
     return  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
+  const handleFormSubmit = async (formInput: FormInput) => {
+    const { data } = await axios.post('http://localhost:3000/api/auth/login', formInput);
+    console.log(data);
+  }
+
   return (
     <AuthContainer>
       <form
         className={styles.form}
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit((data) => handleFormSubmit(data))}
       >
         <p className={styles.title}>Spotify</p>
         <div className={styles.container}>

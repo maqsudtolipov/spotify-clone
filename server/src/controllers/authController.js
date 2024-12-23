@@ -76,7 +76,6 @@ exports.login = async (req, res, next) => {
         id: user.id,
         name: user.name,
       },
-      refreshToken,
     });
   } catch (e) {
     next(e);
