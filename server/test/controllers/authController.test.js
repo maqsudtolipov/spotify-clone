@@ -3,6 +3,13 @@ const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
+const jwt = require("jsonwebtoken");
+const {
+  refreshToken: refreshTokenController,
+} = require("../../src/controllers/authController");
+const httpMocks = require("node-mocks-http");
+const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
+const generateRefreshToken = require("../../src/utils/generateRefreshToken");
 
 let server;
 beforeAll(async () => {
@@ -231,9 +238,38 @@ describe("AuthController", () => {
       expect(res.body.message).toMatch(/No refresh token provided/i);
     });
 
-    it("it should fail when refresh token is modified", async () => {
-      console.log(accessToken, refreshToken);
+    it("should fail when refresh token does not exist in database", async () => {
+      // Generate req, res and next
+      const req = httpMocks.createRequest({
+        method: "POST",
+        url: "/api/auth/refresh-token",
+      });
+      const res = httpMocks.createResponse();
+      const next = jest.fn();
 
+      // Attach the refresh token to the request
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = jwt.sign(
+        { userId },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
+          subject: "refreshToken",
+        },
+      );
+      req.cookies = { refreshToken };
+
+      // Call the /refresh-token route
+      await refreshTokenController(req, res, next);
+
+      console.log(next.mock.calls);
+      expect(next.mock.calls[0][0].statusCode).toBe(401);
+      expect(next.mock.calls[0][0].message).toMatch(
+        /Refresh token is invalid or expired/i,
+      );
+    });
+
+    it("it should fail when refresh token is modified", async () => {
       const fakeRefreshToken =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxOTM5MzE1MDhhOGU1ZDVlM2NmY2IiLCJpYXQiOjE2MzQ0NDcyNTMsImV4cCI6MTYzNDQ0NzI2Mywic3ViIjoiYWNjZXNzVG9rZW4ifQ.WTMJCaoQ0h-nOXxh0bhvfhfQv0y_vgoyV98vjealhfs";
       const modifiedRefreshToken = refreshToken.replace(
