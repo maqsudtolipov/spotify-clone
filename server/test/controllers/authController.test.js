@@ -10,6 +10,7 @@ const {
 const httpMocks = require("node-mocks-http");
 const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
 const generateRefreshToken = require("../../src/utils/generateRefreshToken");
+const middlewareMock = require("../helpers/middlewareMock");
 
 let server;
 beforeAll(async () => {
@@ -239,15 +240,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when refresh token does not exist in database", async () => {
-      // Generate req, res and next
-      const req = httpMocks.createRequest({
-        method: "POST",
-        url: "/api/auth/refresh-token",
-      });
-      const res = httpMocks.createResponse();
-      const next = jest.fn();
-
-      // Attach the refresh token to the request
+      // Generate fake refresh token
       const userId = new mongoose.Types.ObjectId();
       const refreshToken = jwt.sign(
         { userId },
@@ -257,12 +250,19 @@ describe("AuthController", () => {
           subject: "refreshToken",
         },
       );
-      req.cookies = { refreshToken };
+
+      // Generate req, res and next
+      const { req, res, next } = middlewareMock({
+        method: "POST",
+        url: "/api/auth/refresh-token",
+        cookies: {
+          refreshToken,
+        },
+      });
 
       // Call the /refresh-token route
       await refreshTokenController(req, res, next);
 
-      console.log(next.mock.calls);
       expect(next.mock.calls[0][0].statusCode).toBe(401);
       expect(next.mock.calls[0][0].message).toMatch(
         /Refresh token is invalid or expired/i,
