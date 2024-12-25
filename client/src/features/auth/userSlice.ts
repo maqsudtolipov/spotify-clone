@@ -18,7 +18,10 @@ interface InitialState {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   error: string | null;
   api: {
+    getCurrent: ApiStatus;
     signUp: ApiStatus;
+    login: ApiStatus;
+    logout: ApiStatus;
   }
 }
 
@@ -28,10 +31,16 @@ const initialState: InitialState = {
   status: 'idle',
   error: null,
   api: {
+    getCurrent: {status: 'idle', error:null},
     signUp: {
       status: 'idle',
       error: null,
     },
+    login: {
+      status: 'idle',
+      error: null,
+    },
+    logout: {status: 'idle', error: null}
   }
 };
 
@@ -43,15 +52,15 @@ const userSlice = createSlice({
     builder
       // Check authenticated
       .addCase(getCurrent.pending, (state) => {
-        state.status = 'pending';
+        state.api.getCurrent.status = 'pending';
       })
       .addCase(getCurrent.fulfilled, (state, action) => {
-        state.status = 'fulfilled';
+        state.api.getCurrent.status = 'fulfilled';
         state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(getCurrent.rejected, (state) => {
-        state.status = 'rejected';
+        state.api.getCurrent.status = 'rejected';
         state.data = null;
         state.isAuth = false;
       })
@@ -67,29 +76,29 @@ const userSlice = createSlice({
       })
       // Login
       .addCase(login.pending, (state) => {
-        state.status = 'pending';
+        state.api.login.status = 'pending';
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.status = 'fulfilled';
+        state.api.login.status = 'fulfilled';
         state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(login.rejected, (state) => {
-        state.status = 'rejected';
+        state.api.login.status = 'rejected';
         state.data = null;
         state.isAuth = false;
       })
       // Logout
       .addCase(logout.pending, (state) => {
-        state.status = 'pending';
+        state.api.logout.status = 'pending';
       })
       .addCase(logout.fulfilled, (state) => {
-        state.status = 'fulfilled';
+        state.api.logout.status = 'fulfilled';
         state.data = null;
         state.isAuth = false;
       })
       .addCase(logout.rejected, (state) => {
-        state.status = 'rejected';
+        state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
       }),

@@ -43,7 +43,8 @@ const validateInput = (data: FormInput) => {
 }
 
 const Login = () => {
-  const { isAuth, status } = useAppSelector((state) => state.user);
+  const { isAuth } = useAppSelector((state) => state.user);
+  const {status} = useAppSelector(state => state.user.api.signUp);
   const dispatch = useAppDispatch();
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [validInputs, setValidInputs] = useState<string[]>([]);
