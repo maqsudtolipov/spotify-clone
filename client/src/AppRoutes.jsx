@@ -14,7 +14,8 @@ import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';
 
 const AppRoutes = () => {
-  const { isAuth, status } = useAppSelector((state) => state.user);
+  const { isAuth } = useAppSelector((state) => state.user);
+  const { status } = useAppSelector(state => state.user.api.getCurrent)
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {status === 'fulfilled' && isAuth && (
+      {isAuth && (
         <>
           <Route
             path="/"
@@ -69,7 +70,7 @@ const AppRoutes = () => {
         </>
       )}
 
-      {status === 'rejected' && !isAuth && (
+      {!isAuth && status === 'rejected' && (
         <>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

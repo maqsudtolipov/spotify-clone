@@ -16,7 +16,6 @@ interface SigUpInput {
 
 export const signUp = createAsyncThunk('user/signup', async (input: SigUpInput) => {
   const res = await axios.post('/auth/signup', input);
-  console.log(res);
   return res.data;
 })
 
@@ -28,9 +27,7 @@ interface LoginInput {
 export const login = createAsyncThunk(
   'user/login',
   async (input: LoginInput) => {
-    console.log(input);
     const res = await axios.post('/auth/login', input);
-    console.log(res);
     return res.data;
   },
 );

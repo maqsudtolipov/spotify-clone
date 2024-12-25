@@ -22,7 +22,8 @@ const validateEmail = (email: string) => {
 };
 
 const Login = () => {
-  const { isAuth, status } = useAppSelector((state) => state.user);
+  const { isAuth } = useAppSelector((state) => state.user);
+  const {status} = useAppSelector(state => state.user.api.login);
   const dispatch = useAppDispatch();
 
   const { register, handleSubmit, watch } = useForm({
