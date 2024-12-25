@@ -10,7 +10,7 @@ const {
  * @returns {*}
  */
 exports.attachAccessCookie = (userId, res) => {
-  const accessToken = generateAccessToken();
+  const accessToken = generateAccessToken(userId);
 
   res.cookie("accessToken", accessToken, {
     expires: new Date(
@@ -31,7 +31,7 @@ exports.attachAccessCookie = (userId, res) => {
  * @returns {*}
  */
 exports.attachRefreshCookie = (userId, res) => {
-  const refreshToken = generateRefreshToken();
+  const refreshToken = generateRefreshToken(userId);
 
   res.cookie("refreshToken", refreshToken, {
     expires: new Date(
