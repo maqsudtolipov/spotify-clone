@@ -1,32 +1,43 @@
-/**
- * It validates the request and extracts the tokens from the request. Works with supertest.
- * @param res
- */
-function validateAndExtractTokens(res) {
-  const cookies = res.get("set-cookie");
+class TokenHandler {
+  constructor(res) {
+    if (!res) {
+      throw new Error("Response object is not provided.");
+    }
 
-  // Find access and refresh token cookies
-  const accessTokenCookie = cookies.find((cookie) =>
-    cookie.startsWith("accessToken="),
-  );
-  const refreshTokenCookie = cookies.find((cookie) =>
-    cookie.startsWith("refreshToken="),
-  );
+    this.cookies = res.get("set-cookie");
 
-  // Check if both cookies are set
-  expect(cookies.length).toBe(2);
-  expect(accessTokenCookie).toBeTruthy();
-  expect(accessTokenCookie).toMatch(/HttpOnly/i);
-  expect(refreshTokenCookie).toBeTruthy();
-  expect(refreshTokenCookie).toMatch(/HttpOnly/i);
-  expect(refreshTokenCookie).toMatch(/Path=\/api\/auth\/refresh-token/i);
+    if (!this.cookies || this.cookies.length === 0) {
+      throw new Error("No cookies found in the response object.");
+    }
 
-  // Extract token values using regex
-  const accessToken =
-    accessTokenCookie.match(/accessToken=([^;]+)/)?.[1] ?? null;
-  const refreshToken =
-    refreshTokenCookie.match(/refreshToken=([^;]+)/)?.[1] ?? null;
+    this.accessToken = this.extractToken("accessToken");
+    this.refreshToken = this.extractToken("refreshToken");
+  }
 
-  return { accessToken, refreshToken };
+  // Extract token value by name
+  extractToken(name) {
+    const cookie = this.cookies.find((c) => c.startsWith(`${name}=`));
+    return cookie.match(new RegExp(`${name}=([^;]+)`))?.[1] ?? null;
+  }
+
+  validate() {
+    expect(this.cookies.length).toBe(2);
+
+    this.cookies.forEach((cookie) => {
+      expect(cookie).toBeTruthy();
+      expect(cookie).toMatch(/HttpOnly/i);
+    });
+
+    expect(this.cookies.find((c) => c.startsWith("refreshToken="))).toMatch(
+      /Path=\/api\/auth\/refresh-token/i,
+    );
+
+    return this;
+  }
 }
+
+function validateAndExtractTokens(res) {
+  return new TokenHandler(res);
+}
+
 module.exports = validateAndExtractTokens;

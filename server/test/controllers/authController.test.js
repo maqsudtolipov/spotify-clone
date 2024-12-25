@@ -9,6 +9,7 @@ const {
 } = require("../../src/controllers/authController");
 const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
+const { generateRefreshToken } = require("../../src/utils/genereateTokens");
 
 // Connect to the database and start the server
 let server;
@@ -139,7 +140,7 @@ describe("AuthController", () => {
       expect(res.body.status).toBe("success");
       expect(res.body.user).toHaveProperty("name", "John Doe");
 
-      const tokens = validateAndExtractTokens(res);
+      const tokens = validateAndExtractTokens(res).validate();
       accessToken = tokens.accessToken;
       refreshToken = tokens.refreshToken;
     });
@@ -203,31 +204,19 @@ describe("AuthController", () => {
       };
 
       const res = await request(app).post("/api/auth/login").send(userData);
-      const cookies = res.get("set-cookie");
-      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
-      refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
+
+      const token = validateAndExtractTokens(res);
+      accessToken = token.accessToken;
+      refreshToken = token.refreshToken;
     });
 
     it("it should send new access and refresh tokens", async () => {
       const res = await request(app)
         .post("/api/auth/refresh-token")
-        .set("Cookie", [refreshToken])
+        .set("Cookie", [`refreshToken=${refreshToken}`])
         .send();
 
-      const cookies = res.get("set-cookie");
-      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
-      refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
-
-      expect(cookies.length).toBe(2);
-      expect(accessToken).toBeTruthy();
-      expect(accessToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toBeTruthy();
-      expect(refreshToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
+      validateAndExtractTokens(res).validate();
     });
 
     it("it should fail when refresh token is not provided", async () => {
@@ -241,14 +230,7 @@ describe("AuthController", () => {
     it("should fail when refresh token does not exist in database", async () => {
       // Generate fake refresh token
       const userId = new mongoose.Types.ObjectId();
-      const refreshToken = jwt.sign(
-        { userId },
-        process.env.REFRESH_TOKEN_SECRET,
-        {
-          expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
-          subject: "refreshToken",
-        },
-      );
+      const refreshToken = generateRefreshToken(userId);
 
       // Generate req, res and next
       const { req, res, next } = middlewareMock({
@@ -270,15 +252,11 @@ describe("AuthController", () => {
 
     it("it should fail when refresh token is modified", async () => {
       const fakeRefreshToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxOTM5MzE1MDhhOGU1ZDVlM2NmY2IiLCJpYXQiOjE2MzQ0NDcyNTMsImV4cCI6MTYzNDQ0NzI2Mywic3ViIjoiYWNjZXNzVG9rZW4ifQ.WTMJCaoQ0h-nOXxh0bhvfhfQv0y_vgoyV98vjealhfs";
-      const modifiedRefreshToken = refreshToken.replace(
-        /(?<=refreshToken=)[^;]+/,
-        fakeRefreshToken,
-      );
+        refreshToken.substring(0, refreshToken.length - 2) + "mt";
 
       const res = await request(app)
         .post("/api/auth/refresh-token")
-        .set("Cookie", [modifiedRefreshToken])
+        .set("Cookie", [`refreshToken=${fakeRefreshToken}`])
         .send();
 
       expect(res.status).toBe(401);
