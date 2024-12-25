@@ -7,9 +7,6 @@ const jwt = require("jsonwebtoken");
 const {
   refreshToken: refreshTokenController,
 } = require("../../src/controllers/authController");
-const httpMocks = require("node-mocks-http");
-const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
-const generateRefreshToken = require("../../src/utils/generateRefreshToken");
 const middlewareMock = require("../helpers/middlewareMock");
 
 let server;

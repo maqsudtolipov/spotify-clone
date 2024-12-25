@@ -3,8 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const RefreshToken = require("../models/refreshTokenModel");
 const AppError = require("../utils/AppError");
-const generateAccessToken = require("../utils/generateAccessToken");
-const generateRefreshToken = require("../utils/generateRefreshToken");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 const {
   attachAccessCookie,
