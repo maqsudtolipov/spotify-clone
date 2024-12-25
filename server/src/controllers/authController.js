@@ -6,6 +6,10 @@ const AppError = require("../utils/AppError");
 const generateAccessToken = require("../utils/generateAccessToken");
 const generateRefreshToken = require("../utils/generateRefreshToken");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
+const {
+  attachAccessCookie,
+  attachRefreshCookie,
+} = require("../utils/attachCookieTokens");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -34,7 +38,10 @@ exports.signUp = async (req, res, next) => {
     }
 
     const newUser = await User.create(userData);
-    res.status(201).json({ status: "success", data: {id: newUser.id, name: newUser.name, email: newUser.name}});
+    res.status(201).json({
+      status: "success",
+      data: { id: newUser.id, name: newUser.name, email: newUser.name },
+    });
   } catch (e) {
     next(e);
   }
@@ -61,8 +68,8 @@ exports.login = async (req, res, next) => {
     }
 
     // Generate access and refresh tokens
-    generateAccessToken(user.id, res);
-    const refreshToken = generateRefreshToken(user.id, res);
+    attachAccessCookie(user.id, res);
+    const refreshToken = attachRefreshCookie(user.id, res);
 
     // Save refresh token to the database
     await RefreshToken.create({
@@ -110,8 +117,8 @@ exports.refreshToken = async (req, res, next) => {
     await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
 
     // Generate access and refresh tokens
-    generateAccessToken(decodedRefreshToken.userId, res);
-    const newRefreshToken = generateRefreshToken(
+    attachAccessCookie(decodedRefreshToken.userId, res);
+    const newRefreshToken = attachRefreshCookie(
       decodedRefreshToken.userId,
       res,
     );
