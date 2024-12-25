@@ -8,7 +8,9 @@ const {
   refreshToken: refreshTokenController,
 } = require("../../src/controllers/authController");
 const middlewareMock = require("../helpers/middlewareMock");
+const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 
+// Connect to the database and start the server
 let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
@@ -29,6 +31,7 @@ beforeAll(async () => {
   server = app.listen(3009);
 });
 
+// Disconnected from the database and close the server
 afterAll(async () => {
   await User.deleteMany();
   await RefreshToken.deleteMany();
@@ -91,7 +94,7 @@ describe("AuthController", () => {
     it("should fail when email is invalid", async () => {
       const userData = {
         name: "John Doe",
-        email: "notanemail",
+        email: "notavalidemail",
         password: "Pa$$1234",
         passwordConfirm: "Pa$$1234",
       };
@@ -122,32 +125,23 @@ describe("AuthController", () => {
   describe("/login route", () => {
     const login = async (userData) =>
       request(app).post("/api/auth/login").send(userData);
+    let accessToken, refreshToken;
 
-    it("should login a user", async () => {
+    it("should login a user and return access and refresh tokens", async () => {
       const userData = {
         email: "john@example.com",
         password: "Pa$$1234",
       };
 
       const res = await login(userData);
-      const cookies = res.get("set-cookie");
-      const accessToken = cookies.find((cookie) =>
-        cookie.startsWith("accessToken="),
-      );
-      const refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(res.body.user).toHaveProperty("name", "John Doe");
 
-      expect(cookies.length).toBe(2);
-      expect(accessToken).toBeTruthy();
-      expect(accessToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toBeTruthy();
-      expect(refreshToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
+      const tokens = validateAndExtractTokens(res);
+      accessToken = tokens.accessToken;
+      refreshToken = tokens.refreshToken;
     });
 
     it("should fail when email or password is missing", async () => {
