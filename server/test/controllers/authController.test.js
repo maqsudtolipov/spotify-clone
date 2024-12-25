@@ -144,6 +144,14 @@ describe("AuthController", () => {
       refreshToken = tokens.refreshToken;
     });
 
+    it("should save the new refresh token in the database", async () => {
+      const databaseRefreshToken = await RefreshToken.findOne({
+        token: refreshToken,
+      });
+
+      expect(databaseRefreshToken).toBeTruthy();
+    });
+
     it("should fail when email or password is missing", async () => {
       const userData = {
         email: "",
