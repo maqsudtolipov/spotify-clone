@@ -251,12 +251,28 @@ describe("AuthController", () => {
     });
 
     it("it should fail when refresh token is modified", async () => {
-      const fakeRefreshToken =
-        refreshToken.substring(0, refreshToken.length - 2) + "mt";
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = generateRefreshToken(userId);
+      const modifiedRefreshToken =
+        refreshToken.substring(0, refreshToken.length - 2) + "Kq";
 
       const res = await request(app)
         .post("/api/auth/refresh-token")
-        .set("Cookie", [`refreshToken=${fakeRefreshToken}`])
+        .set("Cookie", [`refreshToken=${modifiedRefreshToken}`])
+        .send();
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
+    });
+
+    it("should fail when refresh token is expired", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = generateRefreshToken(userId, -900000);
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${refreshToken}`])
         .send();
 
       expect(res.status).toBe(401);

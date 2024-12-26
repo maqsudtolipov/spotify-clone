@@ -13,10 +13,11 @@ exports.generateAccessToken = (userId) =>
 /**
  * It generates a refresh token
  * @param userId
+ * @param customExpiresIn It is used for testing custom expiration times
  * @returns {*}
  */
-exports.generateRefreshToken = (userId) =>
+exports.generateRefreshToken = (userId, customExpiresIn) =>
   jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
+    expiresIn: customExpiresIn || process.env.REFRESH_TOKEN_EXPIRATION,
     subject: "refreshToken",
   });
