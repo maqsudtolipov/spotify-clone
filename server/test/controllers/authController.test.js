@@ -259,7 +259,7 @@ describe("AuthController", () => {
         password: "Pa$$1234",
       });
 
-      console.log(res);
+      console.log(res.body);
 
       userId = res.body.user.id;
 
