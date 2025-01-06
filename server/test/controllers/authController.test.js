@@ -9,6 +9,7 @@ const {
 const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 const { generateRefreshToken } = require("../../src/utils/genereateTokens");
+const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 
 const testUser = {
   name: "John Doe",
@@ -42,6 +43,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await User.deleteMany();
   await RefreshToken.deleteMany();
+  await InvalidAccessToken.deleteMany();
   await mongoose.disconnect();
   server.close();
 });
@@ -244,6 +246,40 @@ describe("AuthController", () => {
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
+    });
+  });
+
+  describe("/logout route", () => {
+    let accessToken, refreshToken, userId;
+
+    // Login user and save the refresh token
+    beforeAll(async () => {
+      const res = await request(app).post("/api/auth/login").send({
+        email: "john@example.com",
+        password: "Pa$$1234",
+      });
+      userId = res.body.user.id;
+
+      const token = validateAndExtractTokens(res);
+      accessToken = token.accessToken;
+      refreshToken = token.refreshToken;
+    });
+
+    it("should delete all refresh tokens from database and blacklist access token", async () => {
+      const res = await request(app)
+        .get("/api/auth/logout")
+        .set("Cookie", [`accessToken=${accessToken}`]);
+      expect(res.status).toBe(204);
+
+      // Check refresh tokens
+      const refreshTokens = await RefreshToken.find({ userId });
+      expect(refreshTokens.length).toBe(0);
+
+      // Check access token
+      const invalidAccessToken = await InvalidAccessToken.findOne({
+        token: accessToken,
+      });
+      expect(invalidAccessToken).toBeTruthy();
     });
   });
 });
