@@ -3,7 +3,22 @@ const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
+const {
+  refreshToken: refreshTokenController,
+} = require("../../src/controllers/authController");
+const middlewareMock = require("../helpers/middlewareMock");
+const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
+const { generateRefreshToken } = require("../../src/utils/genereateTokens");
+const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 
+const testUser = {
+  name: "John Doe",
+  email: "john@example.com",
+  password: "Pa$$1234",
+  passwordConfirm: "Pa$$1234",
+};
+
+// Connect to the database and start the server
 let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
@@ -24,9 +39,11 @@ beforeAll(async () => {
   server = app.listen(3009);
 });
 
+// Disconnected from the database and close the server
 afterAll(async () => {
   await User.deleteMany();
   await RefreshToken.deleteMany();
+  await InvalidAccessToken.deleteMany();
   await mongoose.disconnect();
   server.close();
 });
@@ -37,14 +54,7 @@ describe("AuthController", () => {
       request(app).post("/api/auth/signup").send(userData);
 
     it("should create a new user", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "john@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp(testUser);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
@@ -52,14 +62,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when required fields are missing", async () => {
-      const userData = {
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({});
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -69,14 +72,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when the email already exists", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "john@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp(testUser);
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe("fail");
@@ -84,14 +80,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when email is invalid", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "notanemail",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({ ...testUser, email: "invalidemail" });
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -99,14 +88,12 @@ describe("AuthController", () => {
     });
 
     it("should fail when password does not match", async () => {
-      const userData = {
-        name: "Darren Jordan",
-        email: "sanforddarryl@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$12345",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({
+        ...testUser,
+        email: "differentuser@example.com",
+        passwordConfirm: "1234Pa$$",
+      });
+      console.log(res.body);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -117,41 +104,36 @@ describe("AuthController", () => {
   describe("/login route", () => {
     const login = async (userData) =>
       request(app).post("/api/auth/login").send(userData);
+    let accessToken, refreshToken;
 
-    it("should login a user", async () => {
-      const userData = {
+    it("should login a user and return access and refresh tokens", async () => {
+      const res = await login({
         email: "john@example.com",
         password: "Pa$$1234",
-      };
-
-      const res = await login(userData);
-      const cookies = res.get("set-cookie");
-      const accessToken = cookies.find((cookie) =>
-        cookie.startsWith("accessToken="),
-      );
-      const refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
+      });
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(res.body.user).toHaveProperty("name", "John Doe");
 
-      expect(cookies.length).toBe(2);
-      expect(accessToken).toBeTruthy();
-      expect(accessToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toBeTruthy();
-      expect(refreshToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
+      const tokens = validateAndExtractTokens(res).validate();
+      accessToken = tokens.accessToken;
+      refreshToken = tokens.refreshToken;
+    });
+
+    it("should save the new refresh token in the database", async () => {
+      const databaseRefreshToken = await RefreshToken.findOne({
+        token: refreshToken,
+      });
+
+      expect(databaseRefreshToken).toBeTruthy();
     });
 
     it("should fail when email or password is missing", async () => {
-      const userData = {
+      const res = await login({
         email: "",
         password: "",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -159,12 +141,10 @@ describe("AuthController", () => {
     });
 
     it("should fail when user does not exist", async () => {
-      const userData = {
+      const res = await login({
         email: "nonexistent@example.com",
         password: "Pa$$1234",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -172,12 +152,10 @@ describe("AuthController", () => {
     });
 
     it("should fail when password is incorrect", async () => {
-      const userData = {
+      const res = await login({
         email: "john@example.com",
         password: "wrongpassword",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -190,37 +168,23 @@ describe("AuthController", () => {
 
     // Login user and save the refresh token
     beforeAll(async () => {
-      const userData = {
+      const res = await request(app).post("/api/auth/login").send({
         email: "john@example.com",
         password: "Pa$$1234",
-      };
+      });
 
-      const res = await request(app).post("/api/auth/login").send(userData);
-      const cookies = res.get("set-cookie");
-      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
-      refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
+      const token = validateAndExtractTokens(res);
+      accessToken = token.accessToken;
+      refreshToken = token.refreshToken;
     });
 
     it("it should send new access and refresh tokens", async () => {
       const res = await request(app)
         .post("/api/auth/refresh-token")
-        .set("Cookie", [refreshToken])
+        .set("Cookie", [`refreshToken=${refreshToken}`])
         .send();
 
-      const cookies = res.get("set-cookie");
-      accessToken = cookies.find((cookie) => cookie.startsWith("accessToken="));
-      refreshToken = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken="),
-      );
-
-      expect(cookies.length).toBe(2);
-      expect(accessToken).toBeTruthy();
-      expect(accessToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toBeTruthy();
-      expect(refreshToken).toMatch(/HttpOnly/i);
-      expect(refreshToken).toMatch(/Path=\/api\/auth\/refresh-token/i);
+      validateAndExtractTokens(res).validate();
     });
 
     it("it should fail when refresh token is not provided", async () => {
@@ -231,24 +195,91 @@ describe("AuthController", () => {
       expect(res.body.message).toMatch(/No refresh token provided/i);
     });
 
-    it("it should fail when refresh token is modified", async () => {
-      console.log(accessToken, refreshToken);
+    it("should fail when refresh token does not exist in database", async () => {
+      // Generate fake refresh token
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = generateRefreshToken(userId);
 
-      const fakeRefreshToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxOTM5MzE1MDhhOGU1ZDVlM2NmY2IiLCJpYXQiOjE2MzQ0NDcyNTMsImV4cCI6MTYzNDQ0NzI2Mywic3ViIjoiYWNjZXNzVG9rZW4ifQ.WTMJCaoQ0h-nOXxh0bhvfhfQv0y_vgoyV98vjealhfs";
-      const modifiedRefreshToken = refreshToken.replace(
-        /(?<=refreshToken=)[^;]+/,
-        fakeRefreshToken,
+      // Generate req, res and next
+      const { req, res, next } = middlewareMock({
+        method: "POST",
+        url: "/api/auth/refresh-token",
+        cookies: {
+          refreshToken,
+        },
+      });
+
+      // Call the /refresh-token route
+      await refreshTokenController(req, res, next);
+
+      expect(next.mock.calls[0][0].statusCode).toBe(401);
+      expect(next.mock.calls[0][0].message).toMatch(
+        /Refresh token is invalid or expired/i,
       );
+    });
+
+    it("it should fail when refresh token is modified", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = generateRefreshToken(userId);
+      const modifiedRefreshToken =
+        refreshToken.substring(0, refreshToken.length - 2) + "Kq";
 
       const res = await request(app)
         .post("/api/auth/refresh-token")
-        .set("Cookie", [modifiedRefreshToken])
+        .set("Cookie", [`refreshToken=${modifiedRefreshToken}`])
         .send();
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
+    });
+
+    it("should fail when refresh token is expired", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const refreshToken = generateRefreshToken(userId, -900000);
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${refreshToken}`])
+        .send();
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Refresh token is invalid or expired/i);
+    });
+  });
+
+  describe("/logout route", () => {
+    let accessToken, refreshToken, userId;
+
+    // Login user and save the refresh token
+    beforeAll(async () => {
+      const res = await request(app).post("/api/auth/login").send({
+        email: "john@example.com",
+        password: "Pa$$1234",
+      });
+      userId = res.body.user.id;
+
+      const token = validateAndExtractTokens(res);
+      accessToken = token.accessToken;
+      refreshToken = token.refreshToken;
+    });
+
+    it("should delete all refresh tokens from database and blacklist access token", async () => {
+      const res = await request(app)
+        .get("/api/auth/logout")
+        .set("Cookie", [`accessToken=${accessToken}`]);
+      expect(res.status).toBe(204);
+
+      // Check refresh tokens
+      const refreshTokens = await RefreshToken.find({ userId });
+      expect(refreshTokens.length).toBe(0);
+
+      // Check access token
+      const invalidAccessToken = await InvalidAccessToken.findOne({
+        token: accessToken,
+      });
+      expect(invalidAccessToken).toBeTruthy();
     });
   });
 });
