@@ -36,7 +36,6 @@ jobs:
           echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> .env
           echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
           echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> .env
-          echo "CLIENT_URL=${{secrets.CLIENT_URL}}" >> .env
           cat .env  # Output to logs for debugging
       - name: Run tests
         run: |
