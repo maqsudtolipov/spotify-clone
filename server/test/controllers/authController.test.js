@@ -258,6 +258,9 @@ describe("AuthController", () => {
         email: "john@example.com",
         password: "Pa$$1234",
       });
+
+      console.log(res);
+
       userId = res.body.user.id;
 
       const token = validateAndExtractTokens(res);
