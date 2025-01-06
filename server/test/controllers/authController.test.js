@@ -3,13 +3,19 @@ const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
-const jwt = require("jsonwebtoken");
 const {
   refreshToken: refreshTokenController,
 } = require("../../src/controllers/authController");
 const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 const { generateRefreshToken } = require("../../src/utils/genereateTokens");
+
+const testUser = {
+  name: "John Doe",
+  email: "john@example.com",
+  password: "Pa$$1234",
+  passwordConfirm: "Pa$$1234",
+};
 
 // Connect to the database and start the server
 let server;
@@ -46,14 +52,7 @@ describe("AuthController", () => {
       request(app).post("/api/auth/signup").send(userData);
 
     it("should create a new user", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "john@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp(testUser);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
@@ -61,14 +60,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when required fields are missing", async () => {
-      const userData = {
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({});
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -78,14 +70,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when the email already exists", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "john@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp(testUser);
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe("fail");
@@ -93,14 +78,7 @@ describe("AuthController", () => {
     });
 
     it("should fail when email is invalid", async () => {
-      const userData = {
-        name: "John Doe",
-        email: "notavalidemail",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$1234",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({ ...testUser, email: "invalidemail" });
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -108,14 +86,12 @@ describe("AuthController", () => {
     });
 
     it("should fail when password does not match", async () => {
-      const userData = {
-        name: "Darren Jordan",
-        email: "sanforddarryl@example.com",
-        password: "Pa$$1234",
-        passwordConfirm: "Pa$$12345",
-      };
-
-      const res = await signUp(userData);
+      const res = await signUp({
+        ...testUser,
+        email: "differentuser@example.com",
+        passwordConfirm: "1234Pa$$",
+      });
+      console.log(res.body);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -129,12 +105,10 @@ describe("AuthController", () => {
     let accessToken, refreshToken;
 
     it("should login a user and return access and refresh tokens", async () => {
-      const userData = {
+      const res = await login({
         email: "john@example.com",
         password: "Pa$$1234",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
@@ -154,12 +128,10 @@ describe("AuthController", () => {
     });
 
     it("should fail when email or password is missing", async () => {
-      const userData = {
+      const res = await login({
         email: "",
         password: "",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(422);
       expect(res.body.status).toBe("fail");
@@ -167,12 +139,10 @@ describe("AuthController", () => {
     });
 
     it("should fail when user does not exist", async () => {
-      const userData = {
+      const res = await login({
         email: "nonexistent@example.com",
         password: "Pa$$1234",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -180,12 +150,10 @@ describe("AuthController", () => {
     });
 
     it("should fail when password is incorrect", async () => {
-      const userData = {
+      const res = await login({
         email: "john@example.com",
         password: "wrongpassword",
-      };
-
-      const res = await login(userData);
+      });
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
@@ -198,12 +166,10 @@ describe("AuthController", () => {
 
     // Login user and save the refresh token
     beforeAll(async () => {
-      const userData = {
+      const res = await request(app).post("/api/auth/login").send({
         email: "john@example.com",
         password: "Pa$$1234",
-      };
-
-      const res = await request(app).post("/api/auth/login").send(userData);
+      });
 
       const token = validateAndExtractTokens(res);
       accessToken = token.accessToken;
