@@ -13,4 +13,6 @@ router.get(
 );
 router.get("/current", ensureAuthenticated, userController.current);
 
+router.patch("/updateMe", ensureAuthenticated, userController.updateMe);
+
 module.exports = router;

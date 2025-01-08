@@ -19,3 +19,14 @@ exports.current = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.updateMe = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: 'success',
+      message: 'You git update me route'
+    })
+  } catch (e) {
+    next(e);
+  }
+};
