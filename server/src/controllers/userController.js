@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const imagekit = require("../utils/ImageKit");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -25,6 +26,15 @@ exports.updateMe = async (req, res, next) => {
     const inputData = {
       name: req.body.name,
     };
+
+    if (req.file) {
+      const imgKit = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: req.file.filename,
+        folder: "users/",
+      });
+      inputData.img = imgKit.url;
+    }
 
     const newUser = await User.findByIdAndUpdate(req.user.id, inputData, {
       new: true,

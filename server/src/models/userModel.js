@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema(
       ],
       select: false,
     },
+    img: {
+      type: String,
+      default: "https://ik.imagekit.io/8cs4gpobr/users/default.jpeg?updatedAt=1736317738783",
+      required: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
