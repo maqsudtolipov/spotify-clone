@@ -22,11 +22,18 @@ exports.current = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
   try {
-    console.log(req.file);
+    const inputData = {
+      name: req.body.name,
+    };
+
+    const newUser = await User.findByIdAndUpdate(req.user.id, inputData, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       status: "success",
-      message: "You git update me route",
+      user: newUser,
     });
   } catch (e) {
     next(e);
