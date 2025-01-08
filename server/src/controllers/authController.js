@@ -54,7 +54,7 @@ exports.login = async (req, res, next) => {
     }
 
     // Check if the user exists
-    const user = await User.findOne({ email }, "id name password");
+    const user = await User.findOne({ email }, "id name img password");
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
@@ -80,6 +80,7 @@ exports.login = async (req, res, next) => {
       user: {
         id: user.id,
         name: user.name,
+        img: user.img,
       },
     });
   } catch (e) {

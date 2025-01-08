@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const imagekit = require("../utils/ImageKit");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -15,6 +16,35 @@ exports.current = async (req, res, next) => {
     const user = await User.findById(req.user.id, "id name email");
 
     res.status(200).json({ status: "success", user });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.updateMe = async (req, res, next) => {
+  try {
+    const inputData = {
+      name: req.body.name,
+    };
+
+    if (req.file) {
+      const imgKit = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: req.file.filename,
+        folder: "users/",
+      });
+      inputData.img = imgKit.url;
+    }
+
+    const newUser = await User.findByIdAndUpdate(req.user.id, inputData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: "success",
+      user: newUser,
+    });
   } catch (e) {
     next(e);
   }
