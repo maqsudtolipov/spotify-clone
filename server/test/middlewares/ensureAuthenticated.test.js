@@ -6,6 +6,7 @@ const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated")
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
+const RefreshToken = require("../../src/models/refreshTokenModel");
 
 let server;
 let accessToken;
@@ -26,7 +27,7 @@ beforeAll(async () => {
   );
   await mongoose.connect(DB);
 
-  server = app.listen(3009);
+  server = app.listen(3091);
 
   // Signup and login user
   const userData = {
@@ -46,6 +47,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await User.deleteMany();
+  await RefreshToken.deleteMany();
   await InvalidAccessToken.deleteMany();
   await mongoose.disconnect();
   server.close();
