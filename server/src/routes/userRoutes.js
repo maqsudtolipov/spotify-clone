@@ -2,6 +2,10 @@ const express = require("express");
 const userController = require("../controllers/userController");
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const authorize = require("../middlewares/authorize");
+const {
+  uploadUserImg,
+  resizeUserImg,
+} = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -13,6 +17,12 @@ router.get(
 );
 router.get("/current", ensureAuthenticated, userController.current);
 
-router.patch("/updateMe", ensureAuthenticated, userController.updateMe);
+router.patch(
+  "/updateMe",
+  ensureAuthenticated,
+  uploadUserImg,
+  resizeUserImg,
+  userController.updateMe,
+);
 
 module.exports = router;
