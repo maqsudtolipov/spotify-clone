@@ -10,6 +10,7 @@ const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 const { generateRefreshToken } = require("../../src/utils/genereateTokens");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
+const connectToDatabase = require("../helpers/connectToDatabase");
 
 const testUser = {
   name: "John Doe",
@@ -18,28 +19,13 @@ const testUser = {
   passwordConfirm: "Pa$$1234",
 };
 
-// Connect to the database and start the server
 let server;
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
-
-  if (
-    !process.env.DB_TEST_URL &&
-    !/test-database/.test(process.env.DB_TEST_URL)
-  ) {
-    console.log("Tests can only and must connect to a test database.");
-  }
-
-  const DB = process.env.DB_TEST_URL.replace(
-    "<db_password>",
-    process.env.DB_PASS,
-  );
-  await mongoose.connect(DB);
-
+  await connectToDatabase();
   server = app.listen(3009);
 });
 
-// Disconnected from the database and close the server
 afterAll(async () => {
   await User.deleteMany();
   await RefreshToken.deleteMany();
@@ -93,7 +79,6 @@ describe("AuthController", () => {
         email: "differentuser@example.com",
         passwordConfirm: "1234Pa$$",
       });
-      console.log(res.body);
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -166,7 +151,6 @@ describe("AuthController", () => {
   describe("/refresh-token route", () => {
     let accessToken, refreshToken;
 
-    // Login user and save the refresh token
     beforeAll(async () => {
       const res = await request(app).post("/api/auth/login").send({
         email: "john@example.com",
@@ -178,7 +162,7 @@ describe("AuthController", () => {
       refreshToken = token.refreshToken;
     });
 
-    it("it should send new access and refresh tokens", async () => {
+    it("should send new access and refresh tokens", async () => {
       const res = await request(app)
         .post("/api/auth/refresh-token")
         .set("Cookie", [`refreshToken=${refreshToken}`])
@@ -187,7 +171,7 @@ describe("AuthController", () => {
       validateAndExtractTokens(res).validate();
     });
 
-    it("it should fail when refresh token is not provided", async () => {
+    it("should fail when refresh token is not provided", async () => {
       const res = await request(app).post("/api/auth/refresh-token").send();
 
       expect(res.status).toBe(401);
@@ -196,11 +180,9 @@ describe("AuthController", () => {
     });
 
     it("should fail when refresh token does not exist in database", async () => {
-      // Generate fake refresh token
       const userId = new mongoose.Types.ObjectId();
       const refreshToken = generateRefreshToken(userId);
 
-      // Generate req, res and next
       const { req, res, next } = middlewareMock({
         method: "POST",
         url: "/api/auth/refresh-token",
@@ -209,7 +191,6 @@ describe("AuthController", () => {
         },
       });
 
-      // Call the /refresh-token route
       await refreshTokenController(req, res, next);
 
       expect(next.mock.calls[0][0].statusCode).toBe(401);
@@ -218,7 +199,7 @@ describe("AuthController", () => {
       );
     });
 
-    it("it should fail when refresh token is modified", async () => {
+    it("should fail when refresh token is modified", async () => {
       const userId = new mongoose.Types.ObjectId();
       const refreshToken = generateRefreshToken(userId);
       const modifiedRefreshToken =
@@ -252,14 +233,11 @@ describe("AuthController", () => {
   describe("/logout route", () => {
     let accessToken, refreshToken, userId;
 
-    // Login user and save the refresh token
     beforeAll(async () => {
       const res = await request(app).post("/api/auth/login").send({
         email: "john@example.com",
         password: "Pa$$1234",
       });
-
-      console.log(res.body);
 
       userId = res.body.user.id;
 
@@ -274,11 +252,9 @@ describe("AuthController", () => {
         .set("Cookie", [`accessToken=${accessToken}`]);
       expect(res.status).toBe(204);
 
-      // Check refresh tokens
       const refreshTokens = await RefreshToken.find({ userId });
       expect(refreshTokens.length).toBe(0);
 
-      // Check access token
       const invalidAccessToken = await InvalidAccessToken.findOne({
         token: accessToken,
       });

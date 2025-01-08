@@ -5,44 +5,16 @@ const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
+const connectToDatabase = require("../helpers/connectToDatabase");
+const signupAndLoginUser = require("../helpers/signupAndLoginUser");
 
 let server, accessToken, img;
 
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
-
-  if (
-    !process.env.DB_TEST_URL &&
-    !/test-database/.test(process.env.DB_TEST_URL)
-  ) {
-    console.log("Tests can only and must connect to a test database.");
-  }
-
-  const DB = process.env.DB_TEST_URL.replace(
-    "<db_password>",
-    process.env.DB_PASS,
-  );
-  await mongoose.connect(DB);
-
+  await connectToDatabase();
   server = app.listen(3009);
-
-  // Signup and login user
-  const userData = {
-    name: "John Doe",
-    email: "john@example.com",
-    password: "Pa$$1234",
-    passwordConfirm: "Pa$$1234",
-  };
-
-  await request(app).post("/api/auth/signup").send(userData);
-  const loginRes = await request(app).post("/api/auth/login").send(userData);
-
-  accessToken =
-    loginRes
-      .get("set-cookie")
-      .find((cookie) => cookie.startsWith("accessToken="))
-      .match(/accessToken=([^;]+)/)[1] || null;
-  img = loginRes.body.user.img;
+  ({ accessToken, img } = await signupAndLoginUser());
 });
 
 afterAll(async () => {
@@ -51,10 +23,6 @@ afterAll(async () => {
   await mongoose.disconnect();
   server.close();
 });
-
-// updateMe
-// - should update intended fields when provided
-// - should ignore update when unknown fields are provided
 
 describe("userController", () => {
   describe("/updateMe route", () => {
