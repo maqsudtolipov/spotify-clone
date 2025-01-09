@@ -31,6 +31,18 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     password: {
       type: String,
       required: [true, "Please provide a password"],
