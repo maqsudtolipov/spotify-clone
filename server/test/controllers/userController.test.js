@@ -95,6 +95,16 @@ describe("userController", () => {
       expect(candidateUser.followers[0].toString()).toEqual(userIds[0]);
     });
 
+    it("should fail if required fields are missing", async () => {
+      const res = await request(app)
+        .post(`/api/users/follow/`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Please provide user id/i);
+    });
+
     it("should fail if candidate id is wrong", async () => {
       // The id is randomly generated
       const res = await request(app)
