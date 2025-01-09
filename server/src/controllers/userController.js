@@ -68,6 +68,12 @@ exports.followUser = async (req, res, next) => {
     if (!req.user.id || !candidate?.id) {
       return next(new AppError("Please provide user id", 400));
     }
+
+    // Check user is not following himself
+    if (req.user.id === candidate.id) {
+      return next(new AppError("User cannot follow himself", 400));
+    }
+
     // Add candidate id to cur users following list
     // Add cur user id to candidate's follower list
 
