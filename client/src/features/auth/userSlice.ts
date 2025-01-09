@@ -10,6 +10,7 @@ interface User {
   id: string;
   email: string;
   name: string;
+  img: string;
 }
 
 interface InitialState {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
+import { useAppSelector } from '../../app/hooks.ts';
 
 interface Data {
   type: 'playlist' | 'profile';
@@ -15,22 +16,18 @@ interface ProfileHeaderProps {
 
 const ProfileHeader = ({ color }: ProfileHeaderProps) => {
   const [data, setData] = useState<Data>();
+  const {img, name} = useAppSelector(state => state.user.data);
 
   useEffect(() => {
     const data: Data = {
+      img,
+      name,
       type: 'profile',
-      img: faker.image.urlLoremFlickr({
-        height: 240,
-        width: 240,
-        category: 'nature',
-      }),
-      name: faker.person.fullName(),
       statistics: [
         { name: 'followers', value: faker.number.int(30) },
         { name: 'followings', value: faker.number.int(30) },
       ],
     };
-
     setData(data);
   }, []);
 

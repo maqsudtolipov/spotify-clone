@@ -14,6 +14,7 @@ interface CardItem {
 
 const ProfilePage = () => {
   const [items, setItems] = useState<CardItem[]>([]);
+
   const color =
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
