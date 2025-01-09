@@ -53,11 +53,6 @@ exports.updateMe = async (req, res, next) => {
 
 exports.followUser = async (req, res, next) => {
   try {
-    // Check both inputs
-    if (!req.user.id || !req.params.id) {
-      return next(new AppError("Please provide user id", 400));
-    }
-
     // Check users exist
     const currentUser = await User.findById(req.user.id);
     const candidateUser = await User.findById(req.params.id);
