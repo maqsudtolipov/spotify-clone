@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const imagekit = require("../utils/ImageKit");
+const AppError = require("../utils/AppError");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -51,3 +52,27 @@ exports.updateMe = async (req, res, next) => {
 };
 
 // Follows
+// - check inputs
+//   - check both ids provided
+//   - prevent duplicate followers
+//   - prevent duplicate followings
+//   - prevent user following himself
+
+exports.followUser = async (req, res, next) => {
+  try {
+    console.log(req.user, req.params);
+
+    // Check both inputs
+    const candidate = await User.findById(req.params.id);
+
+    if (!req.user.id || !candidate?.id) {
+      return next(new AppError("Please provide user id", 400));
+    }
+    // Add candidate id to cur users following list
+    // Add cur user id to candidate's follower list
+
+    res.status(200).json({ status: "success" });
+  } catch (e) {
+    next(e);
+  }
+};

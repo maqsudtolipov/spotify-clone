@@ -22,4 +22,7 @@ router.patch(
   userController.updateMe,
 );
 
+// Follows
+router.post("/follow/:id", ensureAuthenticated, userController.followUser);
+
 module.exports = router;
