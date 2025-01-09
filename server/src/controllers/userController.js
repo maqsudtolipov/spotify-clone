@@ -67,7 +67,7 @@ exports.followUser = async (req, res, next) => {
     const candidateUser = await User.findById(req.params.id);
 
     if (!currentUser || !candidateUser) {
-      return next(new AppError("Please provide user id", 400));
+      return next(new AppError("User not found", 400));
     }
 
     // Check user is not following himself
@@ -81,13 +81,13 @@ exports.followUser = async (req, res, next) => {
       await currentUser.save();
     }
 
-    // Add cur user id to candidate's follower list
+    // Add cur user id to candidate's followers list
     if (!candidateUser.followers.includes(currentUser.id)) {
       candidateUser.followers.push(currentUser.id);
       await candidateUser.save();
     }
 
-    res.status(200).json({ status: "success" });
+    res.status(200).json({ status: "success", data: currentUser.followings });
   } catch (e) {
     next(e);
   }
