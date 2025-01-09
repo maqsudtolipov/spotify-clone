@@ -63,19 +63,29 @@ exports.followUser = async (req, res, next) => {
     console.log(req.user, req.params);
 
     // Check both inputs
-    const candidate = await User.findById(req.params.id);
+    const currentUser = await User.findById(req.user.id);
+    const candidateUser = await User.findById(req.params.id);
 
-    if (!req.user.id || !candidate?.id) {
+    if (!currentUser || !candidateUser) {
       return next(new AppError("Please provide user id", 400));
     }
 
     // Check user is not following himself
-    if (req.user.id === candidate.id) {
+    if (currentUser.id === candidateUser.id) {
       return next(new AppError("User cannot follow himself", 400));
     }
 
-    // Add candidate id to cur users following list
+    // Add candidate id to cur users followings list
+    if (!currentUser.followings.includes(candidateUser.id)) {
+      currentUser.followings.push(candidateUser.id);
+      await currentUser.save();
+    }
+
     // Add cur user id to candidate's follower list
+    if (!candidateUser.followers.includes(currentUser.id)) {
+      candidateUser.followers.push(currentUser.id);
+      await candidateUser.save();
+    }
 
     res.status(200).json({ status: "success" });
   } catch (e) {
