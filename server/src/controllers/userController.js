@@ -51,17 +51,8 @@ exports.updateMe = async (req, res, next) => {
   }
 };
 
-// Follows
-// - check inputs
-//   - check both ids provided
-//   - prevent duplicate followers
-//   - prevent duplicate followings
-//   - prevent user following himself
-
 exports.followUser = async (req, res, next) => {
   try {
-    console.log(req.user, req.params);
-
     // Check both inputs
     const currentUser = await User.findById(req.user.id);
     const candidateUser = await User.findById(req.params.id);
@@ -87,7 +78,9 @@ exports.followUser = async (req, res, next) => {
       await candidateUser.save();
     }
 
-    res.status(200).json({ status: "success", data: currentUser.followings });
+    res
+      .status(200)
+      .json({ status: "success", followings: currentUser.followings });
   } catch (e) {
     next(e);
   }
@@ -95,7 +88,35 @@ exports.followUser = async (req, res, next) => {
 
 exports.unfollowUser = async (req, res, next) => {
   try {
-    res.status(200).json({ status: "success" });
+    // Check both inputs
+    const currentUser = await User.findById(req.user.id);
+    const candidateUser = await User.findById(req.params.id);
+
+    if (!currentUser || !candidateUser) {
+      return next(new AppError("User not found", 400));
+    }
+
+    console.log("see here", currentUser.id);
+
+    // Remove candidate id from cur user followings list
+    const newUser = await User.findByIdAndUpdate(
+      currentUser.id,
+      {
+        $pull: { followings: candidateUser.id },
+      },
+      { new: true },
+    );
+
+    // // Remove cur user id from candidate's followers list
+    await User.findByIdAndUpdate(
+      candidateUser.id,
+      {
+        $pull: { followers: currentUser.id },
+      },
+      { new: true },
+    );
+
+    res.status(200).json({ status: "success", followings: newUser.followings });
   } catch (e) {
     next(e);
   }
