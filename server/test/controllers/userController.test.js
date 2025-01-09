@@ -80,8 +80,7 @@ describe("userController", () => {
       // send follow request
       const res = await request(app)
         .post(`/api/users/follow/${userIds[1]}`)
-        .set("Cookie", [`accessToken=${accessToken}`])
-        .send({ name: "Jane Doe" });
+        .set("Cookie", [`accessToken=${accessToken}`]);
 
       // Check response
       expect(res.status).toBe(200);
@@ -94,6 +93,17 @@ describe("userController", () => {
 
       expect(currentUser.followings[0].toString()).toEqual(userIds[1]);
       expect(candidateUser.followers[0].toString()).toEqual(userIds[0]);
+    });
+
+    it("should fail if candidate id is wrong", async () => {
+      // The id is randomly generated
+      const res = await request(app)
+        .post(`/api/users/follow/677fa3364800ced107643ea1`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/User not found/i);
     });
   });
 });
