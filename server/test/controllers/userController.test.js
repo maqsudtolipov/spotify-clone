@@ -95,12 +95,10 @@ describe("userController", () => {
       expect(candidateUser.followers[0].toString()).toEqual(userIds[0]);
     });
 
-    it("should fail if required fields are wrong", async () => {
+    it("should fail if required id is invalid", async () => {
       const res = await request(app)
         .post(`/api/users/follow/wrongWord`)
         .set("Cookie", [`accessToken=${accessToken}`]);
-
-      console.log(res)
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -116,6 +114,16 @@ describe("userController", () => {
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/User not found/i);
+    });
+
+    it("should fail if user tries to follow himself", async () => {
+      const res = await request(app)
+        .post(`/api/users/follow/${userIds[0]}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/User cannot follow himself/i);
     });
   });
 });
