@@ -46,7 +46,7 @@ export const followUser = createAsyncThunk(
   'user/followUser',
   async (id: string) => {
     const res = await axios.post(`/users/follow/${id}`, id);
-    return res.data.user;
+    return res.data;
   },
 );
 
@@ -54,6 +54,6 @@ export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
   async (id: string) => {
     const res = await axios.post(`/users/unfollow/${id}`, id);
-    return res.data.user;
+    return res.data;
   },
 );

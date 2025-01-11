@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCurrent, login, logout, signUp } from './userThunks.ts';
+import {
+  followUser,
+  getCurrent,
+  login,
+  logout,
+  signUp,
+  unfollowUser,
+} from './userThunks.ts';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -104,6 +111,13 @@ const userSlice = createSlice({
         state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
+      })
+      // Follow
+      .addCase(followUser.fulfilled, (state, action) => {
+        state.data.followings = action.payload.followings;
+      })
+      .addCase(unfollowUser.fulfilled, (state, action) => {
+        state.data.followings = action.payload.followings;
       }),
 });
 
