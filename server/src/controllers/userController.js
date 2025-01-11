@@ -12,6 +12,27 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findById(
+      req.params.id,
+      "id name email img followers followings",
+    );
+
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
+    res.status(200).json({ status: "success", user });
+  } catch (e) {
+    if (e.name === "CastError") {
+      return next(new AppError(`Invalid user id: ${e.value}`, 400));
+    }
+
+    next(e);
+  }
+};
+
 exports.current = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id, "id name email img");

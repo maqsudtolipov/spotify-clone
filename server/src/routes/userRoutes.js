@@ -13,6 +13,7 @@ router.get(
   userController.getAll,
 );
 router.get("/current", ensureAuthenticated, userController.current);
+router.get("/:id", ensureAuthenticated, userController.getUserById);
 
 router.patch(
   "/updateMe",
