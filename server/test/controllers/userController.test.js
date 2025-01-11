@@ -25,6 +25,52 @@ afterAll(async () => {
 });
 
 describe("userController", () => {
+  describe("/:id route", () => {
+    let accessToken, userIds;
+
+    beforeAll(async () => {
+      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+    });
+
+    afterAll(async () => {
+      await User.deleteMany();
+      await RefreshToken.deleteMany();
+    });
+
+    it("should return user data", async () => {
+      const res = await request(app)
+        .get(`/api/users/${userIds[1]}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      // Check response
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.user.id).toEqual(userIds[1]);
+    });
+
+    it("should fail if the user does not exist", async () => {
+      // random user id
+      const res = await request(app)
+        .get(`/api/users/67820f16484d41c8720c8375`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      // Check response
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/User not found/i);
+    });
+
+    it("should fail if user id is invalid", async () => {
+      const res = await request(app)
+        .post(`/api/users/follow/wrongWord`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid user id: wrongWord/i);
+    });
+  });
+
   describe("/updateMe route", () => {
     let accessToken, img;
 
