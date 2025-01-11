@@ -14,10 +14,13 @@ interface SigUpInput {
   passwordConfirm: string;
 }
 
-export const signUp = createAsyncThunk('user/signup', async (input: SigUpInput) => {
-  const res = await axios.post('/auth/signup', input);
-  return res.data;
-})
+export const signUp = createAsyncThunk(
+  'user/signup',
+  async (input: SigUpInput) => {
+    const res = await axios.post('/auth/signup', input);
+    return res.data;
+  },
+);
 
 interface LoginInput {
   email: string;
@@ -37,3 +40,12 @@ export const logout = createAsyncThunk('user/logout', async () => {
   const res = await axios.get('/auth/logout');
   return res.data;
 });
+
+// Follow
+export const followUser = createAsyncThunk(
+  'user/followUser',
+  async (id: string) => {
+    const res = await axios.post(`/users/follow/${id}`, id);
+    return res.data.user;
+  },
+);

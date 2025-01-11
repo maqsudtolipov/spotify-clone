@@ -21,7 +21,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     if (!isAuth) dispatch(getCurrent());
-  }, [isAuth, dispatch]);
+  }, [dispatch, isAuth]);
 
   return (
     <Routes>
@@ -59,14 +59,14 @@ const AppRoutes = () => {
               </Layout>
             }
           />
-          <Route
-            path="/profile"
-            element={
-              <Layout>
-                <ProfilePage />
-              </Layout>
-            }
-          />
+          {/*<Route*/}
+          {/*  path="/profile"*/}
+          {/*  element={*/}
+          {/*    <Layout>*/}
+          {/*      <ProfilePage />*/}
+          {/*    </Layout>*/}
+          {/*  }*/}
+          {/*/>*/}
           <Route
             path="/user/:id"
             element={
