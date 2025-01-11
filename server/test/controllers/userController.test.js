@@ -7,7 +7,7 @@ const fs = require("node:fs");
 const { resolve } = require("node:path");
 const connectToDatabase = require("../helpers/connectToDatabase");
 const signupAndLoginUser = require("../helpers/signupAndLoginUser");
-const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndReturnIds");
+const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndLoginFirst");
 
 let server;
 
@@ -102,7 +102,7 @@ describe("userController", () => {
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Invalid _id: wrongWord/i);
+      expect(res.body.message).toMatch(/Invalid user id: wrongWord/i);
     });
 
     it("should fail if candidate does not exist", async () => {

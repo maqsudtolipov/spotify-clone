@@ -82,6 +82,10 @@ exports.followUser = async (req, res, next) => {
       .status(200)
       .json({ status: "success", followings: currentUser.followings });
   } catch (e) {
+    if (e.name === "CastError") {
+      return next(new AppError(`Invalid user id: ${e.value}`, 400));
+    }
+
     next(e);
   }
 };
@@ -118,6 +122,10 @@ exports.unfollowUser = async (req, res, next) => {
 
     res.status(200).json({ status: "success", followings: newUser.followings });
   } catch (e) {
+    if (e.name === "CastError") {
+      return next(new AppError(`Invalid user id: ${e.value}`, 400));
+    }
+
     next(e);
   }
 };

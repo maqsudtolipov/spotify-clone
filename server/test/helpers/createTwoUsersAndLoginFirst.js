@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../../src/app");
 
-const createTwoUsersAndReturnIds = async () => {
+const createTwoUsersAndLoginFirst = async () => {
   const users = [
     {
       name: "Marlene Carr",
@@ -32,4 +32,4 @@ const createTwoUsersAndReturnIds = async () => {
   return { accessToken, userIds: [user1.body.data.id, user2.body.data.id] };
 };
 
-module.exports = createTwoUsersAndReturnIds;
+module.exports = createTwoUsersAndLoginFirst;
