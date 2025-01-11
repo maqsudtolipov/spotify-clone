@@ -100,7 +100,10 @@ exports.unfollowUser = async (req, res, next) => {
       return next(new AppError("User not found", 400));
     }
 
-    console.log("see here", currentUser.id);
+    // Check user is not unfollowing himself
+    if (currentUser.id === candidateUser.id) {
+      return next(new AppError("User cannot unfollow himself", 400));
+    }
 
     // Remove candidate id from cur user followings list
     const newUser = await User.findByIdAndUpdate(

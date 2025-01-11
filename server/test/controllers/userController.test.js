@@ -76,6 +76,11 @@ describe("userController", () => {
       ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
     });
 
+    afterAll(async () => {
+      await User.deleteMany();
+      await RefreshToken.deleteMany();
+    });
+
     it("should update users followings list and candidates followers list", async () => {
       // send follow request
       const res = await request(app)
@@ -124,6 +129,74 @@ describe("userController", () => {
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/User cannot follow himself/i);
+    });
+  });
+
+  describe("/unfollow route", () => {
+    let accessToken, userIds;
+
+    beforeAll(async () => {
+      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+    });
+
+    afterAll(async () => {
+      await User.deleteMany();
+      await RefreshToken.deleteMany();
+    });
+
+    it("should update users followings list and candidates followers list", async () => {
+      // send follow request
+      await request(app)
+        .post(`/api/users/follow/${userIds[1]}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      // send unfollow request
+      const res = await request(app)
+        .post(`/api/users/unfollow/${userIds[1]}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      // Check response
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.followings.length).toEqual(0);
+
+      // Check database updates
+      const currentUser = await User.findById(userIds[0]);
+      const candidateUser = await User.findById(userIds[1]);
+
+      expect(currentUser.followings.length).toEqual(0);
+      expect(candidateUser.followers.length).toEqual(0);
+    });
+
+    it("should fail if required id is invalid", async () => {
+      const res = await request(app)
+        .post(`/api/users/unfollow/wrongWord`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid user id: wrongWord/i);
+    });
+
+    it("should fail if candidate does not exist", async () => {
+      // The id is randomly generated
+      const res = await request(app)
+        .post(`/api/users/unfollow/677fa3364800ced107643ea1`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/User not found/i);
+    });
+
+    it("should fail if user tries to unfollow himself", async () => {
+      const res = await request(app)
+        .post(`/api/users/unfollow/${userIds[0]}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/User cannot unfollow himself/i);
     });
   });
 });
