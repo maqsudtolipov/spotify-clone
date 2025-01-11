@@ -4,6 +4,7 @@ import PlayHeader from '../../../components/PlayHeader/PlayHeader.tsx';
 import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
 import { useEffect, useState } from 'react';
 import axios from '../../../api/axios';
+import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
 
 interface User {
   type: 'profile';
@@ -36,33 +37,33 @@ const UserProfile = () => {
     fetchData();
   }, [id]);
 
-  return (
-    user && (
-      <>
-        <ImageHeader data={user} />
-        <GradientBackground color={color}>
-          <PlayHeader />
+  return user?.name ? (
+    <>
+      <ImageHeader data={user} />
+      <GradientBackground color={color}>
+        <PlayHeader />
 
-          <div className="p-5 pt-0">
-            {/*<CardsList*/}
-            {/*  title="Public Playlists"*/}
-            {/*  shrink={true}*/}
-            {/*  items={items.slice(0, 6)}*/}
-            {/*/>*/}
-            {/*<CardsList*/}
-            {/*  title="Followers"*/}
-            {/*  shrink={true}*/}
-            {/*  items={items.slice(6, 12)}*/}
-            {/*/>*/}
-            {/*<CardsList*/}
-            {/*  title="Followings"*/}
-            {/*  shrink={true}*/}
-            {/*  items={items.slice(12, 18)}*/}
-            {/*/>*/}
-          </div>
-        </GradientBackground>
-      </>
-    )
+        <div className="p-5 pt-0">
+          {/*<CardsList*/}
+          {/*  title="Public Playlists"*/}
+          {/*  shrink={true}*/}
+          {/*  items={items.slice(0, 6)}*/}
+          {/*/>*/}
+          {/*<CardsList*/}
+          {/*  title="Followers"*/}
+          {/*  shrink={true}*/}
+          {/*  items={items.slice(6, 12)}*/}
+          {/*/>*/}
+          {/*<CardsList*/}
+          {/*  title="Followings"*/}
+          {/*  shrink={true}*/}
+          {/*  items={items.slice(12, 18)}*/}
+          {/*/>*/}
+        </div>
+      </GradientBackground>
+    </>
+  ) : (
+    <LoadingScreen />
   );
 };
 
