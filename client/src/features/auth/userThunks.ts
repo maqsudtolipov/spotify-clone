@@ -49,3 +49,11 @@ export const followUser = createAsyncThunk(
     return res.data.user;
   },
 );
+
+export const unfollowUser = createAsyncThunk(
+  'user/unfollowUser',
+  async (id: string) => {
+    const res = await axios.post(`/users/unfollow/${id}`, id);
+    return res.data.user;
+  },
+);

@@ -6,7 +6,7 @@ import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
 import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
 import FollowButton from '../../../components/PlayHeader/FollowButton.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
-import { followUser } from '../../auth/userThunks.ts';
+import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 
 interface User {
   type: 'profile';
@@ -20,7 +20,7 @@ interface User {
 const UserProfile = () => {
   const { id } = useParams();
   const [user, setUser] = useState<User>();
-  // const { followings } = useAppSelector((state) => state.user.data);
+  const { followings } = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
   const color =
@@ -40,47 +40,35 @@ const UserProfile = () => {
     };
     fetchData();
   }, [id]);
-  //
+
   const isFollowed = (id: string, followings: string[]) => {
     return followings.includes(id);
   };
-  //
-  // const handleFollowUser = (id: string) => {
-  //   console.log('request sent');
-  // };
+
+  const handleFollowUser = (id: string, followings: string[]) => {
+    if (isFollowed(id, followings)) {
+      dispatch(unfollowUser(id));
+    } else {
+      dispatch(followUser(id));
+    }
+  };
 
   return user?.name ? (
     <>
       {/*<ImageHeader data={user} />*/}
       <GradientBackground color={color}>
         <div className={styles.playerHeader}>
-          {/*{isFollowed(user.id) ? (*/}
-          {/*  <FollowButton*/}
-          {/*    text={'Following'}*/}
-          {/*    onClick={(e) => {*/}
-          {/*      e.preventDefault();*/}
-          {/*      handleFollowUser(user.id);*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*) : (*/}
-          {/*  <FollowButton*/}
-          {/*    text={'Follow'}*/}
-          {/*    onClick={(e) => {*/}
-          {/*      e.preventDefault();*/}
-          {/*      handleFollowUser(user.id);*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*)}*/}
-          {/*{isFollowed(user.id, followings) ? 'yes' : 'no'}*/}
-
-          <FollowButton
-            text={'Follow'}
-            onClick={(e) => {
-              e.preventDefault();
-              // handleFollowUser(user.id);
-              dispatch(followUser(user.id));
-            }}
-          />
+          {isFollowed(user.id, followings) ? (
+            <FollowButton
+              text={'Following'}
+              onClick={() => handleFollowUser(user.id, followings)}
+            />
+          ) : (
+            <FollowButton
+              text={'Follow'}
+              onClick={() => handleFollowUser(user.id, followings)}
+            />
+          )}
         </div>
 
         <div className="p-5 pt-0">
