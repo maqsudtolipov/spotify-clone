@@ -22,4 +22,8 @@ router.patch(
   userController.updateMe,
 );
 
+// Follows
+router.post("/follow/:id", ensureAuthenticated, userController.followUser);
+router.post("/unfollow/:id", ensureAuthenticated, userController.unfollowUser);
+
 module.exports = router;
