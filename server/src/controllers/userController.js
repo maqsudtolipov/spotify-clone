@@ -35,7 +35,7 @@ exports.getUserById = async (req, res, next) => {
 
 exports.current = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id, "id name email img");
+    const user = await User.findById(req.user.id, "id name email img followers followings");
 
     res.status(200).json({ status: "success", user });
   } catch (e) {

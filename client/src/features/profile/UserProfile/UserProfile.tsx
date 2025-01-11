@@ -5,6 +5,11 @@ import GradientBackground from '../../../components/GradientBackground/GradientB
 import { useEffect, useState } from 'react';
 import axios from '../../../api/axios';
 import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
+import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
+import PlayButton from '../../../components/PlayHeader/PlayButton.tsx';
+import FollowButton from '../../../components/PlayHeader/FollowButton.tsx';
+import HeaderActions from '../../../components/PlayHeader/HeaderActions.tsx';
+import { useAppSelector } from '../../../app/hooks.ts';
 
 interface User {
   type: 'profile';
@@ -18,6 +23,7 @@ interface User {
 const UserProfile = () => {
   const { id } = useParams();
   const [user, setUser] = useState<User>();
+  const { followings } = useAppSelector((state) => state.user.data);
 
   const color =
     '#' +
@@ -37,11 +43,22 @@ const UserProfile = () => {
     fetchData();
   }, [id]);
 
+  const isFollowed = (id) => {
+    console.log(id);
+    // return followings.includes(id);
+  };
+
   return user?.name ? (
     <>
       <ImageHeader data={user} />
       <GradientBackground color={color}>
-        <PlayHeader />
+        <div className={styles.playerHeader}>
+          {isFollowed(user.id) ? (
+            <FollowButton text={'Following'} />
+          ) : (
+            <FollowButton text={'Follow'} />
+          )}
+        </div>
 
         <div className="p-5 pt-0">
           {/*<CardsList*/}

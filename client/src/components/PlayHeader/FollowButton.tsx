@@ -1,7 +1,11 @@
 import styles from './PlayHeader.module.scss';
 
-const FollowButton = () => {
-  return <button className={styles.followButton}>Follow</button>;
+interface FollowButtonProps {
+  text: string;
+}
+
+const FollowButton = ({ text }: FollowButtonProps) => {
+  return <button className={styles.followButton}>{text}</button>;
 };
 
 export default FollowButton;
