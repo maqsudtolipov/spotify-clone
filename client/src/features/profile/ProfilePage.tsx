@@ -1,9 +1,9 @@
-import ProfileHeader from '../features/profile/ProfileHeader.tsx';
-import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
-import PlayHeader from '../components/PlayHeader/PlayHeader.tsx';
+import ProfileHeader from './ProfileHeader.tsx';
+import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
+import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import CardsList from '../components/CardsList/CardsList.tsx';
+import CardsList from '../../components/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -14,6 +14,7 @@ interface CardItem {
 
 const ProfilePage = () => {
   const [items, setItems] = useState<CardItem[]>([]);
+
   const color =
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +

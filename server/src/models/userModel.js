@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema(
     },
     img: {
       type: String,
-      default: "https://ik.imagekit.io/8cs4gpobr/users/default.jpeg?updatedAt=1736317738783",
+      default:
+        "https://ik.imagekit.io/8cs4gpobr/users/default.jpeg?updatedAt=1736317738783",
       required: true,
     },
     role: {
@@ -30,6 +31,18 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     password: {
       type: String,
       required: [true, "Please provide a password"],
@@ -52,15 +65,11 @@ const userSchema = new mongoose.Schema(
       },
       select: false,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      select: false,
-    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   },
 );
 

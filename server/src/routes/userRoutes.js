@@ -13,6 +13,7 @@ router.get(
   userController.getAll,
 );
 router.get("/current", ensureAuthenticated, userController.current);
+router.get("/:id", ensureAuthenticated, userController.getUserById);
 
 router.patch(
   "/updateMe",
@@ -21,5 +22,9 @@ router.patch(
   resizeUserImg,
   userController.updateMe,
 );
+
+// Follows
+router.post("/follow/:id", ensureAuthenticated, userController.followUser);
+router.post("/unfollow/:id", ensureAuthenticated, userController.unfollowUser);
 
 module.exports = router;

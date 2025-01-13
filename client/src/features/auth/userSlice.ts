@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCurrent, login, logout, signUp } from './userThunks.ts';
+import {
+  followUser,
+  getCurrent,
+  login,
+  logout,
+  signUp,
+  unfollowUser,
+} from './userThunks.ts';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -10,6 +17,9 @@ interface User {
   id: string;
   email: string;
   name: string;
+  img: string;
+  followers: string[];
+  followings: string[];
 }
 
 interface InitialState {
@@ -22,7 +32,7 @@ interface InitialState {
     signUp: ApiStatus;
     login: ApiStatus;
     logout: ApiStatus;
-  }
+  };
 }
 
 const initialState: InitialState = {
@@ -31,7 +41,7 @@ const initialState: InitialState = {
   status: 'idle',
   error: null,
   api: {
-    getCurrent: {status: 'idle', error:null},
+    getCurrent: { status: 'idle', error: null },
     signUp: {
       status: 'idle',
       error: null,
@@ -40,8 +50,8 @@ const initialState: InitialState = {
       status: 'idle',
       error: null,
     },
-    logout: {status: 'idle', error: null}
-  }
+    logout: { status: 'idle', error: null },
+  },
 };
 
 const userSlice = createSlice({
@@ -71,8 +81,8 @@ const userSlice = createSlice({
       .addCase(signUp.fulfilled, (state) => {
         state.api.signUp.status = 'fulfilled';
       })
-      .addCase(signUp.rejected, state => {
-        state.api.signUp.status  = 'rejected'
+      .addCase(signUp.rejected, (state) => {
+        state.api.signUp.status = 'rejected';
       })
       // Login
       .addCase(login.pending, (state) => {
@@ -101,6 +111,13 @@ const userSlice = createSlice({
         state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
+      })
+      // Follow
+      .addCase(followUser.fulfilled, (state, action) => {
+        state.data.followings = action.payload.followings;
+      })
+      .addCase(unfollowUser.fulfilled, (state, action) => {
+        state.data.followings = action.payload.followings;
       }),
 });
 

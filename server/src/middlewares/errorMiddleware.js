@@ -12,6 +12,10 @@ const handleDuplicationError = () => {
   return new AppError("The provided data already exists in the database.", 409);
 };
 
+const handleCastError = (error) => {
+  return new AppError(`Invalid ${error.path}: ${error.value}`, 400);
+};
+
 const productionError = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
@@ -49,6 +53,7 @@ module.exports = (err, req, res, next) => {
     if (error.name === "ValidationError") error = handleValidationError(error);
     if (error instanceof SyntaxError) error = handleSyntaxError(error);
     if (error.code === 11000) error = handleDuplicationError(error);
+    if (error.name === "CastError") error = handleCastError(error);
 
     productionError(error, res);
   }

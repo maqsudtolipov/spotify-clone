@@ -15,12 +15,20 @@ interface Data {
 }
 
 interface ImageHeaderProps {
-  color: string;
+  // color: string;
   data: Data;
 }
 
+
+
 // TODO: Refactor if needed
-const ImageHeader = ({ color, data }: ImageHeaderProps) => {
+const ImageHeader = ({ data }: ImageHeaderProps) => {
+  // Colors are randomly generated for now
+  const color =
+    '#' +
+    ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
+    '4d';
+
   const gradient = {
     background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
   };

@@ -6,12 +6,13 @@ import ForgotPassword from './pages/auth/ForgotPassword.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import HomePage from './pages/HomePage.tsx';
 import PlaylistPage from './pages/PlaylistPage.tsx';
-import ProfilePage from './pages/ProfilePage.tsx';
+import ProfilePage from './features/profile/ProfilePage.tsx';
 import Login from './features/auth/Login.tsx';
 import { useAppDispatch, useAppSelector } from './app/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';
+import UserProfile from './features/profile/UserProfile/UserProfile.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
@@ -20,7 +21,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     if (!isAuth) dispatch(getCurrent());
-  }, [isAuth, dispatch]);
+  }, [dispatch, isAuth]);
 
   return (
     <Routes>
@@ -58,11 +59,19 @@ const AppRoutes = () => {
               </Layout>
             }
           />
+          {/*<Route*/}
+          {/*  path="/profile"*/}
+          {/*  element={*/}
+          {/*    <Layout>*/}
+          {/*      <ProfilePage />*/}
+          {/*    </Layout>*/}
+          {/*  }*/}
+          {/*/>*/}
           <Route
-            path="/profile"
+            path="/user/:id"
             element={
               <Layout>
-                <ProfilePage />
+                <UserProfile />
               </Layout>
             }
           />
