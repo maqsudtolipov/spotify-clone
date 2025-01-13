@@ -19,7 +19,9 @@ interface User {
   name: string;
   img: string;
   followers: string[];
+  followersCount: number;
   followings: string[];
+  followingsCount: number;
 }
 
 interface InitialState {
@@ -115,9 +117,11 @@ const userSlice = createSlice({
       // Follow
       .addCase(followUser.fulfilled, (state, action) => {
         state.data.followings = action.payload.followings;
+        state.data.followingsCount = Math.random();
       })
       .addCase(unfollowUser.fulfilled, (state, action) => {
         state.data.followings = action.payload.followings;
+        state.data.followingsCount = Math.random();
       }),
 });
 

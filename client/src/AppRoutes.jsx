@@ -6,7 +6,6 @@ import ForgotPassword from './pages/auth/ForgotPassword.tsx';
 import ResetPassword from './pages/auth/ResetPassword.tsx';
 import HomePage from './pages/HomePage.tsx';
 import PlaylistPage from './pages/PlaylistPage.tsx';
-import ProfilePage from './features/profile/ProfilePage.tsx';
 import Login from './features/auth/Login.tsx';
 import { useAppDispatch, useAppSelector } from './app/hooks.ts';
 import { useEffect } from 'react';
