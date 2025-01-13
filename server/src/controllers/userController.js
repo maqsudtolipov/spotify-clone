@@ -90,23 +90,29 @@ exports.followUser = async (req, res, next) => {
       return next(new AppError("User cannot follow himself", 400));
     }
 
-    // Add candidate id to cur users followings list
-    if (!currentUser.followings.includes(candidateUser.id)) {
-      currentUser.followings.push(candidateUser.id);
-      currentUser.followingsCount += 1;
-      await currentUser.save();
-    }
+    const newUser = await User.findOneAndUpdate(
+      { _id: currentUser.id, followings: { $ne: candidateUser.id } },
+      {
+        $push: { followings: candidateUser.id },
+        $inc: { followingsCount: 1 },
+      },
+    );
 
-    // Add cur user id to candidate's followers list
-    if (!candidateUser.followers.includes(currentUser.id)) {
-      candidateUser.followers.push(currentUser.id);
-      candidateUser.followersCount += 1;
-      await candidateUser.save();
-    }
+    await User.findOneAndUpdate(
+      { _id: candidateUser.id, followers: { $ne: currentUser.id } },
+      {
+        $push: { followers: currentUser.id },
+        $inc: { followersCount: 1 },
+      },
+    );
 
-    res
-      .status(200)
-      .json({ status: "success", followings: currentUser.followings });
+    res.status(200).json({
+      status: "success",
+      data: {
+        followings: newUser.followings,
+        followingsCount: newUser.followingsCount,
+      },
+    });
   } catch (e) {
     if (e.name === "CastError") {
       return next(new AppError(`Invalid user id: ${e.value}`, 400));
@@ -131,27 +137,132 @@ exports.unfollowUser = async (req, res, next) => {
       return next(new AppError("User cannot unfollow himself", 400));
     }
 
-    // Remove candidate id from cur user followings list
-    const newUser = await User.findByIdAndUpdate(
-      currentUser.id,
+    const newUser = await User.findOneAndUpdate(
+      { _id: currentUser.id, followings: candidateUser.id },
       {
         $pull: { followings: candidateUser.id },
         $inc: { followingsCount: -1 },
       },
-      { new: true },
+      {
+        new: true,
+      },
     );
 
-    // // Remove cur user id from candidate's followers list
-    await User.findByIdAndUpdate(
-      candidateUser.id,
+    await User.findOneAndUpdate(
+      { _id: candidateUser.id, followers: currentUser.id },
       {
         $pull: { followers: currentUser.id },
         $inc: { followersCount: -1 },
       },
-      { new: true },
     );
 
-    res.status(200).json({ status: "success", followings: newUser.followings });
+    console.log(newUser);
+
+    res.status(200).json({
+      status: "success",
+      data: {exports.followUser = async (req, res, next) => {
+          try {
+            // Check users exist
+            const currentUser = await User.findById(req.user.id);
+            const candidateUser = await User.findById(req.params.id);
+
+            if (!currentUser || !candidateUser) {
+              return next(new AppError("User not found", 400));
+            }
+
+            // Check user is not following himself
+            if (currentUser.id === candidateUser.id) {
+              return next(new AppError("User cannot follow himself", 400));
+            }
+
+            const newUser = await User.findOneAndUpdate(
+              { _id: currentUser.id, followings: { $ne: candidateUser.id } },
+              {
+                $push: { followings: candidateUser.id },
+                $inc: { followingsCount: 1 },
+              },
+            );
+
+            await User.findOneAndUpdate(
+              { _id: candidateUser.id, followers: { $ne: currentUser.id } },
+              {
+                $push: { followers: currentUser.id },
+                $inc: { followersCount: 1 },
+              },
+            );
+
+            res.status(200).json({
+              status: "success",
+              data: {
+                followings: newUser.followings,
+                followingsCount: newUser.followingsCount,
+              },
+            });
+          } catch (e) {
+            if (e.name === "CastError") {
+              return next(new AppError(`Invalid user id: ${e.value}`, 400));
+            }
+
+            next(e);
+          }
+        };
+
+        exports.unfollowUser = async (req, res, next) => {
+          try {
+            // Check both inputs
+            const currentUser = await User.findById(req.user.id);
+            const candidateUser = await User.findById(req.params.id);
+
+            if (!currentUser || !candidateUser) {
+              return next(new AppError("User not found", 400));
+            }
+
+            // Check user is not unfollowing himself
+            if (currentUser.id === candidateUser.id) {
+              return next(new AppError("User cannot unfollow himself", 400));
+            }
+
+            const newUser = await User.findOneAndUpdate(
+              { _id: currentUser.id, followings: candidateUser.id },
+              {
+                $pull: { followings: candidateUser.id },
+                $inc: { followingsCount: -1 },
+              },
+              {
+                new: true,
+              },
+            );
+
+            await User.findOneAndUpdate(
+              { _id: candidateUser.id, followers: currentUser.id },
+              {
+                $pull: { followers: currentUser.id },
+                $inc: { followersCount: -1 },
+              },
+            );
+
+            console.log(newUser);
+
+            res.status(200).json({
+              status: "success",
+              data: {
+                followings: newUser.followings,
+                followingsCount: newUser.followingsCount,
+              },
+            });
+          } catch (e) {
+            if (e.name === "CastError") {
+              return next(new AppError(`Invalid user id: ${e.value}`, 400));
+            }
+
+            next(e);
+          }
+        };
+
+        followings: newUser.followings,
+        followingsCount: newUser.followingsCount,
+      },
+    });
   } catch (e) {
     if (e.name === "CastError") {
       return next(new AppError(`Invalid user id: ${e.value}`, 400));
