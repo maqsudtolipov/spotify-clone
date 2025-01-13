@@ -35,7 +35,10 @@ exports.getUserById = async (req, res, next) => {
 
 exports.current = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id, "id name email img followers followings");
+    const user = await User.findById(
+      req.user.id,
+      "id name email img followers followings",
+    );
 
     res.status(200).json({ status: "success", user });
   } catch (e) {
@@ -90,12 +93,14 @@ exports.followUser = async (req, res, next) => {
     // Add candidate id to cur users followings list
     if (!currentUser.followings.includes(candidateUser.id)) {
       currentUser.followings.push(candidateUser.id);
+      currentUser.followingsCount += 1;
       await currentUser.save();
     }
 
     // Add cur user id to candidate's followers list
     if (!candidateUser.followers.includes(currentUser.id)) {
       candidateUser.followers.push(currentUser.id);
+      candidateUser.followersCount += 1;
       await candidateUser.save();
     }
 
@@ -131,6 +136,7 @@ exports.unfollowUser = async (req, res, next) => {
       currentUser.id,
       {
         $pull: { followings: candidateUser.id },
+        $inc: { followingsCount: -1 },
       },
       { new: true },
     );
@@ -140,6 +146,7 @@ exports.unfollowUser = async (req, res, next) => {
       candidateUser.id,
       {
         $pull: { followers: currentUser.id },
+        $inc: { followersCount: -1 },
       },
       { new: true },
     );

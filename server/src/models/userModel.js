@@ -37,12 +37,22 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    followersCount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     followings: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
+    followingsCount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     password: {
       type: String,
       required: [true, "Please provide a password"],
