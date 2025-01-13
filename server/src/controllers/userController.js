@@ -106,6 +106,10 @@ exports.followUser = async (req, res, next) => {
       },
     );
 
+    if (!newUser) {
+      return next(new AppError("User already following", 400));
+    }
+
     res.status(200).json({
       status: "success",
       data: {
@@ -156,7 +160,9 @@ exports.unfollowUser = async (req, res, next) => {
       },
     );
 
-    console.log(newUser);
+    if (!newUser) {
+      return next(new AppError("User already following", 400));
+    }
 
     res.status(200).json({
       status: "success",
