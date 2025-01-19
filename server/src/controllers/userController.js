@@ -96,6 +96,9 @@ exports.followUser = async (req, res, next) => {
         $push: { followings: candidateUser.id },
         $inc: { followingsCount: 1 },
       },
+      {
+        new: true,
+      },
     );
 
     await User.findOneAndUpdate(
@@ -103,6 +106,9 @@ exports.followUser = async (req, res, next) => {
       {
         $push: { followers: currentUser.id },
         $inc: { followersCount: 1 },
+      },
+      {
+        new: true,
       },
     );
 
@@ -157,6 +163,9 @@ exports.unfollowUser = async (req, res, next) => {
       {
         $pull: { followers: currentUser.id },
         $inc: { followersCount: -1 },
+      },
+      {
+        new: true,
       },
     );
 

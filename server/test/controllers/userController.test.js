@@ -133,10 +133,12 @@ describe("userController", () => {
         .post(`/api/users/follow/${userIds[1]}`)
         .set("Cookie", [`accessToken=${accessToken}`]);
 
+      console.log(res.body)
+
       // Check response
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
-      expect(res.body.followings[0]).toEqual(userIds[1]);
+      expect(res.body.data.followings[0]).toEqual(userIds[1]);
 
       // Check database updates
       const currentUser = await User.findById(userIds[0]);
@@ -204,7 +206,7 @@ describe("userController", () => {
       // Check response
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
-      expect(res.body.followings.length).toEqual(0);
+      expect(res.body.data.followings.length).toEqual(0);
 
       // Check database updates
       const currentUser = await User.findById(userIds[0]);
