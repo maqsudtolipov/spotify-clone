@@ -2,6 +2,8 @@ import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
+import { useAppDispatch } from '../../app/hooks.ts';
+import { getArtist } from './artistThunks.ts';
 
 interface Data {
   name: string;
@@ -14,6 +16,7 @@ interface ArtistHeaderProps {
 
 const ArtistHeader = ({ color }: ArtistHeaderProps) => {
   const [artist, setArtist] = useState<Data>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const data = {
@@ -25,6 +28,10 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
     };
 
     setArtist(data);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getArtist('678cb2f1152ba9b15bb3af40'));
   }, []);
 
   return (
