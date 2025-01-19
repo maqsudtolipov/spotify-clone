@@ -12,7 +12,7 @@ exports.getArtistById = async (req, res, next) => {
     res.status(200).json({ status: "success", artist: user });
   } catch (e) {
     if (e.name === "CastError") {
-      return next(new AppError(`Invalid user id: ${e.value}`, 400));
+      return next(new AppError(`Invalid artist id: ${e.value}`, 400));
     }
 
     next(e);

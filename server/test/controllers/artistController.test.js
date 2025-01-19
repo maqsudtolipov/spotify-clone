@@ -45,5 +45,27 @@ describe("artistController", () => {
       expect(res.body.artist.id).toEqual(userIds[1]);
       expect(res.body.artist.role).toEqual("artist");
     });
+
+    it("should fail if the artist does not exist", async () => {
+      // random user id
+      const res = await request(app)
+        .get("/api/artists/678cbb77690dd2f07b318bb5")
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      // Check response
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Artist not found/i);
+    });
+
+    it("should fail if artist id is invalid", async () => {
+      const res = await request(app)
+        .get("/api/artists/wrongWord")
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid artist id: wrongWord/i);
+    });
   });
 });
