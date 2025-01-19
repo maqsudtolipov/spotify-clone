@@ -1,38 +1,25 @@
 import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { getArtist } from './artistThunks.ts';
-
-interface Data {
-  name: string;
-  listeners: string;
-}
+import { useParams } from 'react-router-dom';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
 
 interface ArtistHeaderProps {
   color: string;
 }
 
 const ArtistHeader = ({ color }: ArtistHeaderProps) => {
-  const [artist, setArtist] = useState<Data>();
+  const { id } = useParams();
+  const data = useAppSelector((state) => state.artist.data);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const data = {
-      name: faker.person.fullName(),
-      listeners: faker.number
-        .int({ min: 1000, max: 20000 })
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    };
-
-    setArtist(data);
-  }, []);
-
-  useEffect(() => {
     dispatch(getArtist('678cb2f1152ba9b15bb3af40'));
-  }, []);
+  }, [id]);
+
+  if (!data) return <LoadingScreen />;
 
   return (
     <header
@@ -45,8 +32,8 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
         <RiVerifiedBadgeFill />
         <span>Verified Artist</span>
       </div>
-      <h1 className={styles.artistName}>{artist?.name}</h1>
-      <span>{artist?.listeners} listeners</span>
+      <h1 className={styles.artistName}>{data.name}</h1>
+      <span>1234 listeners</span>
     </header>
   );
 };
