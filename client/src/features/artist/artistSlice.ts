@@ -12,6 +12,7 @@ interface Artist {
   img: string;
   role: string;
   color: string;
+  followersCount: number;
 }
 
 interface InitialState {
