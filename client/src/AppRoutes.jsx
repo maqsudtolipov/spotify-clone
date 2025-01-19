@@ -15,7 +15,7 @@ import UserProfile from './features/profile/UserProfile/UserProfile.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
-  const { status } = useAppSelector(state => state.user.api.getCurrent)
+  const { status } = useAppSelector((state) => state.user.api.getCurrent);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/artist"
+            path="/artist/:id"
             element={
               <Layout>
                 <ArtistPage />

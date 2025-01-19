@@ -1,31 +1,9 @@
 import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
+import { useAppSelector } from '../../app/hooks.ts';
 
-interface Data {
-  name: string;
-  listeners: string;
-}
-
-interface ArtistHeaderProps {
-  color: string;
-}
-
-const ArtistHeader = ({ color }: ArtistHeaderProps) => {
-  const [artist, setArtist] = useState<Data>();
-
-  useEffect(() => {
-    const data = {
-      name: faker.person.fullName(),
-      listeners: faker.number
-        .int({ min: 1000, max: 20000 })
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    };
-
-    setArtist(data);
-  }, []);
+const ArtistHeader = () => {
+  const { color, name } = useAppSelector((state) => state.artist.data);
 
   return (
     <header
@@ -38,8 +16,8 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
         <RiVerifiedBadgeFill />
         <span>Verified Artist</span>
       </div>
-      <h1 className={styles.artistName}>{artist?.name}</h1>
-      <span>{artist?.listeners} listeners</span>
+      <h1 className={styles.artistName}>{name}</h1>
+      <span>1234 listeners</span>
     </header>
   );
 };

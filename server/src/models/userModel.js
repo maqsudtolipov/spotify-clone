@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
         "https://ik.imagekit.io/8cs4gpobr/users/default.jpeg?updatedAt=1736317738783",
       required: true,
     },
+    color: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
@@ -83,6 +87,16 @@ const userSchema = new mongoose.Schema(
   },
 );
 
+// Changes
+userSchema
+  .path("color")
+  .default(
+    () =>
+      "#" +
+      ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0") +
+      "4d",
+  );
+
 // Methods
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -93,6 +107,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Exports
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
