@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
 import useFetchUser from './useFetchUser.ts';
+import { useEffect } from 'react';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
@@ -15,17 +16,21 @@ const generateRandomColor = () =>
   `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}4d`;
 
 const UserProfile = () => {
-  const user = useFetchUser();
-  const { followings } = useAppSelector((state) => state.user.data);
+  const { followings } = useAppSelector(
+    (state) => state.user.data,
+  );
+  const { user } = useFetchUser();
   const dispatch = useAppDispatch();
 
   const color = generateRandomColor();
 
   const handleFollowToggle = () => {
     if (user) {
-      isFollowed(user.id, followings)
-        ? dispatch(unfollowUser(user.id))
-        : dispatch(followUser(user.id));
+      if (isFollowed(user.id, followings)) {
+        dispatch(unfollowUser(user.id));
+      } else {
+        dispatch(followUser(user.id));
+      }
     }
   };
 

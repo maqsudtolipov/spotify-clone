@@ -16,7 +16,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(
       req.params.id,
-      "id name email img followers followings",
+      "id name email img followers followersCount followings followingsCount",
     );
 
     if (!user) {
@@ -35,7 +35,10 @@ exports.getUserById = async (req, res, next) => {
 
 exports.current = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id, "id name email img followers followings");
+    const user = await User.findById(
+      req.user.id,
+      "id name email img followers followersCount followings followingsCount",
+    );
 
     res.status(200).json({ status: "success", user });
   } catch (e) {
@@ -87,21 +90,33 @@ exports.followUser = async (req, res, next) => {
       return next(new AppError("User cannot follow himself", 400));
     }
 
-    // Add candidate id to cur users followings list
-    if (!currentUser.followings.includes(candidateUser.id)) {
-      currentUser.followings.push(candidateUser.id);
-      await currentUser.save();
+    const newUser = await User.findOneAndUpdate(
+      { _id: currentUser.id, followings: { $ne: candidateUser.id } },
+      {
+        $push: { followings: candidateUser.id },
+        $inc: { followingsCount: 1 },
+      },
+    );
+
+    await User.findOneAndUpdate(
+      { _id: candidateUser.id, followers: { $ne: currentUser.id } },
+      {
+        $push: { followers: currentUser.id },
+        $inc: { followersCount: 1 },
+      },
+    );
+
+    if (!newUser) {
+      return next(new AppError("User already following", 400));
     }
 
-    // Add cur user id to candidate's followers list
-    if (!candidateUser.followers.includes(currentUser.id)) {
-      candidateUser.followers.push(currentUser.id);
-      await candidateUser.save();
-    }
-
-    res
-      .status(200)
-      .json({ status: "success", followings: currentUser.followings });
+    res.status(200).json({
+      status: "success",
+      data: {
+        followings: newUser.followings,
+        followingsCount: newUser.followingsCount,
+      },
+    });
   } catch (e) {
     if (e.name === "CastError") {
       return next(new AppError(`Invalid user id: ${e.value}`, 400));
@@ -126,25 +141,36 @@ exports.unfollowUser = async (req, res, next) => {
       return next(new AppError("User cannot unfollow himself", 400));
     }
 
-    // Remove candidate id from cur user followings list
-    const newUser = await User.findByIdAndUpdate(
-      currentUser.id,
+    const newUser = await User.findOneAndUpdate(
+      { _id: currentUser.id, followings: candidateUser.id },
       {
         $pull: { followings: candidateUser.id },
+        $inc: { followingsCount: -1 },
       },
-      { new: true },
+      {
+        new: true,
+      },
     );
 
-    // // Remove cur user id from candidate's followers list
-    await User.findByIdAndUpdate(
-      candidateUser.id,
+    await User.findOneAndUpdate(
+      { _id: candidateUser.id, followers: currentUser.id },
       {
         $pull: { followers: currentUser.id },
+        $inc: { followersCount: -1 },
       },
-      { new: true },
     );
 
-    res.status(200).json({ status: "success", followings: newUser.followings });
+    if (!newUser) {
+      return next(new AppError("User already following", 400));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        followings: newUser.followings,
+        followingsCount: newUser.followingsCount,
+      },
+    });
   } catch (e) {
     if (e.name === "CastError") {
       return next(new AppError(`Invalid user id: ${e.value}`, 400));

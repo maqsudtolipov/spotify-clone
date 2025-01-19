@@ -8,7 +8,9 @@ interface User {
   name: string;
   img: string;
   followers: string[];
+  followersCount: number;
   followings: string[];
+  followingsCount: number;
 }
 
 const useFetchUser = () => {
@@ -22,6 +24,10 @@ const useFetchUser = () => {
       try {
         const res = await axios.get(`users/${id}`);
         res.data.user.type = 'profile';
+        res.data.user.statistics = [
+          { name: 'Followers', value: res.data.user.followersCount },
+          { name: 'Following', value: res.data.user.followingsCount },
+        ];
         setUser(res.data.user);
       } catch (e) {
         console.error('Error fetching user:', e);
@@ -31,7 +37,7 @@ const useFetchUser = () => {
     fetchUser();
   }, [id]);
 
-  return user;
+  return { user, setUser };
 };
 
 export default useFetchUser;
