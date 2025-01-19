@@ -19,7 +19,9 @@ const ArtistHeader = () => {
         <span>Verified Artist</span>
       </div>
       <h1 className={styles.artistName}>{name}</h1>
-      <span>{followersCount} listeners</span>
+
+      {/* TODO: consider adding this later */}
+      {/*<span>{followersCount} listeners</span>*/}
     </header>
   );
 };

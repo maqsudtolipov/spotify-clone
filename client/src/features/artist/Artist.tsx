@@ -1,6 +1,5 @@
 import ArtistTable from './ArtistTable.tsx';
 import ArtistHeader from './ArtistHeader.tsx';
-import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
 import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
@@ -27,13 +26,13 @@ const Artist = () => {
     if (id) dispatch(getArtist(id));
   }, [id]);
 
-  // const handleFollowToggle = () => {
-  //   if (isFollowed(id, followings)) {
-  //     dispatch(unfollowUser(id));
-  //   } else {
-  //     dispatch(followUser(id));
-  //   }
-  // };
+  const handleFollow = () => {
+    dispatch(followUser(id));
+  };
+
+  const handleUnfollow = () => {
+    dispatch(unfollowUser(id));
+  };
 
   if (!data) return <LoadingScreen />;
 
@@ -46,9 +45,7 @@ const Artist = () => {
           <FollowButton
             text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
             onClick={() =>
-              isFollowed(id, followings)
-                ? dispatch(unfollowUser(id))
-                : dispatch(followUser(id))
+              isFollowed(id, followings) ? handleUnfollow() : handleFollow()
             }
           ></FollowButton>
           <HeaderActions />
