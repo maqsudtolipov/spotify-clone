@@ -11,6 +11,7 @@ interface Artist {
   name: string;
   img: string;
   role: string;
+  color: string;
 }
 
 interface InitialState {

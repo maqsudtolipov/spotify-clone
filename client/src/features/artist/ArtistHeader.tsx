@@ -1,22 +1,18 @@
 import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { getArtist } from './artistThunks.ts';
 import { useParams } from 'react-router-dom';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
 
-interface ArtistHeaderProps {
-  color: string;
-}
-
-const ArtistHeader = ({ color }: ArtistHeaderProps) => {
+const ArtistHeader = () => {
   const { id } = useParams();
   const data = useAppSelector((state) => state.artist.data);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getArtist('678cb2f1152ba9b15bb3af40'));
+    dispatch(getArtist(id));
   }, [id]);
 
   if (!data) return <LoadingScreen />;
@@ -25,7 +21,7 @@ const ArtistHeader = ({ color }: ArtistHeaderProps) => {
     <header
       className={styles.artistHeader}
       style={{
-        background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
+        background: `linear-gradient(${data.color}, ${data.color}), linear-gradient(#171717, #171717)`,
       }}
     >
       <div className={styles.artistVerified}>
