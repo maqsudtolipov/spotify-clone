@@ -7,6 +7,10 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { useEffect } from 'react';
 import { getArtist } from './artistThunks.ts';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
+import styles from '../../components/PlayHeader/PlayHeader.module.scss';
+import PlayButton from '../../components/PlayHeader/PlayButton.tsx';
+import FollowButton from '../../components/PlayHeader/FollowButton.tsx';
+import HeaderActions from '../../components/PlayHeader/HeaderActions.tsx';
 
 const Artist = () => {
   const { id } = useParams();
@@ -23,7 +27,11 @@ const Artist = () => {
     <>
       <ArtistHeader />
       <GradientBackground color={data.color}>
-        <PlayHeader />
+        <div className={styles.playerHeader}>
+          <PlayButton />
+          <FollowButton />
+          <HeaderActions />
+        </div>
         <div className="p-5 pt-0">
           <ArtistTable />
         </div>
