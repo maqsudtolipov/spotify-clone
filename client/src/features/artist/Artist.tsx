@@ -19,7 +19,7 @@ const isFollowed = (id: string, followings: string[]) => {
 const Artist = () => {
   const { id } = useParams();
   const data = useAppSelector((state) => state.artist.data);
-  const { followings } = useAppSelector((state) => state.user.data);
+  const { followings, id: userId } = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -42,12 +42,16 @@ const Artist = () => {
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
           <PlayButton />
-          <FollowButton
-            text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
-            onClick={() =>
-              isFollowed(id, followings) ? handleUnfollow() : handleFollow()
-            }
-          ></FollowButton>
+
+          {id !== userId && (
+            <FollowButton
+              text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
+              onClick={() =>
+                isFollowed(id, followings) ? handleUnfollow() : handleFollow()
+              }
+            ></FollowButton>
+          )}
+
           <HeaderActions />
         </div>
 
