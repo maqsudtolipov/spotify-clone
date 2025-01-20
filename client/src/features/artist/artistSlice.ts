@@ -6,6 +6,15 @@ interface ApiStatus {
   error: string | null;
 }
 
+interface Song {
+  id: string;
+  name: string;
+  artist: string;
+  img: string;
+  song: string;
+  plays: number;
+}
+
 interface Artist {
   id: string;
   name: string;
@@ -13,6 +22,7 @@ interface Artist {
   role: string;
   color: string;
   followersCount: number;
+  songs: Song[];
 }
 
 interface InitialState {
