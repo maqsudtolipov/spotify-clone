@@ -3,6 +3,7 @@ const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const artistController = require("../controllers/artistController");
 const songController = require("../controllers/songController");
 const songsStorage = require("../middlewares/songsStorage");
+const authorize = require("../middlewares/authorize");
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.get("/:id", ensureAuthenticated, artistController.getArtistById);
 router.post(
   "/:id/songs",
   ensureAuthenticated,
+  authorize(["artist"]),
   songsStorage.uploadSongFiles,
   songsStorage.processSongImg,
   songsStorage.processSongFile,
