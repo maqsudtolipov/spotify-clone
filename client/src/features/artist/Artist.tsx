@@ -8,18 +8,19 @@ import { getArtist } from './artistThunks.ts';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
 import styles from '../../components/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../components/PlayHeader/PlayButton.tsx';
-import FollowButton from '../../components/PlayHeader/FollowButton.tsx';
+import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
 import HeaderActions from '../../components/PlayHeader/HeaderActions.tsx';
 import { followUser, unfollowUser } from '../auth/userThunks.ts';
+import UploadSongDialog from './UploadSongDialog.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
 };
 
 const Artist = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const data = useAppSelector((state) => state.artist.data);
-  const { followings } = useAppSelector((state) => state.user.data);
+  const { followings, id: userId } = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,14 +28,18 @@ const Artist = () => {
   }, [id]);
 
   const handleFollow = () => {
-    dispatch(followUser(id));
+    if (id) {
+      dispatch(followUser(id));
+    }
   };
 
   const handleUnfollow = () => {
-    dispatch(unfollowUser(id));
+    if (id) {
+      dispatch(unfollowUser(id));
+    }
   };
 
-  if (!data) return <LoadingScreen />;
+  if (!id || !data) return <LoadingScreen />;
 
   return (
     <>
@@ -42,12 +47,18 @@ const Artist = () => {
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
           <PlayButton />
-          <FollowButton
-            text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
-            onClick={() =>
-              isFollowed(id, followings) ? handleUnfollow() : handleFollow()
-            }
-          ></FollowButton>
+
+          {id !== userId && (
+            <TransparentButton
+              text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
+              onClick={() =>
+                isFollowed(id, followings) ? handleUnfollow() : handleFollow()
+              }
+            ></TransparentButton>
+          )}
+
+          {id === userId && data.role === 'artist' && <UploadSongDialog />}
+
           <HeaderActions />
         </div>
 

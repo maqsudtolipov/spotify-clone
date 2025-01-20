@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getArtist } from './artistThunks.ts';
+import { getArtist, uploadSong } from './artistThunks.ts';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -19,6 +19,7 @@ interface InitialState {
   data: Artist | null;
   api: {
     getArtist: ApiStatus;
+    uploadSong: ApiStatus;
   };
 }
 
@@ -26,6 +27,10 @@ const initialState: InitialState = {
   data: null,
   api: {
     getArtist: {
+      status: 'idle',
+      error: null,
+    },
+    uploadSong: {
       status: 'idle',
       error: null,
     },
@@ -48,6 +53,15 @@ const artistSlice = createSlice({
       .addCase(getArtist.rejected, (state) => {
         state.api.getArtist.status = 'rejected';
         state.data = null;
+      })
+      .addCase(uploadSong.pending, (state) => {
+        state.api.uploadSong.status = 'pending';
+      })
+      .addCase(uploadSong.fulfilled, (state) => {
+        state.api.uploadSong.status = 'fulfilled';
+      })
+      .addCase(uploadSong.rejected, (state) => {
+        state.api.uploadSong.status = 'rejected';
       }),
 });
 

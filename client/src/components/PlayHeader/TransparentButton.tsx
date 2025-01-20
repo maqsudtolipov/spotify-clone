@@ -6,7 +6,7 @@ interface FollowButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-const FollowButton = ({ text, onClick }: FollowButtonProps) => {
+const TransparentButton = ({ text, onClick }: FollowButtonProps) => {
   return (
     <button className={styles.followButton} onClick={onClick}>
       {text}
@@ -14,4 +14,4 @@ const FollowButton = ({ text, onClick }: FollowButtonProps) => {
   );
 };
 
-export default FollowButton;
+export default TransparentButton;
