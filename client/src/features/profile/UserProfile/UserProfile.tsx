@@ -1,7 +1,7 @@
 import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
 import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
 import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
-import FollowButton from '../../../components/PlayHeader/FollowButton.tsx';
+import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
@@ -40,7 +40,7 @@ const UserProfile = () => {
       <ImageHeader data={user} />
       <GradientBackground color={color}>
         <div className={styles.playerHeader}>
-          <FollowButton
+          <TransparentButton
             text={isFollowed(user.id, followings) ? 'Unfollow' : 'Follow'}
             onClick={handleFollowToggle}
           />
