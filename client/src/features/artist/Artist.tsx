@@ -11,6 +11,7 @@ import PlayButton from '../../components/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
 import HeaderActions from '../../components/PlayHeader/HeaderActions.tsx';
 import { followUser, unfollowUser } from '../auth/userThunks.ts';
+import UploadSongDialog from './UploadSongDialog.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
@@ -56,9 +57,7 @@ const Artist = () => {
             ></TransparentButton>
           )}
 
-          {id === userId && data.role === 'artist' && (
-            <TransparentButton text="Upload song" onClick={() => {}} />
-          )}
+          {id === userId && data.role === 'artist' && <UploadSongDialog />}
 
           <HeaderActions />
         </div>
