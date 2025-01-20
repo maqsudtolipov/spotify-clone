@@ -6,19 +6,20 @@ import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx
 import Input from '../../ui-library/Input/Input.tsx';
 import Button from '../../ui-library/Button/Button';
 import { FormEvent, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { uploadSong } from './artistThunks.ts';
 
 const UploadSongDialog = () => {
   const formRef = useRef<HTMLFormElement | null>(null);
+  const id = useAppSelector((state) => state.user?.data?.id);
+  const dispatch = useAppDispatch();
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     if (formRef.current) {
       e.preventDefault();
 
       const formData = new FormData(formRef.current);
-
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      dispatch(uploadSong({ id, formData }));
     }
   };
 
