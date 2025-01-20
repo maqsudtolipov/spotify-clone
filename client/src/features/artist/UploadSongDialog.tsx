@@ -12,6 +12,7 @@ import { uploadSong } from './artistThunks.ts';
 const UploadSongDialog = () => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const id = useAppSelector((state) => state.user?.data?.id);
+  const status = useAppSelector((state) => state.artist.api.uploadSong.status);
   const dispatch = useAppDispatch();
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -37,7 +38,9 @@ const UploadSongDialog = () => {
           <Input type="file" name="img" placeholder="Song cover img"></Input>
           <Input type="file" name="song" placeholder="Song file"></Input>
           <Input type="text" name="name" placeholder="Song name"></Input>
-          <Button type="submit">Upload</Button>
+          <Button type="submit">
+            {status === 'pending' ? 'Uploading' : 'Upload'}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
