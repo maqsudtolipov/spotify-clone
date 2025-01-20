@@ -1,5 +1,6 @@
 const AppError = require("../utils/AppError");
 const imagekit = require("../utils/ImageKit");
+const Song = require("../models/songModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -32,8 +33,11 @@ exports.uploadSong = async (req, res, next) => {
       artist: req.user.id,
     };
 
+    const song = await Song.create(songInput);
+
     res.status(201).json({
       status: "success",
+      song,
     });
   } catch (e) {
     next(e);
