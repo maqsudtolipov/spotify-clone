@@ -40,8 +40,10 @@ const ArtistTable = () => {
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell img={item.img} name={item.name} artist={item.artist} />
             <TableCell>{item.plays}</TableCell>
-            <LikeCell isLiked={item.isLiked} />
-            <TableCell minimize={true}>2:18</TableCell>
+
+            {/* TODO: add isliked and duratioin */}
+            {/*<LikeCell isLiked={item.isLiked} />*/}
+            {/*<TableCell minimize={true}>2:18</TableCell>*/}
             <ActionsCell />
           </TableRow>
         ))}

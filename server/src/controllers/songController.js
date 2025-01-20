@@ -1,6 +1,7 @@
 const AppError = require("../utils/AppError");
 const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
+const User = require("../models/userModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -34,10 +35,18 @@ exports.uploadSong = async (req, res, next) => {
     };
 
     const song = await Song.create(songInput);
+    const user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: { songs: song.id },
+      },
+      {
+        new: true,
+      },
+    );
 
     res.status(201).json({
       status: "success",
-      song,
     });
   } catch (e) {
     next(e);

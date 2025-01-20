@@ -57,6 +57,20 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    songs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Song",
+        },
+      ],
+      validate: {
+        validator: function () {
+          return this.role === "artist";
+        },
+        message: "Songs field is only allowed for users with role artist.",
+      },
+    },
     password: {
       type: String,
       required: [true, "Please provide a password"],
