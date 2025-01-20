@@ -3,6 +3,8 @@ import Dialog from '../../ui-library/Dialog/Dialog.tsx';
 import DialogContent from '../../ui-library/Dialog/DialogContent.tsx';
 import DialogTrigger from '../../ui-library/Dialog/DialogTrigger.tsx';
 import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
+import Input from '../../ui-library/Input/Input.tsx';
+import Button from '../../ui-library/Button/Button';
 
 const UploadSongDialog = () => {
   return (
@@ -10,7 +12,14 @@ const UploadSongDialog = () => {
       <DialogTrigger>
         <TransparentButton text="Upload Song" onClick={() => {}} />
       </DialogTrigger>
-      <DialogContent>df</DialogContent>
+      <DialogContent>
+        <form action="" className={styles.dialogForm}>
+          <Input type="file" placeholder="Song cover img"></Input>
+          <Input type="file" placeholder="Song file"></Input>
+          <Input type="text" placeholder="Song name"></Input>
+          <Button>Upload</Button>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };
