@@ -6,11 +6,11 @@ interface DialogTriggerProps {
 }
 
 const DialogTrigger = ({ children }: DialogTriggerProps) => {
-  const { openDialog } = useContext(DialogContext);
+  const { toggleDialog } = useContext(DialogContext);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    openDialog();
+    toggleDialog();
   };
 
   return <div onClick={handleClick}>{children}</div>;

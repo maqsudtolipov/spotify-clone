@@ -4,6 +4,7 @@ interface DialogContextValue {
   isOpen: boolean;
   openDialog: () => void;
   closeDialog: () => void;
+  toggleDialog: () => void;
 }
 
 export const DialogContext = createContext<DialogContextValue>(
@@ -19,11 +20,13 @@ const Dialog = ({ children }: DialogProps) => {
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
+  const toggleDialog = () => setIsOpen((prev) => !prev);
 
   const contextValue = {
     isOpen,
     openDialog,
     closeDialog,
+    toggleDialog,
   };
 
   return (
