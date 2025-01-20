@@ -2,6 +2,8 @@ import { createContext, ReactNode, useState } from 'react';
 
 interface DialogContextValue {
   isOpen: boolean;
+  openDialog: () => void;
+  closeDialog: () => void;
 }
 
 export const DialogContext = createContext<DialogContextValue>(
@@ -16,12 +18,12 @@ const Dialog = ({ children }: DialogProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const openDialog = () => setIsOpen(true);
-  const closeDropdown = () => setIsOpen(false);
+  const closeDialog = () => setIsOpen(false);
 
   const contextValue = {
     isOpen,
     openDialog,
-    closeDropdown,
+    closeDialog,
   };
 
   return (
