@@ -35,7 +35,7 @@ exports.uploadSong = async (req, res, next) => {
     };
 
     const song = await Song.create(songInput);
-    await User.findOneAndUpdate(
+    const { songs } = await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $push: { songs: song.id },
@@ -43,10 +43,11 @@ exports.uploadSong = async (req, res, next) => {
       {
         new: true,
       },
-    );
+    ).populate("songs", "id name artist song img plays");
 
     res.status(201).json({
       status: "success",
+      songs,
     });
   } catch (e) {
     next(e);

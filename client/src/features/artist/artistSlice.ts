@@ -67,8 +67,9 @@ const artistSlice = createSlice({
       .addCase(uploadSong.pending, (state) => {
         state.api.uploadSong.status = 'pending';
       })
-      .addCase(uploadSong.fulfilled, (state) => {
+      .addCase(uploadSong.fulfilled, (state, action) => {
         state.api.uploadSong.status = 'fulfilled';
+        state.data.songs = action.payload;
       })
       .addCase(uploadSong.rejected, (state) => {
         state.api.uploadSong.status = 'rejected';
