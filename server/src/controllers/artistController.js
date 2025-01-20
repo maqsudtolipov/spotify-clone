@@ -3,7 +3,10 @@ const AppError = require("../utils/AppError");
 
 exports.getArtistById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id, "id name img role color");
+    const user = await User.findById(
+      req.params.id,
+      "id name img role color followersCount",
+    );
 
     if (!user || user.role !== "artist") {
       return next(new AppError("Artist not found", 404));

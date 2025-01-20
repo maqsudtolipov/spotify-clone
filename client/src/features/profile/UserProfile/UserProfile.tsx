@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
 import useFetchUser from './useFetchUser.ts';
-import { useEffect } from 'react';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);

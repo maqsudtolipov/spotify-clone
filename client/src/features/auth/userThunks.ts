@@ -31,7 +31,6 @@ export const login = createAsyncThunk(
   'user/login',
   async (input: LoginInput) => {
     const res = await axios.post('/auth/login', input);
-    console.log(res);
     return res.data.user;
   },
 );
@@ -46,7 +45,7 @@ export const followUser = createAsyncThunk(
   'user/followUser',
   async (id: string) => {
     const res = await axios.post(`/users/follow/${id}`, id);
-    return res.data;
+    return res.data.data;
   },
 );
 
@@ -54,6 +53,6 @@ export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
   async (id: string) => {
     const res = await axios.post(`/users/unfollow/${id}`, id);
-    return res.data;
+    return res.data.data;
   },
 );

@@ -116,12 +116,20 @@ const userSlice = createSlice({
       })
       // Follow
       .addCase(followUser.fulfilled, (state, action) => {
-        state.data.followings = action.payload.followings;
-        state.data.followingsCount = Math.random();
+        console.log(action.payload);
+
+        if (state.data) {
+          state.data.followings = action.payload.followings;
+          state.data.followingsCount = action.payload.followingsCount;
+        }
       })
       .addCase(unfollowUser.fulfilled, (state, action) => {
-        state.data.followings = action.payload.followings;
-        state.data.followingsCount = Math.random();
+        console.log(action.payload);
+
+        if (state.data) {
+          state.data.followings = action.payload.followings;
+          state.data.followingsCount = action.payload.followingsCount;
+        }
       }),
 });
 

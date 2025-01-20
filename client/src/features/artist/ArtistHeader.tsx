@@ -3,7 +3,9 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useAppSelector } from '../../app/hooks.ts';
 
 const ArtistHeader = () => {
-  const { color, name } = useAppSelector((state) => state.artist.data);
+  const { name, color, followersCount } = useAppSelector(
+    (state) => state.artist.data,
+  );
 
   return (
     <header
@@ -17,7 +19,9 @@ const ArtistHeader = () => {
         <span>Verified Artist</span>
       </div>
       <h1 className={styles.artistName}>{name}</h1>
-      <span>1234 listeners</span>
+
+      {/* TODO: consider adding this later */}
+      {/*<span>{followersCount} listeners</span>*/}
     </header>
   );
 };
