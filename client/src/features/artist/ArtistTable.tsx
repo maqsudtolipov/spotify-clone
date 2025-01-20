@@ -8,6 +8,7 @@ import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
+import { useAppSelector } from '../../app/hooks.ts';
 
 interface Item {
   img: string;
@@ -18,24 +19,25 @@ interface Item {
 }
 
 const ArtistTable = () => {
-  const [items, setItems] = useState<Item[]>();
+  // const [items, setItems] = useState<Item[]>();
+  const songs = useAppSelector((state) => state.artist?.data?.songs);
 
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 18 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      artist: faker.person.fullName(),
-      plays: faker.number.int(999),
-      isLiked: faker.datatype.boolean(),
-    }));
-
-    setItems(fetchedItems);
-  }, []);
+  // useEffect(() => {
+  //   const fetchedItems = Array.from({ length: 18 }, () => ({
+  //     img: faker.image.url({ height: 160, width: 160 }),
+  //     name: `${faker.word.adjective()} ${faker.word.noun()}`,
+  //     artist: faker.person.fullName(),
+  //     plays: faker.number.int(999),
+  //     isLiked: faker.datatype.boolean(),
+  //   }));
+  //
+  //   setItems(fetchedItems);
+  // }, []);
 
   return (
     <Table>
       <TableBody>
-        {items?.map((item, index) => (
+        {songs?.map((item, index) => (
           <TableRow key={item.name}>
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell img={item.img} name={item.name} artist={item.artist} />
