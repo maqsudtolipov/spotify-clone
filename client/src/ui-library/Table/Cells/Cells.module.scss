@@ -1,6 +1,6 @@
 // Index
 .indexCell {
-  @apply w-1 text-base text-neutral-400 text-right;
+  @apply w-10 text-base text-neutral-400 text-right;
 
   svg {
     @apply hidden;
@@ -21,8 +21,8 @@ tr:hover .indexCell {
 .infoCell {
   @apply py-2 flex items-center gap-3;
 
-  &Description {
-    @apply grid grid-rows-2;
+  &Description span {
+    @apply block;
   }
 
   &Name {
@@ -32,6 +32,10 @@ tr:hover .indexCell {
     &:hover {
       @apply underline cursor-pointer;
     }
+  }
+
+  &NameFull {
+    grid-template-rows: 1/-1;
   }
 
   &Artist {

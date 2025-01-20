@@ -4,7 +4,7 @@ import TableCell from '../TableCell.tsx';
 interface InfoCellProps {
   img: string;
   name: string;
-  artist: string;
+  artist?: string;
 }
 
 const InfoCell = ({ img, name, artist }: InfoCellProps) => {
@@ -13,7 +13,7 @@ const InfoCell = ({ img, name, artist }: InfoCellProps) => {
       <img src={img} alt={name} />
       <div className={styles.infoCellDescription}>
         <span className={styles.infoCellName}>{name}</span>
-        <span className={styles.infoCellArtist}>{artist}</span>
+        {artist && <span className={styles.infoCellArtist}>{artist}</span>}
       </div>
     </TableCell>
   );
