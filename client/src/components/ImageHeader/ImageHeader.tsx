@@ -32,7 +32,9 @@ const ImageHeader = ({ data }: ImageHeaderProps) => {
         alt={data.name}
       />
       <div>
-        <span className={styles.type}>{data.type}user</span>
+        <span className={styles.type}>
+          {data.type === 'playlist' ? 'Playlist' : 'User'}
+        </span>
         <h1 className={styles.name}>{data.name}</h1>
         {description && (
           <p className={styles.description}>{data.description}</p>

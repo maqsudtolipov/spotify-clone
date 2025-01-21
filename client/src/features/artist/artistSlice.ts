@@ -50,7 +50,12 @@ const initialState: InitialState = {
 const artistSlice = createSlice({
   name: 'artist',
   initialState,
-  reducers: {},
+  reducers: {
+    listenersCountUpdated: (state, action) => {
+      console.log(action.payload);
+      state.data.followersCount = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder // Check authenticated
       .addCase(getArtist.pending, (state) => {
@@ -76,5 +81,5 @@ const artistSlice = createSlice({
       }),
 });
 
-export const {} = artistSlice.actions;
+export const { listenersCountUpdated } = artistSlice.actions;
 export default artistSlice.reducer;

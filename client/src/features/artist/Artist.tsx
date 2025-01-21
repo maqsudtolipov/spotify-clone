@@ -28,13 +28,13 @@ const Artist = () => {
 
   const handleFollow = () => {
     if (id) {
-      dispatch(followUser(id));
+      dispatch(followUser({ id, type: 'artist' }));
     }
   };
 
   const handleUnfollow = () => {
     if (id) {
-      dispatch(unfollowUser(id));
+      dispatch(unfollowUser({ id, type: 'artist' }));
     }
   };
 

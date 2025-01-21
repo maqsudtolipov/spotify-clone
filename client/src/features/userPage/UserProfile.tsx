@@ -16,7 +16,9 @@ const isFollowed = (id: string, followings: string[]) => {
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
   const data = useAppSelector((state) => state.userPage?.data);
-  const { followings, id: userId } = useAppSelector((state) => state.user?.data);
+  const { followings, id: userId } = useAppSelector(
+    (state) => state.user?.data,
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -40,7 +42,9 @@ const UserProfile = () => {
             <TransparentButton
               text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
               onClick={() =>
-                isFollowed(id, followings) ? dispatch(unfollowUser(id)) : dispatch(followUser(id))
+                isFollowed(id, followings)
+                  ? dispatch(unfollowUser({ id, type: 'user' }))
+                  : dispatch(followUser({ id, type: 'user' }))
               }
             ></TransparentButton>
           )}
