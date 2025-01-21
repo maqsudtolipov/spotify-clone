@@ -90,8 +90,7 @@ describe("userController", () => {
     });
 
     it("should update user img", async () => {
-      // load file in img called 'cat.jpg' in current folder using fs
-      const userImg = fs.readFileSync(resolve(__dirname, "cat.jpg"));
+      const userImg = fs.readFileSync(resolve(__dirname, "src/cat.jpg"));
 
       const res = await request(app)
         .patch("/api/users/updateMe")

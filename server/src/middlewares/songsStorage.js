@@ -5,8 +5,6 @@ const mp3Duration = require("mp3-duration");
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  console.log(file);
-
   if (file.mimetype.split("/")[0] === "image") {
     cb(null, true);
   } else if (file.mimetype === "audio/mpeg") {

@@ -5,12 +5,10 @@ const User = require("../models/userModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
-    if (
-      !req.files.song[0].filename ||
-      !req.files.img[0].filename ||
-      !req.body.name
-    ) {
-      return next(new AppError("All fields are required: song, img and name"));
+    if (!req.files.song || !req.files.img || !req.body.name) {
+      return next(
+        new AppError("All fields are required: song, img and name", 400),
+      );
     }
 
     const songUpload = await imagekit.upload({
@@ -30,7 +28,7 @@ exports.uploadSong = async (req, res, next) => {
       song: songUpload.url,
       img: imgUpload.url,
       artist: req.user.id,
-      duration: req.files.song[0].duration
+      duration: req.files.song[0].duration,
     };
 
     const song = await Song.create(songInput);
