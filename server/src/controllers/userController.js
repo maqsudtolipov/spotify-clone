@@ -101,7 +101,7 @@ exports.followUser = async (req, res, next) => {
       },
     );
 
-    await User.findOneAndUpdate(
+    const newCandidateUser = await User.findOneAndUpdate(
       { _id: candidateUser.id, followers: { $ne: currentUser.id } },
       {
         $push: { followers: currentUser.id },
@@ -120,7 +120,7 @@ exports.followUser = async (req, res, next) => {
       status: "success",
       data: {
         followings: newUser.followings,
-        followingsCount: newUser.followingsCount,
+        candidateFollowersCount: newCandidateUser.followersCount,
       },
     });
   } catch (e) {
@@ -158,7 +158,7 @@ exports.unfollowUser = async (req, res, next) => {
       },
     );
 
-    await User.findOneAndUpdate(
+    const newCandidateUser = await User.findOneAndUpdate(
       { _id: candidateUser.id, followers: currentUser.id },
       {
         $pull: { followers: currentUser.id },
@@ -177,7 +177,7 @@ exports.unfollowUser = async (req, res, next) => {
       status: "success",
       data: {
         followings: newUser.followings,
-        followingsCount: newUser.followingsCount,
+        candidateFollowersCount: newCandidateUser.followersCount,
       },
     });
   } catch (e) {

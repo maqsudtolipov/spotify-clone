@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getUser } from './userPageThunks.ts';
 
 interface ApiStatus {
@@ -34,7 +34,11 @@ const initialState: InitialState = {
 const userPageSlice = createSlice({
   name: 'userPage',
   initialState,
-  reducers: {},
+  reducers: {
+    followersCountUpdated: (state, action) => {
+      state.data.followersCount = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(getUser.pending, (state) => {
@@ -50,5 +54,5 @@ const userPageSlice = createSlice({
       }),
 });
 
-export const {} = userPageSlice.actions;
+export const { followersCountUpdated } = userPageSlice.actions;
 export default userPageSlice.reducer;

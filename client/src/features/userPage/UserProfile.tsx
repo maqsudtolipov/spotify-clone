@@ -16,24 +16,12 @@ const isFollowed = (id: string, followings: string[]) => {
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
   const data = useAppSelector((state) => state.userPage?.data);
-  const { followings, id: userId } = useAppSelector((state) => state.user.data);
+  const { followings, id: userId } = useAppSelector((state) => state.user?.data);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (id) dispatch(getUser({ id }));
   }, [id]);
-
-  const handleFollow = () => {
-    if (id) {
-      dispatch(followUser(id));
-    }
-  };
-
-  const handleUnfollow = () => {
-    if (id) {
-      dispatch(unfollowUser(id));
-    }
-  };
 
   if (!data || !id) return <LoadingScreen />;
 
@@ -52,12 +40,10 @@ const UserProfile = () => {
             <TransparentButton
               text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
               onClick={() =>
-                isFollowed(id, followings) ? handleUnfollow() : handleFollow()
+                isFollowed(id, followings) ? dispatch(unfollowUser(id)) : dispatch(followUser(id))
               }
             ></TransparentButton>
           )}
-
-          {/*<HeaderActions />*/}
         </div>
       </GradientBackground>
     </>
@@ -67,19 +53,6 @@ const UserProfile = () => {
 export default UserProfile;
 
 // <GradientBackground color={data.color}>
-//   <div className={styles.playerHeader}>
-//     {id !== userId && (
-//       <TransparentButton
-//         text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
-//         onClick={() =>
-//           isFollowed(id, followings) ? handleUnfollow() : handleFollow()
-//         }
-//       ></TransparentButton>
-//     )}
-//
-//     {/*<HeaderActions />*/}
-//   </div>
-//
 //   <div className="p-5 pt-0">
 //     {/*<CardsList*/}
 //     {/*  title="Public Playlists"*/}

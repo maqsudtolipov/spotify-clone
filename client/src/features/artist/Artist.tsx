@@ -9,7 +9,6 @@ import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
 import styles from '../../components/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../components/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
-import HeaderActions from '../../components/PlayHeader/HeaderActions.tsx';
 import { followUser, unfollowUser } from '../auth/userThunks.ts';
 import UploadSongDialog from './UploadSongDialog.tsx';
 

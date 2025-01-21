@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../api/axios';
+import { followingsUpdated } from './userSlice.ts';
+import { followersCountUpdated } from '../userPage/userPageSlice.ts';
 
 // Checks whether the user is authenticated using cookies
 export const getCurrent = createAsyncThunk('user/getCurrent', async () => {
@@ -43,16 +45,20 @@ export const logout = createAsyncThunk('user/logout', async () => {
 // Follow
 export const followUser = createAsyncThunk(
   'user/followUser',
-  async (id: string) => {
+  async (id: string, { dispatch }) => {
     const res = await axios.post(`/users/follow/${id}`, id);
-    return res.data.data;
+    console.log(res.data.data);
+    dispatch(followingsUpdated(res.data.data.followings));
+    dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
   },
 );
 
 export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
-  async (id: string) => {
+  async (id: string, { dispatch }) => {
     const res = await axios.post(`/users/unfollow/${id}`, id);
-    return res.data.data;
+    console.log(res.data.data);
+    dispatch(followingsUpdated(res.data.data.followings));
+    dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
   },
 );
