@@ -1,14 +1,10 @@
 import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
-import styles from '../../components/PlayHeader/PlayHeader.module.scss';
-import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { followUser, unfollowUser } from '../auth/userThunks.ts';
 import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
-import useFetchUser from './useFetchUser.ts';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getArtist } from '../artist/artistThunks.ts';
 import { getUser } from './userPageThunks.ts';
 
 const isFollowed = (id: string, followings: string[]) => {
@@ -22,7 +18,7 @@ const generateRandomColor = () =>
 //       - Show user colors on user page
 
 const UserProfile = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const data = useAppSelector((state) => state.userPage?.data);
   const { followings, id: userId } = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
@@ -30,6 +26,18 @@ const UserProfile = () => {
   useEffect(() => {
     if (id) dispatch(getUser({ id }));
   }, [id]);
+
+  const handleFollow = () => {
+    if (id) {
+      dispatch(followUser(id));
+    }
+  };
+
+  const handleUnfollow = () => {
+    if (id) {
+      dispatch(unfollowUser(id));
+    }
+  };
 
   if (!data) return <LoadingScreen />;
 
@@ -40,35 +48,43 @@ const UserProfile = () => {
 
   return (
     <>
-      <ImageHeader data={{ ...data, statistics }} />
-      <GradientBackground color={data.color}>
-        {/*<div className={styles.playerHeader}>*/}
-        {/*  <TransparentButton*/}
-        {/*    text={isFollowed(user.id, followings) ? 'Unfollow' : 'Follow'}*/}
-        {/*    onClick={handleFollowToggle}*/}
-        {/*  />*/}
-        {/*</div>*/}
-
-        <div className="p-5 pt-0">
-          {/*<CardsList*/}
-          {/*  title="Public Playlists"*/}
-          {/*  shrink={true}*/}
-          {/*  items={items.slice(0, 6)}*/}
-          {/*/>*/}
-          {/*<CardsList*/}
-          {/*  title="Followers"*/}
-          {/*  shrink={true}*/}
-          {/*  items={items.slice(6, 12)}*/}
-          {/*/>*/}
-          {/*<CardsList*/}
-          {/*  title="Followings"*/}
-          {/*  shrink={true}*/}
-          {/*  items={items.slice(12, 18)}*/}
-          {/*/>*/}
-        </div>
-      </GradientBackground>
+      <ImageHeader data={{ ...data, type: 'userPage', statistics }} />
+      <GradientBackground color={data.color}>Body here</GradientBackground>
     </>
   );
 };
 
 export default UserProfile;
+
+// <GradientBackground color={data.color}>
+//   <div className={styles.playerHeader}>
+//     {id !== userId && (
+//       <TransparentButton
+//         text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
+//         onClick={() =>
+//           isFollowed(id, followings) ? handleUnfollow() : handleFollow()
+//         }
+//       ></TransparentButton>
+//     )}
+//
+//     {/*<HeaderActions />*/}
+//   </div>
+//
+//   <div className="p-5 pt-0">
+//     {/*<CardsList*/}
+//     {/*  title="Public Playlists"*/}
+//     {/*  shrink={true}*/}
+//     {/*  items={items.slice(0, 6)}*/}
+//     {/*/>*/}
+//     {/*<CardsList*/}
+//     {/*  title="Followers"*/}
+//     {/*  shrink={true}*/}
+//     {/*  items={items.slice(6, 12)}*/}
+//     {/*/>*/}
+//     {/*<CardsList*/}
+//     {/*  title="Followings"*/}
+//     {/*  shrink={true}*/}
+//     {/*  items={items.slice(12, 18)}*/}
+//     {/*/>*/}
+//   </div>
+// </GradientBackground>

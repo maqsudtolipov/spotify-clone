@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getArtist } from '../artist/artistThunks.ts';
 import { getUser } from './userPageThunks.ts';
 
 interface ApiStatus {
@@ -8,12 +7,15 @@ interface ApiStatus {
 }
 
 interface UserPage {
+  img: string;
   name: string;
   color: string;
+  followersCount: number;
+  followingsCount: number;
 }
 
 interface InitialState {
-  data: UserPage | null;
+  data: null | UserPage;
   api: {
     getUser: ApiStatus;
   };

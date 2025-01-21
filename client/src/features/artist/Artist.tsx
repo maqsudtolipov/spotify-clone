@@ -59,7 +59,7 @@ const Artist = () => {
 
           {id === userId && data.role === 'artist' && <UploadSongDialog />}
 
-          <HeaderActions />
+          {/*<HeaderActions />*/}
         </div>
 
         <div className="p-5 pt-0">
