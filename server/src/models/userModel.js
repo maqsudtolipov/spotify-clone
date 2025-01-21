@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "artist"],
       default: "user",
       select: false,
     },
@@ -64,12 +64,6 @@ const userSchema = new mongoose.Schema(
           ref: "Song",
         },
       ],
-      validate: {
-        validator: function () {
-          return this.role === "artist";
-        },
-        message: "Songs field is only allowed for users with role artist.",
-      },
     },
     password: {
       type: String,
@@ -112,6 +106,14 @@ userSchema
   );
 
 // Methods
+userSchema.pre("save", async function (next) {
+  if (this.role === "artist") return next();
+
+  this.songs = undefined;
+
+  next();
+});
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 

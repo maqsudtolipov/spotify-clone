@@ -22,7 +22,7 @@ const ArtistTable = () => {
 
             {/* TODO: add isliked and duratioin */}
             <LikeCell isLiked={true} />
-            <TableCell minimize={true}>2:18</TableCell>
+            <TableCell minimize={true}>{item.duration}</TableCell>
             <ActionsCell />
           </TableRow>
         ))}
