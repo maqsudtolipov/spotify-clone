@@ -22,6 +22,10 @@ const songSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a img file"],
     },
+    duration: {
+      type: Number,
+      require: [true, "Please provide a duration"],
+    },
     plays: {
       type: Number,
       default: 0,

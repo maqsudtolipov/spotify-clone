@@ -13,6 +13,6 @@ export const uploadSong = createAsyncThunk(
   'artist/uploadSong',
   async ({ id, formData }: { id: string; formData: FormData }) => {
     const res = await axios.post(`/artists/${id}/songs`, formData);
-    console.log(res);
+    return res.data.songs;
   },
 );

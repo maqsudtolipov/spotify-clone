@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "artist"],
       default: "user",
       select: false,
     },
@@ -56,6 +56,14 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+    },
+    songs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Song",
+        },
+      ],
     },
     password: {
       type: String,
@@ -98,6 +106,14 @@ userSchema
   );
 
 // Methods
+userSchema.pre("save", async function (next) {
+  if (this.role === "artist") return next();
+
+  this.songs = undefined;
+
+  next();
+});
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
