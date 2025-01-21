@@ -6,16 +6,12 @@ import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUser } from './userPageThunks.ts';
+import styles from '../../components/PlayHeader/PlayHeader.module.scss';
+import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
 };
-
-const generateRandomColor = () =>
-  `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}4d`;
-
-// TODO: - Update followers count when follow button is clicked
-//       - Show user colors on user page
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +35,7 @@ const UserProfile = () => {
     }
   };
 
-  if (!data) return <LoadingScreen />;
+  if (!data || !id) return <LoadingScreen />;
 
   const statistics = [
     { name: 'Followers', value: data.followersCount },
@@ -49,7 +45,21 @@ const UserProfile = () => {
   return (
     <>
       <ImageHeader data={{ ...data, type: 'userPage', statistics }} />
-      <GradientBackground color={data.color}>Body here</GradientBackground>
+      <GradientBackground color={data.color}>
+        {' '}
+        <div className={styles.playerHeader}>
+          {id !== userId && (
+            <TransparentButton
+              text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
+              onClick={() =>
+                isFollowed(id, followings) ? handleUnfollow() : handleFollow()
+              }
+            ></TransparentButton>
+          )}
+
+          {/*<HeaderActions />*/}
+        </div>
+      </GradientBackground>
     </>
   );
 };
