@@ -7,6 +7,7 @@ import TableBody from '../../ui-library/Table/TableBody.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 import { useAppSelector } from '../../app/hooks.ts';
+import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
@@ -20,9 +21,11 @@ const ArtistTable = () => {
             <InfoCell img={item.img} name={item.name} />
             <TableCell>{item.plays}</TableCell>
 
-            {/* TODO: add isliked and duratioin */}
+            {/* TODO: add is liked */}
             <LikeCell isLiked={true} />
-            <TableCell minimize={true}>{item.duration}</TableCell>
+            <TableCell minimize={true}>
+              {secondsToTimeFormat(item.duration)}
+            </TableCell>
             <ActionsCell />
           </TableRow>
         ))}
