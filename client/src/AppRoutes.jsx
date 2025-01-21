@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';
-import UserProfile from './features/profile/UserProfile/UserProfile.tsx';
+import UserProfile from './features/userPage/UserProfile/UserProfile.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
@@ -59,7 +59,7 @@ const AppRoutes = () => {
             }
           />
           {/*<Route*/}
-          {/*  path="/profile"*/}
+          {/*  path="/userPage"*/}
           {/*  element={*/}
           {/*    <Layout>*/}
           {/*      <ProfilePage />*/}

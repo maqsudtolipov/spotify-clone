@@ -14,6 +14,10 @@ const isFollowed = (id: string, followings: string[]) => {
 const generateRandomColor = () =>
   `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}4d`;
 
+
+// TODO: - Update followers count when follow button is clicked
+//       - Show user colors on user page
+
 const UserProfile = () => {
   const { followings } = useAppSelector(
     (state) => state.user.data,

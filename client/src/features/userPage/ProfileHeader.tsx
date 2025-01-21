@@ -4,7 +4,7 @@ import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
 import { useAppSelector } from '../../app/hooks.ts';
 
 interface Data {
-  type: 'playlist' | 'profile';
+  type: 'playlist' | 'userPage';
   img: string;
   name: string;
   statistics?: { name: string; value: number }[];
@@ -22,7 +22,7 @@ const ProfileHeader = ({ color }: ProfileHeaderProps) => {
     const data: Data = {
       img,
       name,
-      type: 'profile',
+      type: 'userPage',
       statistics: [
         { name: 'followers', value: faker.number.int(30) },
         { name: 'followings', value: faker.number.int(30) },
