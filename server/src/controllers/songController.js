@@ -42,7 +42,7 @@ exports.uploadSong = async (req, res, next) => {
       {
         new: true,
       },
-    ).populate("songs", "id name artist song img plays");
+    ).populate("songs", "id name artist song img plays duration");
 
     res.status(201).json({
       status: "success",
