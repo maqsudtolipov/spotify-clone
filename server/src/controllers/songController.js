@@ -5,8 +5,6 @@ const User = require("../models/userModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
-    console.log(req.files);
-
     if (
       !req.files.song[0].filename ||
       !req.files.img[0].filename ||
@@ -32,6 +30,7 @@ exports.uploadSong = async (req, res, next) => {
       song: songUpload.url,
       img: imgUpload.url,
       artist: req.user.id,
+      duration: req.files.song[0].duration
     };
 
     const song = await Song.create(songInput);
