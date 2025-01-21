@@ -16,7 +16,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(
       req.params.id,
-      "id name email img followers followersCount followings followingsCount",
+      "id name img color followers followersCount followings followingsCount",
     );
 
     if (!user) {

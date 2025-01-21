@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getArtist } from '../artist/artistThunks.ts';
+import { getUser } from './userPageThunks.ts';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -31,6 +33,19 @@ const userPageSlice = createSlice({
   name: 'userPage',
   initialState,
   reducers: {},
+  extraReducers: (builder) =>
+    builder
+      .addCase(getUser.pending, (state) => {
+        state.api.getUser.status = 'pending';
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.api.getUser.status = 'fulfilled';
+        state.data = action.payload;
+      })
+      .addCase(getUser.rejected, (state) => {
+        state.api.getUser.status = 'rejected';
+        state.data = null;
+      }),
 });
 
 export const {} = userPageSlice.actions;

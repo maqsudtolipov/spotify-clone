@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../../../api/axios';
+import axios from '../../api/axios';
 
 interface User {
   type: 'userPage';
