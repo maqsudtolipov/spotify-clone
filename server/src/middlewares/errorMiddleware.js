@@ -43,18 +43,16 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
+  let error = Object.assign(err);
+
+  if (error.name === "ValidationError") error = handleValidationError(error);
+  if (error instanceof SyntaxError) error = handleSyntaxError(error);
+  if (error.code === 11000) error = handleDuplicationError(error);
+  if (error.name === "CastError") error = handleCastError(error);
+
   if (process.env.NODE_ENV === "development") {
     developmentError(err, res);
-  }
-
-  if (process.env.NODE_ENV === "production") {
-    let error = Object.assign(err);
-
-    if (error.name === "ValidationError") error = handleValidationError(error);
-    if (error instanceof SyntaxError) error = handleSyntaxError(error);
-    if (error.code === 11000) error = handleDuplicationError(error);
-    if (error.name === "CastError") error = handleCastError(error);
-
+  } else if (process.env.NODE_ENV === "production") {
     productionError(error, res);
   }
 };
