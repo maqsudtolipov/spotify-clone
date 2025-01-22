@@ -1,10 +1,12 @@
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
-const mongoose = require("mongoose");
-const creatArtistAndLoginUser = require("../helpers/creatArtistAndLoginUser");
 const request = require("supertest");
-const { connectToDatabase, cleanupDatabaseAndDisconnect} = require("../helpers/databaseHelpers");
+const {
+  connectToDatabase,
+  cleanupDatabaseAndDisconnect,
+} = require("../helpers/databaseHelpers");
+const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 
 let server;
 beforeAll(async () => {
@@ -23,7 +25,27 @@ describe("artistController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await creatArtistAndLoginUser());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Herbert Mitchelle",
+            email: "hertbertmitchelle@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Roland Mcdonalid",
+            email: "roland.mcdonalid@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+            role: "artist",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {

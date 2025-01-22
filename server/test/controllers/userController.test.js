@@ -6,8 +6,11 @@ const RefreshToken = require("../../src/models/refreshTokenModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
 const signupAndLoginUser = require("../helpers/signupAndLoginUser");
-const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndLoginFirst");
-const { connectToDatabase, cleanupDatabaseAndDisconnect} = require("../helpers/databaseHelpers");
+const {
+  connectToDatabase,
+  cleanupDatabaseAndDisconnect,
+} = require("../helpers/databaseHelpers");
+const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 
 let server;
 beforeAll(async () => {
@@ -26,7 +29,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
@@ -115,7 +137,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
@@ -128,8 +169,6 @@ describe("userController", () => {
       const res = await request(app)
         .post(`/api/users/follow/${userIds[1]}`)
         .set("Cookie", [`accessToken=${accessToken}`]);
-
-      console.log(res.body);
 
       // Check response
       expect(res.status).toBe(200);
@@ -180,7 +219,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
