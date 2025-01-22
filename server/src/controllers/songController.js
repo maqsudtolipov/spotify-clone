@@ -80,8 +80,23 @@ exports.like = async (req, res, next) => {
 
 exports.dislike = async (req, res, next) => {
   try {
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      req.user.likedSongs,
+      {
+        $pull: { songs: song.id },
+      },
+      { new: true },
+    );
+
     res.status(200).json({
       status: "success",
+      likedSongs: updatedPlaylist.songs,
     });
   } catch (e) {
     next(e);
