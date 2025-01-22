@@ -8,6 +8,7 @@ const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
+const Playlist = require("../models/playlistModel");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -36,9 +37,25 @@ exports.signUp = async (req, res, next) => {
     }
 
     const newUser = await User.create(userData);
+
+    const likedSongsPlaylist = await Playlist.create({
+      name: "Liked Songs",
+      user: newUser.id,
+      isPublic: false,
+      isLikedSongs: true,
+    });
+
+    const newUpdatedUser = await User.findByIdAndUpdate(newUser.id, {
+      likedSongs: likedSongsPlaylist.id,
+    });
+
     res.status(201).json({
       status: "success",
-      data: { id: newUser.id, name: newUser.name, email: newUser.name },
+      data: {
+        id: newUpdatedUser.id,
+        name: newUpdatedUser.name,
+        email: newUpdatedUser.name,
+      },
     });
   } catch (e) {
     next(e);

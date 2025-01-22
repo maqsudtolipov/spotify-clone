@@ -40,6 +40,6 @@ const playlistSchema = new mongoose.Schema(
   },
 );
 
-const Playlist = new mongoose.Model("Playlist", playlistSchema);
+const Playlist = new mongoose.model("Playlist", playlistSchema);
 
 module.exports = Playlist;
