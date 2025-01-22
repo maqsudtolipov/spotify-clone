@@ -2,6 +2,7 @@ const AppError = require("../utils/AppError");
 const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
+const Playlist = require("../models/playlistModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -60,8 +61,17 @@ exports.like = async (req, res, next) => {
       return next(new AppError("Song not found", 404));
     }
 
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      req.user.likedSongs,
+      {
+        $addToSet: { songs: song.id },
+      },
+      { new: true },
+    );
+
     res.status(200).json({
       status: "success",
+      likedSongs: updatedPlaylist.songs,
     });
   } catch (e) {
     next(e);
