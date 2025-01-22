@@ -54,10 +54,11 @@ exports.uploadSong = async (req, res, next) => {
 // Like Song
 exports.like = async (req, res, next) => {
   try {
-    // Check wheater the song exist
     const song = await Song.findById(req.params.id);
 
-    console.log(song);
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
 
     res.status(200).json({
       status: "success",

@@ -119,5 +119,16 @@ describe("songController", () => {
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid _id: wrongId/i);
     });
+
+    it("should fail if dong does not exist", async () => {
+      // The id is randomly generated
+      const res = await request(app)
+        .post(`/api/songs/67909814d606821ac21d1b78/like`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Song not found/i);
+    });
   });
 });
