@@ -10,7 +10,11 @@ const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 const { generateRefreshToken } = require("../../src/utils/genereateTokens");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
-const connectToDatabase = require("../helpers/connectToDatabase");
+const {
+  connectToDatabase,
+  cleanupDatabaseAndDisconnect,
+} = require("../helpers/databaseHelpers");
+const Playlist = require("../../src/models/playlistModel");
 
 const testUser = {
   name: "John Doe",
@@ -27,24 +31,26 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await RefreshToken.deleteMany();
-  await InvalidAccessToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 
-describe("AuthController", () => {
-  describe("/signup route", () => {
+describe("authController", () => {
+  describe("signUp", () => {
     const signUp = async (userData) =>
       request(app).post("/api/auth/signup").send(userData);
 
-    it("should create a new user", async () => {
+    it("should create a new user and likedSongs playlist", async () => {
       const res = await signUp(testUser);
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
       expect(res.body.data).toHaveProperty("name", "John Doe");
+
+      const likedSongs = await Playlist.findOne({
+        user: res.body.data.id,
+      });
+      expect(likedSongs.name).toEqual("Liked Songs");
     });
 
     it("should fail when required fields are missing", async () => {

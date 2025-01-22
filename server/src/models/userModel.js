@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const Playlist = require("./playlistModel");
 
 const userSchema = new mongoose.Schema(
   {
@@ -65,6 +66,10 @@ const userSchema = new mongoose.Schema(
         },
       ],
     },
+    likedSongs: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Playlist",
+    },
     password: {
       type: String,
       required: [true, "Please provide a password"],
@@ -105,7 +110,22 @@ userSchema
       "4d",
   );
 
-// Methods
+// Create likedSongs playlist on newUsers
+userSchema.pre("save", async function (next) {
+  if (!this.isNew) return next();
+
+  const likedSongsPlaylist = await Playlist.create({
+    name: "Liked Songs",
+    user: this.id,
+    isPublic: false,
+    isLikedSongs: true,
+  });
+  this.likedSongs = likedSongsPlaylist.id;
+
+  next();
+});
+
+// Remove songs from users
 userSchema.pre("save", async function (next) {
   if (this.role === "artist") return next();
 
@@ -114,6 +134,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Hash password
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 

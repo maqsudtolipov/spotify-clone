@@ -36,9 +36,14 @@ exports.signUp = async (req, res, next) => {
     }
 
     const newUser = await User.create(userData);
+
     res.status(201).json({
       status: "success",
-      data: { id: newUser.id, name: newUser.name, email: newUser.name },
+      data: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.name,
+      },
     });
   } catch (e) {
     next(e);

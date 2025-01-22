@@ -5,12 +5,14 @@ const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
-const connectToDatabase = require("../helpers/connectToDatabase");
 const signupAndLoginUser = require("../helpers/signupAndLoginUser");
-const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndLoginFirst");
+const {
+  connectToDatabase,
+  cleanupDatabaseAndDisconnect,
+} = require("../helpers/databaseHelpers");
+const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 
 let server;
-
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
   await connectToDatabase();
@@ -18,9 +20,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await RefreshToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 
@@ -29,7 +29,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
@@ -118,7 +137,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
@@ -131,8 +169,6 @@ describe("userController", () => {
       const res = await request(app)
         .post(`/api/users/follow/${userIds[1]}`)
         .set("Cookie", [`accessToken=${accessToken}`]);
-
-      console.log(res.body)
 
       // Check response
       expect(res.status).toBe(200);
@@ -183,7 +219,26 @@ describe("userController", () => {
     let accessToken, userIds;
 
     beforeAll(async () => {
-      ({ accessToken, userIds } = await createTwoUsersAndReturnIds());
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Marlene Carr",
+            email: "marlenecarr@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+          {
+            name: "Alice Duncan",
+            email: "aliceduncan@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        0,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
     });
 
     afterAll(async () => {
