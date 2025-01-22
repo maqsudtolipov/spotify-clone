@@ -1,14 +1,12 @@
-const connectToDatabase = require("../helpers/connectToDatabase");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const mongoose = require("mongoose");
-const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndLoginFirst");
 const creatArtistAndLoginUser = require("../helpers/creatArtistAndLoginUser");
 const request = require("supertest");
+const { connectToDatabase, cleanupDatabaseAndDisconnect} = require("../helpers/databaseHelpers");
 
 let server;
-
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
   await connectToDatabase();
@@ -16,9 +14,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await RefreshToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 

@@ -5,12 +5,11 @@ const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
-const connectToDatabase = require("../helpers/connectToDatabase");
 const signupAndLoginUser = require("../helpers/signupAndLoginUser");
 const createTwoUsersAndReturnIds = require("../helpers/createTwoUsersAndLoginFirst");
+const { connectToDatabase, cleanupDatabaseAndDisconnect} = require("../helpers/databaseHelpers");
 
 let server;
-
 beforeAll(async () => {
   process.env.NODE_ENV = "production";
   await connectToDatabase();
@@ -18,9 +17,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await RefreshToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 
@@ -132,7 +129,7 @@ describe("userController", () => {
         .post(`/api/users/follow/${userIds[1]}`)
         .set("Cookie", [`accessToken=${accessToken}`]);
 
-      console.log(res.body)
+      console.log(res.body);
 
       // Check response
       expect(res.status).toBe(200);

@@ -1,4 +1,3 @@
-const connectToDatabase = require("../helpers/connectToDatabase");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
@@ -8,6 +7,10 @@ const fs = require("node:fs");
 const { resolve } = require("node:path");
 const request = require("supertest");
 const createUsersAndLogin = require("../helpers/createUsersAndLogin");
+const {
+  connectToDatabase,
+  cleanupDatabaseAndDisconnect,
+} = require("../helpers/databaseHelpers");
 
 let server;
 beforeAll(async () => {
@@ -17,10 +20,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await Song.deleteMany();
-  await RefreshToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 

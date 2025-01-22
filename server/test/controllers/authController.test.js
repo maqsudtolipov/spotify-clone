@@ -10,7 +10,7 @@ const middlewareMock = require("../helpers/middlewareMock");
 const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
 const { generateRefreshToken } = require("../../src/utils/genereateTokens");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
-const connectToDatabase = require("../helpers/connectToDatabase");
+const {connectToDatabase, cleanupDatabaseAndDisconnect} = require("../helpers/databaseHelpers");
 
 const testUser = {
   name: "John Doe",
@@ -27,10 +27,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany();
-  await RefreshToken.deleteMany();
-  await InvalidAccessToken.deleteMany();
-  await mongoose.disconnect();
+  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 
