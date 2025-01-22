@@ -45,9 +45,13 @@ exports.signUp = async (req, res, next) => {
       isLikedSongs: true,
     });
 
-    const newUpdatedUser = await User.findByIdAndUpdate(newUser.id, {
-      likedSongs: likedSongsPlaylist.id,
-    });
+    const newUpdatedUser = await User.findByIdAndUpdate(
+      newUser.id,
+      {
+        likedSongs: likedSongsPlaylist.id,
+      },
+      { new: true },
+    ).populate("likedSongs", "songs");
 
     res.status(201).json({
       status: "success",
@@ -55,6 +59,7 @@ exports.signUp = async (req, res, next) => {
         id: newUpdatedUser.id,
         name: newUpdatedUser.name,
         email: newUpdatedUser.name,
+        likedSongs: newUpdatedUser.likedSongs,
       },
     });
   } catch (e) {
