@@ -8,6 +8,7 @@ import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
+import { dislikeSong, likeSong } from '../auth/userThunks.ts';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
@@ -21,11 +22,11 @@ const ArtistTable = () => {
   };
 
   const handleLikeSong = (id: string) => {
-    dispatch();
+    dispatch(likeSong({ id }));
   };
 
   const handleDislikeSong = (id: string) => {
-    dispatch();
+    dispatch(dislikeSong({ id }));
   };
 
   return (
@@ -37,15 +38,13 @@ const ArtistTable = () => {
             <InfoCell img={item.img} name={item.name} />
             <TableCell>{item.plays}</TableCell>
 
-            {/* TODO: add is liked */}
-
             <LikeCell
               isLiked={isSongLiked(item.id, likedSongs)}
-              // onClick={
-              //   isSongLiked(item.id, likedSongs)
-              //     ? handleLikeSong(item.id)
-              //     : handleDislikeSong(item.id)
-              // }
+              onClick={() =>
+                isSongLiked(item.id, likedSongs)
+                  ? handleDislikeSong(item.id)
+                  : handleLikeSong(item.id)
+              }
             />
             <TableCell minimize={true}>
               {secondsToTimeFormat(item.duration)}

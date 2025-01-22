@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  dislikeSong,
   getCurrent,
+  likeSong,
   login,
   logout,
   signUp,
@@ -119,6 +121,13 @@ const userSlice = createSlice({
         state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
+      })
+      // Like
+      .addCase(likeSong.fulfilled, (state, action) => {
+        state.data.likedSongs.songs = action.payload;
+      })
+      .addCase(dislikeSong.fulfilled, (state, action) => {
+        state.data.likedSongs.songs = action.payload;
       }),
 });
 
