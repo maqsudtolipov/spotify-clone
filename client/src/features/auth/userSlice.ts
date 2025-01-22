@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  followUser,
   getCurrent,
   login,
   logout,
   signUp,
-  unfollowUser,
 } from './userThunks.ts';
 
 interface ApiStatus {
@@ -22,6 +20,10 @@ interface User {
   followersCount: number;
   followings: string[];
   followingsCount: number;
+  likedSongs: {
+    id: string;
+    songs: string[];
+  };
 }
 
 interface InitialState {

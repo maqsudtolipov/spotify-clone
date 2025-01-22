@@ -4,13 +4,15 @@ import TableCell from '../TableCell.tsx';
 
 interface LikeCellProps {
   isLiked: boolean;
+  onClick?: () => void;
 }
 
-const LikeCell = ({ isLiked }: LikeCellProps) => {
+const LikeCell = ({ isLiked, onClick }: LikeCellProps) => {
   return (
     <TableCell
       className={`${styles.likeCell} ${isLiked ? styles.likeCellHighlighted : ''}`}
       minimize={true}
+      onClick={onClick}
     >
       <RiHeartFill />
     </TableCell>

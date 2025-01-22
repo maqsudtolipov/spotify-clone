@@ -6,11 +6,27 @@ import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
-import { useAppSelector } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
+  const likedSongs = useAppSelector(
+    (state) => state.user?.data?.likedSongs?.songs,
+  );
+  const dispatch = useAppDispatch();
+
+  const isSongLiked = (id, likedSongs) => {
+    return likedSongs.includes(id);
+  };
+
+  const handleLikeSong = (id: string) => {
+    dispatch();
+  };
+
+  const handleDislikeSong = (id: string) => {
+    dispatch();
+  };
 
   return (
     <Table>
@@ -22,7 +38,15 @@ const ArtistTable = () => {
             <TableCell>{item.plays}</TableCell>
 
             {/* TODO: add is liked */}
-            <LikeCell isLiked={true} />
+
+            <LikeCell
+              isLiked={isSongLiked(item.id, likedSongs)}
+              // onClick={
+              //   isSongLiked(item.id, likedSongs)
+              //     ? handleLikeSong(item.id)
+              //     : handleDislikeSong(item.id)
+              // }
+            />
             <TableCell minimize={true}>
               {secondsToTimeFormat(item.duration)}
             </TableCell>
