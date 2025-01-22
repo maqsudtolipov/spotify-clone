@@ -65,7 +65,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     followingsUpdated: (state, action) => {
-      state.data.followings = action.payload;
+      if (state.data) state.data.followings = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -124,10 +124,10 @@ const userSlice = createSlice({
       })
       // Like
       .addCase(likeSong.fulfilled, (state, action) => {
-        state.data.likedSongs.songs = action.payload;
+        if (state.data) state.data.likedSongs.songs = action.payload;
       })
       .addCase(dislikeSong.fulfilled, (state, action) => {
-        state.data.likedSongs.songs = action.payload;
+        if (state.data) state.data.likedSongs.songs = action.payload;
       }),
 });
 

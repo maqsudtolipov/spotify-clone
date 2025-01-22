@@ -17,7 +17,7 @@ const ArtistTable = () => {
   );
   const dispatch = useAppDispatch();
 
-  const isSongLiked = (id, likedSongs) => {
+  const isSongLiked = (id: string, likedSongs: string[]) => {
     return likedSongs.includes(id);
   };
 
@@ -32,26 +32,27 @@ const ArtistTable = () => {
   return (
     <Table>
       <TableBody>
-        {songs?.map((item, index) => (
-          <TableRow key={item.name}>
-            <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} />
-            <TableCell>{item.plays}</TableCell>
+        {likedSongs &&
+          songs?.map((item, index) => (
+            <TableRow key={item.name}>
+              <IndexCell>{index + 1}</IndexCell>
+              <InfoCell img={item.img} name={item.name} />
+              <TableCell>{item.plays}</TableCell>
 
-            <LikeCell
-              isLiked={isSongLiked(item.id, likedSongs)}
-              onClick={() =>
-                isSongLiked(item.id, likedSongs)
-                  ? handleDislikeSong(item.id)
-                  : handleLikeSong(item.id)
-              }
-            />
-            <TableCell minimize={true}>
-              {secondsToTimeFormat(item.duration)}
-            </TableCell>
-            <ActionsCell />
-          </TableRow>
-        ))}
+              <LikeCell
+                isLiked={isSongLiked(item.id, likedSongs)}
+                onClick={() =>
+                  isSongLiked(item.id, likedSongs)
+                    ? handleDislikeSong(item.id)
+                    : handleLikeSong(item.id)
+                }
+              />
+              <TableCell minimize={true}>
+                {secondsToTimeFormat(item.duration)}
+              </TableCell>
+              <ActionsCell />
+            </TableRow>
+          ))}
       </TableBody>
     </Table>
   );
