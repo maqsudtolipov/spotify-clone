@@ -70,4 +70,54 @@ describe("songController", () => {
       );
     });
   });
+
+  describe("likeSong", () => {
+    let userIds, accessToken, songId;
+
+    beforeAll(async () => {
+      // Create users
+      const res = await createUsersAndLogin(
+        [
+          {
+            name: "Sunny",
+            email: "sunny@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+            role: "artist",
+          },
+          {
+            name: "Kai",
+            email: "kai@example.com",
+            password: "Pa$$1234",
+            passwordConfirm: "Pa$$1234",
+          },
+        ],
+        1,
+      );
+
+      userIds = res.userIds;
+      accessToken = res.accessToken;
+
+      const songInput = {
+        name: "Pale Garden",
+        song: "pale-garden.mp3",
+        img: "pale-garden.png",
+        artist: userIds[0],
+        duration: 120,
+      };
+
+      const song = await Song.create(songInput);
+      songId = song.id;
+    });
+
+    it("should fail if song id is invalid", async () => {
+      const res = await request(app)
+        .post(`/api/songs/wrongId/like`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(400);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Invalid _id: wrongId/i);
+    });
+  });
 });
