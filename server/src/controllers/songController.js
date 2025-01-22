@@ -50,3 +50,24 @@ exports.uploadSong = async (req, res, next) => {
     next(e);
   }
 };
+
+// Like Song
+exports.like = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.dislike = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
