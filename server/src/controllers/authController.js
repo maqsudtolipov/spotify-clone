@@ -8,7 +8,6 @@ const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
-const Playlist = require("../models/playlistModel");
 
 exports.signUp = async (req, res, next) => {
   try {
