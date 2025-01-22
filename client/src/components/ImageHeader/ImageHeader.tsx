@@ -3,7 +3,7 @@ import { meta } from 'eslint-plugin-react/lib/rules/jsx-props-no-spread-multi';
 import description = meta.docs.description;
 
 interface Data {
-  type: 'playlist' | 'profile';
+  type: 'playlist' | 'userPage';
   img: string;
   name: string;
   description?: string;
@@ -15,33 +15,26 @@ interface Data {
 }
 
 interface ImageHeaderProps {
-  // color: string;
   data: Data;
 }
 
-
-
 // TODO: Refactor if needed
 const ImageHeader = ({ data }: ImageHeaderProps) => {
-  // Colors are randomly generated for now
-  const color =
-    '#' +
-    ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
-    '4d';
-
   const gradient = {
-    background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
+    background: `linear-gradient(${data.color}, ${data.color}), linear-gradient(#171717, #171717)`,
   };
 
   return (
     <header className={styles.header} style={gradient}>
       <img
-        className={`${styles.img} ${data.type === 'profile' ? styles.imgRounded : ''}`}
+        className={`${styles.img} ${data.type === 'userPage' ? styles.imgRounded : ''}`}
         src={data.img}
         alt={data.name}
       />
       <div>
-        <span className={styles.type}>{data.type}</span>
+        <span className={styles.type}>
+          {data.type === 'playlist' ? 'Playlist' : 'User'}
+        </span>
         <h1 className={styles.name}>{data.name}</h1>
         {description && (
           <p className={styles.description}>{data.description}</p>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../../../api/axios';
+import axios from '../../api/axios';
 
 interface User {
-  type: 'profile';
+  type: 'userPage';
   id: string;
   name: string;
   img: string;
@@ -23,7 +23,7 @@ const useFetchUser = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`users/${id}`);
-        res.data.user.type = 'profile';
+        res.data.user.type = 'userPage';
         res.data.user.statistics = [
           { name: 'Followers', value: res.data.user.followersCount },
           { name: 'Following', value: res.data.user.followingsCount },

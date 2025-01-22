@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
 
 interface Data {
-  type: 'playlist' | 'profile';
+  type: 'playlist' | 'userPage';
   img: string;
   name: string;
   description?: string;

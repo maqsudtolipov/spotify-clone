@@ -59,7 +59,11 @@ const initialState: InitialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    followingsUpdated: (state, action) => {
+      state.data.followings = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder
       // Check authenticated
@@ -113,25 +117,8 @@ const userSlice = createSlice({
         state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
-      })
-      // Follow
-      .addCase(followUser.fulfilled, (state, action) => {
-        console.log(action.payload);
-
-        if (state.data) {
-          state.data.followings = action.payload.followings;
-          state.data.followingsCount = action.payload.followingsCount;
-        }
-      })
-      .addCase(unfollowUser.fulfilled, (state, action) => {
-        console.log(action.payload);
-
-        if (state.data) {
-          state.data.followings = action.payload.followings;
-          state.data.followingsCount = action.payload.followingsCount;
-        }
       }),
 });
 
-export const {} = userSlice.actions;
+export const { followingsUpdated } = userSlice.actions;
 export default userSlice.reducer;

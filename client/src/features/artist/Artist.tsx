@@ -9,7 +9,6 @@ import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
 import styles from '../../components/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../components/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
-import HeaderActions from '../../components/PlayHeader/HeaderActions.tsx';
 import { followUser, unfollowUser } from '../auth/userThunks.ts';
 import UploadSongDialog from './UploadSongDialog.tsx';
 
@@ -29,13 +28,13 @@ const Artist = () => {
 
   const handleFollow = () => {
     if (id) {
-      dispatch(followUser(id));
+      dispatch(followUser({ id, type: 'artist' }));
     }
   };
 
   const handleUnfollow = () => {
     if (id) {
-      dispatch(unfollowUser(id));
+      dispatch(unfollowUser({ id, type: 'artist' }));
     }
   };
 
@@ -59,7 +58,7 @@ const Artist = () => {
 
           {id === userId && data.role === 'artist' && <UploadSongDialog />}
 
-          <HeaderActions />
+          {/*<HeaderActions />*/}
         </div>
 
         <div className="p-5 pt-0">
