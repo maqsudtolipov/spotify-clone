@@ -65,6 +65,10 @@ const userSchema = new mongoose.Schema(
         },
       ],
     },
+    likedSongs: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Playlist",
+    },
     password: {
       type: String,
       required: [true, "Please provide a password"],
