@@ -17,6 +17,7 @@ import EditSongDialog from '../../../features/artist/EditSongDialog.tsx';
 import useOutsideClick from '../../../hooks/useOutsideClick.tsx';
 import { forwardRef, useContext } from 'react';
 
+// FIXME: not a good method
 const RefPasser = forwardRef(({ id }) => {
   const { closeDropdown } = useContext(DropdownContext);
   const { ref, exceptionRef } = useOutsideClick(closeDropdown);
