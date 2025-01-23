@@ -12,7 +12,15 @@ export const getArtist = createAsyncThunk(
 export const uploadSong = createAsyncThunk(
   'artist/uploadSong',
   async ({ id, formData }: { id: string; formData: FormData }) => {
-    const res = await axios.post(`/artists/${id}/songs`, formData);
+    const res = await axios.post(`/songs/${id}`, formData);
+    return res.data.songs;
+  },
+);
+
+export const updateSong = createAsyncThunk(
+  'artist/updateSong',
+  async ({ id, formData }: { id: string; formData: FormData }) => {
+    const res = await axios.patch(`/songs/${id}`, formData);
     return res.data.songs;
   },
 );

@@ -16,9 +16,9 @@ const UploadSongDialog = () => {
   const dispatch = useAppDispatch();
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (formRef.current) {
-      e.preventDefault();
+    e.preventDefault();
 
+    if (formRef.current) {
       const formData = new FormData(formRef.current);
       dispatch(uploadSong({ id, formData }));
     }

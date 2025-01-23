@@ -52,7 +52,7 @@ const ArtistTable = () => {
                 {secondsToTimeFormat(item.duration)}
               </TableCell>
               <Dropdown>
-                <ActionsCell />
+                <ActionsCell id={item.id} />
               </Dropdown>
             </TableRow>
           ))}

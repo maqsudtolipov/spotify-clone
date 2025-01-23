@@ -1,6 +1,6 @@
 import React, { FormEvent, forwardRef, useContext, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { uploadSong } from './artistThunks.ts';
+import { updateSong, uploadSong } from './artistThunks.ts';
 import Dialog from '../../ui-library/Dialog/Dialog.tsx';
 import DialogTrigger from '../../ui-library/Dialog/DialogTrigger.tsx';
 import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
@@ -13,18 +13,18 @@ import DropdownItem from '../../ui-library/Dropdown/DropdownItem.tsx';
 
 const EditSongDialog = forwardRef<
   HTMLUListElement | HTMLDivElement | HTMLFormElement
->(({}, ref) => {
+>(({ id }, ref) => {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const id = useAppSelector((state) => state.user?.data?.id);
-  const status = useAppSelector((state) => state.artist.api.uploadSong.status);
+  // const id = useAppSelector((state) => state.user?.data?.id);
+  const status = useAppSelector((state) => state.artist.api.updateSong.status);
   const dispatch = useAppDispatch();
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (formRef.current) {
-      e.preventDefault();
-
-      // const formData = new FormData(formRef.current);
-      // dispatch(updateSong({ id, formData }));
+    e.preventDefault();
+    console.log('update triggered');
+    if (ref?.current) {
+      const formData = new FormData(ref.current);
+      dispatch(updateSong({ id, formData }));
     }
   };
 
@@ -58,7 +58,7 @@ const EditSongDialog = forwardRef<
             placeholder="Song name"
           />
           <Button type="submit">
-            {status === 'pending' ? 'Uploading' : 'Upload'}
+            {status === 'pending' ? 'Updating' : 'Update'}
           </Button>
         </form>
       </DialogContent>
