@@ -21,14 +21,12 @@ const DropdownItem = ({
   children,
   ...rest
 }: DropdownItemProps) => {
-  const { closeDropdown } = useContext(DropdownContext);
-
   return (
     <li
       className={`${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`}
       onClick={() => {
         propOnClick && propOnClick();
-        closeDropdown();
+        // closeDropdown();
       }}
       {...rest}
     >

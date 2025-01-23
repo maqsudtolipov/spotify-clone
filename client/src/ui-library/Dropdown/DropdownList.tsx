@@ -1,5 +1,5 @@
 import styles from './Dropdown.module.scss';
-import { ReactNode, useContext } from 'react';
+import { forwardRef, ReactNode, useContext } from 'react';
 import { DropdownContext } from './Dropdown.tsx';
 import useOutsideClick from '../../hooks/useOutsideClick.tsx';
 
@@ -8,13 +8,11 @@ interface DropdownListProps {
   children: ReactNode;
 }
 
-const DropdownList = ({
-  position = 'bottom-left',
-  children,
-  ...rest
-}: DropdownListProps) => {
-  const { isOpen, closeDropdown } = useContext(DropdownContext);
-  const ref = useOutsideClick(closeDropdown);
+const DropdownList = forwardRef<
+  HTMLUListElement | HTMLDivElement,
+  DropdownListProps
+>(({ position = 'bottom-left', children, ...rest }, ref) => {
+  const { isOpen } = useContext(DropdownContext);
 
   return isOpen ? (
     <ul
@@ -25,6 +23,6 @@ const DropdownList = ({
       {children}
     </ul>
   ) : null;
-};
+});
 
 export default DropdownList;

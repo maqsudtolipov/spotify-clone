@@ -9,6 +9,7 @@ const DialogTrigger = ({ children }: DialogTriggerProps) => {
   const { toggleDialog } = useContext(DialogContext);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    console.log('toggle dialog trigger');
     event.stopPropagation();
     toggleDialog();
   };

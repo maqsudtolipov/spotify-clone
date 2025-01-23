@@ -2,9 +2,20 @@ import { useEffect, useRef } from 'react';
 
 const useOutsideClick = (handler: () => void) => {
   const ref = useRef<HTMLDivElement | HTMLUListElement | null>(null);
+  const exceptionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      console.log(handler);
+
+      if (
+        exceptionRef &&
+        exceptionRef.current &&
+        exceptionRef.current.contains(event.target as Node)
+      ) {
+        return;
+      }
+
       if (ref.current && !ref.current.contains(event.target as Node)) {
         handler();
       }
@@ -16,7 +27,7 @@ const useOutsideClick = (handler: () => void) => {
     };
   }, [handler]);
 
-  return ref;
+  return { ref, exceptionRef };
 };
 
 export default useOutsideClick;
