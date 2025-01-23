@@ -32,7 +32,7 @@ exports.processSongImg = async (req, res, next) => {
     if (!req.files.img) return next();
 
     // Filename
-    req.files.img[0].filename = `img-${req.user.id}-${Date.now()}.jpeg`;
+    req.files.img[0].filename = `img-${req.user.id}}.jpeg`;
 
     // Resize
     req.files.img[0].buffer = await sharp(req.files.img[0].buffer)
@@ -57,7 +57,7 @@ exports.processSongFile = async (req, res, next) => {
     });
 
     // Filename
-    req.files.song[0].filename = `song-${req.user.id}-${Date.now()}.mp3`;
+    req.files.song[0].filename = `song-${req.user.id}}.mp3`;
 
     next();
   } catch (e) {
