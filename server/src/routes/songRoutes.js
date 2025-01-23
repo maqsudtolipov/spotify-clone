@@ -6,6 +6,17 @@ const songsStorage = require("../middlewares/songsStorage");
 const router = express.Router();
 
 router
+  .route("/")
+  .post(
+    ensureAuthenticated,
+    authorize(["artist"]),
+    songsStorage.uploadSongFiles,
+    songsStorage.processSongImg,
+    songsStorage.processSongFile,
+    songController.uploadSong,
+  );
+
+router
   .route("/:id/")
   .patch(
     ensureAuthenticated,
