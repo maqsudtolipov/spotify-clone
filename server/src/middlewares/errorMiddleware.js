@@ -30,12 +30,18 @@ const productionError = (err, res) => {
   }
 };
 
-const developmentError = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-    error: err,
-    stack: err.stack,
+const developmentError = (prodError, devError, res) => {
+  res.status(devError.statusCode).json({
+    prod: {
+      status: prodError.status,
+      message: prodError.message,
+    },
+    dev: {
+      status: devError.status,
+      message: devError.message,
+      error: devError,
+      stack: devError.stack,
+    },
   });
 };
 
@@ -43,18 +49,17 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
+  let prodErr = Object.assign(err);
+
+  if (prodErr.name === "ValidationError")
+    prodErr = handleValidationError(prodErr);
+  if (prodErr instanceof SyntaxError) prodErr = handleSyntaxError(prodErr);
+  if (prodErr.code === 11000) prodErr = handleDuplicationError(prodErr);
+  if (prodErr.name === "CastError") prodErr = handleCastError(prodErr);
+
   if (process.env.NODE_ENV === "development") {
-    developmentError(err, res);
-  }
-
-  if (process.env.NODE_ENV === "production") {
-    let error = Object.assign(err);
-
-    if (error.name === "ValidationError") error = handleValidationError(error);
-    if (error instanceof SyntaxError) error = handleSyntaxError(error);
-    if (error.code === 11000) error = handleDuplicationError(error);
-    if (error.name === "CastError") error = handleCastError(error);
-
-    productionError(error, res);
+    developmentError(prodErr, err, res);
+  } else if (process.env.NODE_ENV === "production") {
+    productionError(prodErr, res);
   }
 };

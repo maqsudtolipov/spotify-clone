@@ -8,6 +8,7 @@ const globalErrorHandler = require("./middlewares/errorMiddleware");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const artistRouter = require("./routes/artistRoutes");
+const songRouter = require("./routes/songRoutes");
 
 // Express App setup
 const app = express();
@@ -29,6 +30,7 @@ app.use(morgan("tiny"));
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/artists", artistRouter);
+app.use("/api/songs", songRouter);
 
 // Error handling middlewares
 app.use(globalErrorHandler);

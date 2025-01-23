@@ -2,6 +2,7 @@ const AppError = require("../utils/AppError");
 const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
+const Playlist = require("../models/playlistModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -45,6 +46,57 @@ exports.uploadSong = async (req, res, next) => {
     res.status(201).json({
       status: "success",
       songs,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Like Song
+exports.like = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      req.user.likedSongs,
+      {
+        $addToSet: { songs: song.id },
+      },
+      { new: true },
+    );
+
+    res.status(200).json({
+      status: "success",
+      likedSongs: updatedPlaylist.songs,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.dislike = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      req.user.likedSongs,
+      {
+        $pull: { songs: song.id },
+      },
+      { new: true },
+    );
+
+    res.status(200).json({
+      status: "success",
+      likedSongs: updatedPlaylist.songs,
     });
   } catch (e) {
     next(e);

@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  followUser,
+  dislikeSong,
   getCurrent,
+  likeSong,
   login,
   logout,
   signUp,
-  unfollowUser,
 } from './userThunks.ts';
 
 interface ApiStatus {
@@ -22,6 +22,10 @@ interface User {
   followersCount: number;
   followings: string[];
   followingsCount: number;
+  likedSongs: {
+    id: string;
+    songs: string[];
+  };
 }
 
 interface InitialState {
@@ -61,7 +65,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     followingsUpdated: (state, action) => {
-      state.data.followings = action.payload;
+      if (state.data) state.data.followings = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -117,6 +121,13 @@ const userSlice = createSlice({
         state.api.logout.status = 'rejected';
         state.data = null;
         state.isAuth = false;
+      })
+      // Like
+      .addCase(likeSong.fulfilled, (state, action) => {
+        if (state.data) state.data.likedSongs.songs = action.payload;
+      })
+      .addCase(dislikeSong.fulfilled, (state, action) => {
+        if (state.data) state.data.likedSongs.songs = action.payload;
       }),
 });
 

@@ -70,3 +70,20 @@ export const unfollowUser = createAsyncThunk(
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
   },
 );
+
+// Like
+export const likeSong = createAsyncThunk(
+  'user/likeSong',
+  async ({ id }: { id: string }) => {
+    const res = await axios.post(`/songs/${id}/like`);
+    return res.data.likedSongs;
+  },
+);
+
+export const dislikeSong = createAsyncThunk(
+  'user/dislikeSong',
+  async ({ id }: { id: string }) => {
+    const res = await axios.post(`/songs/${id}/dislike`);
+    return res.data.likedSongs;
+  },
+);

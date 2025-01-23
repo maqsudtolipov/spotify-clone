@@ -38,7 +38,7 @@ exports.current = async (req, res, next) => {
     const user = await User.findById(
       req.user.id,
       "id name email img followers followersCount followings followingsCount",
-    );
+    ).populate("likedSongs", "id songs");
 
     res.status(200).json({ status: "success", user });
   } catch (e) {

@@ -13,6 +13,7 @@ interface Song {
   img: string;
   song: string;
   plays: number;
+  duration: number;
 }
 
 interface Artist {
@@ -52,8 +53,7 @@ const artistSlice = createSlice({
   initialState,
   reducers: {
     listenersCountUpdated: (state, action) => {
-      console.log(action.payload);
-      state.data.followersCount = action.payload;
+      if (state.data) state.data.followersCount = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -74,7 +74,7 @@ const artistSlice = createSlice({
       })
       .addCase(uploadSong.fulfilled, (state, action) => {
         state.api.uploadSong.status = 'fulfilled';
-        state.data.songs = action.payload;
+        if (state.data) state.data.songs = action.payload;
       })
       .addCase(uploadSong.rejected, (state) => {
         state.api.uploadSong.status = 'rejected';

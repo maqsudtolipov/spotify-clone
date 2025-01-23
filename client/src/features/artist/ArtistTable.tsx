@@ -6,29 +6,53 @@ import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
 import TableBody from '../../ui-library/Table/TableBody.tsx';
 import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
 import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
-import { useAppSelector } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
+import { dislikeSong, likeSong } from '../auth/userThunks.ts';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
+  const likedSongs = useAppSelector(
+    (state) => state.user?.data?.likedSongs?.songs,
+  );
+  const dispatch = useAppDispatch();
+
+  const isSongLiked = (id: string, likedSongs: string[]) => {
+    return likedSongs.includes(id);
+  };
+
+  const handleLikeSong = (id: string) => {
+    dispatch(likeSong({ id }));
+  };
+
+  const handleDislikeSong = (id: string) => {
+    dispatch(dislikeSong({ id }));
+  };
 
   return (
     <Table>
       <TableBody>
-        {songs?.map((item, index) => (
-          <TableRow key={item.name}>
-            <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} />
-            <TableCell>{item.plays}</TableCell>
+        {likedSongs &&
+          songs?.map((item, index) => (
+            <TableRow key={item.name}>
+              <IndexCell>{index + 1}</IndexCell>
+              <InfoCell img={item.img} name={item.name} />
+              <TableCell>{item.plays}</TableCell>
 
-            {/* TODO: add is liked */}
-            <LikeCell isLiked={true} />
-            <TableCell minimize={true}>
-              {secondsToTimeFormat(item.duration)}
-            </TableCell>
-            <ActionsCell />
-          </TableRow>
-        ))}
+              <LikeCell
+                isLiked={isSongLiked(item.id, likedSongs)}
+                onClick={() =>
+                  isSongLiked(item.id, likedSongs)
+                    ? handleDislikeSong(item.id)
+                    : handleLikeSong(item.id)
+                }
+              />
+              <TableCell minimize={true}>
+                {secondsToTimeFormat(item.duration)}
+              </TableCell>
+              <ActionsCell />
+            </TableRow>
+          ))}
       </TableBody>
     </Table>
   );
