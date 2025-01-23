@@ -35,9 +35,24 @@ const UploadSongDialog = () => {
           className={styles.dialogForm}
           onSubmit={handleFormSubmit}
         >
-          <Input type="file" name="img" placeholder="Song cover img"></Input>
-          <Input type="file" name="song" placeholder="Song file"></Input>
-          <Input type="text" name="name" placeholder="Song name"></Input>
+          <Input
+            type="file"
+            name="img"
+            label="Cover Image"
+            placeholder="Song cover img"
+          />
+          <Input
+            type="file"
+            name="song"
+            label="Song file"
+            placeholder="Song file"
+          />
+          <Input
+            type="text"
+            name="name"
+            label="Song Name"
+            placeholder="Song name"
+          />
           <Button type="submit">
             {status === 'pending' ? 'Uploading' : 'Upload'}
           </Button>
