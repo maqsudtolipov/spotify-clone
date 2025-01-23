@@ -9,12 +9,11 @@ import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
 import { dislikeSong, likeSong } from '../auth/userThunks.ts';
-import Dropdown from '../../ui-library/Dropdown/Dropdown.tsx';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
   const likedSongs = useAppSelector(
-    (state) => state.user?.data?.likedSongs?.songs,
+    (state) => state.user?.data?.likedSongs?.songs
   );
   const dispatch = useAppDispatch();
 
@@ -51,9 +50,8 @@ const ArtistTable = () => {
               <TableCell minimize={true}>
                 {secondsToTimeFormat(item.duration)}
               </TableCell>
-              <Dropdown>
-                <ActionsCell id={item.id} />
-              </Dropdown>
+
+              <ActionsCell id={item.id} />
             </TableRow>
           ))}
       </TableBody>

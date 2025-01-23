@@ -6,8 +6,6 @@ const useOutsideClick = (handler: () => void) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(handler);
-
       if (
         exceptionRef &&
         exceptionRef.current &&
