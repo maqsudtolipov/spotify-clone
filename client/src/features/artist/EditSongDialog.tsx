@@ -1,9 +1,8 @@
-import React, { FormEvent, forwardRef, useContext, useRef } from 'react';
+import React, { FormEvent, forwardRef, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { updateSong, uploadSong } from './artistThunks.ts';
+import { updateSong } from './artistThunks.ts';
 import Dialog from '../../ui-library/Dialog/Dialog.tsx';
 import DialogTrigger from '../../ui-library/Dialog/DialogTrigger.tsx';
-import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
 import DialogContent from '../../ui-library/Dialog/DialogContent.tsx';
 import styles from './UploadSongDialog.module.scss';
 import Input from '../../ui-library/Input/Input.tsx';
@@ -12,7 +11,8 @@ import { RiEditLine } from 'react-icons/ri';
 import DropdownItem from '../../ui-library/Dropdown/DropdownItem.tsx';
 
 const EditSongDialog = forwardRef<
-  HTMLUListElement | HTMLDivElement | HTMLFormElement
+  HTMLUListElement | HTMLDivElement | HTMLFormElement,
+  { id: string }
 >(({ id }, ref) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   // const id = useAppSelector((state) => state.user?.data?.id);

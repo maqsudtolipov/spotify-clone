@@ -16,16 +16,27 @@ import DropdownItem from '../../Dropdown/DropdownItem.tsx';
 import EditSongDialog from '../../../features/artist/EditSongDialog.tsx';
 import useOutsideClick from '../../../hooks/useOutsideClick.tsx';
 import { forwardRef, useContext } from 'react';
+import { useAppDispatch } from '../../../app/hooks.ts';
+import { deleteSong } from '../../../features/artist/artistThunks.ts';
 
 // FIXME: not a good method
 const RefPasser = forwardRef(({ id }) => {
   const { closeDropdown } = useContext(DropdownContext);
   const { ref, exceptionRef } = useOutsideClick(closeDropdown);
+  const dispatch = useAppDispatch();
+
+  const handleDeleteSong = (id: string) => {
+    dispatch(deleteSong({ id }));
+  };
 
   return (
     <DropdownList ref={ref}>
       <EditSongDialog ref={exceptionRef} id={id} />
-      <DropdownItem PreIcon={RiDeleteBin6Line} underline={true}>
+      <DropdownItem
+        PreIcon={RiDeleteBin6Line}
+        underline={true}
+        onClick={() => handleDeleteSong(id)}
+      >
         Delete
       </DropdownItem>
       <DropdownItem PreIcon={RiAddFill} PostIcon={RiArrowRightSLine}>
