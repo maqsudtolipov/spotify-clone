@@ -52,6 +52,20 @@ exports.uploadSong = async (req, res, next) => {
   }
 };
 
+// TODO: update song
+//       - rename song files for versioning
+//       - create update route
+//       - test update route
+//       - add update modal to client
+
+exports.updateSong = async (req, res, next) => {
+  try {
+    res.status(200).json({ status: "success" });
+  } catch (e) {
+    next(e);
+  }
+};
+
 // Like Song
 exports.like = async (req, res, next) => {
   try {
