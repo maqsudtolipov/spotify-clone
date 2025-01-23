@@ -107,6 +107,33 @@ exports.updateSong = async (req, res, next) => {
   }
 };
 
+exports.deleteSong = async (req, res, next) => {
+  try {
+    // Validate
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    if (req.user.id !== String(song.artist)) {
+      return next(new AppError("You are not owner of this song", 403));
+    }
+
+    // TODO: delete files
+    await Song.findByIdAndDelete(song.id);
+
+    const user = await User.findById(req.user.id).populate(
+      "songs",
+      "id name artist song img plays duration",
+    );
+
+    res.status(200).json({ status: "success", songs: user.songs });
+  } catch (e) {
+    next(e);
+  }
+};
+
 // Like Song
 exports.like = async (req, res, next) => {
   try {

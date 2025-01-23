@@ -17,7 +17,7 @@ router
   );
 
 router
-  .route("/:id/")
+  .route("/:id")
   .patch(
     ensureAuthenticated,
     authorize(["artist"]),
@@ -25,6 +25,11 @@ router
     songsStorage.processSongImg,
     songsStorage.processSongFile,
     songController.updateSong,
+  )
+  .delete(
+    ensureAuthenticated,
+    authorize(["artist"]),
+    songController.deleteSong,
   );
 
 router.route("/:id/like").post(ensureAuthenticated, songController.like);

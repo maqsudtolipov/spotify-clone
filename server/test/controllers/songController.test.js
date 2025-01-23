@@ -1,7 +1,4 @@
 const app = require("../../src/app");
-const User = require("../../src/models/userModel");
-const RefreshToken = require("../../src/models/refreshTokenModel");
-const mongoose = require("mongoose");
 const Song = require("../../src/models/songModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
