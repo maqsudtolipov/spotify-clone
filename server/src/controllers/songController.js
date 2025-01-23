@@ -60,6 +60,16 @@ exports.uploadSong = async (req, res, next) => {
 
 exports.updateSong = async (req, res, next) => {
   try {
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    if (req.user.id !== String(song.artist)) {
+      return next(new AppError("You are not owner of this song", 403));
+    }
+
     res.status(200).json({ status: "success" });
   } catch (e) {
     next(e);
