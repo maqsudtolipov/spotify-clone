@@ -4,6 +4,14 @@ const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const Playlist = require("../models/playlistModel");
 const File = require("../models/fileModel");
+const songService = require("../services/songService");
+
+/*
+TODO:
+  [+] Move more methods to models, followings MVC
+  [+] Add services to file structure
+  [-] Create tests
+*/
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -13,53 +21,18 @@ exports.uploadSong = async (req, res, next) => {
       );
     }
 
-    // Upload a song file
-    const songUpload = await imagekit.upload({
-      file: req.files.song[0].buffer,
-      fileName: req.files.song[0].filename,
-      folder: "spotify/songs/",
-    });
-    const songFile = await File.create(songUpload);
-
-    // Upload a img file
-    const imgUpload = await imagekit.upload({
-      file: req.files.img[0].buffer,
-      fileName: req.files.img[0].filename,
-      folder: "spotify/songs/",
-    });
-    const imgFile = await File.create(imgUpload);
-
-    // Create song
     const songInput = {
       name: req.body.name,
-      song: songFile.id,
-      img: imgFile.id,
-      artist: req.user.id,
+      songBuffer: req.files.song[0].buffer,
+      songFilename: req.files.song[0].filename,
       duration: req.files.song[0].duration,
+      imgBuffer: req.files.img[0].buffer,
+      imgFilename: req.files.img[0].filename,
+      artistId: req.user.id,
     };
+    const songs = songService.uploadAndCreateSong(songInput);
 
-    const song = await Song.create(songInput);
-    const { songs } = await User.findOneAndUpdate(
-      { _id: req.user.id },
-      {
-        $push: { songs: song.id },
-      },
-      {
-        new: true,
-      },
-    ).populate({
-      path: "songs",
-      select: "id name artist plays duration",
-      populate: {
-        path: "song img",
-        select: "url",
-      },
-    });
-
-    res.status(201).json({
-      status: "success",
-      songs,
-    });
+    res.status(201).json({ status: "success", songs });
   } catch (e) {
     next(e);
   }
