@@ -12,8 +12,8 @@ exports.uploadAndCreateSong = async (songInput) => {
   const songFile = await File.create(songUpload);
 
   const imgUpload = await imagekit.upload({
-    file: songInput.ingBuffer,
-    fileName: songInput.ingFilename,
+    file: songInput.imgBuffer,
+    fileName: songInput.imgFilename,
     folder: "spotify/songs/",
   });
   const imgFile = await File.create(imgUpload);
@@ -27,7 +27,7 @@ exports.uploadAndCreateSong = async (songInput) => {
   });
 
   const updatedUser = await User.findOneAndUpdate(
-    { _id: req.user.id },
+    { _id: songInput.artistId },
     { $push: { songs: song.id } },
     { new: true },
   ).populate({

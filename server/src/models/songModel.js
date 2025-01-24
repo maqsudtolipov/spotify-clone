@@ -26,7 +26,7 @@ const songSchema = new mongoose.Schema(
     },
     duration: {
       type: Number,
-      require: [true, "Please provide a duration"],
+      required: [true, "Please provide a duration"],
     },
     plays: {
       type: Number,

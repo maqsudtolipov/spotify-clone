@@ -25,12 +25,12 @@ exports.uploadSong = async (req, res, next) => {
       name: req.body.name,
       songBuffer: req.files.song[0].buffer,
       songFilename: req.files.song[0].filename,
-      duration: req.files.song[0].duration,
       imgBuffer: req.files.img[0].buffer,
       imgFilename: req.files.img[0].filename,
       artistId: req.user.id,
+      duration: req.files.song[0].duration,
     };
-    const songs = songService.uploadAndCreateSong(songInput);
+    const songs = await songService.uploadAndCreateSong(songInput);
 
     res.status(201).json({ status: "success", songs });
   } catch (e) {
