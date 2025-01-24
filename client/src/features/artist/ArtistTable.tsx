@@ -13,7 +13,7 @@ import { dislikeSong, likeSong } from '../auth/userThunks.ts';
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);
   const likedSongs = useAppSelector(
-    (state) => state.user?.data?.likedSongs?.songs,
+    (state) => state.user?.data?.likedSongs?.songs
   );
   const dispatch = useAppDispatch();
 
@@ -50,7 +50,8 @@ const ArtistTable = () => {
               <TableCell minimize={true}>
                 {secondsToTimeFormat(item.duration)}
               </TableCell>
-              <ActionsCell />
+
+              <ActionsCell id={item.id} />
             </TableRow>
           ))}
       </TableBody>

@@ -52,6 +52,88 @@ exports.uploadSong = async (req, res, next) => {
   }
 };
 
+exports.updateSong = async (req, res, next) => {
+  try {
+    // Validate
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    if (req.user.id !== String(song.artist)) {
+      return next(new AppError("You are not owner of this song", 403));
+    }
+
+    // Update
+    const songInput = {};
+
+    if (req.body.name) {
+      songInput.name = req.body.name;
+    }
+
+    if (req.files.img) {
+      const imgUpload = await imagekit.upload({
+        file: req.files.img[0].buffer,
+        fileName: req.files.img[0].filename,
+        folder: "spotify/songs/",
+      });
+      songInput.img = imgUpload.url;
+    }
+
+    if (req.files.song) {
+      const songUpload = await imagekit.upload({
+        file: req.files.song[0].buffer,
+        fileName: req.files.song[0].filename,
+        folder: "spotify/songs/",
+      });
+      songInput.song = songUpload.url;
+      songInput.duration = req.files.song[0].duration;
+    }
+
+    await Song.findByIdAndUpdate(song.id, songInput, {
+      new: true,
+      runValidator: true,
+    });
+
+    const user = await User.findById(req.user.id).populate(
+      "songs",
+      "id name artist song img plays duration",
+    );
+
+    res.status(200).json({ status: "success", songs: user.songs });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.deleteSong = async (req, res, next) => {
+  try {
+    // Validate
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new AppError("Song not found", 404));
+    }
+
+    if (req.user.id !== String(song.artist)) {
+      return next(new AppError("You are not owner of this song", 403));
+    }
+
+    // TODO: delete files
+    await Song.findByIdAndDelete(song.id);
+
+    const user = await User.findById(req.user.id).populate(
+      "songs",
+      "id name artist song img plays duration",
+    );
+
+    res.status(200).json({ status: "success", songs: user.songs });
+  } catch (e) {
+    next(e);
+  }
+};
+
 // Like Song
 exports.like = async (req, res, next) => {
   try {

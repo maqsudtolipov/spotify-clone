@@ -1,3 +1,7 @@
+.label {
+  @apply mb-1.5 text-base font-medium;
+}
+
 .input {
   @apply block w-full px-3 py-2 leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
 

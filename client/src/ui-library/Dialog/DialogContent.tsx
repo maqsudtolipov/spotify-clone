@@ -12,7 +12,6 @@ interface DialogContentProps {
 
 const DialogContent = ({ children }: DialogContentProps) => {
   const { isOpen, closeDialog } = useContext(DialogContext);
-  const ref = useOutsideClick(closeDialog);
 
   const handleClose = (e: Event) => {
     if (e.target !== e.currentTarget) return;
@@ -21,11 +20,7 @@ const DialogContent = ({ children }: DialogContentProps) => {
 
   return isOpen
     ? createPortal(
-        <div
-          ref={ref}
-          className={styles.dialogBackground}
-          onClick={handleClose}
-        >
+        <div className={styles.dialogBackground} onClick={handleClose}>
           <div className={styles.dialog}>
             <div className={styles.dialogHeader}>
               <span>Upload a new song</span>

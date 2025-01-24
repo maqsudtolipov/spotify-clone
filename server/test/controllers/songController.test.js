@@ -1,7 +1,4 @@
 const app = require("../../src/app");
-const User = require("../../src/models/userModel");
-const RefreshToken = require("../../src/models/refreshTokenModel");
-const mongoose = require("mongoose");
 const Song = require("../../src/models/songModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
@@ -60,7 +57,7 @@ describe("songController", () => {
       );
 
       const res = await request(app)
-        .post(`/api/artists/${userIds[0]}/songs`)
+        .post(`/api/songs`)
         .set("Cookie", [`accessToken=${accessToken}`])
         .field("name", "Wild Strawberry")
         .attach("song", songFile, "WildStrawberry.mp3");
