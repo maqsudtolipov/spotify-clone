@@ -32,8 +32,8 @@ exports.uploadSong = async (req, res, next) => {
     // Create song
     const songInput = {
       name: req.body.name,
-      song: songUpload.url,
-      img: imgUpload.url,
+      song: songFile.id,
+      img: imgFile.id,
       artist: req.user.id,
       duration: req.files.song[0].duration,
     };
@@ -47,7 +47,14 @@ exports.uploadSong = async (req, res, next) => {
       {
         new: true,
       },
-    ).populate("songs", "id name artist song img plays duration");
+    ).populate({
+      path: "songs",
+      select: "id name artist plays duration",
+      populate: {
+        path: "song img",
+        select: "url",
+      },
+    });
 
     res.status(201).json({
       status: "success",
