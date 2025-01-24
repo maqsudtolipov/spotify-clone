@@ -57,7 +57,7 @@ describe("songController", () => {
       );
 
       const res = await request(app)
-        .post(`/api/artists/${userIds[0]}/songs`)
+        .post(`/api/songs`)
         .set("Cookie", [`accessToken=${accessToken}`])
         .field("name", "Wild Strawberry")
         .attach("song", songFile, "WildStrawberry.mp3");
