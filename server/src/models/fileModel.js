@@ -1,28 +1,35 @@
 const mongoose = require("mongoose");
 
-const fileSchema = new mongoose.Schema({
-  fileId: {
-    type: String,
-    required: [true, "Please provide file id"],
+const fileSchema = new mongoose.Schema(
+  {
+    fileId: {
+      type: String,
+      required: [true, "Please provide file id"],
+    },
+    name: {
+      type: String,
+      required: [true, "Please provide file name"],
+    },
+    size: {
+      type: Number,
+      required: [true, "Please provide file size"],
+    },
+    filePath: {
+      type: String,
+      required: [true, "Please provide file path"],
+    },
+    url: {
+      type: String,
+      required: [true, "Please provide file url"],
+    },
   },
-  fileName: {
-    type: String,
-    required: [true, "Please provide file name"],
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    timestamps: true,
   },
-  filePath: {
-    type: String,
-    required: [true, "Please provide file path"],
-  },
-  url: {
-    type: String,
-    required: [true, "Please provide file url"],
-  },
-  size: {
-    type: Number,
-    required: [true, "Please provide file size"],
-  },
-});
+);
 
-const File = new mongoose.model("File", fileSchema);
+const File = mongoose.model("File", fileSchema);
 
 module.exports = File;

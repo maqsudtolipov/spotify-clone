@@ -3,6 +3,7 @@ const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const Playlist = require("../models/playlistModel");
+const File = require("../models/fileModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -12,18 +13,23 @@ exports.uploadSong = async (req, res, next) => {
       );
     }
 
+    // Upload a song file
     const songUpload = await imagekit.upload({
       file: req.files.song[0].buffer,
       fileName: req.files.song[0].filename,
       folder: "spotify/songs/",
     });
+    const songFile = await File.create(songUpload);
 
+    // Upload a img file
     const imgUpload = await imagekit.upload({
       file: req.files.img[0].buffer,
       fileName: req.files.img[0].filename,
       folder: "spotify/songs/",
     });
+    const imgFile = await File.create(imgUpload);
 
+    // Create song
     const songInput = {
       name: req.body.name,
       song: songUpload.url,
