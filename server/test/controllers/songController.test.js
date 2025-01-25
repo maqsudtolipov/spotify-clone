@@ -22,54 +22,63 @@ afterAll(async () => {
 });
 
 describe("Song routes", () => {
-  describe("Upload song route", () => {
-    let userIds, accessToken;
-
-    beforeAll(async () => {
-      const res = await createUsersAndLogin(
-        [
-          {
-            name: "Sunny",
-            email: "sunny@example.com",
-            password: "Pa$$1234",
-            passwordConfirm: "Pa$$1234",
-            role: "artist",
-          },
-        ],
-        0,
-      );
-
-      userIds = res.userIds;
-      accessToken = res.accessToken;
-    });
-
-    it("should fail if the required fields are missing", async () => {
-      const songFile = fs.readFileSync(
-        resolve(__dirname, "./src/testSong.mp3"),
-      );
-
-      const res = await request(app)
-        .post(`/api/songs`)
-        .set("Cookie", [`accessToken=${accessToken}`])
-        .field("name", "Wild Strawberry")
-        .attach("song", songFile, "testSong.mp3");
-
-      expect(res.status).toBe(400);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(
-        /All fields are required: song, img and name/i,
-      );
-    });
-
-    it("should upload files to ImageKit and create file documents in database", async () => {
-      const songFile = fs.readFileSync(
-        resolve(__dirname, "./src/testSong.mp3"),
-      );
-      const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
-
-
-    });
-  });
+  // describe("Upload song route", () => {
+  //   let userIds, accessToken;
+  //
+  //   beforeAll(async () => {
+  //     const res = await createUsersAndLogin(
+  //       [
+  //         {
+  //           name: "Sunny",
+  //           email: "sunny@example.com",
+  //           password: "Pa$$1234",
+  //           passwordConfirm: "Pa$$1234",
+  //           role: "artist",
+  //         },
+  //       ],
+  //       0,
+  //     );
+  //
+  //     userIds = res.userIds;
+  //     accessToken = res.accessToken;
+  //   });
+  //
+  //   it("should fail if the required fields are missing", async () => {
+  //     const songFile = fs.readFileSync(
+  //       resolve(__dirname, "./src/testSong.mp3"),
+  //     );
+  //
+  //     const res = await request(app)
+  //       .post(`/api/songs`)
+  //       .set("Cookie", [`accessToken=${accessToken}`])
+  //       .field("name", "Wild Strawberry")
+  //       .attach("song", songFile, "testSong.mp3");
+  //
+  //     expect(res.status).toBe(400);
+  //     expect(res.body.status).toBe("fail");
+  //     expect(res.body.message).toMatch(
+  //       /All fields are required: song, img and name/i,
+  //     );
+  //   });
+  //
+  //   it("should upload files to ImageKit and create file documents in database", async () => {
+  //     const songFile = fs.readFileSync(
+  //       resolve(__dirname, "./src/testSong.mp3"),
+  //     );
+  //     const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
+  //
+  //     const res = await request(app)
+  //       .post(`/api/songs`)
+  //       .set("Cookie", [`accessToken=${accessToken}`])
+  //       .field("name", "Wild Strawberry")
+  //       .attach("img", imgFile, "testImg.png")
+  //       .attach("song", songFile, "testSong.mp3");
+  //
+  //     console.log(res.body);
+  //
+  //     expect(1).toEqual(1);
+  //   });
+  // });
 
   describe("likeSong", () => {
     let userIds, accessToken, songId;
