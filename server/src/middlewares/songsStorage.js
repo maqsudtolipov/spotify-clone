@@ -51,7 +51,7 @@ exports.processSongFile = async (req, res, next) => {
     if (!req.files.song) return next();
 
     // Duration
-    mp3Duration(req.files.song[0].buffer, function (err, duration) {
+    await mp3Duration(req.files.song[0].buffer, function (err, duration) {
       if (err) return console.log(err.message);
       req.files.song[0].duration = Math.round(duration);
     });

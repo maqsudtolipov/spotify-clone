@@ -15,16 +15,18 @@ const songSchema = new mongoose.Schema(
       required: [true, "Please provide a user id"],
     },
     song: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
       required: [true, "Please provide a song file"],
     },
     img: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
       required: [true, "Please provide a img file"],
     },
     duration: {
       type: Number,
-      require: [true, "Please provide a duration"],
+      required: [true, "Please provide a duration"],
     },
     plays: {
       type: Number,

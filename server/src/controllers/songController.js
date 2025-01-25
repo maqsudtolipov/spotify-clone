@@ -3,6 +3,15 @@ const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const Playlist = require("../models/playlistModel");
+const File = require("../models/fileModel");
+const songService = require("../services/songService");
+
+/*
+TODO:
+  [+] Move more methods to models, followings MVC
+  [+] Add services to file structure
+  [-] Create tests
+*/
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -12,41 +21,18 @@ exports.uploadSong = async (req, res, next) => {
       );
     }
 
-    const songUpload = await imagekit.upload({
-      file: req.files.song[0].buffer,
-      fileName: req.files.song[0].filename,
-      folder: "spotify/songs/",
-    });
-
-    const imgUpload = await imagekit.upload({
-      file: req.files.img[0].buffer,
-      fileName: req.files.img[0].filename,
-      folder: "spotify/songs/",
-    });
-
     const songInput = {
       name: req.body.name,
-      song: songUpload.url,
-      img: imgUpload.url,
-      artist: req.user.id,
+      songBuffer: req.files.song[0].buffer,
+      songFilename: req.files.song[0].filename,
+      imgBuffer: req.files.img[0].buffer,
+      imgFilename: req.files.img[0].filename,
+      artistId: req.user.id,
       duration: req.files.song[0].duration,
     };
+    const songs = await songService.uploadAndCreateSong(songInput);
 
-    const song = await Song.create(songInput);
-    const { songs } = await User.findOneAndUpdate(
-      { _id: req.user.id },
-      {
-        $push: { songs: song.id },
-      },
-      {
-        new: true,
-      },
-    ).populate("songs", "id name artist song img plays duration");
-
-    res.status(201).json({
-      status: "success",
-      songs,
-    });
+    res.status(201).json({ status: "success", songs });
   } catch (e) {
     next(e);
   }
