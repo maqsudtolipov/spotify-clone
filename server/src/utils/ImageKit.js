@@ -9,4 +9,12 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IK_URL,
 });
 
+exports.imagekitUpload = async ({ input }) => {
+  await imagekit.upload({
+    file: input.buffer,
+    fileName: input.filename,
+    folder: process.env.IK_ENV === "test" ? "test-spotify/" : "spotify/",
+  });
+};
+
 module.exports = imagekit;

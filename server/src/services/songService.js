@@ -2,19 +2,20 @@ const imagekit = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
+const { imagekitUpload } = require("../utils/ImageKit");
 
 exports.uploadAndCreateSong = async (songInput) => {
-  const songUpload = await imagekit.upload({
+  const songUpload = await imagekitUpload({
     file: songInput.songBuffer,
     fileName: songInput.songFilename,
-    folder: "spotify/songs/",
+    folder: "songs/",
   });
   const songFile = await File.create(songUpload);
 
-  const imgUpload = await imagekit.upload({
+  const imgUpload = await imagekitUpload({
     file: songInput.imgBuffer,
     fileName: songInput.imgFilename,
-    folder: "spotify/songs/",
+    folder: "songs/",
   });
   const imgFile = await File.create(imgUpload);
 

@@ -8,7 +8,7 @@ const Playlist = require("../../src/models/playlistModel");
 
 exports.connectToDatabase = async () => {
   process.env.NODE_ENV = "production";
-  process.env.IK_URL = process.env.IK_URL + "-test";
+  process.env.IK_ENV = "test";
 
   if (
     !process.env.DB_TEST_URL &&

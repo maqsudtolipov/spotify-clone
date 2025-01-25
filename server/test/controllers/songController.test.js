@@ -60,6 +60,15 @@ describe("Song routes", () => {
         /All fields are required: song, img and name/i,
       );
     });
+
+    it("should upload files to ImageKit and create file documents in database", async () => {
+      const songFile = fs.readFileSync(
+        resolve(__dirname, "./src/testSong.mp3"),
+      );
+      const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
+
+
+    });
   });
 
   describe("likeSong", () => {
