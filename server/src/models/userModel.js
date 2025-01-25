@@ -21,10 +21,9 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
     img: {
-      type: String,
-      default:
-        "https://ik.imagekit.io/8cs4gpobr/spotify/users/default.jpg",
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
+      default: "67950683dd94942631985827", // Default img id
     },
     color: {
       type: String,
@@ -36,6 +35,12 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    playlists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist",
+      },
+    ],
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
