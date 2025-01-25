@@ -13,6 +13,11 @@ const playlistSchema = new mongoose.Schema(
       minLength: [3, "Name must be at least 3 characters long"],
       maxLength: [50, "Name must be at most 50 characters long"],
     },
+    img: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
+      required: [true, "Please provide a playlist img"],
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -27,10 +32,12 @@ const playlistSchema = new mongoose.Schema(
     isPublic: {
       type: Boolean,
       default: true,
+      select: false,
     },
     isLikedSongs: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   {
