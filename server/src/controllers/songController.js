@@ -3,7 +3,6 @@ const imagekit = require("../utils/ImageKit");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const Playlist = require("../models/playlistModel");
-const File = require("../models/fileModel");
 const songService = require("../services/songService");
 
 /*
