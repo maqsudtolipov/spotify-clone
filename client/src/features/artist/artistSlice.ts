@@ -10,8 +10,8 @@ interface Song {
   id: string;
   name: string;
   artist: string;
-  img: string;
-  song: string;
+  img: { id: string; url: string };
+  song: { id: string; url: string };
   plays: number;
   duration: number;
 }

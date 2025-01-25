@@ -36,7 +36,7 @@ const ArtistTable = () => {
           songs?.map((item, index) => (
             <TableRow key={item.name}>
               <IndexCell>{index + 1}</IndexCell>
-              <InfoCell img={item.img} name={item.name} />
+              <InfoCell img={item.img.url} name={item.name} />
               <TableCell>{item.plays}</TableCell>
 
               <LikeCell
