@@ -12,7 +12,6 @@ const Playlist = require("../../src/models/playlistModel");
 
 let server;
 beforeAll(async () => {
-  process.env.NODE_ENV = "production";
   await connectToDatabase();
   server = app.listen(3009);
 });
@@ -22,26 +21,19 @@ afterAll(async () => {
   server.close();
 });
 
-describe("songController", () => {
-  // TODO: test coverage is missing
-  describe("uploadSong", () => {
+describe("Song routes", () => {
+  describe("Upload song route", () => {
     let userIds, accessToken;
 
     beforeAll(async () => {
       const res = await createUsersAndLogin(
         [
           {
-            name: "Herbert Mitchelle",
-            email: "hertbertmitchelle@example.com",
+            name: "Sunny",
+            email: "sunny@example.com",
             password: "Pa$$1234",
             passwordConfirm: "Pa$$1234",
             role: "artist",
-          },
-          {
-            name: "Roland Mcdonalid",
-            email: "roland.mcdonalid@example.com",
-            password: "Pa$$1234",
-            passwordConfirm: "Pa$$1234",
           },
         ],
         0,
@@ -53,14 +45,14 @@ describe("songController", () => {
 
     it("should fail if the required fields are missing", async () => {
       const songFile = fs.readFileSync(
-        resolve(__dirname, "./src/WildStrawberry.mp3"),
+        resolve(__dirname, "./src/testSong.mp3"),
       );
 
       const res = await request(app)
         .post(`/api/songs`)
         .set("Cookie", [`accessToken=${accessToken}`])
         .field("name", "Wild Strawberry")
-        .attach("song", songFile, "WildStrawberry.mp3");
+        .attach("song", songFile, "testSong.mp3");
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");

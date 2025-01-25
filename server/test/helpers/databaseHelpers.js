@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const File = require("../../src/models/fileModel");
 const User = require("../../src/models/userModel");
 const Song = require("../../src/models/songModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
@@ -6,6 +7,9 @@ const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 const Playlist = require("../../src/models/playlistModel");
 
 exports.connectToDatabase = async () => {
+  process.env.NODE_ENV = "production";
+  process.env.IK_URL = process.env.IK_URL + "-test";
+
   if (
     !process.env.DB_TEST_URL &&
     !/test-database/.test(process.env.DB_TEST_URL)
@@ -21,6 +25,7 @@ exports.connectToDatabase = async () => {
 };
 
 exports.cleanupDatabaseAndDisconnect = async () => {
+  await File.deleteMany();
   await User.deleteMany();
   await Song.deleteMany();
   await Playlist.deleteMany();
