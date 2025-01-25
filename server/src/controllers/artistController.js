@@ -6,7 +6,11 @@ exports.getArtistById = async (req, res, next) => {
     const user = await User.findById(
       req.params.id,
       "id name img role color followersCount",
-    ).populate("songs", "id name artist song img plays duration");
+    ).populate({
+      path: "songs",
+      select: "id name artist plays duration",
+      populate: { path: "song img", select: "url" },
+    });
 
     if (!user || user.role !== "artist") {
       return next(new AppError("Artist not found", 404));

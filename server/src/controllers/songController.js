@@ -108,10 +108,11 @@ exports.deleteSong = async (req, res, next) => {
     // TODO: delete files
     await Song.findByIdAndDelete(song.id);
 
-    const user = await User.findById(req.user.id).populate(
-      "songs",
-      "id name artist song img plays duration",
-    );
+    const user = await User.findById(req.user.id).populate({
+      path: "songs",
+      select: "id name artist plays duration",
+      populate: { path: "song img", select: "url" },
+    });
 
     res.status(200).json({ status: "success", songs: user.songs });
   } catch (e) {
