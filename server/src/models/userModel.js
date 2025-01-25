@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
       default:
-        "https://ik.imagekit.io/8cs4gpobr/spotify/users/default.jpg?updatedAt=1737536524031",
+        "https://ik.imagekit.io/8cs4gpobr/spotify/users/default.jpg",
       required: true,
     },
     color: {
