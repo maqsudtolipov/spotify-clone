@@ -21,14 +21,15 @@ exports.createPlaylist = async (req, res, next) => {
 exports.updatePlaylist = async (req, res, next) => {
   try {
     const playlistInput = {
-      songId: req.params.songId,
+      playlistId: req.params.id,
       userId: req.user.id,
       name: req.body.name,
       img: req.params.img,
       description: req.params.description,
       isPublic: req.params.isPublic,
     };
-    console.log(playlistInput);
+
+    await playlistService.updatePlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
