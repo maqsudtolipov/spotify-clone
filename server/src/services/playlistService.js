@@ -32,19 +32,17 @@ exports.createPlaylist = async (playlistInput) => {
 };
 
 exports.updatePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId).populate(
-    "img",
-    "fileId isDefault",
-  );
+  const playlist = await Playlist.findById(playlistInput.playlistId)
+    .select("+isLikedSongs")
+    .populate("img", "fileId isDefault");
 
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
   }
 
-  if (String(playlist.user) !== playlistInput.userId) {
+  if (String(playlist.user) !== playlistInput.userId || playlist.isLikedSongs) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
-
   let imgFile;
   if (playlistInput.imgFilename) {
     // Upload new img
@@ -80,16 +78,15 @@ exports.updatePlaylist = async (playlistInput) => {
 };
 
 exports.deletePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId).populate(
-    "img",
-    "fileId isDefault",
-  );
+  const playlist = await Playlist.findById(playlistInput.playlistId)
+    .select("+isLikedSongs")
+    .populate("img", "fileId isDefault");
 
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
   }
 
-  if (String(playlist.user) !== playlistInput.userId) {
+  if (String(playlist.user) !== playlistInput.userId || playlist.isLikedSongs) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
