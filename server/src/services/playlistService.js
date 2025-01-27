@@ -1,6 +1,8 @@
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
+const { imagekitUpload } = require("../utils/ImageKit");
+const File = require("../models/fileModel");
 
 exports.createPlaylist = async (playlistInput) => {
   // Create a new playlist
@@ -35,6 +37,8 @@ exports.updatePlaylist = async (playlistInput) => {
     "fileId isDefault",
   );
 
+  console.log(playlistInput);
+
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
   }
@@ -43,10 +47,22 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
+  // Upload new files
+  let imgFile;
+  if (playlistInput.imgFilename) {
+    const imgUpload = await imagekitUpload({
+      file: playlistInput.imgBuffer,
+      fileName: playlistInput.imgFilename,
+      folder: "playlists/",
+    });
+    imgFile = await File.create(imgUpload);
+  }
+
   const updatedPlaylist = await Playlist.findByIdAndUpdate(
     playlistInput.playlistId,
     {
       name: playlistInput.name,
+      img: imgFile,
       description: playlistInput.description,
       isPublic: playlistInput.isPublic,
     },
