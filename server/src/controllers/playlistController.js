@@ -21,11 +21,12 @@ exports.createPlaylist = async (req, res, next) => {
 exports.updatePlaylist = async (req, res, next) => {
   try {
     const playlistInput = {
-      playlistId: req.params.id,
       userId: req.user.id,
+      playlistId: req.params.id,
       name: req.body.name,
       description: req.body.description,
-      img: req.body.img,
+      imgBuffer: req.files.img[0].buffer,
+      imgFilename: req.files.img[0].filename,
       isPublic: req.body.isPublic,
     };
 
