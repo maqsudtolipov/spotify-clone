@@ -12,6 +12,7 @@ router
   .patch(
     ensureAuthenticated,
     playlistStorage.uploadPlaylistFiles,
+    playlistStorage.processPlaylistImg,
     playlistController.updatePlaylist,
   );
 
