@@ -21,7 +21,7 @@ afterAll(async () => {
 
 describe("Playlist Routes", () => {
   // ORDER: create => get => update => delete
-  let userIds, accessToken;
+  let userIds, accessToken, playlistId;
 
   beforeAll(async () => {
     // Login user
@@ -46,6 +46,7 @@ describe("Playlist Routes", () => {
       const res = await request(app)
         .post(`/api/playlists/`)
         .set("Cookie", [`accessToken=${accessToken}`]);
+      playlistId = res.body.playlist.id;
 
       // Check response body
       expect(res.status).toBe(201);
@@ -56,11 +57,23 @@ describe("Playlist Routes", () => {
       });
 
       // Check database updates
-      const newPlaylist = await Playlist.findById(res.body.playlist.id);
+      const newPlaylist = await Playlist.findById(playlistId);
       expect(newPlaylist).toBeTruthy();
 
       const updatedUser = await User.findById(userIds[0]);
-      expect(updatedUser.playlists[0].toString()).toEqual(res.body.playlist.id);
+      expect(updatedUser.playlists[0].toString()).toEqual(playlistId);
+    });
+  });
+
+  describe("GET /playlists/:id - read playlist", () => {
+    it("should return playlist details", async () => {
+      const res = await request(app)
+        .get(`/api/playlists/${playlistId}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.playlist).toBeTruthy();
     });
   });
 });
