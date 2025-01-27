@@ -78,3 +78,26 @@ exports.updatePlaylist = async (playlistInput) => {
 
   return updatedPlaylist;
 };
+
+exports.deletePlaylist = async (playlistInput) => {
+  const playlist = await Playlist.findById(playlistInput.playlistId).populate(
+    "img",
+    "fileId isDefault",
+  );
+
+  if (!playlist) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  if (String(playlist.user) !== playlistInput.userId) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  // Delete the old img if it's not default
+  if (!playlist.img.isDefault) {
+    await imagekitDelete(playlist.img.fileId);
+    await File.findByIdAndDelete(playlist.img.id);
+  }
+
+  await Playlist.findByIdAndDelete(playlistInput.playlistId);
+};

@@ -29,7 +29,6 @@ exports.updatePlaylist = async (req, res, next) => {
       imgFilename: req.files.img[0].filename,
       isPublic: req.body.isPublic,
     };
-
     const updatedPlaylist = await playlistService.updatePlaylist(playlistInput);
 
     res.status(200).send({
@@ -43,6 +42,12 @@ exports.updatePlaylist = async (req, res, next) => {
 
 exports.deletePlaylist = async (req, res, next) => {
   try {
+    const playlistInput = {
+      playlistId: req.params.id,
+      userId: req.user.id,
+    };
+    await playlistService.deletePlaylist(playlistInput);
+
     res.status(200).send({
       status: "success",
     });
