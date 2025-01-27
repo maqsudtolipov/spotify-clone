@@ -43,6 +43,7 @@ exports.updatePlaylist = async (playlistInput) => {
   if (String(playlist.user) !== playlistInput.userId || playlist.isLikedSongs) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
+
   let imgFile;
   if (playlistInput.imgFilename) {
     // Upload new img

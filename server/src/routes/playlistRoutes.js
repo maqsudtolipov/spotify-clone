@@ -9,6 +9,7 @@ router.route("/").post(ensureAuthenticated, playlistController.createPlaylist);
 
 router
   .route("/:id")
+  .get(ensureAuthenticated, playlistController.getPlaylist)
   .patch(
     ensureAuthenticated,
     playlistStorage.uploadPlaylistFiles,

@@ -1,5 +1,19 @@
 const playlistService = require("../services/playlistService");
 
+exports.getPlaylist = async (req, res, next) => {
+  try {
+    const playlistInput = {
+      playlistId: req.params.id,
+    };
+
+    res.status(200).send({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 exports.createPlaylist = async (req, res, next) => {
   try {
     const playlistInput = {
