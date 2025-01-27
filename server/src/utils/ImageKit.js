@@ -18,3 +18,10 @@ exports.imagekitUpload = (input) => {
     folder: folder + input.folder,
   });
 };
+
+exports.imagekitDelete = (fileId) => {
+  return imagekit.deleteFile(fileId, function (error, result) {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+};

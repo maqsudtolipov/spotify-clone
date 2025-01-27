@@ -1,7 +1,7 @@
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const { imagekitUpload } = require("../utils/ImageKit");
+const { imagekitUpload, imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 
 exports.createPlaylist = async (playlistInput) => {
@@ -37,7 +37,7 @@ exports.updatePlaylist = async (playlistInput) => {
     "fileId isDefault",
   );
 
-  console.log(playlistInput);
+  console.log(playlist);
 
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
@@ -56,6 +56,12 @@ exports.updatePlaylist = async (playlistInput) => {
       folder: "playlists/",
     });
     imgFile = await File.create(imgUpload);
+
+    // Delete the old file
+    if (!playlist.img.isDefault) {
+      await imagekitDelete(playlist.img.fileId);
+      await File.findByIdAndDelete(playlist.img.id);
+    }
   }
 
   const updatedPlaylist = await Playlist.findByIdAndUpdate(
