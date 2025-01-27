@@ -5,9 +5,11 @@ exports.getPlaylist = async (req, res, next) => {
     const playlistInput = {
       playlistId: req.params.id,
     };
+    const playlist = await playlistService.getPlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
+      playlist,
     });
   } catch (e) {
     next(e);
