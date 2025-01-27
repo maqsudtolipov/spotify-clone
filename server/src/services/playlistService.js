@@ -35,4 +35,10 @@ exports.updatePlaylist = async (playlistInput) => {
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
   }
+
+  if (String(playlist.user) !== playlistInput.userId) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  console.log(playlist);
 };
