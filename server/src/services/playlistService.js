@@ -4,6 +4,18 @@ const AppError = require("../utils/AppError");
 const { imagekitUpload, imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 
+exports.getPlaylist = async (playlistInput) => {
+  const playlist = await Playlist.findById(playlistInput.playlistId)
+    .populate("img", "url")
+    .populate("user", "name");
+
+  if (!playlist) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  return playlist;
+};
+
 exports.createPlaylist = async (playlistInput) => {
   // Create a new playlist
   const newPlaylist = await Playlist.create({
