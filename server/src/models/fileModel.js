@@ -22,6 +22,11 @@ const fileSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide file url"],
     },
+    isDefault: {
+      type: Boolean,
+      default: false,
+      select: false,
+    },
   },
   {
     toJSON: { virtuals: true },

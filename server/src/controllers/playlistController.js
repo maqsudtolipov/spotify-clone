@@ -19,8 +19,6 @@ exports.createPlaylist = async (req, res, next) => {
 };
 
 exports.updatePlaylist = async (req, res, next) => {
-  console.log(req)
-
   try {
     const playlistInput = {
       playlistId: req.params.id,

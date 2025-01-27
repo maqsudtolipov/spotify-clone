@@ -30,7 +30,10 @@ exports.createPlaylist = async (playlistInput) => {
 };
 
 exports.updatePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId);
+  const playlist = await Playlist.findById(playlistInput.playlistId).populate(
+    "img",
+    "fileId isDefault",
+  );
 
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
