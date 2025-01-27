@@ -40,3 +40,13 @@ exports.updatePlaylist = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.deletePlaylist = async (req, res, next) => {
+  try {
+    res.status(200).send({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};

@@ -14,6 +14,7 @@ router
     playlistStorage.uploadPlaylistFiles,
     playlistStorage.processPlaylistImg,
     playlistController.updatePlaylist,
-  );
+  )
+  .delete(ensureAuthenticated, playlistController.deletePlaylist);
 
 module.exports = router;
