@@ -19,20 +19,23 @@ exports.createPlaylist = async (req, res, next) => {
 };
 
 exports.updatePlaylist = async (req, res, next) => {
+  console.log(req)
+
   try {
     const playlistInput = {
       playlistId: req.params.id,
       userId: req.user.id,
       name: req.body.name,
-      img: req.params.img,
-      description: req.params.description,
-      isPublic: req.params.isPublic,
+      description: req.body.description,
+      img: req.body.img,
+      isPublic: req.body.isPublic,
     };
 
-    await playlistService.updatePlaylist(playlistInput);
+    const updatedPlaylist = await playlistService.updatePlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
+      updatedPlaylist,
     });
   } catch (e) {
     next(e);

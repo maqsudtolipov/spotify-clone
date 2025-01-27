@@ -40,5 +40,20 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  console.log(playlist);
+  console.log(playlistInput)
+
+  const updatedPlaylist = await Playlist.findByIdAndUpdate(
+    playlistInput.playlistId,
+    {
+      name: playlistInput.name,
+      description: playlistInput.description,
+      isPublic: playlistInput.isPublic,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  return updatedPlaylist;
 };
