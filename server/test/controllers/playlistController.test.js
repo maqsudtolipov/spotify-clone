@@ -75,5 +75,16 @@ describe("Playlist Routes", () => {
       expect(res.body.status).toBe("success");
       expect(res.body.playlist).toBeTruthy();
     });
+
+    it("should fail if playlist does not exist", async () => {
+      // Random mongodb id
+      const res = await request(app)
+        .get(`/api/playlists/679768a4c6c76c491a61e4ab`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
   });
 });
