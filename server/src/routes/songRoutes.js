@@ -2,7 +2,7 @@ const express = require("express");
 const songController = require("../controllers/songController");
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const authorize = require("../middlewares/authorize");
-const songsStorage = require("../middlewares/songsStorage");
+const songsStorage = require("../storage/songsStorage");
 const router = express.Router();
 
 router

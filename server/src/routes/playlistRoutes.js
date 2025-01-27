@@ -1,7 +1,7 @@
 const express = require("express");
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const playlistController = require("../controllers/playlistController");
-const playlistStorage = require("../middlewares/playlistStorage");
+const playlistStorage = require("../storage/playlistStorage");
 
 const router = express.Router();
 
