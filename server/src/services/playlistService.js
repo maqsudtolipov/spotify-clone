@@ -6,10 +6,14 @@ const File = require("../models/fileModel");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
+    .select("isPrivate")
     .populate("img", "url")
     .populate("user", "name");
 
-  if (!playlist) {
+  if (
+    !playlist ||
+    (playlist.isPrivate && String(playlist.user) !== playlistInput.userId)
+  ) {
     throw new AppError("Playlist not found", 404);
   }
 
