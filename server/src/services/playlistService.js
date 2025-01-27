@@ -37,8 +37,6 @@ exports.updatePlaylist = async (playlistInput) => {
     "fileId isDefault",
   );
 
-  console.log(playlist);
-
   if (!playlist) {
     throw new AppError("Playlist not found", 404);
   }
@@ -47,9 +45,9 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  // Upload new files
   let imgFile;
   if (playlistInput.imgFilename) {
+    // Upload new img
     const imgUpload = await imagekitUpload({
       file: playlistInput.imgBuffer,
       fileName: playlistInput.imgFilename,
@@ -57,7 +55,7 @@ exports.updatePlaylist = async (playlistInput) => {
     });
     imgFile = await File.create(imgUpload);
 
-    // Delete the old file
+    // Delete the old img if it's not default
     if (!playlist.img.isDefault) {
       await imagekitDelete(playlist.img.fileId);
       await File.findByIdAndDelete(playlist.img.id);
