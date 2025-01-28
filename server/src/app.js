@@ -9,6 +9,7 @@ const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const artistRouter = require("./routes/artistRoutes");
 const songRouter = require("./routes/songRoutes");
+const playlistRouter = require("./routes/playlistRoutes");
 
 // Express App setup
 const app = express();
@@ -24,6 +25,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("tiny"));
 
@@ -31,6 +33,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/artists", artistRouter);
 app.use("/api/songs", songRouter);
+app.use("/api/playlists", playlistRouter);
 
 // Error handling middlewares
 app.use(globalErrorHandler);

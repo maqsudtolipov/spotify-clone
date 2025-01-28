@@ -21,14 +21,13 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
     img: {
-      type: String,
-      default:
-        "https://ik.imagekit.io/8cs4gpobr/spotify/users/default.jpg",
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File",
+      required: [true, "Please provide an image"],
     },
     color: {
       type: String,
-      required: true,
+      required: [true, "Please provide a color"],
     },
     role: {
       type: String,
@@ -36,6 +35,12 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    playlists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist",
+      },
+    ],
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -116,6 +121,7 @@ userSchema.pre("save", async function (next) {
 
   const likedSongsPlaylist = await Playlist.create({
     name: "Liked Songs",
+    img: "67950683dd94942631985824", // Default img id
     user: this.id,
     isPublic: false,
     isLikedSongs: true,

@@ -4,7 +4,8 @@ const User = require("../../src/models/userModel");
 
 const createUsersAndLogin = async (users, userIndexForToken = 0) => {
   const userIds = [];
-  let accessToken;
+  let accessTokens = [];
+  const loggedInUsers = [];
 
   for (const [index, user] of users.entries()) {
     // Signup user
@@ -21,24 +22,25 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
       });
     }
 
-    // Login the user and store their token based on given index
-    if (userIndexForToken === index) {
-      const loginRes = await request(app).post("/api/auth/login").send({
-        email: userData.email,
-        password: userData.password,
-      });
+    // Login the user and store their token
+    const loginRes = await request(app).post("/api/auth/login").send({
+      email: userData.email,
+      password: userData.password,
+    });
+    loggedInUsers.push(loginRes.body.user);
 
-      accessToken =
-        loginRes
-          .get("set-cookie")
-          .find((cookie) => cookie.startsWith("accessToken="))
-          .match(/accessToken=([^;]+)/)[1] || null;
-    }
+    const accessToken =
+      loginRes
+        .get("set-cookie")
+        .find((cookie) => cookie.startsWith("accessToken="))
+        .match(/accessToken=([^;]+)/)[1] || null;
+    accessTokens.push(accessToken);
   }
 
   return {
     userIds,
-    accessToken,
+    accessTokens,
+    loggedInUsers,
   };
 };
 

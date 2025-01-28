@@ -8,6 +8,30 @@ const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
+const { getCache, setCache } = require("../services/cacheService");
+const File = require("../models/fileModel");
+
+const getDefaultUserImgId = async () => {
+  let cachedImgId = getCache("defaultUserImgId");
+  if (cachedImgId) return cachedImgId;
+
+  let defaultFile = await File.findOne({ fileId: "user" });
+
+  if (!defaultFile) {
+    defaultFile = await File.create({
+      fileId: "user",
+      name: "defaultUser.jpeg",
+      size: 0,
+      filePath: "spotify/users/defaultUser.jpeg",
+      url: "https://ik.imagekit.io/8cs4gpobr/spotify/users/defaultUser.jpeg",
+      isDefault: true,
+    });
+
+    setCache("defaultUserImgId", defaultFile.id);
+  }
+
+  return defaultFile.id;
+};
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -35,6 +59,8 @@ exports.signUp = async (req, res, next) => {
       return next(new AppError("Email already exists", 409));
     }
 
+    userData.img = await getDefaultUserImgId();
+
     const newUser = await User.create(userData);
 
     res.status(201).json({
@@ -59,7 +85,10 @@ exports.login = async (req, res, next) => {
     }
 
     // Check if the user exists
-    const user = await User.findOne({ email }, "id name img password");
+    const user = await User.findOne(
+      { email },
+      "id name img password likedSongs",
+    );
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
@@ -86,6 +115,7 @@ exports.login = async (req, res, next) => {
         id: user.id,
         name: user.name,
         img: user.img,
+        likedSongs: user.likedSongs,
       },
     });
   } catch (e) {
