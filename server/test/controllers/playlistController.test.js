@@ -7,6 +7,7 @@ const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const request = require("supertest");
 const Playlist = require("../../src/models/playlistModel");
 const User = require("../../src/models/userModel");
+const File = require("../../src/models/fileModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
 
@@ -118,6 +119,8 @@ describe("Playlist Routes", () => {
   });
 
   describe("PATCH /playlists/:id - update playlist", () => {
+    let oldImgId;
+
     it("should update the playlist name, img and description", async () => {
       const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
 
@@ -128,7 +131,7 @@ describe("Playlist Routes", () => {
         .field("description", `A description of a playlist`)
         .attach("img", imgFile, "testImg.png");
 
-      console.log(res.body);
+      oldImgId = res.body.playlist.img;
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
@@ -138,6 +141,19 @@ describe("Playlist Routes", () => {
       });
     });
 
-    // it("should update the playlist img and delete the ");
+    it("should update the playlist img and delete the old file", async () => {
+      const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
+
+      const res = await request(app)
+        .patch(`/api/playlists/${playlistId}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`])
+        .attach("img", imgFile, "testImg.png");
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+
+      const deletedFileDoc = await File.findById(oldImgId);
+      expect(deletedFileDoc).toBeFalsy();
+    });
   });
 });
