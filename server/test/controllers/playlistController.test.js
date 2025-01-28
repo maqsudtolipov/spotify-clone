@@ -23,57 +23,52 @@ afterAll(async () => {
 
 describe("Playlist Routes", () => {
   // ORDER: create => get => update => delete
-  let userIds, accessToken, playlistId, privatePlaylistId;
+  let userIds, accessTokens, playlistId, privatePlaylistId;
 
   beforeAll(async () => {
     // Login user
-    const res = await createUsersAndLogin(
-      [
-        {
-          name: "Sunny",
-          email: "sunny@example.com",
-          password: "Pa$$1234",
-          passwordConfirm: "Pa$$1234",
-        },
-        {
-          name: "Kai",
-          email: "kai@example.com",
-          password: "Pa$$1234",
-          passwordConfirm: "Pa$$1234",
-        },
-      ],
-      0,
-    );
+    const res = await createUsersAndLogin([
+      {
+        name: "Sunny",
+        email: "sunny@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      },
+      {
+        name: "Kai",
+        email: "kai@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      },
+    ]);
 
     userIds = res.userIds;
-    accessToken = res.accessToken;
+    accessTokens = res.accessTokens;
 
     // Create playlist
-    const playlist = await Playlist.create({
-      name: "Your Playlist",
-      img: "67976ac0bbef7f6920b2efed", // fake id
-      user: userIds[0],
-    });
-    playlistId = playlist.id;
+    const playlist = await request(app)
+      .post(`/api/playlists/`)
+      .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+    playlistId = playlist.body.playlist.id;
 
     // Create private playlist
-    const privatePlaylist = await Playlist.create({
-      name: "Your Playlist",
-      img: "67976ac0bbef7f6920b2efed", // fake id
-      user: userIds[1],
-      isPublic: false,
-    });
-    privatePlaylistId = privatePlaylist.id;
+    const createdPrivatePlaylist = await request(app)
+      .post(`/api/playlists/`)
+      .set("Cookie", [`accessToken=${accessTokens[1]}`]);
+    const updatesPrivatePlaylist = await request(app)
+      .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
+      .set("Cookie", [`accessToken=${accessTokens[1]}`])
+      .field("isPublic", "false");
+
+    privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
   });
 
   describe("POST /playlists - create playlist", () => {
     it("should create a new playlist", async () => {
       const res = await request(app)
         .post(`/api/playlists/`)
-        .set("Cookie", [`accessToken=${accessToken}`]);
-      playlistId = res.body.playlist.id;
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
 
-      // Check response body
       expect(res.status).toBe(201);
       expect(res.body.status).toBe("success");
       expect(res.body.playlist).toMatchObject({
@@ -81,7 +76,6 @@ describe("Playlist Routes", () => {
         songs: [],
       });
 
-      // Check database updates
       const newPlaylist = await Playlist.findById(playlistId);
       expect(newPlaylist).toBeTruthy();
 
@@ -94,7 +88,7 @@ describe("Playlist Routes", () => {
     it("should return playlist details", async () => {
       const res = await request(app)
         .get(`/api/playlists/${playlistId}`)
-        .set("Cookie", [`accessToken=${accessToken}`]);
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
@@ -105,7 +99,7 @@ describe("Playlist Routes", () => {
       // Random mongodb id
       const res = await request(app)
         .get(`/api/playlists/679768a4c6c76c491a61e4ab`)
-        .set("Cookie", [`accessToken=${accessToken}`]);
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
 
       expect(res.status).toBe(404);
       expect(res.body.status).toBe("fail");
@@ -115,7 +109,7 @@ describe("Playlist Routes", () => {
     it("should fail if the playlist is private and not owner by the user", async () => {
       const res = await request(app)
         .get(`/api/playlists/${privatePlaylistId}`)
-        .set("Cookie", [`accessToken=${accessToken}`]);
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
 
       expect(res.status).toBe(404);
       expect(res.body.status).toBe("fail");
@@ -129,7 +123,7 @@ describe("Playlist Routes", () => {
 
       const res = await request(app)
         .patch(`/api/playlists/${playlistId}`)
-        .set("Cookie", [`accessToken=${accessToken}`])
+        .set("Cookie", [`accessToken=${accessTokens[0]}`])
         .field("name", `Sunny's favourites`)
         .field("description", `A description of a playlist`)
         .attach("img", imgFile, "testImg.png");
