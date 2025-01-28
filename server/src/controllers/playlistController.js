@@ -4,6 +4,7 @@ exports.getPlaylist = async (req, res, next) => {
   try {
     const playlistInput = {
       playlistId: req.params.id,
+      userId: req.user.id,
     };
     const playlist = await playlistService.getPlaylist(playlistInput);
 

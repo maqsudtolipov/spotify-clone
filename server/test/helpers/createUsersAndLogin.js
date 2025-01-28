@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 
+// TODO: it should return accessToken for all the users
+
 const createUsersAndLogin = async (users, userIndexForToken = 0) => {
   const userIds = [];
   let accessToken;

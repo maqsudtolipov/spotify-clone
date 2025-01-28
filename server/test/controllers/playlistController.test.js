@@ -21,7 +21,7 @@ afterAll(async () => {
 
 describe("Playlist Routes", () => {
   // ORDER: create => get => update => delete
-  let userIds, accessToken, playlistId;
+  let userIds, accessToken, playlistId, privatePlaylistId;
 
   beforeAll(async () => {
     // Login user
@@ -33,12 +33,35 @@ describe("Playlist Routes", () => {
           password: "Pa$$1234",
           passwordConfirm: "Pa$$1234",
         },
+        {
+          name: "Kai",
+          email: "kai@example.com",
+          password: "Pa$$1234",
+          passwordConfirm: "Pa$$1234",
+        },
       ],
       0,
     );
 
     userIds = res.userIds;
     accessToken = res.accessToken;
+
+    // Create playlist
+    const playlist = await Playlist.create({
+      name: "Your Playlist",
+      img: "67976ac0bbef7f6920b2efed", // fake id
+      user: userIds[0],
+    });
+    playlistId = playlist.id;
+
+    // Create private playlist
+    const privatePlaylist = await Playlist.create({
+      name: "Your Playlist",
+      img: "67976ac0bbef7f6920b2efed", // fake id
+      user: userIds[1],
+      isPublic: false,
+    });
+    privatePlaylistId = privatePlaylist.id;
   });
 
   describe("POST /playlists - create playlist", () => {
@@ -85,6 +108,16 @@ describe("Playlist Routes", () => {
       expect(res.status).toBe(404);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
+    it("should fail if the playlist is private and not owner by the user", async () => {
+      const res = await request(app)
+        .get(`/api/playlists/${privatePlaylistId}`)
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      console.log(res.body);
+
+      expect(1).toEqual(1);
     });
   });
 });
