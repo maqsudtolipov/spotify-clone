@@ -5,6 +5,7 @@ const User = require("../../src/models/userModel");
 const createUsersAndLogin = async (users, userIndexForToken = 0) => {
   const userIds = [];
   let accessTokens = [];
+  const loggedInUsers = [];
 
   for (const [index, user] of users.entries()) {
     // Signup user
@@ -26,6 +27,7 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
       email: userData.email,
       password: userData.password,
     });
+    loggedInUsers.push(loginRes.body.user);
 
     const accessToken =
       loginRes
@@ -38,6 +40,7 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
   return {
     userIds,
     accessTokens,
+    loggedInUsers,
   };
 };
 

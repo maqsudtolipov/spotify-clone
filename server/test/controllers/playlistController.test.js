@@ -24,7 +24,7 @@ afterAll(async () => {
 
 describe("Playlist Routes", () => {
   // ORDER: create => get => update => delete
-  let userIds, accessTokens, playlistId, privatePlaylistId;
+  let loggedInUsers, userIds, accessTokens, playlistId, privatePlaylistId;
 
   beforeAll(async () => {
     // Login user
@@ -45,6 +45,7 @@ describe("Playlist Routes", () => {
 
     userIds = res.userIds;
     accessTokens = res.accessTokens;
+    loggedInUsers = res.loggedInUsers;
 
     // Create playlist
     const playlist = await request(app)
@@ -60,7 +61,6 @@ describe("Playlist Routes", () => {
       .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
       .set("Cookie", [`accessToken=${accessTokens[1]}`])
       .field("isPublic", "false");
-    console.log(createdPrivatePlaylist.body, updatesPrivatePlaylist.body);
     privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
   });
 
@@ -175,6 +175,20 @@ describe("Playlist Routes", () => {
       expect(res.status).toBe(404);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Playlist not found/i);
+      console.log(loggedInUsers);
+    });
+
+    // TODO: check for updates on likedSongs
+    it("should fail if the playlist is liked songs", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/${loggedInUsers[0].likedSongs}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(403);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(
+        /You don't have permission to perform this action/i,
+      );
     });
   });
 });

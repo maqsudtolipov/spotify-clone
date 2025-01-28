@@ -51,7 +51,7 @@ exports.createPlaylist = async (playlistInput) => {
 
 exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
-    .select("isPublic")
+    .select("isPublic isLikedSongs")
     .populate("img", "url")
     .populate("user", "name");
 

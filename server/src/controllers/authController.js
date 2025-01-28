@@ -85,7 +85,10 @@ exports.login = async (req, res, next) => {
     }
 
     // Check if the user exists
-    const user = await User.findOne({ email }, "id name img password");
+    const user = await User.findOne(
+      { email },
+      "id name img password likedSongs",
+    );
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
@@ -112,6 +115,7 @@ exports.login = async (req, res, next) => {
         id: user.id,
         name: user.name,
         img: user.img,
+        likedSongs: user.likedSongs,
       },
     });
   } catch (e) {
