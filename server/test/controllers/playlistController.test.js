@@ -115,9 +115,9 @@ describe("Playlist Routes", () => {
         .get(`/api/playlists/${privatePlaylistId}`)
         .set("Cookie", [`accessToken=${accessToken}`]);
 
-      console.log(res.body);
-
-      expect(1).toEqual(1);
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
     });
   });
 });
