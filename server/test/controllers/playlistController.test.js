@@ -60,7 +60,7 @@ describe("Playlist Routes", () => {
       .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
       .set("Cookie", [`accessToken=${accessTokens[1]}`])
       .field("isPublic", "false");
-
+    console.log(createdPrivatePlaylist.body, updatesPrivatePlaylist.body);
     privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
   });
 
@@ -154,6 +154,27 @@ describe("Playlist Routes", () => {
 
       const deletedFileDoc = await File.findById(oldImgId);
       expect(deletedFileDoc).toBeFalsy();
+    });
+
+    it("should fail if playlist does not exist", async () => {
+      // Random mongodb id
+      const res = await request(app)
+        .patch(`/api/playlists/6798830bb68506c3e2b7fc6f`) // random id
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
+    it("should fail if the playlist is private and not owner by the user", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/${privatePlaylistId}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
     });
   });
 });
