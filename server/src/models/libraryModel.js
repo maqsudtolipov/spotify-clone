@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const librarySchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Please provide user id"],
-    },
     items: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +10,7 @@ const librarySchema = new mongoose.Schema(
     ],
     docModel: {
       type: String,
-      required: true,
+      required: [true, "Item type is required"],
       enum: ["Playlist", "User"],
     },
   },

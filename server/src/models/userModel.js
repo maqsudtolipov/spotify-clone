@@ -35,6 +35,12 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    library: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Library",
+      required: [true, "Please provide library id"],
+      unique: [true, "User can only get one library"],
+    },
     playlists: [
       {
         type: mongoose.Schema.Types.ObjectId,
