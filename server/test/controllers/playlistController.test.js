@@ -131,9 +131,12 @@ describe("Playlist Routes", () => {
         })
         .set("Cookie", [`accessToken=${accessToken}`]);
 
-      console.log(res.body);
-
-      expect(1).toEqual(1);
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.playlist).toMatchObject({
+        name: `Sunny's favourites`,
+        description: "A description of a playlist",
+      })
     });
   });
 });

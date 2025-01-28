@@ -51,7 +51,7 @@ exports.updatePlaylist = async (req, res, next) => {
 
     res.status(200).send({
       status: "success",
-      updatedPlaylist,
+      playlist: updatedPlaylist,
     });
   } catch (e) {
     next(e);
