@@ -1,4 +1,26 @@
 const playlistService = require("../services/playlistService");
+const { getCache } = require("../services/cacheService");
+const File = require("../models/fileModel");
+
+const getDefaultPlaylistImgId = async () => {
+  let cachedImgId = getCache("defaultPlaylistImgId");
+  if (cachedImgId) return cachedImgId;
+
+  let defaultFile = await File.findOne({ fileId: "playlist" });
+
+  if (!defaultFile) {
+    defaultFile = await File.create({
+      fileId: "playlist",
+      name: "defaultPlaylist.jpeg",
+      size: 0,
+      filePath: "spotify/users/defaultPlaylist.jpeg",
+      url: "https://ik.imagekit.io/8cs4gpobr/spotify/playlists/defaultPlaylist.jpeg",
+      isDefault: "true",
+    });
+  }
+
+  return defaultFile.id;
+};
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -19,9 +41,11 @@ exports.getPlaylist = async (req, res, next) => {
 
 exports.createPlaylist = async (req, res, next) => {
   try {
+    const defaultPlaylistImgId = await getDefaultPlaylistImgId();
+
     const playlistInput = {
       name: "Your Playlist",
-      img: "67950683dd94942631985824", // Default img id
+      img: defaultPlaylistImgId,
       userId: req.user.id,
     };
     const playlist = await playlistService.createPlaylist(playlistInput);

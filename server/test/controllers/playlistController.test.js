@@ -7,6 +7,8 @@ const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const request = require("supertest");
 const Playlist = require("../../src/models/playlistModel");
 const User = require("../../src/models/userModel");
+const fs = require("node:fs");
+const { resolve } = require("node:path");
 
 let server;
 beforeAll(async () => {
@@ -122,21 +124,26 @@ describe("Playlist Routes", () => {
   });
 
   describe("PATCH /playlists/:id - update playlist", () => {
-    it("should update the playlist name and description", async () => {
+    it("should update the playlist name, img and description", async () => {
+      const imgFile = fs.readFileSync(resolve(__dirname, "./src/testImg.png"));
+
       const res = await request(app)
         .patch(`/api/playlists/${playlistId}`)
-        .send({
-          name: `Sunny's favourites`,
-          description: "A description of a playlist",
-        })
-        .set("Cookie", [`accessToken=${accessToken}`]);
+        .set("Cookie", [`accessToken=${accessToken}`])
+        .field("name", `Sunny's favourites`)
+        .field("description", `A description of a playlist`)
+        .attach("img", imgFile, "testImg.png");
+
+      console.log(res.body);
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(res.body.playlist).toMatchObject({
         name: `Sunny's favourites`,
         description: "A description of a playlist",
-      })
+      });
     });
+
+    // it("should update the playlist img and delete the ");
   });
 });
