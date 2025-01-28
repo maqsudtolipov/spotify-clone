@@ -22,7 +22,7 @@ exports.uploadPlaylistFiles = upload.fields([
 
 exports.processPlaylistImg = async (req, res, next) => {
   try {
-    if (!req.files.img) return next();
+    if (!req.files?.img) return next();
 
     // Filename
     req.files.img[0].filename = `img-${req.user.id}-${Date.now()}.jpeg`;

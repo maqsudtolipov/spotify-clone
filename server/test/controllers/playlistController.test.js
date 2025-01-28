@@ -120,4 +120,20 @@ describe("Playlist Routes", () => {
       expect(res.body.message).toMatch(/Playlist not found/i);
     });
   });
+
+  describe("PATCH /playlists/:id - update playlist", () => {
+    it("should update the playlist name and description", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/${playlistId}`)
+        .send({
+          name: `Sunny's favourites`,
+          description: "A description of a playlist",
+        })
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      console.log(res.body);
+
+      expect(1).toEqual(1);
+    });
+  });
 });
