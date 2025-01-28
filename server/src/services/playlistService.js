@@ -51,14 +51,18 @@ exports.createPlaylist = async (playlistInput) => {
 
 exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
-    .select("+isLikedSongs")
-    .populate("img", "fileId isDefault");
+    .select("isPublic")
+    .populate("img", "url")
+    .populate("user", "name");
 
-  if (!playlist) {
+  if (
+    !playlist ||
+    (!playlist.isPublic && playlist.user.id !== playlistInput.userId)
+  ) {
     throw new AppError("Playlist not found", 404);
   }
 
-  if (String(playlist.user) !== playlistInput.userId || playlist.isLikedSongs) {
+  if (playlist.isLikedSongs) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
