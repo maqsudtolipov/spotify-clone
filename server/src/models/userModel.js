@@ -23,11 +23,11 @@ const userSchema = new mongoose.Schema(
     img: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "File",
-      default: "67950683dd94942631985827", // Default img id
+      required: [true, "Please provide an image"],
     },
     color: {
       type: String,
-      required: true,
+      required: [true, "Please provide a color"],
     },
     role: {
       type: String,

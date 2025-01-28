@@ -8,6 +8,30 @@ const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
+const { getCache, setCache } = require("../services/cacheService");
+const File = require("../models/fileModel");
+
+const getDefaultUserImgId = async () => {
+  let cachedImgId = getCache("defaultUserImgId");
+  if (cachedImgId) return cachedImgId;
+
+  let defaultFile = await File.findOne({ fileId: "user" });
+
+  if (!defaultFile) {
+    defaultFile = await File.create({
+      fileId: "user",
+      name: "defaultUser.jpeg",
+      size: 0,
+      filePath: "spotify/users/defaultUser.jpeg",
+      url: "https://ik.imagekit.io/8cs4gpobr/spotify/users/defaultUser.jpeg",
+      isDefault: true,
+    });
+
+    setCache("defaultUserImgId", defaultFile.id);
+  }
+
+  return defaultFile.id;
+};
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -34,6 +58,8 @@ exports.signUp = async (req, res, next) => {
     if (user) {
       return next(new AppError("Email already exists", 409));
     }
+
+    userData.img = await getDefaultUserImgId();
 
     const newUser = await User.create(userData);
 

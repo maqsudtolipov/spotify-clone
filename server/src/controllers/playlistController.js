@@ -1,5 +1,5 @@
 const playlistService = require("../services/playlistService");
-const { getCache } = require("../services/cacheService");
+const { getCache, setCache } = require("../services/cacheService");
 const File = require("../models/fileModel");
 
 const getDefaultPlaylistImgId = async () => {
@@ -13,10 +13,12 @@ const getDefaultPlaylistImgId = async () => {
       fileId: "playlist",
       name: "defaultPlaylist.jpeg",
       size: 0,
-      filePath: "spotify/users/defaultPlaylist.jpeg",
+      filePath: "spotify/playlists/defaultPlaylist.jpeg",
       url: "https://ik.imagekit.io/8cs4gpobr/spotify/playlists/defaultPlaylist.jpeg",
-      isDefault: "true",
+      isDefault: true,
     });
+
+    setCache("defaultPlaylistImgId", defaultFile.id);
   }
 
   return defaultFile.id;
