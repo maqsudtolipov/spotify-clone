@@ -1,8 +1,9 @@
 const playlistService = require("../services/playlistService");
 const { getCache, setCache } = require("../services/cacheService");
 const File = require("../models/fileModel");
+const { logout } = require("./authController");
 
-  const getDefaultPlaylistImgId = async () => {
+const getDefaultPlaylistImgId = async () => {
   let cachedImgId = getCache("defaultPlaylistImgId");
   if (cachedImgId) return cachedImgId;
 

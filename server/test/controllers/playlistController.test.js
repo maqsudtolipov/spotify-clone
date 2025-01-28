@@ -59,8 +59,8 @@ describe("Playlist Routes", () => {
       .set("Cookie", [`accessToken=${accessTokens[1]}`]);
     const updatesPrivatePlaylist = await request(app)
       .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
-      .set("Cookie", [`accessToken=${accessTokens[1]}`])
-      .field("isPublic", "false");
+      .send({ isPublic: false })
+      .set("Cookie", [`accessToken=${accessTokens[1]}`]);
     privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
   });
 
@@ -175,13 +175,61 @@ describe("Playlist Routes", () => {
       expect(res.status).toBe(404);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Playlist not found/i);
-      console.log(loggedInUsers);
     });
 
     // TODO: check for updates on likedSongs
     it("should fail if the playlist is liked songs", async () => {
       const res = await request(app)
         .patch(`/api/playlists/${loggedInUsers[0].likedSongs}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(403);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(
+        /You don't have permission to perform this action/i,
+      );
+    });
+  });
+
+  describe("DELETE /playlists/:id - delete playlist", () => {
+    it("should delete the playlist successfully", async () => {
+      // Delete playlist
+      const res = await request(app)
+        .delete(`/api/playlists/${playlistId}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(200);
+      const deletedPlaylist = await Playlist.findById(playlistId);
+      expect(deletedPlaylist).toBeNull();
+
+      const updatedUser = await User.findById(userIds[0]);
+      expect(updatedUser.playlists).not.toContain(playlistId);
+    });
+
+    it("should fail if playlist does not exist", async () => {
+      // Random mongodb id
+      const res = await request(app)
+        .delete(`/api/playlists/679768a4c6c76c491a61e4ab`) // Random id
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
+    it("should fail if the playlist is private and not owned by the user", async () => {
+      const res = await request(app)
+        .delete(`/api/playlists/${privatePlaylistId}`)
+        .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
+    it("should fail if the playlist is liked songs", async () => {
+      const res = await request(app)
+        .delete(`/api/playlists/${loggedInUsers[0].likedSongs}`)
         .set("Cookie", [`accessToken=${accessTokens[0]}`]);
 
       expect(res.status).toBe(403);

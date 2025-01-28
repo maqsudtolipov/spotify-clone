@@ -55,7 +55,7 @@ exports.updatePlaylist = async (playlistInput) => {
     .populate("img", "url")
     .populate("user", "name");
 
-  if (!playlist || !playlist.user.id !== playlistInput.userId) {
+  if (!playlist || playlist.user.id !== playlistInput.userId) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -103,7 +103,7 @@ exports.deletePlaylist = async (playlistInput) => {
     .populate("img", "fileId isDefault")
     .populate("user", "name");
 
-  if (!playlist || !playlist.user.id !== playlistInput.userId) {
+  if (!playlist || playlist.user.id !== playlistInput.userId) {
     throw new AppError("Playlist not found", 404);
   }
 
