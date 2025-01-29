@@ -242,27 +242,37 @@ describe("Playlist Routes", () => {
 });
 
 describe("Library routes", () => {
-  let loggedInUser;
+  let loggedInUsers, privatePlaylistId;
 
   beforeAll(async () => {
     // Login user
     const res = await createUsersAndLogin([
       {
-        name: "Sunny",
-        email: "sunny@example.com",
+        name: "Makena",
+        email: "makena@example.com",
         password: "Pa$$1234",
         passwordConfirm: "Pa$$1234",
       },
       {
-        name: "Kai",
-        email: "kai@example.com",
+        name: "Zuri",
+        email: "zuri@example.com",
         password: "Pa$$1234",
         passwordConfirm: "Pa$$1234",
       },
     ]);
 
     loggedInUsers = res.loggedInUsers;
-    console.log(loggedInUsers);
+
+    // Create private playlist
+    const createPlaylistRes = await request(app)
+      .post(`/api/playlists/`)
+      .set("Cookie", [`accessToken=${loggedInUsers[1].accessToken}`]);
+
+    const updatePlaylistRes = await request(app)
+      .patch(`/api/playlists/${createPlaylistRes.body.playlist.id}`)
+      .send({ isPublic: false })
+      .set("Cookie", [`accessToken=${loggedInUsers[1].accessToken}`]);
+    privatePlaylistId = updatePlaylistRes.body.playlist.id;
 
     // Create playlist
     // const playlist = await request(app)
@@ -284,7 +294,7 @@ describe("Library routes", () => {
   describe("PATCH /playlists/save/:id", () => {
     it("should fail if playlist does not exist", async () => {
       const res = await request(app)
-        .get(`/api/playlists/6799f04c6cf1dc3302712949`) // Random mongodb id
+        .patch(`/api/playlists/save/6799f04c6cf1dc3302712949`) // Random mongodb id
         .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
 
       expect(res.status).toBe(404);
@@ -292,8 +302,16 @@ describe("Library routes", () => {
       expect(res.body.message).toMatch(/Playlist not found/i);
     });
 
-    // Test playlist does not exist
-    // Test playlist private and does not belong to user
+    it("should fail if the playlist is private and not owner by the user", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/save/${privatePlaylistId}`)
+        .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
     // Test likedSongs should fail
     // Test saving personal playlist should fail
 
