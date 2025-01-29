@@ -240,3 +240,63 @@ describe("Playlist Routes", () => {
     });
   });
 });
+
+describe("Library routes", () => {
+  let loggedInUser;
+
+  beforeAll(async () => {
+    // Login user
+    const res = await createUsersAndLogin([
+      {
+        name: "Sunny",
+        email: "sunny@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      },
+      {
+        name: "Kai",
+        email: "kai@example.com",
+        password: "Pa$$1234",
+        passwordConfirm: "Pa$$1234",
+      },
+    ]);
+
+    loggedInUsers = res.loggedInUsers;
+    console.log(loggedInUsers);
+
+    // Create playlist
+    // const playlist = await request(app)
+    //   .post(`/api/playlists/`)
+    //   .set("Cookie", [`accessToken=${accessTokens[0]}`]);
+    // playlistId = playlist.body.playlist.id;
+
+    // // Create private playlist
+    // const createdPrivatePlaylist = await request(app)
+    //   .post(`/api/playlists/`)
+    //   .set("Cookie", [`accessToken=${accessTokens[1]}`]);
+    // const updatesPrivatePlaylist = await request(app)
+    //   .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
+    //   .send({ isPublic: false })
+    //   .set("Cookie", [`accessToken=${accessTokens[1]}`]);
+    // privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
+  });
+
+  describe("PATCH /playlists/save/:id", () => {
+    it("should fail if playlist does not exist", async () => {
+      const res = await request(app)
+        .get(`/api/playlists/6799f04c6cf1dc3302712949`) // Random mongodb id
+        .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+      expect(res.status).toBe(404);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(/Playlist not found/i);
+    });
+
+    // Test playlist does not exist
+    // Test playlist private and does not belong to user
+    // Test likedSongs should fail
+    // Test saving personal playlist should fail
+
+    // Test playlist should be added to liked ones and update library
+  });
+});

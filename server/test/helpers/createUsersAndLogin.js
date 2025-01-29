@@ -27,13 +27,13 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
       email: userData.email,
       password: userData.password,
     });
-    loggedInUsers.push(loginRes.body.user);
 
     const accessToken =
       loginRes
         .get("set-cookie")
         .find((cookie) => cookie.startsWith("accessToken="))
         .match(/accessToken=([^;]+)/)[1] || null;
+    loggedInUsers.push({ ...loginRes.body.user, accessToken });
     accessTokens.push(accessToken);
   }
 
