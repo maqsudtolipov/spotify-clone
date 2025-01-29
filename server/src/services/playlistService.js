@@ -138,8 +138,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  // 3. Add playlist to the userLiked playlists
-  const updatedUser = await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     playlistInput.userId,
     {
       $addToSet: {
@@ -150,6 +149,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
       new: true,
     },
   );
+
   const updatedLibrary = await Library.findOneAndUpdate(
     playlistInput.libraryId,
     {
@@ -160,7 +160,53 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
         },
       },
     },
-    { new: true }
+    { new: true },
+  );
+
+  return {
+    updatedLibrary,
+  };
+};
+
+exports.removePlaylistFromLibrary = async (playlistInput) => {
+  const playlist = await Playlist.findById(playlistInput.playlistId).select(
+    "+isPublic +isLikedSongs",
+  );
+
+  if (
+    !playlist ||
+    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
+  ) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $pull: {
+        likedPlaylists: playlist.id,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  const updatedLibrary = await Library.findOneAndUpdate(
+    playlistInput.libraryId,
+    {
+      $pull: {
+        items: {
+          refId: playlist.id,
+          itemType: "Playlist",
+        },
+      },
+    },
+    { new: true },
   );
 
   return {
