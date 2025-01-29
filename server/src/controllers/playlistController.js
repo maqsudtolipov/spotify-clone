@@ -103,8 +103,17 @@ exports.deletePlaylist = async (req, res, next) => {
 
 exports.savePlaylistToLibrary = async (req, res, next) => {
   try {
+    const playlistInput = {
+      playlistId: req.params?.id,
+      userId: req.user.id,
+      libraryId: req.user?.library,
+    };
+    const { updatedLibrary } =
+      await playlistService.savePlaylistToLibrary(playlistInput);
+
     res.status(200).send({
       status: "success",
+      updatedLibrary,
     });
   } catch (e) {
     next(e);

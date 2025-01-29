@@ -4,11 +4,12 @@ const librarySchema = new mongoose.Schema(
   {
     items: [
       {
+        _id: false,
         refId: {
           type: mongoose.Schema.Types.ObjectId,
-          pathRef: "itemType",
+          refPath: "itemType",
           required: [true, "Please provide a refId"],
-          unique: [true, 'Item already exists'],
+          unique: [true, "Item already exists"],
         },
         itemType: {
           type: String,

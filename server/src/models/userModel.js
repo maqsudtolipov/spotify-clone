@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema(
       ref: "Library",
       unique: [true, "User can only get one library"],
     },
+    likedPlaylists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist",
+      },
+    ],
     playlists: [
       {
         type: mongoose.Schema.Types.ObjectId,
