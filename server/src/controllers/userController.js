@@ -103,7 +103,7 @@ exports.followUser = async (req, res, next) => {
     );
 
     if (candidateUser.role === "artist") {
-      const updatedLibrary = await Library.findByIdAndUpdate(req.user.library, {
+      await Library.findByIdAndUpdate(req.user.library, {
         $addToSet: {
           items: {
             refId: candidateUser.id,
@@ -111,7 +111,6 @@ exports.followUser = async (req, res, next) => {
           },
         },
       });
-      console.log(updatedLibrary);
     }
 
     if (!updatedUser) {
@@ -170,9 +169,8 @@ exports.unfollowUser = async (req, res, next) => {
         new: true,
       },
     );
-    console.log(candidateUser.id);
     if (candidateUser.role === "artist") {
-      const updatedLibrary = await Library.findByIdAndUpdate(req.user.library, {
+      await Library.findByIdAndUpdate(req.user.library, {
         $pull: {
           items: {
             refId: candidateUser.id,
@@ -180,7 +178,6 @@ exports.unfollowUser = async (req, res, next) => {
           },
         },
       });
-      console.log(updatedLibrary);
     }
 
     const updatedCandidate = await User.findOneAndUpdate(
