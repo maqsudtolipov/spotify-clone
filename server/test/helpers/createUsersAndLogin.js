@@ -13,7 +13,6 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
     const signupRes = await request(app)
       .post("/api/auth/signup")
       .send(userData);
-    console.log(signupRes.body);
     userIds.push(signupRes.body.data.id);
 
     // If the role is specified, update it

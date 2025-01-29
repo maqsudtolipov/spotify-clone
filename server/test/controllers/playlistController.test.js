@@ -10,6 +10,7 @@ const User = require("../../src/models/userModel");
 const File = require("../../src/models/fileModel");
 const fs = require("node:fs");
 const { resolve } = require("node:path");
+const Library = require("../../src/models/libraryModel");
 
 let server;
 beforeAll(async () => {
@@ -242,7 +243,7 @@ describe("Playlist Routes", () => {
 });
 
 describe("Library routes", () => {
-  let loggedInUsers, privatePlaylistId, personalPlaylistId;
+  let loggedInUsers, privatePlaylistId, personalPlaylistId, differentPlaylistId;
 
   beforeAll(async () => {
     // Login user
@@ -269,6 +270,12 @@ describe("Library routes", () => {
       .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
     personalPlaylistId = createPersonalPlaylistRes.body.playlist.id;
 
+    // Create different playlist
+    const createDifferentPlaylistRes = await request(app)
+      .post(`/api/playlists/`)
+      .set("Cookie", [`accessToken=${loggedInUsers[1].accessToken}`]);
+    differentPlaylistId = createDifferentPlaylistRes.body.playlist.id;
+
     // Create private playlist
     const createPlaylistRes = await request(app)
       .post(`/api/playlists/`)
@@ -282,6 +289,26 @@ describe("Library routes", () => {
   });
 
   describe("PATCH /playlists/save/:id", () => {
+    it("should save playlist to likedSongs and library items lists", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/save/${differentPlaylistId}`) // Random mongodb id
+        .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+
+      console.log(res.body);
+
+      // Check user
+      const user = await User.findById(loggedInUsers[0].id);
+      expect(user.likedPlaylists.length).toEqual(1);
+
+      // Check library
+      const library = await Library.findById(user.library);
+      expect(library.items).toHaveLength(2);
+      expect(String(library.items[1].refId)).toEqual(differentPlaylistId);
+    });
+
     it("should fail if playlist does not exist", async () => {
       const res = await request(app)
         .patch(`/api/playlists/save/6799f04c6cf1dc3302712949`) // Random mongodb id
@@ -325,7 +352,5 @@ describe("Library routes", () => {
         /You don't have permission to perform this action/i,
       );
     });
-
-    // Test playlist should be added to liked ones and update library
   });
 });
