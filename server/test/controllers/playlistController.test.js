@@ -312,6 +312,18 @@ describe("Library routes", () => {
       expect(res.body.message).toMatch(/Playlist not found/i);
     });
 
+    it("should fail if the playlist is liked songs", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/save/${loggedInUsers[0].likedSongs}`)
+        .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+      expect(res.status).toBe(403);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(
+        /You don't have permission to perform this action/i,
+      );
+    });
+
     // Test likedSongs should fail
     // Test saving personal playlist should fail
 
