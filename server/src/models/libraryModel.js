@@ -8,11 +8,12 @@ const librarySchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           pathRef: "itemType",
           required: [true, "Please provide a refId"],
+          unique: [true, 'Item already exists'],
         },
         itemType: {
           type: String,
-          required: [true, "Item type is required: Playlist or User"],
-          enum: ["Playlist", "User"],
+          required: [true, "Item type is required: Playlist or Artist"],
+          enum: ["Playlist", "Artist"],
         },
         isPinned: {
           type: Boolean,

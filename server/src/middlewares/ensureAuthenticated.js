@@ -26,7 +26,7 @@ const ensureAuthenticated = async (req, res, next) => {
     // Check if the user exists
     const user = await User.findById(
       decodedAccessToken.userId,
-      "id likedSongs",
+      "id likedSongs library",
     );
     if (!user) {
       return next(
@@ -36,7 +36,11 @@ const ensureAuthenticated = async (req, res, next) => {
 
     // TODO: Check if the user changed their password after the token was issued
 
-    req.user = { id: user.id, likedSongs: String(user.likedSongs) };
+    req.user = {
+      id: user.id,
+      likedSongs: String(user.likedSongs),
+      library: user.library,
+    };
     req.accessToken = { token: accessToken, exp: decodedAccessToken.exp };
 
     next();

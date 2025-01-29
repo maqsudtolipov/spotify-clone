@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const imagekit = require("../utils/ImageKit");
 const AppError = require("../utils/AppError");
 const Playlist = require("../models/playlistModel");
+const Library = require("../models/libraryModel");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -80,7 +81,7 @@ exports.followUser = async (req, res, next) => {
   try {
     // Check users exist
     const currentUser = await User.findById(req.user.id);
-    const candidateUser = await User.findById(req.params.id);
+    const candidateUser = await User.findById(req.params.id).select("role");
 
     if (!currentUser || !candidateUser) {
       return next(new AppError("User not found", 400));
@@ -100,6 +101,18 @@ exports.followUser = async (req, res, next) => {
         new: true,
       },
     );
+
+    if (candidateUser.role === "artist") {
+      const updatedLibrary = await Library.findByIdAndUpdate(req.user.library, {
+        $addToSet: {
+          items: {
+            refId: candidateUser.id,
+            itemType: "Artist",
+          },
+        },
+      });
+      console.log(updatedLibrary);
+    }
 
     if (!updatedUser) {
       return next(new AppError("User already following", 400));
@@ -136,7 +149,7 @@ exports.unfollowUser = async (req, res, next) => {
   try {
     // Check both inputs
     const currentUser = await User.findById(req.user.id);
-    const candidateUser = await User.findById(req.params.id);
+    const candidateUser = await User.findById(req.params.id).select("role");
 
     if (!currentUser || !candidateUser) {
       return next(new AppError("User not found", 400));
@@ -157,6 +170,18 @@ exports.unfollowUser = async (req, res, next) => {
         new: true,
       },
     );
+    console.log(candidateUser.id);
+    if (candidateUser.role === "artist") {
+      const updatedLibrary = await Library.findByIdAndUpdate(req.user.library, {
+        $pull: {
+          items: {
+            refId: candidateUser.id,
+            itemType: "Artist",
+          },
+        },
+      });
+      console.log(updatedLibrary);
+    }
 
     const updatedCandidate = await User.findOneAndUpdate(
       { _id: candidateUser.id, followers: currentUser.id },
