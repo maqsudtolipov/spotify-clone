@@ -119,3 +119,5 @@ exports.deletePlaylist = async (playlistInput) => {
 
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
 };
+
+// Save/Remove playlist

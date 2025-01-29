@@ -100,3 +100,23 @@ exports.deletePlaylist = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.savePlaylistToLibrary = async (req, res, next) => {
+  try {
+    res.status(200).send({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.removePlaylistFromLibrary = async (req, res, next) => {
+  try {
+    res.status(200).send({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
