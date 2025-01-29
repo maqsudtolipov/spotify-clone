@@ -242,7 +242,7 @@ describe("Playlist Routes", () => {
 });
 
 describe("Library routes", () => {
-  let loggedInUsers, privatePlaylistId;
+  let loggedInUsers, privatePlaylistId, personalPlaylistId;
 
   beforeAll(async () => {
     // Login user
@@ -263,6 +263,12 @@ describe("Library routes", () => {
 
     loggedInUsers = res.loggedInUsers;
 
+    // Create personal playlist
+    const createPersonalPlaylistRes = await request(app)
+      .post(`/api/playlists/`)
+      .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+    personalPlaylistId = createPersonalPlaylistRes.body.playlist.id;
+
     // Create private playlist
     const createPlaylistRes = await request(app)
       .post(`/api/playlists/`)
@@ -273,22 +279,6 @@ describe("Library routes", () => {
       .send({ isPublic: false })
       .set("Cookie", [`accessToken=${loggedInUsers[1].accessToken}`]);
     privatePlaylistId = updatePlaylistRes.body.playlist.id;
-
-    // Create playlist
-    // const playlist = await request(app)
-    //   .post(`/api/playlists/`)
-    //   .set("Cookie", [`accessToken=${accessTokens[0]}`]);
-    // playlistId = playlist.body.playlist.id;
-
-    // // Create private playlist
-    // const createdPrivatePlaylist = await request(app)
-    //   .post(`/api/playlists/`)
-    //   .set("Cookie", [`accessToken=${accessTokens[1]}`]);
-    // const updatesPrivatePlaylist = await request(app)
-    //   .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
-    //   .send({ isPublic: false })
-    //   .set("Cookie", [`accessToken=${accessTokens[1]}`]);
-    // privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
   });
 
   describe("PATCH /playlists/save/:id", () => {
@@ -324,8 +314,17 @@ describe("Library routes", () => {
       );
     });
 
-    // Test likedSongs should fail
-    // Test saving personal playlist should fail
+    it("should file if user tries to save personal playlist", async () => {
+      const res = await request(app)
+        .patch(`/api/playlists/save/${personalPlaylistId}`)
+        .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+      expect(res.status).toBe(403);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toMatch(
+        /You don't have permission to perform this action/i,
+      );
+    });
 
     // Test playlist should be added to liked ones and update library
   });
