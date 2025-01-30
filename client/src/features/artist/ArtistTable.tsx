@@ -17,6 +17,8 @@ const ArtistTable = () => {
   );
   const dispatch = useAppDispatch();
 
+  console.log(songs);
+
   const isSongLiked = (id: string, likedSongs: string[]) => {
     return likedSongs.includes(id);
   };

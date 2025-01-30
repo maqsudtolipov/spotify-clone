@@ -86,10 +86,28 @@ exports.login = async (req, res, next) => {
     }
 
     // Check if the user exists
-    const user = await User.findOne(
-      { email },
-      "id name img password likedSongs",
+    const user = await User.findOne({ email }, "id name img password").populate(
+      [
+        {
+          path: "library",
+          select: "items",
+          populate: [
+            {
+              path: "items.refId",
+              select: "name img user createdAt",
+              populate: [
+                { path: "user", select: "name", strictPopulate: false },
+                { path: "img", select: "url" },
+              ],
+            },
+          ],
+        },
+        {
+          path: "likedSongs",
+        },
+      ],
     );
+
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
@@ -110,14 +128,20 @@ exports.login = async (req, res, next) => {
       token: refreshToken,
     });
 
+    const userObject = user.toObject();
+    userObject.library.items = userObject.library.items.map((item) => ({
+      id: item.refId._id,
+      name: item.refId.name,
+      user: item.itemType === "playlist" ? item.refId.user.name : undefined,
+      img: item.refId.img.url,
+      isPinned: item.isPinned,
+      itemType: item.itemType,
+      createdAt: item.refId.createdAt,
+    }));
+
     res.status(200).json({
       status: "success",
-      user: {
-        id: user.id,
-        name: user.name,
-        img: user.img,
-        likedSongs: user.likedSongs,
-      },
+      user: userObject,
     });
   } catch (e) {
     next(e);

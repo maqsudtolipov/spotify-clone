@@ -2,12 +2,15 @@ import styles from './LibraryCard.module.scss';
 import CardImage from './CardImage.tsx';
 import CardInfo from './CardInfo.tsx';
 import { RiVolumeDownFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 interface LibraryCardData {
+  id: string;
   img: string;
   name: string;
+  user: string;
   isPinned: boolean;
-  type: string;
+  itemType: string;
 }
 
 interface LibraryCardProps {
@@ -16,18 +19,31 @@ interface LibraryCardProps {
 }
 
 const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
+  const navigate = useNavigate();
   const isPlaying = false;
 
-  const { img, name, isPinned, type } = data;
+  const handleNavigateUser = (type: string, id: string) => {
+    let path = `/${type === 'artist' ? 'artist' : 'playlist'}/${id}`;
+    console.log(path);
+    navigate(path);
+  };
 
   return (
     <li className={styles.libraryCard}>
       <CardImage
-        src={img}
-        name={`Cover for ${name}`}
-        isArtist={type === 'artist'}
+        src={data.img}
+        name={`Cover for ${data.name}`}
+        isArtist={data.itemType === 'artist'}
+        onClick={() => handleNavigateUser(data.itemType, data.id)}
       />
-      {!isCollapsed && <CardInfo name={name} isPinned={isPinned} type={type} />}
+      {!isCollapsed && (
+        <CardInfo
+          name={data.name}
+          owner={data.user}
+          isPinned={data.isPinned}
+          type={data.itemType}
+        />
+      )}
       {isPlaying && <RiVolumeDownFill className={styles.cardIcon} />}
     </li>
   );

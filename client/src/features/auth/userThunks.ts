@@ -10,7 +10,6 @@ export const getCurrent = createAsyncThunk(
   'user/getCurrent',
   async (_, { dispatch }) => {
     const res = await axios.get('/users/current');
-
     dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
   }
@@ -38,8 +37,9 @@ interface LoginInput {
 
 export const login = createAsyncThunk(
   'user/login',
-  async (input: LoginInput) => {
+  async (input: LoginInput, { dispatch }) => {
     const res = await axios.post('/auth/login', input);
+    dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
   }
 );
@@ -59,8 +59,10 @@ export const followUser = createAsyncThunk(
 
     if (type === 'user')
       dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist')
+    if (type === 'artist') {
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
+      dispatch(setLibraryItems(res.data.data.library.items));
+    }
   }
 );
 
@@ -72,8 +74,10 @@ export const unfollowUser = createAsyncThunk(
     dispatch(followingsUpdated(res.data.data.followings));
     if (type === 'user')
       dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist')
+    if (type === 'artist') {
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
+      dispatch(setLibraryItems(res.data.data.library.items));
+    }
   }
 );
 

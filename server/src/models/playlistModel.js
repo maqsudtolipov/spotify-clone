@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const { getCache, setCache } = require("../services/cacheService");
 const File = require("./fileModel");
 
+// TODO: add length of all songs and count of songs
+
 const playlistSchema = new mongoose.Schema(
   {
     name: {

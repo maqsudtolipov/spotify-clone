@@ -41,23 +41,38 @@ exports.current = async (req, res, next) => {
       req.user.id,
       "id name email img followers followersCount followings followingsCount",
     )
-      .populate({
-        path: "library",
-        select: "items",
-        populate: {
-          path: "items.refId",
-          select: "name img user createdAt",
-          populate: {
-            path: "user",
-            select: "name",
-          },
-          populate: {
-            path: "img",
-            select: "url",
-          },
+      .populate([
+        {
+          path: "library",
+          select: "items",
+          populate: [
+            {
+              path: "items.refId",
+              select: "name img user createdAt",
+              populate: [
+                { path: "user", select: "name", strictPopulate: false },
+                { path: "img", select: "url" },
+              ],
+            },
+          ],
         },
-      })
+        {
+          path: "likedSongs",
+        },
+      ])
       .lean();
+    // NOTE: virtual does not work with lean()
+    user.id = user._id;
+
+    user.library.items = user.library.items.map((item) => ({
+      id: item.refId._id,
+      name: item.refId.name,
+      user: item.itemType === "playlist" ? item.refId.user.name : undefined,
+      img: item.refId.img.url,
+      isPinned: item.isPinned,
+      itemType: item.itemType,
+      createdAt: item.refId.createdAt,
+    }));
 
     res.status(200).json({ status: "success", user });
   } catch (e) {
@@ -119,15 +134,44 @@ exports.followUser = async (req, res, next) => {
       },
     );
 
+    let library;
     if (candidateUser.role === "artist") {
-      await Library.findByIdAndUpdate(req.user.library, {
-        $addToSet: {
-          items: {
-            refId: candidateUser.id,
-            itemType: "artist",
+      library = await Library.findByIdAndUpdate(
+        req.user.library,
+        {
+          $addToSet: {
+            items: {
+              refId: candidateUser.id,
+              itemType: "artist",
+            },
           },
         },
-      });
+        {
+          new: true,
+        },
+      )
+        .populate([
+          {
+            path: "items.refId",
+            select: "name img user createdAt",
+            populate: [
+              { path: "user", select: "name", strictPopulate: false },
+              { path: "img", select: "url" },
+            ],
+          },
+        ])
+        .lean();
+      library.id = library._id;
+
+      library.items = library.items.map((item) => ({
+        id: item.refId._id,
+        name: item.refId.name,
+        user: item.itemType === "playlist" ? item.refId.user.name : undefined,
+        img: item.refId.img.url,
+        isPinned: item.isPinned,
+        itemType: item.itemType,
+        createdAt: item.refId.createdAt,
+      }));
     }
 
     if (!updatedUser) {
@@ -150,6 +194,7 @@ exports.followUser = async (req, res, next) => {
       data: {
         followings: updatedUser.followings,
         candidateFollowersCount: updatedCandidate.followersCount,
+        library,
       },
     });
   } catch (e) {
@@ -186,15 +231,43 @@ exports.unfollowUser = async (req, res, next) => {
         new: true,
       },
     );
+
+    let library;
     if (candidateUser.role === "artist") {
-      await Library.findByIdAndUpdate(req.user.library, {
-        $pull: {
-          items: {
-            refId: candidateUser.id,
-            itemType: "artist",
+      library = await Library.findByIdAndUpdate(
+        req.user.library,
+        {
+          $pull: {
+            items: {
+              refId: candidateUser.id,
+              itemType: "artist",
+            },
           },
         },
-      });
+        { new: true },
+      )
+        .populate([
+          {
+            path: "items.refId",
+            select: "name img user createdAt",
+            populate: [
+              { path: "user", select: "name", strictPopulate: false },
+              { path: "img", select: "url" },
+            ],
+          },
+        ])
+        .lean();
+      library.id = library._id;
+
+      library.items = library.items.map((item) => ({
+        id: item.refId._id,
+        name: item.refId.name,
+        user: item.itemType === "playlist" ? item.refId.user.name : undefined,
+        img: item.refId.img.url,
+        isPinned: item.isPinned,
+        itemType: item.itemType,
+        createdAt: item.refId.createdAt,
+      }));
     }
 
     const updatedCandidate = await User.findOneAndUpdate(
@@ -217,6 +290,7 @@ exports.unfollowUser = async (req, res, next) => {
       data: {
         followings: updatedUser.followings,
         candidateFollowersCount: updatedCandidate.followersCount,
+        library,
       },
     });
   } catch (e) {

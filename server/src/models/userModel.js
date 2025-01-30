@@ -146,6 +146,7 @@ userSchema.pre("save", async function (next) {
       {
         refId: likedSongsPlaylist.id,
         itemType: "playlist",
+        isPinned: true,
       },
     ],
   });
