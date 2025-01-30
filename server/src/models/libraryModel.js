@@ -8,7 +8,7 @@ const librarySchema = new mongoose.Schema(
         refId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: function () {
-            return this.itemType === "playlist" ? "Playlist" : "Artist";
+            return this.itemType === "playlist" ? "Playlist" : "User";
           },
           required: [true, "Please provide a refId"],
           unique: [true, "Item already exists"],

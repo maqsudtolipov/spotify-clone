@@ -92,22 +92,22 @@ exports.login = async (req, res, next) => {
     ).populate({
       path: "library",
       select: "items",
-      populate: {
-        path: "items.refId",
-        select: "name img user createdAt",
-        populate: {
-          path: "user",
-          select: "name",
+      populate: [
+        {
+          path: "items.refId",
+          select: "name img user createdAt",
+          populate: [
+            { path: "user", select: "name" },
+            { path: "img", select: "url" },
+          ],
         },
-        populate: {
-          path: "img",
-          select: "url",
-        },
-      },
+      ],
     });
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
+
+    console.log(user);
 
     // Check if the password is correct
     const isMatch = await bcrypt.compare(password, user.password);
@@ -125,9 +125,19 @@ exports.login = async (req, res, next) => {
       token: refreshToken,
     });
 
+    const userObject = user.toObject();
+    userObject.library.items = userObject.library.items.map((item) => ({
+      name: item.refId.name,
+      user: item.refId.user.name,
+      img: item.refId.img.url,
+      isPinned: item.isPinned,
+      itemType: item.itemType,
+      createdAt: item.refId.createdAt,
+    }));
+
     res.status(200).json({
       status: "success",
-      user,
+      user: userObject,
     });
   } catch (e) {
     next(e);

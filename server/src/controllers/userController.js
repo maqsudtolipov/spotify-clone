@@ -44,20 +44,27 @@ exports.current = async (req, res, next) => {
       .populate({
         path: "library",
         select: "items",
-        populate: {
-          path: "items.refId",
-          select: "name img user createdAt",
-          populate: {
-            path: "user",
-            select: "name",
+        populate: [
+          {
+            path: "items.refId",
+            select: "name img user createdAt",
+            populate: [
+              { path: "user", select: "name" },
+              { path: "img", select: "url" },
+            ],
           },
-          populate: {
-            path: "img",
-            select: "url",
-          },
-        },
+        ],
       })
       .lean();
+
+    user.library.items = user.library.items.map((item) => ({
+      name: item.refId.name,
+      user: item.refId.user.name,
+      img: item.refId.img.url,
+      isPinned: item.isPinned,
+      itemType: item.itemType,
+      createdAt: item.refId.createdAt,
+    }));
 
     res.status(200).json({ status: "success", user });
   } catch (e) {

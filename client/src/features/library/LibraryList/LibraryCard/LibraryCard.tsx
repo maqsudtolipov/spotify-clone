@@ -7,7 +7,7 @@ interface LibraryCardData {
   img: string;
   name: string;
   isPinned: boolean;
-  type: string;
+  itemType: string;
 }
 
 interface LibraryCardProps {
@@ -18,19 +18,20 @@ interface LibraryCardProps {
 const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
   const isPlaying = false;
 
-  const type = data.itemType;
-  const img = data.refId.img.url;
-  const name = data.refId.name;
-  const isPinned = data.isPinned;
-
   return (
     <li className={styles.libraryCard}>
       <CardImage
-        src={img}
-        name={`Cover for ${name}`}
-        isArtist={type === 'artist'}
+        src={data.img}
+        name={`Cover for ${data.name}`}
+        isArtist={data.itemType === 'artist'}
       />
-      {!isCollapsed && <CardInfo name={name} isPinned={isPinned} type={type} />}
+      {!isCollapsed && (
+        <CardInfo
+          name={data.name}
+          isPinned={data.isPinned}
+          type={data.itemType}
+        />
+      )}
       {isPlaying && <RiVolumeDownFill className={styles.cardIcon} />}
     </li>
   );
