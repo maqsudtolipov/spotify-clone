@@ -5,11 +5,12 @@ interface CardImageProps {
   src: string;
   name: string;
   isArtist?: boolean;
+  onClick?: () => void;
 }
 
-const CardImage = ({ src, name, isArtist }: CardImageProps) => {
+const CardImage = ({ src, name, isArtist, onClick }: CardImageProps) => {
   return (
-    <div className={styles.cardImageContainer}>
+    <div className={styles.cardImageContainer} onClick={onClick}>
       <img
         className={`${styles.cardImage} ${isArtist ? styles.cardImageRounded : ''}`}
         src={src}

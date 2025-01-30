@@ -13,17 +13,15 @@ const combineDescription = (arr: string[]): string => {
   return arr.filter((el) => el.length).join(' • ');
 };
 
-// Add artist type
-
 const CardInfo = ({
-  name,
-  isPinned,
-  type,
-  owner = '',
-  length = '',
-}: CardInfoProps) => {
+                    name,
+                    isPinned,
+                    type,
+                    owner = '',
+                    length = ''
+                  }: CardInfoProps) => {
   const description = combineDescription(
-    type ? [type, owner, length] : [owner, length],
+    type ? [type, owner, length] : [owner, length]
   );
 
   return (
