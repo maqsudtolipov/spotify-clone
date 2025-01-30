@@ -49,7 +49,7 @@ exports.current = async (req, res, next) => {
             path: "items.refId",
             select: "name img user createdAt",
             populate: [
-              { path: "user", select: "name" },
+              { path: "user", select: "name", strictPopulate: false },
               { path: "img", select: "url" },
             ],
           },
@@ -60,7 +60,7 @@ exports.current = async (req, res, next) => {
     user.library.items = user.library.items.map((item) => ({
       id: item.refId._id,
       name: item.refId.name,
-      user: item.refId.user.name,
+      user: item.itemType === "playlist" ? item.refId.user.name : undefined,
       img: item.refId.img.url,
       isPinned: item.isPinned,
       itemType: item.itemType,
