@@ -59,8 +59,10 @@ export const followUser = createAsyncThunk(
 
     if (type === 'user')
       dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist')
+    if (type === 'artist') {
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
+      dispatch(setLibraryItems(res.data.data.library.items));
+    }
   }
 );
 
@@ -72,8 +74,10 @@ export const unfollowUser = createAsyncThunk(
     dispatch(followingsUpdated(res.data.data.followings));
     if (type === 'user')
       dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist')
+    if (type === 'artist') {
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
+      dispatch(setLibraryItems(res.data.data.library.items));
+    }
   }
 );
 
