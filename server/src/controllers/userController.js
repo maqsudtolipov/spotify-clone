@@ -41,13 +41,23 @@ exports.current = async (req, res, next) => {
       req.user.id,
       "id name email img followers followersCount followings followingsCount",
     )
-      // .populate("likedSongs", "id songs")
       .populate({
         path: "library",
+        select: "items",
         populate: {
           path: "items.refId",
+          select: "name img user",
+          populate: {
+            path: "user",
+            select: "name",
+          },
+          populate: {
+            path: "img",
+            select: "url",
+          },
         },
-      });
+      })
+      .lean();
 
     res.status(200).json({ status: "success", user });
   } catch (e) {
