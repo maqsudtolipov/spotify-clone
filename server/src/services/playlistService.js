@@ -30,21 +30,13 @@ exports.createPlaylist = async (playlistInput) => {
     user: playlistInput.userId,
   });
 
-  // Attach playlist id to user playlists
-  await User.findByIdAndUpdate(
-    playlistInput.userId,
-    {
-      $addToSet: {
-        playlists: newPlaylist.id,
-      },
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  await User.findByIdAndUpdate(playlistInput.userId, {
+    $addToSet: { playlists: newPlaylist.id },
+  });
 
-  // TODO: Add playlists to user's library
+  await Library.findByIdAndUpdate(playlistInput.libraryId, {
+    $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
+  });
 
   return newPlaylist;
 };
@@ -118,6 +110,9 @@ exports.deletePlaylist = async (playlistInput) => {
   }
 
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
+  await Library.findByIdAndUpdate(playlistInput.playlistId, {
+    $pull: { items: { refId: playlistInput.playlistId, itemType: "playlist" } },
+  });
 };
 
 // Save/Remove playlist
@@ -149,7 +144,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     },
   );
 
-  const updatedLibrary = await Library.findOneAndUpdate(
+  const updatedLibrary = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
       $addToSet: {
@@ -195,7 +190,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     },
   );
 
-  const updatedLibrary = await Library.findOneAndUpdate(
+  const updatedLibrary = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
       $pull: {
