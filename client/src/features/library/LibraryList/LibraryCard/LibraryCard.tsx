@@ -18,7 +18,10 @@ interface LibraryCardProps {
 const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
   const isPlaying = false;
 
-  const { img, name, isPinned, type } = data;
+  const type = data.itemType;
+  const img = data.refId.img.url;
+  const name = data.refId.name;
+  const isPinned = data.isPinned;
 
   return (
     <li className={styles.libraryCard}>
