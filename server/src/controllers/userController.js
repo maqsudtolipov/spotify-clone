@@ -40,7 +40,14 @@ exports.current = async (req, res, next) => {
     const user = await User.findById(
       req.user.id,
       "id name email img followers followersCount followings followingsCount",
-    ).populate("likedSongs", "id songs");
+    )
+      // .populate("likedSongs", "id songs")
+      .populate({
+        path: "library",
+        populate: {
+          path: "items.refId",
+        },
+      });
 
     res.status(200).json({ status: "success", user });
   } catch (e) {
@@ -107,7 +114,7 @@ exports.followUser = async (req, res, next) => {
         $addToSet: {
           items: {
             refId: candidateUser.id,
-            itemType: "Artist",
+            itemType: "artist",
           },
         },
       });
@@ -174,7 +181,7 @@ exports.unfollowUser = async (req, res, next) => {
         $pull: {
           items: {
             refId: candidateUser.id,
-            itemType: "Artist",
+            itemType: "artist",
           },
         },
       });

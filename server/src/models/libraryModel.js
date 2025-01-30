@@ -7,14 +7,16 @@ const librarySchema = new mongoose.Schema(
         _id: false,
         refId: {
           type: mongoose.Schema.Types.ObjectId,
-          refPath: "itemType",
+          ref: function () {
+            return this.itemType === "playlist" ? "Playlist" : "Artist";
+          },
           required: [true, "Please provide a refId"],
           unique: [true, "Item already exists"],
         },
         itemType: {
           type: String,
           required: [true, "Item type is required: Playlist or Artist"],
-          enum: ["Playlist", "Artist"],
+          enum: ["playlist", "artist"],
         },
         isPinned: {
           type: Boolean,

@@ -146,7 +146,7 @@ userSchema.pre("save", async function (next) {
     items: [
       {
         refId: likedSongsPlaylist.id,
-        itemType: "Playlist",
+        itemType: "playlist",
       },
     ],
   });

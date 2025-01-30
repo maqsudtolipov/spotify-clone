@@ -156,7 +156,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
       $addToSet: {
         items: {
           refId: playlist.id,
-          itemType: "Playlist",
+          itemType: "playlist",
         },
       },
     },
@@ -202,7 +202,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
       $pull: {
         items: {
           refId: playlist.id,
-          itemType: "Playlist",
+          itemType: "playlist",
         },
       },
     },
