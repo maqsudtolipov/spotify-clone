@@ -27,7 +27,6 @@ exports.createPlaylist = async (playlistInput) => {
   // Create a new playlist
   const newPlaylist = await Playlist.create({
     name: playlistInput.name,
-    img: playlistInput.img,
     user: playlistInput.userId,
   });
 

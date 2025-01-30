@@ -134,7 +134,6 @@ userSchema.pre("save", async function (next) {
   // Create liked songs playlist for the user
   const likedSongsPlaylist = await Playlist.create({
     name: "Liked Songs",
-    img: "67950683dd94942631985824", // Default img id
     user: this.id,
     isPublic: false,
     isLikedSongs: true,
