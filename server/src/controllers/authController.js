@@ -89,7 +89,22 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne(
       { email },
       "id name img password likedSongs",
-    );
+    ).populate({
+      path: "library",
+      select: "items",
+      populate: {
+        path: "items.refId",
+        select: "name img user createdAt",
+        populate: {
+          path: "user",
+          select: "name",
+        },
+        populate: {
+          path: "img",
+          select: "url",
+        },
+      },
+    });
     if (!user) {
       return next(new AppError("Invalid email or password", 401));
     }
@@ -112,12 +127,7 @@ exports.login = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      user: {
-        id: user.id,
-        name: user.name,
-        img: user.img,
-        likedSongs: user.likedSongs,
-      },
+      user,
     });
   } catch (e) {
     next(e);

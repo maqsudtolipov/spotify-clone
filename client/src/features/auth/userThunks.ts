@@ -3,15 +3,13 @@ import axios from '../../api/axios';
 import { followingsUpdated } from './userSlice.ts';
 import { followersCountUpdated } from '../userPage/userPageSlice.ts';
 import { listenersCountUpdated } from '../artist/artistSlice.ts';
-import { setLibraryItems } from '../library/librarySlice.ts';
 
 // Checks whether the user is authenticated using cookies
 export const getCurrent = createAsyncThunk(
   'user/getCurrent',
   async (_, { dispatch }) => {
     const res = await axios.get('/users/current');
-
-    dispatch(setLibraryItems(res.data.user.library.items));
+    // dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
   }
 );
@@ -38,8 +36,11 @@ interface LoginInput {
 
 export const login = createAsyncThunk(
   'user/login',
-  async (input: LoginInput) => {
+  async (input: LoginInput, { dispatch }) => {
     const res = await axios.post('/auth/login', input);
+
+    console.log(res.data.user.library.items);
+    // dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
   }
 );
