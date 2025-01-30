@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Item {
-  img: string;
   name: string;
-  itemType: string;
+  user: string;
+  img: string;
   isPinned: boolean;
-  createdAt: string;
+  itemType: string;
+  createdAt: Date;
 }
 
 interface LibraryState {
@@ -32,32 +33,30 @@ const processItems = (
 ): Item[] => {
   let arr = [...items];
 
-  console.log(items);
-
   // 1. Sort items
-  // arr = [...arr].sort((a, b) => {
-  //   const pinComparison = +b.isPinned - +a.isPinned;
-  //   if (pinComparison !== 0) return pinComparison;
-  //
-  //   if (sortBy === 'recentlyAdded') {
-  //     return +new Date(b.createdAt) - +new Date(a.createdAt);
-  //   } else {
-  //     // sort alphabetically by default
-  //     return a.name.localeCompare(b.name);
-  //   }
-  // });
+  arr = [...arr].sort((a, b) => {
+    const pinComparison = +b.isPinned - +a.isPinned;
+    if (pinComparison !== 0) return pinComparison;
+
+    if (sortBy === 'recentlyAdded') {
+      return +new Date(b.createdAt) - +new Date(a.createdAt);
+    } else {
+      // sort alphabetically by default
+      return a.name.localeCompare(b.name);
+    }
+  });
 
   // 2. Filter items
-  // arr =
-  //   filter !== 'none' ? arr.filter((item) => item.itemType === filter) : arr;
+  arr =
+    filter !== 'none' ? arr.filter((item) => item.itemType === filter) : arr;
 
   // 3. SearchPage items
-  // arr =
-  //   searchQuery.length >= 3
-  //     ? arr.filter((item) =>
-  //       item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     )
-  //     : arr;
+  arr =
+    searchQuery.length >= 3
+      ? arr.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : arr;
 
   return arr;
 };
