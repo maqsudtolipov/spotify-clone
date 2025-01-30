@@ -46,7 +46,7 @@ exports.current = async (req, res, next) => {
         select: "items",
         populate: {
           path: "items.refId",
-          select: "name img user",
+          select: "name img user createdAt",
           populate: {
             path: "user",
             select: "name",
