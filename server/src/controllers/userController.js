@@ -56,6 +56,8 @@ exports.current = async (req, res, next) => {
         ],
       })
       .lean();
+    // NOTE: virtual does not work with lean()
+    user.id = user._id;
 
     user.library.items = user.library.items.map((item) => ({
       id: item.refId._id,
@@ -154,6 +156,7 @@ exports.followUser = async (req, res, next) => {
           },
         ])
         .lean();
+      library.id = library._id;
 
       library.items = library.items.map((item) => ({
         id: item.refId._id,
@@ -249,6 +252,7 @@ exports.unfollowUser = async (req, res, next) => {
           },
         ])
         .lean();
+      library.id = library._id;
 
       library.items = library.items.map((item) => ({
         id: item.refId._id,

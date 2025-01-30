@@ -4,7 +4,7 @@ import axios from '../../api/axios';
 export const getArtist = createAsyncThunk(
   'artist/getArtist',
   async (id: string) => {
-    const res = await axios.get(`/artists/${id}`, id);
+    const res = await axios.get(`/artists/${id}`);
     return res.data.artist;
   }
 );
