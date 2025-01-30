@@ -58,6 +58,7 @@ exports.current = async (req, res, next) => {
       .lean();
 
     user.library.items = user.library.items.map((item) => ({
+      id: item.refId.id,
       name: item.refId.name,
       user: item.refId.user.name,
       img: item.refId.img.url,

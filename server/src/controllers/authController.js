@@ -127,6 +127,7 @@ exports.login = async (req, res, next) => {
 
     const userObject = user.toObject();
     userObject.library.items = userObject.library.items.map((item) => ({
+      id: item.refId.id,
       name: item.refId.name,
       user: item.refId.user.name,
       img: item.refId.img.url,
