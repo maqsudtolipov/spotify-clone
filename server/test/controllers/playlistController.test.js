@@ -361,5 +361,72 @@ describe("PlaylistController", () => {
         );
       });
     });
+
+    describe("PATCH /playlists/remove/:id", () => {
+      it("should remove playlist from likedPlaylists and library items lists", async () => {
+        const res = await request(app)
+          .patch(`/api/playlists/remove/${differentPlaylistId}`)
+          .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+        expect(res.status).toBe(200);
+        expect(res.body.status).toBe("success");
+
+        // Check user
+        const user = await User.findById(loggedInUsers[0].id);
+        expect(user.likedPlaylists).not.toContain(differentPlaylistId);
+
+        // Check library
+        const library = await Library.findById(user.library);
+        expect(
+          library.items.some(
+            (item) => String(item.refId) === differentPlaylistId,
+          ),
+        ).toBe(false);
+      });
+
+      it("should fail if playlist does not exist in user’s library", async () => {
+        const res = await request(app)
+          .patch(`/api/playlists/remove/6799f04c6cf1dc3302712949`) // Random MongoDB ID
+          .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+        expect(res.status).toBe(404);
+        expect(res.body.status).toBe("fail");
+        expect(res.body.message).toMatch(/Playlist not found/i);
+      });
+
+      it("should fail if user tries to remove their own playlist", async () => {
+        const res = await request(app)
+          .patch(`/api/playlists/remove/${personalPlaylistId}`)
+          .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+        expect(res.status).toBe(403);
+        expect(res.body.status).toBe("fail");
+        expect(res.body.message).toMatch(
+          /You don't have permission to perform this action/i,
+        );
+      });
+
+      it("should fail if user tries to remove another user’s private playlist", async () => {
+        const res = await request(app)
+          .patch(`/api/playlists/remove/${privatePlaylistId}`)
+          .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+        expect(res.status).toBe(404);
+        expect(res.body.status).toBe("fail");
+        expect(res.body.message).toMatch(/Playlist not found/i);
+      });
+
+      it("should fail if user tries to remove liked songs", async () => {
+        const res = await request(app)
+          .patch(`/api/playlists/remove/${loggedInUsers[0].likedSongs}`)
+          .set("Cookie", [`accessToken=${loggedInUsers[0].accessToken}`]);
+
+        expect(res.status).toBe(403);
+        expect(res.body.status).toBe("fail");
+        expect(res.body.message).toMatch(
+          /You don't have permission to perform this action/i,
+        );
+      });
+    });
   });
 });
