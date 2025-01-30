@@ -59,6 +59,7 @@ exports.signUp = async (req, res, next) => {
       return next(new AppError("Email already exists", 409));
     }
 
+    // Set default img
     userData.img = await getDefaultUserImgId();
 
     const newUser = await User.create(userData);

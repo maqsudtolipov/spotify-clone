@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Playlist = require("./playlistModel");
+const Library = require("./libraryModel");
 
 const userSchema = new mongoose.Schema(
   {
@@ -35,6 +36,17 @@ const userSchema = new mongoose.Schema(
       default: "user",
       select: false,
     },
+    library: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Library",
+      unique: [true, "User can only get one library"],
+    },
+    likedPlaylists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist",
+      },
+    ],
     playlists: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -119,6 +131,7 @@ userSchema
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
 
+  // Create liked songs playlist for the user
   const likedSongsPlaylist = await Playlist.create({
     name: "Liked Songs",
     img: "67950683dd94942631985824", // Default img id
@@ -127,6 +140,17 @@ userSchema.pre("save", async function (next) {
     isLikedSongs: true,
   });
   this.likedSongs = likedSongsPlaylist.id;
+
+  // Create user's Library and add liked songs inside it
+  const library = await Library.create({
+    items: [
+      {
+        refId: likedSongsPlaylist.id,
+        itemType: "playlist",
+      },
+    ],
+  });
+  this.library = library.id;
 
   next();
 });

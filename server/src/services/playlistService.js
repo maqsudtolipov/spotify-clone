@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const { imagekitUpload, imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
+const Library = require("../models/libraryModel");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
@@ -118,4 +119,97 @@ exports.deletePlaylist = async (playlistInput) => {
   }
 
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
+};
+
+// Save/Remove playlist
+exports.savePlaylistToLibrary = async (playlistInput) => {
+  const playlist = await Playlist.findById(playlistInput.playlistId).select(
+    "+isPublic +isLikedSongs",
+  );
+
+  if (
+    !playlist ||
+    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
+  ) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $addToSet: {
+        likedPlaylists: playlist.id,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  const updatedLibrary = await Library.findOneAndUpdate(
+    playlistInput.libraryId,
+    {
+      $addToSet: {
+        items: {
+          refId: playlist.id,
+          itemType: "playlist",
+        },
+      },
+    },
+    { new: true },
+  );
+
+  return {
+    updatedLibrary,
+  };
+};
+
+exports.removePlaylistFromLibrary = async (playlistInput) => {
+  const playlist = await Playlist.findById(playlistInput.playlistId).select(
+    "+isPublic +isLikedSongs",
+  );
+
+  if (
+    !playlist ||
+    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
+  ) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $pull: {
+        likedPlaylists: playlist.id,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  const updatedLibrary = await Library.findOneAndUpdate(
+    playlistInput.libraryId,
+    {
+      $pull: {
+        items: {
+          refId: playlist.id,
+          itemType: "playlist",
+        },
+      },
+    },
+    { new: true },
+  );
+
+  return {
+    updatedLibrary,
+  };
 };

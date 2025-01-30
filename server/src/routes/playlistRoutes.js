@@ -18,4 +18,15 @@ router
   )
   .delete(ensureAuthenticated, playlistController.deletePlaylist);
 
+router.patch(
+  "/save/:id",
+  ensureAuthenticated,
+  playlistController.savePlaylistToLibrary,
+);
+router.patch(
+  "/remove/:id",
+  ensureAuthenticated,
+  playlistController.removePlaylistFromLibrary,
+);
+
 module.exports = router;
