@@ -86,23 +86,27 @@ exports.login = async (req, res, next) => {
     }
 
     // Check if the user exists
-    const user = await User.findOne(
-      { email },
-      "id name img password likedSongs",
-    ).populate({
-      path: "library",
-      select: "items",
-      populate: [
+    const user = await User.findOne({ email }, "id name img password").populate(
+      [
         {
-          path: "items.refId",
-          select: "name img user createdAt",
+          path: "library",
+          select: "items",
           populate: [
-            { path: "user", select: "name", strictPopulate: false },
-            { path: "img", select: "url" },
+            {
+              path: "items.refId",
+              select: "name img user createdAt",
+              populate: [
+                { path: "user", select: "name", strictPopulate: false },
+                { path: "img", select: "url" },
+              ],
+            },
           ],
         },
+        {
+          path: "likedSongs",
+        },
       ],
-    });
+    );
 
     if (!user) {
       return next(new AppError("Invalid email or password", 401));

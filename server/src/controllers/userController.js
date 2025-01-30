@@ -41,20 +41,25 @@ exports.current = async (req, res, next) => {
       req.user.id,
       "id name email img followers followersCount followings followingsCount",
     )
-      .populate({
-        path: "library",
-        select: "items",
-        populate: [
-          {
-            path: "items.refId",
-            select: "name img user createdAt",
-            populate: [
-              { path: "user", select: "name", strictPopulate: false },
-              { path: "img", select: "url" },
-            ],
-          },
-        ],
-      })
+      .populate([
+        {
+          path: "library",
+          select: "items",
+          populate: [
+            {
+              path: "items.refId",
+              select: "name img user createdAt",
+              populate: [
+                { path: "user", select: "name", strictPopulate: false },
+                { path: "img", select: "url" },
+              ],
+            },
+          ],
+        },
+        {
+          path: "likedSongs",
+        },
+      ])
       .lean();
     // NOTE: virtual does not work with lean()
     user.id = user._id;
