@@ -7,7 +7,7 @@ const checkEnvVariables = () => {
     "ACCESS_TOKEN_SECRET",
     "ACCESS_TOKEN_EXPIRATION",
     "REFRESH_TOKEN_SECRET",
-    "SECRET_TOKEN_EXPIRATION",
+    "REFRESH_TOKEN_EXPIRATION",
     "CLIENT_URL",
     "IK_PUBLIC",
     "IK_PRIVATE",
@@ -16,7 +16,8 @@ const checkEnvVariables = () => {
   ];
 
   const missingEnvVariables = envVariables.reduce((acc, env) => {
-    if (process.env[env]) acc.push(env);
+    if (!process.env[env]) acc.push(env);
+    return acc;
   }, []);
   if (missingEnvVariables.length >= 1) {
     console.log(
