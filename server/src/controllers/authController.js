@@ -8,18 +8,12 @@ const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
+const authService = require("../services/authService");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const userData = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-    };
-    const { email, name, password, passwordConfirm } = userData;
+    const { email, name, password, passwordConfirm } = req.body;
 
-    // Check if all required fields provided
     if (!email || !name || !password || !passwordConfirm) {
       return next(
         new AppError(
@@ -29,16 +23,12 @@ exports.signUp = async (req, res, next) => {
       );
     }
 
-    // Check if the email already exists
-    const user = await User.findOne({ email });
-    if (user) {
-      return next(new AppError("Email already exists", 409));
-    }
-
-    // Set default img
-    userData.img = await User.getDefaultUserImgId();
-
-    const newUser = await User.create(userData);
+    const newUser = await authService.signUp({
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
 
     res.status(201).json({
       status: "success",
