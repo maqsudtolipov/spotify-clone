@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = require("./src/app");
+const checkEnvVariables = require("./src/utils/ checkEnvVariables");
 
 // DotENV
 dotenv.config({ path: "./.env" });
+checkEnvVariables();
 
 // Uncaught Exception
 process.on("uncaughtException", (err) => {
