@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Playlist = require("./playlistModel");
 const Library = require("./libraryModel");
+const {getCache, setCache} = require("../services/cacheService");
+const File = require("./fileModel");
 
 const userSchema = new mongoose.Schema(
   {
@@ -118,6 +120,7 @@ const userSchema = new mongoose.Schema(
   },
 );
 
+// Default Path
 userSchema
   .path("color")
   .default(
@@ -125,6 +128,7 @@ userSchema
       `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")}4d`,
   );
 
+// -- Hooks
 // Create likedSongs playlist on newUsers
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
@@ -171,6 +175,30 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
+// -- Methods
+// get user img id
+userSchema.statics.getDefaultUserImgId = async function () {
+  let cachedImgId = getCache("defaultUserImgId");
+  if (cachedImgId) return cachedImgId;
+
+  let defaultFile = await File.findOne({ fileId: "user" });
+
+  if (!defaultFile) {
+    defaultFile = await File.create({
+      fileId: "user",
+      name: "defaultUser.jpeg",
+      size: 0,
+      filePath: "spotify/users/defaultUser.jpeg",
+      url: "https://ik.imagekit.io/8cs4gpobr/spotify/users/defaultUser.jpeg",
+      isDefault: true,
+    });
+
+    setCache("defaultUserImgId", defaultFile.id);
+  }
+
+  return defaultFile.id;
+}
 
 const User = mongoose.model("User", userSchema);
 
