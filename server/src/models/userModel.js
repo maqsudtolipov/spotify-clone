@@ -9,12 +9,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a name"],
       minLength: [3, "Name must be at least 2 characters long"],
-      maxLength: [24, "Name must be at most 30 characters long"],
+      maxLength: [24, "Name must be at most 24 characters long"],
     },
     email: {
       type: String,
       required: [true, "Please provide a valid email address"],
       unique: [true, "User with this email already exists"],
+      lowercase: true,
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         "Please provide a valid email address",
@@ -117,14 +118,11 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// Changes
 userSchema
   .path("color")
   .default(
     () =>
-      "#" +
-      ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0") +
-      "4d",
+      `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")}4d`,
   );
 
 // Create likedSongs playlist on newUsers
@@ -174,7 +172,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Exports
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
