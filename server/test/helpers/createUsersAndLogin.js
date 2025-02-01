@@ -3,17 +3,14 @@ const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 
 const createUsersAndLogin = async (users) => {
-  const userIds = [];
-  let accessTokens = [];
   const loggedInUsers = [];
 
-  for (const [index, user] of users.entries()) {
+  for (const user of users) {
     // Signup user
     const { role, ...userData } = user;
     const signupRes = await request(app)
       .post("/api/auth/signup")
       .send(userData);
-    userIds.push(signupRes.body.data.id);
 
     // If the role is specified, update it
     if (role) {
@@ -22,7 +19,7 @@ const createUsersAndLogin = async (users) => {
       });
     }
 
-    // Login the user and store their token
+    // Login the user
     const loginRes = await request(app).post("/api/auth/login").send({
       email: userData.email,
       password: userData.password,
@@ -34,14 +31,11 @@ const createUsersAndLogin = async (users) => {
         .find((cookie) => cookie.startsWith("accessToken="))
         .match(/accessToken=([^;]+)/)[1] || null;
     loggedInUsers.push({ ...loginRes.body.user, accessToken });
-    accessTokens.push(accessToken);
+
+    loggedInUsers.push({ ...loginRes.body.user, accessToken });
   }
 
-  return {
-    userIds,
-    accessTokens,
-    loggedInUsers,
-  };
+  return loggedInUsers;
 };
 
 module.exports = createUsersAndLogin;
