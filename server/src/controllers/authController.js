@@ -45,69 +45,17 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    // Validate email and password
     const { email, password } = req.body;
+
     if (!email || !password) {
       return next(new AppError("Please provide email and password", 422));
     }
 
-    // Check if the user exists
-    const user = await User.findOne({ email }, "id name img password").populate(
-      [
-        {
-          path: "library",
-          select: "items",
-          populate: [
-            {
-              path: "items.refId",
-              select: "name img user createdAt",
-              populate: [
-                { path: "user", select: "name", strictPopulate: false },
-                { path: "img", select: "url" },
-              ],
-            },
-          ],
-        },
-        {
-          path: "likedSongs",
-        },
-      ],
-    );
-
-    if (!user) {
-      return next(new AppError("Invalid email or password", 401));
-    }
-
-    // Check if the password is correct
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return next(new AppError("Invalid email or password", 401));
-    }
-
-    // Generate access and refresh tokens
-    attachAccessCookie(user.id, res);
-    const refreshToken = attachRefreshCookie(user.id, res);
-
-    // Save refresh token to the database
-    await RefreshToken.create({
-      userId: user.id,
-      token: refreshToken,
-    });
-
-    const userObject = user.toObject();
-    userObject.library.items = userObject.library.items.map((item) => ({
-      id: item.refId._id,
-      name: item.refId.name,
-      user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-      img: item.refId.img.url,
-      isPinned: item.isPinned,
-      itemType: item.itemType,
-      createdAt: item.refId.createdAt,
-    }));
+    const user = await authService.login(email, password, res);
 
     res.status(200).json({
       status: "success",
-      user: userObject,
+      user,
     });
   } catch (e) {
     next(e);
