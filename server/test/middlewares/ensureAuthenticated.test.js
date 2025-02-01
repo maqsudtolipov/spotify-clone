@@ -12,6 +12,7 @@ const {
   connectToDatabase,
 } = require("../helpers/databaseHelpers");
 const createUsersAndLogin = require("../helpers/createUsersAndLogin");
+const middlewareMock = require("../helpers/middlewareMock");
 
 let server;
 beforeAll(async () => {
@@ -28,7 +29,26 @@ describe("Ensure Authenticated Middleware", () => {
   let loggedInUsers;
 
   beforeAll(async () => {
-    const loggedInUsers = await createUsersAndLogin(1);
+    loggedInUsers = await createUsersAndLogin(1);
+  });
+
+  it("should attach user data and access token inside req object", async () => {
+    const { req, res, next } = middlewareMock(
+      {
+        cookies: {
+          accessToken: loggedInUsers[0].accessToken,
+        },
+      },
+      {},
+    );
+    await ensureAuthenticated(req, res, next);
+
+    expect(req.user).toHaveProperty("id");
+    expect(req.user).toHaveProperty("likedSongs");
+    expect(req.user).toHaveProperty("library");
+
+    expect(req.accessToken).toHaveProperty("token");
+    expect(req.accessToken).toHaveProperty("exp");
   });
 
   // it("should add user id to the res object", async () => {

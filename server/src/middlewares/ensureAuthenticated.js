@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
@@ -39,7 +38,7 @@ const ensureAuthenticated = async (req, res, next) => {
     req.user = {
       id: user.id,
       likedSongs: String(user.likedSongs),
-      library: user.library,
+      library: String(user.library),
     };
     req.accessToken = { token: accessToken, exp: decodedAccessToken.exp };
 
