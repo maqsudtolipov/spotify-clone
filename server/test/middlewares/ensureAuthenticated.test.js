@@ -13,12 +13,10 @@ const { TokenExpiredError, JsonWebTokenError } = jwt;
 
 let server;
 beforeAll(async () => {
-  await connectToDatabase();
   server = app.listen(3009);
 });
 
 afterAll(async () => {
-  await cleanupDatabaseAndDisconnect();
   server.close();
 });
 
@@ -34,10 +32,19 @@ describe("Ensure Authenticated Middleware", () => {
   });
 
   it("should attach user data and access token inside req object", async () => {
+    jest.spyOn(jwt, "verify").mockReturnValue({ userId: "userId" });
+
+    const mockUser = {
+      id: "userId",
+      likedSongs: ["song1", "song2"],
+      library: ["album1", "album2"],
+    };
+    jest.spyOn(User, "findById").mockResolvedValue(mockUser);
+
     const { req, res, next } = middlewareMock(
       {
         cookies: {
-          accessToken: loggedInUsers[0].accessToken,
+          accessToken: "validAccessToken",
         },
       },
       {},
