@@ -1,8 +1,10 @@
 const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
+const { testUsers } = require("../testData");
 
-const createUsersAndLogin = async (users) => {
+const createUsersAndLogin = async (numOfUsers) => {
+  const users = testUsers.slice(0, numOfUsers);
   const loggedInUsers = [];
 
   for (const user of users) {
