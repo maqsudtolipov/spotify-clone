@@ -8,6 +8,7 @@ const {
 const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const middlewareMock = require("../helpers/middlewareMock");
 const jwt = require("jsonwebtoken");
+const User = require("../../src/models/userModel");
 const { TokenExpiredError, JsonWebTokenError } = jwt;
 
 let server;
@@ -19,6 +20,10 @@ beforeAll(async () => {
 afterAll(async () => {
   await cleanupDatabaseAndDisconnect();
   server.close();
+});
+
+beforeEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("Ensure Authenticated Middleware", () => {
@@ -61,7 +66,7 @@ describe("Ensure Authenticated Middleware", () => {
   it("should fail if access token is inside invalid access tokens list", async () => {
     jest
       .spyOn(InvalidAccessToken, "findOne")
-      .mockResolvedValueOnce({ token: "invalidToken" });
+      .mockResolvedValue({ token: "invalidToken" });
     const { req, res, next } = middlewareMock(
       {
         cookies: {
@@ -123,5 +128,30 @@ describe("Ensure Authenticated Middleware", () => {
       message: "Access token invalid",
       code: "AccessTokenInvalid",
     });
+  });
+
+  it("should fail if user does not exist", async () => {
+    jest.spyOn(jwt, "verify").mockReturnValue({ userId: "nonExistentUserId" });
+    jest.spyOn(User, "findById").mockResolvedValue(null);
+
+    const { req, res, next } = middlewareMock(
+      {
+        cookies: {
+          accessToken: "validAccessToken",
+        },
+      },
+      {},
+    );
+    await ensureAuthenticated(req, res, next);
+
+    console.log(next.mock.calls[0]);
+    expect(1).toEqual(1);
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: 401,
+        status: "fail",
+        message: "The user belonging to this token does not exist",
+      }),
+    );
   });
 });
