@@ -49,35 +49,19 @@ describe("Ensure Authenticated Middleware", () => {
 
     expect(req.accessToken).toHaveProperty("token");
     expect(req.accessToken).toHaveProperty("exp");
+    expect(next).toHaveBeenCalled();
   });
 
-  // it("should add user id to the res object", async () => {
-  //   const token = accessToken.match(/accessToken=([^;]+)/)[1];
-  //
-  //   const req = httpMocks.createRequest({
-  //     cookies: {
-  //       accessToken: token,
-  //     },
-  //   });
-  //   const res = httpMocks.createResponse();
-  //   const next = jest.fn();
-  //   await ensureAuthenticated(req, res, next);
-  //
-  //   expect(req.user.id).toBeTruthy();
-  //   expect(next).toHaveBeenCalled();
-  // });
-  // it("should fail when access token is missing", async () => {
-  //   const req = httpMocks.createRequest({
-  //     cookies: {},
-  //   });
-  //   const res = httpMocks.createResponse();
-  //   const next = jest.fn();
-  //   await ensureAuthenticated(req, res, next);
-  //
-  //   expect(next.mock.calls[0][0].statusCode).toBe(401);
-  //   expect(next.mock.calls[0][0].message).toMatch(/Access token not found/i);
-  // });
-  //
+  it("should fail if access token is missing", async () => {
+    const { req, res, next } = middlewareMock({}, {});
+    await ensureAuthenticated(req, res, next);
+
+    expect(next.mock.calls[0][0]).toMatchObject({
+      statusCode: 401,
+      message: "Access token not found",
+    });
+  });
+
   // it("should fail when access token is invalid", async () => {
   //   const userId = new mongoose.Types.ObjectId();
   //
