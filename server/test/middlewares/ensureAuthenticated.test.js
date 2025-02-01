@@ -1,12 +1,6 @@
-const mongoose = require("mongoose");
-const request = require("supertest");
-const httpMocks = require("node-mocks-http");
-const jwt = require("jsonwebtoken");
 const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
 const app = require("../../src/app");
-const User = require("../../src/models/userModel");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
-const RefreshToken = require("../../src/models/refreshTokenModel");
 const {
   cleanupDatabaseAndDisconnect,
   connectToDatabase,

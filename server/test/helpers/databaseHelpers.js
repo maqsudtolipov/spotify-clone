@@ -5,22 +5,19 @@ const Song = require("../../src/models/songModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 const Playlist = require("../../src/models/playlistModel");
+const { MongoMemoryServer } = require("mongodb-memory-server");
 
 exports.connectToDatabase = async () => {
+  // Create memory db
+  const memoryDB = await MongoMemoryServer.create();
+  const dbUrl = memoryDB.getUri();
+
   // Set env files for test environment
   process.env.NODE_ENV = "production";
   process.env.IK_ENV = "test";
 
-  const dbUrl = process.env.DB_TEST_URL;
-
-  if (!dbUrl && !/test-database/.test(dbUrl)) {
-    console.log("Tests can only and must connect to a test database.");
-    process.exit(1);
-  }
-
   try {
-    const DB = dbUrl.replace("<db_password>", process.env.DB_PASS);
-    await mongoose.connect(DB);
+    await mongoose.connect(dbUrl);
     console.log("🟢 Test Database Connected");
   } catch (err) {
     console.error("🔴 DATABASE CONNECTION ERROR: ", err);
