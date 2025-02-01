@@ -8,7 +8,7 @@ const {
 const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const middlewareMock = require("../helpers/middlewareMock");
 const jwt = require("jsonwebtoken");
-const { TokenExpiredError } = jwt;
+const { TokenExpiredError, JsonWebTokenError } = jwt;
 
 let server;
 beforeAll(async () => {
@@ -98,8 +98,30 @@ describe("Ensure Authenticated Middleware", () => {
 
     expect(res.statusCode).toEqual(401);
     expect(res._getJSONData()).toMatchObject({
-      code: "AccessTokenExpired",
       message: "Access token expired",
+      code: "AccessTokenExpired",
+    });
+  });
+
+  it("should fail if access token is invalid", async () => {
+    jest.spyOn(jwt, "verify").mockImplementation(() => {
+      throw new JsonWebTokenError("some jwt error");
+    });
+
+    const { req, res, next } = middlewareMock(
+      {
+        cookies: {
+          accessToken: "invalidAccessToken",
+        },
+      },
+      {},
+    );
+    await ensureAuthenticated(req, res, next);
+
+    expect(res.statusCode).toEqual(401);
+    expect(res._getJSONData()).toMatchObject({
+      message: "Access token invalid",
+      code: "AccessTokenInvalid",
     });
   });
 });
