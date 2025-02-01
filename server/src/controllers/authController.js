@@ -71,46 +71,10 @@ exports.refreshToken = async (req, res, next) => {
       return next(new AppError("No refresh token provided", 401));
     }
 
-    const decodedRefreshToken = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-    );
-
-    const userRefreshToken = await RefreshToken.findOne({
-      token: refreshToken,
-      userId: decodedRefreshToken.userId,
-    });
-
-    if (!userRefreshToken) {
-      return next(new AppError("Refresh token is invalid or expired", 401));
-    }
-
-    // INFO: this logs out the user from all their devices
-    // Delete current refresh token from the database
-    await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
-
-    // Generate access and refresh tokens
-    attachAccessCookie(decodedRefreshToken.userId, res);
-    const newRefreshToken = attachRefreshCookie(
-      decodedRefreshToken.userId,
-      res,
-    );
-
-    // Save new refresh token to the database
-    await RefreshToken.create({
-      userId: decodedRefreshToken.userId,
-      token: newRefreshToken,
-    });
+    await authService.refreshToken(refreshToken, res);
 
     res.status(200).json({ status: "success" });
   } catch (e) {
-    if (
-      e instanceof jwt.TokenExpiredError ||
-      e instanceof jwt.JsonWebTokenError
-    ) {
-      return next(new AppError("Refresh token is invalid or expired", 401));
-    }
-
     next(e);
   }
 };

@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const {
@@ -22,7 +23,7 @@ exports.signUp = async (signUpInput) => {
   return User.create(userInput);
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (email, password, res) => {
   // Find user and populate fields
   const user = await User.findOne({ email }, "id name img password").populate([
     {
@@ -73,4 +74,39 @@ exports.login = async (req, res, next) => {
   }));
 
   return userObject;
+};
+
+exports.refreshToken = async (refreshToken, res) => {
+  let decodedRefreshToken;
+
+  try {
+    decodedRefreshToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+    );
+  } catch (e) {
+    throw new AppError("Refresh token is invalid or expired", 401);
+  }
+
+  const userRefreshToken = await RefreshToken.findOne({
+    token: refreshToken,
+    userId: decodedRefreshToken.userId,
+  });
+
+  if (!userRefreshToken) {
+    throw new AppError("Refresh token is invalid or expired", 401);
+  }
+
+  // INFO: this logs out the user from all their devices
+  await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
+
+  // Generate new tokens
+  attachAccessCookie(decodedRefreshToken.userId, res);
+  const newRefreshToken = attachRefreshCookie(decodedRefreshToken.userId, res);
+
+  // Save new refresh token to the database
+  await RefreshToken.create({
+    userId: decodedRefreshToken.userId,
+    token: newRefreshToken,
+  });
 };
