@@ -81,12 +81,7 @@ exports.refreshToken = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   try {
-    await RefreshToken.deleteMany({ userId: req.user.id });
-    await InvalidAccessToken.create({
-      token: req.accessToken.token,
-      userId: req.user.id,
-      expiresAt: new Date(req.accessToken.exp),
-    });
+    await authService.logout(req.user.id, req.accessToken);
 
     res.status(204).send();
   } catch (e) {
