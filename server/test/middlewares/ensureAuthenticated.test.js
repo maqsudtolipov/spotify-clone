@@ -25,6 +25,10 @@ afterAll(async () => {
   server.close();
 });
 
+afterEach(() => {
+  jest.clearAllMocks(); // or jest.resetAllMocks();
+});
+
 describe("Ensure Authenticated Middleware", () => {
   let loggedInUsers;
 
@@ -60,6 +64,29 @@ describe("Ensure Authenticated Middleware", () => {
       statusCode: 401,
       message: "Access token not found",
     });
+  });
+
+  it("should fail if access token is inside invalid access tokens list", async () => {
+    jest
+      .spyOn(InvalidAccessToken, "findOne")
+      .mockResolvedValue({ token: "invalidToken" });
+    const { req, res, next } = middlewareMock(
+      {
+        cookies: {
+          accessToken: "invalidAccessToken",
+        },
+      },
+      {},
+    );
+    await ensureAuthenticated(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Access token invalid",
+        statusCode: 401,
+        code: "AccessTokenInvalid",
+      }),
+    );
   });
 
   // it("should fail when access token is invalid", async () => {
