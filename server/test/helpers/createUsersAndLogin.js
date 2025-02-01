@@ -2,7 +2,7 @@ const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
 
-const createUsersAndLogin = async (users, userIndexForToken = 0) => {
+const createUsersAndLogin = async (users) => {
   const userIds = [];
   let accessTokens = [];
   const loggedInUsers = [];
