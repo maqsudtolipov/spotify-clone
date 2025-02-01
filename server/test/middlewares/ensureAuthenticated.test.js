@@ -25,10 +25,6 @@ afterAll(async () => {
   server.close();
 });
 
-afterEach(() => {
-  jest.clearAllMocks(); // or jest.resetAllMocks();
-});
-
 describe("Ensure Authenticated Middleware", () => {
   let loggedInUsers;
 
@@ -88,39 +84,4 @@ describe("Ensure Authenticated Middleware", () => {
       }),
     );
   });
-
-  // it("should fail when access token is invalid", async () => {
-  //   const userId = new mongoose.Types.ObjectId();
-  //
-  //   const accessToken = jwt.sign(
-  //     {
-  //       userId,
-  //       subject: "accessToken",
-  //     },
-  //     process.env.ACCESS_TOKEN_SECRET,
-  //     { expiresIn: "1h" },
-  //   );
-  //   const decodedAccessToken = jwt.verify(
-  //     accessToken,
-  //     process.env.ACCESS_TOKEN_SECRET,
-  //   );
-  //   await InvalidAccessToken.create({
-  //     token: accessToken,
-  //     userId: decodedAccessToken.userId,
-  //     expiresAt: new Date(decodedAccessToken.exp),
-  //   });
-  //
-  //   const req = httpMocks.createRequest({
-  //     cookies: {
-  //       accessToken,
-  //     },
-  //   });
-  //   const res = httpMocks.createResponse();
-  //   const next = jest.fn();
-  //   await ensureAuthenticated(req, res, next);
-  //
-  //   expect(next.mock.calls[0][0].statusCode).toBe(401);
-  //   expect(next.mock.calls[0][0].message).toMatch(/Access token invalid/i);
-  //   expect(next.mock.calls[0][0].code).toBe("AccessTokenInvalid");
-  // });
 });
