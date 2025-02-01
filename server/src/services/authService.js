@@ -7,6 +7,7 @@ const {
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
+const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 
 exports.signUp = async (signUpInput) => {
   // Check if the user already exists
@@ -108,5 +109,15 @@ exports.refreshToken = async (refreshToken, res) => {
   await RefreshToken.create({
     userId: decodedRefreshToken.userId,
     token: newRefreshToken,
+  });
+};
+
+exports.logout = async (userId, accessToken) => {
+  await RefreshToken.deleteMany({ userId });
+
+  await InvalidAccessToken.create({
+    token: accessToken.token,
+    userId,
+    expiresAt: new Date(accessToken.exp),
   });
 };
