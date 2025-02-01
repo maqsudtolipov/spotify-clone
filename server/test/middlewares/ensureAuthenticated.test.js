@@ -23,7 +23,7 @@ afterAll(async () => {
 });
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 describe("Ensure Authenticated Middleware", () => {
