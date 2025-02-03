@@ -3,6 +3,7 @@ const User = require("../../../src/models/userModel");
 const authService = require("../../../src/services/authService");
 const AppError = require("../../../src/utils/AppError");
 const loginService = require("../../../src/services/authService");
+const bcrypt = require("bcryptjs");
 
 jest.mock("../../../src/models/userModel");
 
@@ -64,6 +65,19 @@ describe("login service", () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       populate: jest.fn().mockResolvedValue(),
     });
+
+    const error = await loginService.login("user@example.com").catch((e) => e);
+
+    expect(error).toBeInstanceOf(AppError);
+    expect(error.statusCode).toBe(401);
+    expect(error.message).toBe("Invalid email or password");
+  });
+
+  it("should throw error if passwords does not match", async () => {
+    jest.spyOn(User, "findOne").mockReturnValue({
+      populate: jest.fn().mockResolvedValue({email: "user@example.com"}),
+    });
+    jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
     const error = await loginService.login("user@example.com").catch((e) => e);
 
