@@ -10,6 +10,7 @@ const {
 } = require("../../../src/utils/attachCookieTokens");
 const RefreshToken = require("../../../src/models/refreshTokenModel");
 const jwt = require("jsonwebtoken");
+const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 
 jest.mock("../../../src/models/userModel");
 jest.mock("../../../src/utils/attachCookieTokens");
@@ -181,5 +182,15 @@ describe("refreshToken service", () => {
     expect(attachAccessCookie).toHaveBeenCalled();
     expect(attachRefreshCookie).toHaveBeenCalled();
     expect(RefreshToken.create).toHaveBeenCalled();
+  });
+});
+
+describe("logout service", () => {
+  it("should delete all refresh tokens and blocklist current access token", () => {
+    jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
+    jest.spyOn(InvalidAccessToken, "create").mockResolvedValue({});
+
+    expect(RefreshToken.deleteMany).toHaveBeenCalled();
+    expect(InvalidAccessToken.create).toHaveBeenCalled();
   });
 });
