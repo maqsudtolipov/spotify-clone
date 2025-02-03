@@ -2,7 +2,7 @@ const express = require("express");
 const userController = require("../controllers/userController");
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const authorize = require("../middlewares/authorize");
-const { uploadUserImg, resizeUserImg } = require("../middlewares/userStorage");
+const {uploadUserImg, resizeUserImg} = require("../storage/userStorage");
 
 const router = express.Router();
 
