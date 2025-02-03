@@ -136,7 +136,6 @@ describe("login service", () => {
 });
 
 describe("refreshToken service", () => {
-  // jwt fails
   it("should throw error if jwt verify fails", async () => {
     jest.spyOn(jwt, "verify").mockImplementation(() => {
       throw new Error();
@@ -149,6 +148,18 @@ describe("refreshToken service", () => {
     expect(error.message).toBe("Refresh token is invalid or expired");
   });
 
-  // refresh token invalid
+  it("should throw error if refresh token is not inside db", async () => {
+    jest.spyOn(jwt, "verify").mockResolvedValue({
+      token: "refreshToken",
+      userId: "userId",
+    });
+    jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
+
+    const error = await authService.refreshToken().catch((e) => e);
+
+    expect(error).toBeInstanceOf(AppError);
+    expect(error.statusCode).toBe(401);
+    expect(error.message).toBe("Refresh token is invalid or expired");
+  });
   // delete refresh old token, attach new tokens and create new refresh token
 });
