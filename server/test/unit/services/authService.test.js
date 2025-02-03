@@ -75,12 +75,18 @@ describe("login service", () => {
 
   it("should throw error if passwords does not match", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue({email: "user@example.com"}),
+      populate: jest.fn().mockResolvedValue({
+        email: "user@example.com",
+        password: "correctPass",
+      }),
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
-    const error = await loginService.login("user@example.com").catch((e) => e);
+    const error = await loginService
+      .login("user@example.com", "wrongPass")
+      .catch((e) => e);
 
+    expect(bcrypt.compare).toHaveBeenCalledWith("wrongPass", "correctPass");
     expect(error).toBeInstanceOf(AppError);
     expect(error.statusCode).toBe(401);
     expect(error.message).toBe("Invalid email or password");
