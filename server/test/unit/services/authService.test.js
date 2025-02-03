@@ -9,9 +9,11 @@ const {
   attachRefreshCookie,
 } = require("../../../src/utils/attachCookieTokens");
 const RefreshToken = require("../../../src/models/refreshTokenModel");
+const jwt = require("jsonwebtoken");
 
 jest.mock("../../../src/models/userModel");
 jest.mock("../../../src/utils/attachCookieTokens");
+jest.mock("jsonwebtoken");
 
 let server;
 beforeAll(async () => {
@@ -114,7 +116,7 @@ describe("login service", () => {
 
     attachAccessCookie.mockImplementation(() => ({}));
     attachRefreshCookie.mockImplementation(() => ({}));
-    
+
     jest.spyOn(RefreshToken, "create").mockResolvedValue();
 
     const res = {};
@@ -131,4 +133,22 @@ describe("login service", () => {
       library: {items: []},
     });
   });
+});
+
+describe("refreshToken service", () => {
+  // jwt fails
+  it("should throw error if jwt verify fails", async () => {
+    jest.spyOn(jwt, "verify").mockImplementation(() => {
+      throw new Error();
+    });
+
+    const error = await authService.refreshToken().catch((e) => e);
+
+    expect(error).toBeInstanceOf(AppError);
+    expect(error.statusCode).toBe(401);
+    expect(error.message).toBe("Refresh token is invalid or expired");
+  });
+
+  // refresh token invalid
+  // delete refresh old token, attach new tokens and create new refresh token
 });
