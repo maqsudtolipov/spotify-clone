@@ -31,4 +31,29 @@ describe("signUp service", () => {
     expect(error.statusCode).toBe(409);
     expect(error.message).toBe("Email already exists");
   });
+
+  it("should create a user with the default img id", async () => {
+    jest.spyOn(User, "findOne").mockResolvedValue(null);
+    jest.spyOn(User, "getDefaultUserImgId").mockResolvedValue("defaultImgId");
+    jest.spyOn(User, "create").mockResolvedValue({
+      email: "user@example.com",
+      img: "defaultImgId",
+    });
+
+    const newUser = await authService.signUp({
+      email: "user@example.com",
+      password: "password",
+    });
+
+    expect(User.getDefaultUserImgId).toHaveBeenCalled();
+    expect(User.create).toHaveBeenCalledWith({
+      email: "user@example.com",
+      password: "password",
+      img: "defaultImgId",
+    });
+    expect(newUser).toMatchObject({
+      email: "user@example.com",
+      img: "defaultImgId",
+    });
+  });
 });
