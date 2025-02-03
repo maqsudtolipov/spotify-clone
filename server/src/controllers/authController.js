@@ -12,7 +12,7 @@ const authService = require("../services/authService");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const { email, name, password, passwordConfirm } = req.body;
+    const {email, name, password, passwordConfirm} = req.body;
 
     if (!email || !name || !password || !passwordConfirm) {
       return next(
@@ -45,7 +45,7 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const {email, password} = req.body;
 
     if (!email || !password) {
       return next(new AppError("Please provide email and password", 422));
@@ -64,7 +64,7 @@ exports.login = async (req, res, next) => {
 
 exports.refreshToken = async (req, res, next) => {
   try {
-    const { refreshToken } = req.cookies;
+    const {refreshToken} = req.cookies;
 
     // Check if the refresh token provided
     if (!refreshToken) {
@@ -73,7 +73,7 @@ exports.refreshToken = async (req, res, next) => {
 
     await authService.refreshToken(refreshToken, res);
 
-    res.status(200).json({ status: "success" });
+    res.status(200).json({status: "success"});
   } catch (e) {
     next(e);
   }
