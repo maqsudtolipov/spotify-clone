@@ -2,6 +2,7 @@ const app = require("../../../src/app");
 const User = require("../../../src/models/userModel");
 const authService = require("../../../src/services/authService");
 const AppError = require("../../../src/utils/AppError");
+const loginService = require("../../../src/services/authService");
 
 jest.mock("../../../src/models/userModel");
 
@@ -55,5 +56,19 @@ describe("signUp service", () => {
       email: "user@example.com",
       img: "defaultImgId",
     });
+  });
+});
+
+describe("login service", () => {
+  it("should throw error if user does not exist", async () => {
+    jest.spyOn(User, "findOne").mockReturnValue({
+      populate: jest.fn().mockResolvedValue(),
+    });
+
+    const error = await loginService.login("user@example.com").catch((e) => e);
+
+    expect(error).toBeInstanceOf(AppError);
+    expect(error.statusCode).toBe(401);
+    expect(error.message).toBe("Invalid email or password");
   });
 });

@@ -11,7 +11,7 @@ const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 
 exports.signUp = async (signUpInput) => {
   // Check if the user already exists
-  const existingUser = await User.findOne({ email: signUpInput.email });
+  const existingUser = await User.findOne({email: signUpInput.email});
   if (existingUser) {
     throw new AppError("Email already exists", 409);
   }
@@ -26,7 +26,7 @@ exports.signUp = async (signUpInput) => {
 
 exports.login = async (email, password, res) => {
   // Find user and populate fields
-  const user = await User.findOne({ email }, "id name img password").populate([
+  const user = await User.findOne({email}, "id name img password").populate([
     {
       path: "library",
       select: "items",
@@ -35,8 +35,8 @@ exports.login = async (email, password, res) => {
           path: "items.refId",
           select: "name img user createdAt",
           populate: [
-            { path: "user", select: "name", strictPopulate: false },
-            { path: "img", select: "url" },
+            {path: "user", select: "name", strictPopulate: false},
+            {path: "img", select: "url"},
           ],
         },
       ],
@@ -47,13 +47,13 @@ exports.login = async (email, password, res) => {
   ]);
 
   if (!user) {
-    return next(new AppError("Invalid email or password", 401));
+    throw new AppError("Invalid email or password", 401);
   }
 
   // Validate password
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return next(new AppError("Invalid email or password", 401));
+    throw new AppError("Invalid email or password", 401);
   }
 
   // Generate access and refresh tokens
@@ -61,7 +61,7 @@ exports.login = async (email, password, res) => {
   const refreshToken = attachRefreshCookie(user.id, res);
 
   // Save refresh token to the database
-  await RefreshToken.create({ userId: user.id, token: refreshToken });
+  await RefreshToken.create({userId: user.id, token: refreshToken});
 
   const userObject = user.toObject();
   userObject.library.items = userObject.library.items.map((item) => ({
@@ -99,7 +99,7 @@ exports.refreshToken = async (refreshToken, res) => {
   }
 
   // INFO: this logs out the user from all their devices
-  await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
+  await RefreshToken.deleteMany({userId: decodedRefreshToken.userId});
 
   // Generate new tokens
   attachAccessCookie(decodedRefreshToken.userId, res);
@@ -113,7 +113,7 @@ exports.refreshToken = async (refreshToken, res) => {
 };
 
 exports.logout = async (userId, accessToken) => {
-  await RefreshToken.deleteMany({ userId });
+  await RefreshToken.deleteMany({userId});
 
   await InvalidAccessToken.create({
     token: accessToken.token,
