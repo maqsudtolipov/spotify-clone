@@ -10,7 +10,10 @@ const middlewareMock = (reqOptions, resOptions) => {
   const res = httpMocks.createResponse(resOptions);
   const next = jest.fn();
 
-  return { req, res, next };
+  res.status = jest.fn().mockReturnThis();
+  res.json = jest.fn();
+
+  return {req, res, next};
 };
 
 module.exports = middlewareMock;

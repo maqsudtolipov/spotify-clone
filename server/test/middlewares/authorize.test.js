@@ -29,4 +29,16 @@ describe("Authorize middleware", () => {
 
     expect(next).toHaveBeenCalled();
   });
+
+  it("should return 403 if user is not authorized", async () => {
+    User.findById.mockResolvedValue({id: "userId", role: "user"});
+
+    const {req, res, next} = middlewareMock({user: {id: "userId"}});
+    const authorizeMiddleware = authorize(["admin"]);
+    await authorizeMiddleware(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith({message: "Access denied"});
+    expect(next).not.toHaveBeenCalled();
+  });
 });
