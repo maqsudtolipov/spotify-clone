@@ -1,14 +1,14 @@
-const app = require("../../src/app");
-const Song = require("../../src/models/songModel");
+const app = require("../../../src/app");
+const Song = require("../../../src/models/songModel");
 const fs = require("node:fs");
-const { resolve } = require("node:path");
+const {resolve} = require("node:path");
 const request = require("supertest");
-const createUsersAndLogin = require("../helpers/createUsersAndLogin");
+const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
-} = require("../helpers/databaseHelpers");
-const Playlist = require("../../src/models/playlistModel");
+} = require("../../helpers/databaseHelpers");
+const Playlist = require("../../../src/models/playlistModel");
 
 let server;
 beforeAll(async () => {
@@ -124,7 +124,7 @@ describe("Song routes", () => {
         .post(`/api/songs/${songId}/like`)
         .set("Cookie", [`accessToken=${accessToken}`]);
 
-      const updatedPlaylist = await Playlist.findOne({ user: userIds[1] });
+      const updatedPlaylist = await Playlist.findOne({user: userIds[1]});
       expect(updatedPlaylist.songs.length).toEqual(1);
 
       expect(res.status).toBe(200);
@@ -202,7 +202,7 @@ describe("Song routes", () => {
         .post(`/api/songs/${songId}/dislike`)
         .set("Cookie", [`accessToken=${accessToken}`]);
 
-      const updatedPlaylist = await Playlist.findOne({ user: userIds[1] });
+      const updatedPlaylist = await Playlist.findOne({user: userIds[1]});
       expect(updatedPlaylist.songs.length).toEqual(0);
 
       expect(res.status).toBe(200);

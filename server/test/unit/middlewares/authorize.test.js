@@ -1,10 +1,10 @@
-const authorize = require("../../src/middlewares/authorize");
-const middlewareMock = require("../helpers/middlewareMock");
-const User = require("../../src/models/userModel");
-const app = require("../../src/app");
+const authorize = require("../../../src/middlewares/authorize");
+const middlewareMock = require("../../helpers/middlewareMock");
+const User = require("../../../src/models/userModel");
+const app = require("../../../src/app");
 const httpMocks = require("node-mocks-http");
 
-jest.mock("../../src/models/userModel");
+jest.mock("../../../src/models/userModel");
 
 let server;
 beforeAll(async () => {

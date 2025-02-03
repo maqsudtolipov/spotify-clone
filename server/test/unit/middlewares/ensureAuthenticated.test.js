@@ -1,10 +1,10 @@
-const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
-const app = require("../../src/app");
-const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
-const createUsersAndLogin = require("../helpers/createUsersAndLogin");
-const middlewareMock = require("../helpers/middlewareMock");
+const ensureAuthenticated = require("../../../src/middlewares/ensureAuthenticated");
+const app = require("../../../src/app");
+const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
+const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
+const middlewareMock = require("../../helpers/middlewareMock");
 const jwt = require("jsonwebtoken");
-const User = require("../../src/models/userModel");
+const User = require("../../../src/models/userModel");
 const {TokenExpiredError, JsonWebTokenError} = jwt;
 
 let server;

@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
-const app = require("../../src/app");
-const User = require("../../src/models/userModel");
-const RefreshToken = require("../../src/models/refreshTokenModel");
+const app = require("../../../src/app");
+const User = require("../../../src/models/userModel");
+const RefreshToken = require("../../../src/models/refreshTokenModel");
 const {
   refreshToken: refreshTokenController,
-} = require("../../src/controllers/authController");
-const middlewareMock = require("../helpers/middlewareMock");
-const validateAndExtractTokens = require("../helpers/validateAndExtractTokens");
-const { generateRefreshToken } = require("../../src/utils/genereateTokens");
-const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
+} = require("../../../src/controllers/authController");
+const middlewareMock = require("../../helpers/middlewareMock");
+const validateAndExtractTokens = require("../../helpers/validateAndExtractTokens");
+const {generateRefreshToken} = require("../../../src/utils/genereateTokens");
+const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
-} = require("../helpers/databaseHelpers");
-const Playlist = require("../../src/models/playlistModel");
+} = require("../../helpers/databaseHelpers");
+const Playlist = require("../../../src/models/playlistModel");
 
 const testUser = {
   name: "John Doe",
@@ -72,7 +72,7 @@ describe("authController", () => {
     });
 
     it("should fail when email is invalid", async () => {
-      const res = await signUp({ ...testUser, email: "invalidemail" });
+      const res = await signUp({...testUser, email: "invalidemail"});
 
       expect(res.status).toBe(400);
       expect(res.body.status).toBe("fail");
@@ -189,7 +189,7 @@ describe("authController", () => {
       const userId = new mongoose.Types.ObjectId();
       const refreshToken = generateRefreshToken(userId);
 
-      const { req, res, next } = middlewareMock({
+      const {req, res, next} = middlewareMock({
         method: "POST",
         url: "/api/auth/refresh-token",
         cookies: {
@@ -258,7 +258,7 @@ describe("authController", () => {
         .set("Cookie", [`accessToken=${accessToken}`]);
       expect(res.status).toBe(204);
 
-      const refreshTokens = await RefreshToken.find({ userId });
+      const refreshTokens = await RefreshToken.find({userId});
       expect(refreshTokens.length).toBe(0);
 
       const invalidAccessToken = await InvalidAccessToken.findOne({

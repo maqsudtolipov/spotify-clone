@@ -1,16 +1,16 @@
 const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
-} = require("../helpers/databaseHelpers");
-const app = require("../../src/app");
-const createUsersAndLogin = require("../helpers/createUsersAndLogin");
+} = require("../../helpers/databaseHelpers");
+const app = require("../../../src/app");
+const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const request = require("supertest");
-const Playlist = require("../../src/models/playlistModel");
-const User = require("../../src/models/userModel");
-const File = require("../../src/models/fileModel");
+const Playlist = require("../../../src/models/playlistModel");
+const User = require("../../../src/models/userModel");
+const File = require("../../../src/models/fileModel");
 const fs = require("node:fs");
-const { resolve } = require("node:path");
-const Library = require("../../src/models/libraryModel");
+const {resolve} = require("node:path");
+const Library = require("../../../src/models/libraryModel");
 
 let server;
 beforeAll(async () => {
@@ -61,7 +61,7 @@ describe("PlaylistController", () => {
         .set("Cookie", [`accessToken=${accessTokens[1]}`]);
       const updatesPrivatePlaylist = await request(app)
         .patch(`/api/playlists/${createdPrivatePlaylist.body.playlist.id}`)
-        .send({ isPublic: false })
+        .send({isPublic: false})
         .set("Cookie", [`accessToken=${accessTokens[1]}`]);
       privatePlaylistId = updatesPrivatePlaylist.body.playlist.id;
     });
@@ -291,7 +291,7 @@ describe("PlaylistController", () => {
 
       const updatePlaylistRes = await request(app)
         .patch(`/api/playlists/${createPlaylistRes.body.playlist.id}`)
-        .send({ isPublic: false })
+        .send({isPublic: false})
         .set("Cookie", [`accessToken=${loggedInUsers[1].accessToken}`]);
       privatePlaylistId = updatePlaylistRes.body.playlist.id;
     });
