@@ -157,9 +157,29 @@ describe("refreshToken service", () => {
 
     const error = await authService.refreshToken().catch((e) => e);
 
+    expect(RefreshToken.findOne).toHaveBeenCalled();
     expect(error).toBeInstanceOf(AppError);
     expect(error.statusCode).toBe(401);
     expect(error.message).toBe("Refresh token is invalid or expired");
   });
   // delete refresh old token, attach new tokens and create new refresh token
+
+  it("should delete old refresh token, attach new tokens to res and save refresh token to db", async () => {
+    jest.spyOn(jwt, "verify").mockResolvedValue();
+    jest
+      .spyOn(RefreshToken, "findOne")
+      .mockResolvedValue({token: "refreshToken"});
+    jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
+    jest.spyOn(RefreshToken, "create").mockResolvedValue({});
+
+    attachAccessCookie.mockImplementation(() => ({}));
+    attachRefreshCookie.mockImplementation(() => ({}));
+
+    await authService.refreshToken();
+
+    expect(RefreshToken.deleteMany).toHaveBeenCalled();
+    expect(attachAccessCookie).toHaveBeenCalled();
+    expect(attachRefreshCookie).toHaveBeenCalled();
+    expect(RefreshToken.create).toHaveBeenCalled();
+  });
 });
