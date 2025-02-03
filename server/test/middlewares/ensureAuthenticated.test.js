@@ -1,15 +1,11 @@
 const ensureAuthenticated = require("../../src/middlewares/ensureAuthenticated");
 const app = require("../../src/app");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
-const {
-  cleanupDatabaseAndDisconnect,
-  connectToDatabase,
-} = require("../helpers/databaseHelpers");
 const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const middlewareMock = require("../helpers/middlewareMock");
 const jwt = require("jsonwebtoken");
 const User = require("../../src/models/userModel");
-const { TokenExpiredError, JsonWebTokenError } = jwt;
+const {TokenExpiredError, JsonWebTokenError} = jwt;
 
 let server;
 beforeAll(async () => {
@@ -32,7 +28,7 @@ describe("Ensure Authenticated Middleware", () => {
   });
 
   it("should attach user data and access token inside req object", async () => {
-    jest.spyOn(jwt, "verify").mockReturnValue({ userId: "userId" });
+    jest.spyOn(jwt, "verify").mockReturnValue({userId: "userId"});
 
     const mockUser = {
       id: "userId",
@@ -41,7 +37,7 @@ describe("Ensure Authenticated Middleware", () => {
     };
     jest.spyOn(User, "findById").mockResolvedValue(mockUser);
 
-    const { req, res, next } = middlewareMock(
+    const {req, res, next} = middlewareMock(
       {
         cookies: {
           accessToken: "validAccessToken",
@@ -61,7 +57,7 @@ describe("Ensure Authenticated Middleware", () => {
   });
 
   it("should fail if access token is missing", async () => {
-    const { req, res, next } = middlewareMock({}, {});
+    const {req, res, next} = middlewareMock({}, {});
     await ensureAuthenticated(req, res, next);
 
     expect(next.mock.calls[0][0]).toMatchObject({
@@ -73,8 +69,8 @@ describe("Ensure Authenticated Middleware", () => {
   it("should fail if access token is inside invalid access tokens list", async () => {
     jest
       .spyOn(InvalidAccessToken, "findOne")
-      .mockResolvedValue({ token: "invalidToken" });
-    const { req, res, next } = middlewareMock(
+      .mockResolvedValue({token: "invalidToken"});
+    const {req, res, next} = middlewareMock(
       {
         cookies: {
           accessToken: "invalidAccessToken",
@@ -98,7 +94,7 @@ describe("Ensure Authenticated Middleware", () => {
       throw new TokenExpiredError("jwt expired", Date.now());
     });
 
-    const { req, res, next } = middlewareMock(
+    const {req, res, next} = middlewareMock(
       {
         cookies: {
           accessToken: "expiredAccessToken",
@@ -120,7 +116,7 @@ describe("Ensure Authenticated Middleware", () => {
       throw new JsonWebTokenError("some jwt error");
     });
 
-    const { req, res, next } = middlewareMock(
+    const {req, res, next} = middlewareMock(
       {
         cookies: {
           accessToken: "invalidAccessToken",
@@ -138,10 +134,10 @@ describe("Ensure Authenticated Middleware", () => {
   });
 
   it("should fail if user does not exist", async () => {
-    jest.spyOn(jwt, "verify").mockReturnValue({ userId: "nonExistentUserId" });
+    jest.spyOn(jwt, "verify").mockReturnValue({userId: "nonExistentUserId"});
     jest.spyOn(User, "findById").mockResolvedValue(null);
 
-    const { req, res, next } = middlewareMock(
+    const {req, res, next} = middlewareMock(
       {
         cookies: {
           accessToken: "validAccessToken",
@@ -151,7 +147,6 @@ describe("Ensure Authenticated Middleware", () => {
     );
     await ensureAuthenticated(req, res, next);
 
-    console.log(next.mock.calls[0]);
     expect(1).toEqual(1);
     expect(next).toHaveBeenCalledWith(
       expect.objectContaining({
