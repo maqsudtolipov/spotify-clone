@@ -1,4 +1,4 @@
-const {imagekitUpload} = require("../utils/ImageKit");
+const {imagekitUpload, imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
@@ -100,6 +100,45 @@ exports.updateSong = async (songInput) => {
     "songs",
     "id name artist song img plays duration",
   );
+  return user.songs;
+};
+
+exports.deleteSong = async (songInput) => {
+  const song = await Song.findById(songInput.songId);
+
+  if (!song) {
+    throw new AppError("Song not found", 404);
+  }
+
+  // Check if the user is the owner of the song
+  if (songInput.userId !== String(song.artist)) {
+    throw new AppError("You are not owner of this song", 403);
+  }
+
+  // Delete song files from ImageKit and database
+  const songFile = await File.findById(song.song);
+  const imgFile = await File.findById(song.img);
+
+  if (songFile && songFile.imagekitId) {
+    await imagekitDelete(songFile.imagekitId);
+    await File.findByIdAndDelete(songFile.id);
+  }
+
+  if (imgFile && imgFile.imagekitId) {
+    await imagekitDelete(imgFile.imagekitId);
+    await File.findByIdAndDelete(imgFile.id);
+  }
+
+  // Remove song from the database
+  await Song.findByIdAndDelete(song.id);
+
+  // Remove the song from user's songs list
+  const user = await User.findById(songInput.userId).populate({
+    path: "songs",
+    select: "id name artist plays duration",
+    populate: {path: "song img", select: "url"},
+  });
+
   return user.songs;
 };
 

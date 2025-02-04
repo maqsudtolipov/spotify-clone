@@ -1,16 +1,5 @@
 const AppError = require("../utils/AppError");
-const imagekit = require("../utils/ImageKit");
-const Song = require("../models/songModel");
-const User = require("../models/userModel");
-const Playlist = require("../models/playlistModel");
 const songService = require("../services/songService");
-
-/*
-TODO:
-  [+] Move more methods to models, followings MVC
-  [+] Add services to file structure
-  [-] Create tests
-*/
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -67,27 +56,13 @@ exports.updateSong = async (req, res, next) => {
 
 exports.deleteSong = async (req, res, next) => {
   try {
-    // Validate
-    const song = await Song.findById(req.params.id);
+    const songInput = {
+      songId: req.params.songId,
+      userId: req.user.id,
+    };
+    const songs = await songService.deleteSong(songInput);
 
-    if (!song) {
-      return next(new AppError("Song not found", 404));
-    }
-
-    if (req.user.id !== String(song.artist)) {
-      return next(new AppError("You are not owner of this song", 403));
-    }
-
-    // TODO: delete files
-    await Song.findByIdAndDelete(song.id);
-
-    const user = await User.findById(req.user.id).populate({
-      path: "songs",
-      select: "id name artist plays duration",
-      populate: {path: "song img", select: "url"},
-    });
-
-    res.status(200).json({status: "success", songs: user.songs});
+    res.status(200).json({status: "success", songs});
   } catch (e) {
     next(e);
   }
