@@ -1,4 +1,5 @@
 const {imagekitUpload, imagekitDelete} = require("./ImageKit");
+const File = require("../models/fileModel");
 /**
  * Uploads an image file to ImageKit and stored file information inside the database
  *

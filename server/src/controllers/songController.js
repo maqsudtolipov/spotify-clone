@@ -29,7 +29,7 @@ exports.uploadSong = async (req, res, next) => {
 exports.updateSong = async (req, res, next) => {
   try {
     const songInput = {
-      songId: req.params.songId,
+      songId: req.params.id,
       userId: req.user.id,
       name: req.body?.name || undefined,
       img: req.files.img
@@ -57,7 +57,7 @@ exports.updateSong = async (req, res, next) => {
 exports.deleteSong = async (req, res, next) => {
   try {
     const songInput = {
-      songId: req.params.songId,
+      songId: req.params.id,
       userId: req.user.id,
     };
     const songs = await songService.deleteSong(songInput);
@@ -71,9 +71,10 @@ exports.deleteSong = async (req, res, next) => {
 exports.like = async (req, res, next) => {
   try {
     const songInput = {
-      songId: req.params.songId,
+      songId: req.params.id,
       likedSongsId: req.user.likedSongs,
     };
+    console.log(songInput)
     const likedSongs = await songService.likeSong(songInput);
 
     res.status(200).json({
@@ -88,7 +89,7 @@ exports.like = async (req, res, next) => {
 exports.dislike = async (req, res, next) => {
   try {
     const songInput = {
-      songId: req.params.songId,
+      songId: req.params.id,
       likedSongsId: req.user.likedSongs,
     };
     const likedSongs = await songService.dislikeSong(songInput);
