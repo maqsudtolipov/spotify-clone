@@ -1,5 +1,4 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -11,11 +10,7 @@ const artistRouter = require("./routes/artistRoutes");
 const songRouter = require("./routes/songRoutes");
 const playlistRouter = require("./routes/playlistRoutes");
 
-// Express App setup
 const app = express();
-
-// Env
-dotenv.config();
 
 // Middlewares
 app.use(
@@ -29,13 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("tiny"));
 
+// Routes
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/artists", artistRouter);
 app.use("/api/songs", songRouter);
 app.use("/api/playlists", playlistRouter);
 
-// Error handling middlewares
+// Error handling middleware
 app.use(globalErrorHandler);
 
 module.exports = app;

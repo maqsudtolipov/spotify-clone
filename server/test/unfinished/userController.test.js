@@ -4,7 +4,7 @@ const request = require("supertest");
 const User = require("../../src/models/userModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const fs = require("node:fs");
-const { resolve } = require("node:path");
+const {resolve} = require("node:path");
 const signupAndLoginUser = require("../helpers/signupAndLoginUser");
 const {
   connectToDatabase,
@@ -94,14 +94,14 @@ describe("userController", () => {
     let accessToken, img;
 
     beforeAll(async () => {
-      ({ accessToken, img } = await signupAndLoginUser());
+      ({accessToken, img} = await signupAndLoginUser());
     });
 
     it("should update user name", async () => {
       const res = await request(app)
         .patch("/api/users/updateMe")
         .set("Cookie", [`accessToken=${accessToken}`])
-        .send({ name: "Jane Doe" });
+        .send({name: "Jane Doe"});
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");

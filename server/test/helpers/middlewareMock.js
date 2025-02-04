@@ -5,12 +5,18 @@ const httpMocks = require("node-mocks-http");
  * @param reqOptions
  * @param resOptions
  */
-const middlewareMock = (reqOptions, resOptions) => {
+const middlewareMock = (reqOptions, resOptions, mockMethods = false) => {
   const req = httpMocks.createRequest(reqOptions);
   const res = httpMocks.createResponse(resOptions);
   const next = jest.fn();
 
-  return { req, res, next };
+  // If true, mock status and json function
+  if (mockMethods) {
+    res.status = jest.fn().mockReturnThis();
+    res.json = jest.fn();
+  }
+
+  return {req, res, next};
 };
 
 module.exports = middlewareMock;

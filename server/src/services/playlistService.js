@@ -1,41 +1,41 @@
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const { imagekitUpload, imagekitDelete } = require("../utils/ImageKit");
+const {imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
+const uploadFiles = require("../utils/uploadFiles");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("isPublic")
-    .populate("img", "url")
-    .populate("user", "name");
+    .populate([
+      {path: "img", select: "url"},
+      {path: "user", select: "name"},
+    ]);
 
-  if (
-    !playlist ||
-    (!playlist.isPublic && playlist.user.id !== playlistInput.userId)
-  ) {
+  const isPrivatePlaylist =
+    !playlist.isPublic && playlist.user.id !== playlistInput.userId;
+  if (!playlist || isPrivatePlaylist) {
     throw new AppError("Playlist not found", 404);
   }
 
   playlist.isPublic = undefined;
-
   return playlist;
 };
 
 exports.createPlaylist = async (playlistInput) => {
-  // Create a new playlist
   const newPlaylist = await Playlist.create({
     name: playlistInput.name,
     user: playlistInput.userId,
   });
 
   await User.findByIdAndUpdate(playlistInput.userId, {
-    $addToSet: { playlists: newPlaylist.id },
+    $addToSet: {playlists: newPlaylist.id},
   });
 
   await Library.findByIdAndUpdate(playlistInput.libraryId, {
-    $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
+    $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
   });
 
   return newPlaylist;
@@ -44,10 +44,13 @@ exports.createPlaylist = async (playlistInput) => {
 exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("isPublic isLikedSongs")
-    .populate("img", "url")
-    .populate("user", "name");
+    .populate([
+      {path: "img", select: "id url fileId"},
+      {path: "user", select: "name"},
+    ]);
 
-  if (!playlist || playlist.user.id !== playlistInput.userId) {
+  const notPersonalPlaylist = playlist.user.id !== playlistInput.userId;
+  if (!playlist || notPersonalPlaylist) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -55,24 +58,22 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  let imgFile;
-  if (playlistInput.imgFilename) {
-    // Upload new img
-    const imgUpload = await imagekitUpload({
-      file: playlistInput.imgBuffer,
-      fileName: playlistInput.imgFilename,
-      folder: "playlists/",
-    });
-    imgFile = await File.create(imgUpload);
-
-    // Delete the old img if it's not default
-    if (!playlist.img.isDefault) {
-      await imagekitDelete(playlist.img.fileId);
-      await File.findByIdAndDelete(playlist.img.id);
-    }
+  let imgFile = playlist.img.id;
+  if (playlistInput.imgBuffer) {
+    const uploadedFile = uploadFiles(
+      {
+        file: playlistInput.imgBuffer,
+        fileName: playlistInput.imgFilename,
+        folder: "playlists/",
+      },
+      playlist.img.isDefault,
+      playlist.img.fileId,
+      playlist.img.id,
+    );
+    imgFile = uploadedFile.id;
   }
 
-  const updatedPlaylist = await Playlist.findByIdAndUpdate(
+  return await Playlist.findByIdAndUpdate(
     playlistInput.playlistId,
     {
       name: playlistInput.name,
@@ -85,17 +86,18 @@ exports.updatePlaylist = async (playlistInput) => {
       runValidators: true,
     },
   );
-
-  return updatedPlaylist;
 };
 
 exports.deletePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("isPublic isLikedSongs")
-    .populate("img", "fileId isDefault")
-    .populate("user", "name");
+    .populate([
+      {path: "img", select: "id fileId isDefault"},
+      {path: "user", select: "name"},
+    ]);
 
-  if (!playlist || playlist.user.id !== playlistInput.userId) {
+  const notPersonalPlaylist = playlist.user.id !== playlistInput.userId;
+  if (!playlist || notPersonalPlaylist) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -111,38 +113,31 @@ exports.deletePlaylist = async (playlistInput) => {
 
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
   await Library.findByIdAndUpdate(playlistInput.playlistId, {
-    $pull: { items: { refId: playlistInput.playlistId, itemType: "playlist" } },
+    $pull: {items: {refId: playlistInput.playlistId, itemType: "playlist"}},
   });
 };
 
-// Save/Remove playlist
 exports.savePlaylistToLibrary = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId).select(
     "+isPublic +isLikedSongs",
   );
 
-  if (
-    !playlist ||
-    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
-  ) {
+  const isPrivatePlaylist =
+    !playlist.isPublic && String(playlist.user) !== playlistInput.userId;
+  if (!playlist || isPrivatePlaylist) {
     throw new AppError("Playlist not found", 404);
   }
 
-  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
+  const isPersonalPlaylist = String(playlist.user) === playlistInput.userId;
+  if (playlist.isLikedSongs || isPersonalPlaylist) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  await User.findByIdAndUpdate(
-    playlistInput.userId,
-    {
-      $addToSet: {
-        likedPlaylists: playlist.id,
-      },
+  await User.findByIdAndUpdate(playlistInput.userId, {
+    $addToSet: {
+      likedPlaylists: playlist.id,
     },
-    {
-      new: true,
-    },
-  );
+  });
 
   const updatedLibrary = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
@@ -154,7 +149,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
         },
       },
     },
-    { new: true },
+    {new: true},
   );
 
   return {
@@ -167,28 +162,22 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     "+isPublic +isLikedSongs",
   );
 
-  if (
-    !playlist ||
-    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
-  ) {
+  const isPrivatePlaylist =
+    !playlist.isPublic && String(playlist.user) !== playlistInput.userId;
+  if (!playlist || isPrivatePlaylist) {
     throw new AppError("Playlist not found", 404);
   }
 
-  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
+  const isPersonalPlaylist = String(playlist.user) === playlistInput.userId;
+  if (playlist.isLikedSongs || isPersonalPlaylist) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  await User.findByIdAndUpdate(
-    playlistInput.userId,
-    {
-      $pull: {
-        likedPlaylists: playlist.id,
-      },
+  await User.findByIdAndUpdate(playlistInput.userId, {
+    $pull: {
+      likedPlaylists: playlist.id,
     },
-    {
-      new: true,
-    },
-  );
+  });
 
   const updatedLibrary = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
@@ -200,7 +189,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
         },
       },
     },
-    { new: true },
+    {new: true},
   );
 
   return {

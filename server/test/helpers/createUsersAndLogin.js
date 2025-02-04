@@ -1,19 +1,18 @@
 const request = require("supertest");
 const app = require("../../src/app");
 const User = require("../../src/models/userModel");
+const {testUsers} = require("../testData");
 
-const createUsersAndLogin = async (users, userIndexForToken = 0) => {
-  const userIds = [];
-  let accessTokens = [];
+const createUsersAndLogin = async (numOfUsers) => {
+  const users = testUsers.slice(0, numOfUsers);
   const loggedInUsers = [];
 
-  for (const [index, user] of users.entries()) {
+  for (const user of users) {
     // Signup user
-    const { role, ...userData } = user;
+    const {role, ...userData} = user;
     const signupRes = await request(app)
       .post("/api/auth/signup")
       .send(userData);
-    userIds.push(signupRes.body.data.id);
 
     // If the role is specified, update it
     if (role) {
@@ -22,7 +21,7 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
       });
     }
 
-    // Login the user and store their token
+    // Login the user
     const loginRes = await request(app).post("/api/auth/login").send({
       email: userData.email,
       password: userData.password,
@@ -33,15 +32,22 @@ const createUsersAndLogin = async (users, userIndexForToken = 0) => {
         .get("set-cookie")
         .find((cookie) => cookie.startsWith("accessToken="))
         .match(/accessToken=([^;]+)/)[1] || null;
-    loggedInUsers.push({ ...loginRes.body.user, accessToken });
-    accessTokens.push(accessToken);
+    const refreshToken =
+      loginRes
+        .get("set-cookie")
+        .find((cookie) => cookie.startsWith("refreshToken="))
+        .match(/refreshToken=([^;]+)/)[1] || null;
+
+    loggedInUsers.push({
+      ...loginRes.body.user,
+      email: userData.email,
+      password: userData.password,
+      accessToken,
+      refreshToken,
+    });
   }
 
-  return {
-    userIds,
-    accessTokens,
-    loggedInUsers,
-  };
+  return loggedInUsers;
 };
 
 module.exports = createUsersAndLogin;

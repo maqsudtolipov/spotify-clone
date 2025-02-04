@@ -5,31 +5,41 @@ const Song = require("../../src/models/songModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 const Playlist = require("../../src/models/playlistModel");
+const {MongoMemoryServer} = require("mongodb-memory-server");
 
+let memoryDB;
 exports.connectToDatabase = async () => {
+  // Create memory db
+  memoryDB = await MongoMemoryServer.create();
+  const dbUrl = memoryDB.getUri();
+
+  // Set env files for test environment
   process.env.NODE_ENV = "production";
   process.env.IK_ENV = "test";
 
-  if (
-    !process.env.DB_TEST_URL &&
-    !/test-database/.test(process.env.DB_TEST_URL)
-  ) {
-    console.log("Tests can only and must connect to a test database.");
+  try {
+    await mongoose.connect(dbUrl);
+    console.log("🟢 Test Database Connected");
+  } catch (err) {
+    console.error("🔴 DATABASE CONNECTION ERROR: ", err);
+    throw new Error("Database connection failed.");
   }
-
-  const DB = process.env.DB_TEST_URL.replace(
-    "<db_password>",
-    process.env.DB_PASS,
-  );
-  await mongoose.connect(DB);
 };
 
 exports.cleanupDatabaseAndDisconnect = async () => {
-  await File.deleteMany();
-  await User.deleteMany();
-  await Song.deleteMany();
-  await Playlist.deleteMany();
-  await RefreshToken.deleteMany();
-  await InvalidAccessToken.deleteMany();
-  await mongoose.disconnect();
+  try {
+    await File.deleteMany();
+    await User.deleteMany();
+    await Song.deleteMany();
+    await Playlist.deleteMany();
+    await RefreshToken.deleteMany();
+    await InvalidAccessToken.deleteMany();
+    console.log("🧹 Database cleaned up");
+  } catch (e) {
+    console.error("🔴 ERROR during database cleanup");
+  } finally {
+    await mongoose.disconnect();
+    await memoryDB.stop();
+    console.log("🟢 Database disconnected");
+  }
 };
