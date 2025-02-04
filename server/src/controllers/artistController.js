@@ -1,4 +1,4 @@
-const artistService = require("./artistController");
+const artistService = require("../services/artistService");
 
 exports.getArtistById = async (req, res, next) => {
   try {
