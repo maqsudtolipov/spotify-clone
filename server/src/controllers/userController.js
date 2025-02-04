@@ -64,96 +64,38 @@ exports.updateMe = async (req, res, next) => {
   }
 };
 
-// FIXME: refactor
 exports.followUser = async (req, res, next) => {
   try {
-    // Check users exist
-    const currentUser = await User.findById(req.user.id);
-    const candidateUser = await User.findById(req.params.id).select("role");
-
-    if (!currentUser || !candidateUser) {
-      return next(new AppError("User not found", 400));
-    }
-
-    if (currentUser.id === candidateUser.id) {
-      return next(new AppError("User cannot follow himself", 400));
-    }
-
-    const {updatedUser, updatedCandidate} = userHelpers.updateFollowStatus(
-      currentUser,
-      candidateUser,
-      "follow",
-    );
-
-    let library;
-    if (candidateUser.role === "artist") {
-      library = await userHelpers.updateLibrary(
-        req.user.library,
-        candidateUser.id,
-        "unfollow",
-      );
-    }
+    const followInput = {
+      userId: req.user.id,
+      userLibraryId: req.user.library,
+      candidateUserId: req.params.id,
+    };
+    const data = userService.handleFollowUnfollow(followInput, "follow");
 
     res.status(200).json({
       status: "success",
-      data: {
-        followings: updatedUser.followings,
-        candidateFollowersCount: updatedCandidate.followersCount,
-        library,
-      },
+      data,
     });
   } catch (e) {
-    if (e.name === "CastError") {
-      return next(new AppError(`Invalid user id: ${e.value}`, 400));
-    }
-
     next(e);
   }
 };
 
 exports.unfollowUser = async (req, res, next) => {
   try {
-    // Check both inputs
-    const currentUser = await User.findById(req.user.id);
-    const candidateUser = await User.findById(req.params.id).select("role");
-
-    if (!currentUser || !candidateUser) {
-      return next(new AppError("User not found", 400));
-    }
-
-    // Check user is not unfollowing himself
-    if (currentUser.id === candidateUser.id) {
-      return next(new AppError("User cannot unfollow himself", 400));
-    }
-
-    const {updatedUser, updatedCandidate} = userHelpers.updateFollowStatus(
-      currentUser,
-      candidateUser,
-      "unfollow",
-    );
-
-    let library;
-    if (candidateUser.role === "artist") {
-      library = await userHelpers.updateLibrary(
-        req.user.library,
-        candidateUser.id,
-        "unfollow",
-      );
-    }
+    const followInput = {
+      userId: req.user.id,
+      userLibraryId: req.user.library,
+      candidateUserId: req.params.id,
+    };
+    const data = userService.handleFollowUnfollow(followInput, "unfollow");
 
     res.status(200).json({
       status: "success",
-      data: {
-        followings: updatedUser.followings,
-        candidateFollowersCount: updatedCandidate.followersCount,
-        library,
-      },
+      data,
     });
   } catch (e) {
-    if (e.name === "CastError") {
-      return next(new AppError(`Invalid user id: ${e.value}`, 400));
-    }
-
     next(e);
   }
 };
