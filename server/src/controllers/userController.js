@@ -1,13 +1,8 @@
-const User = require("../models/userModel");
-const AppError = require("../utils/AppError");
-const Library = require("../models/libraryModel");
 const userService = require("../services/userService");
-const filterLibraryItems = require("../utils/filterLibraryItems");
-const userHelpers = require("../helpers/userHelpers");
 
 exports.getAll = async (req, res, next) => {
   try {
-    const users = userService.getAllUsers();
+    const users = await userService.getAllUsers();
 
     res.status(200).json({status: "success", users});
   } catch (e) {
@@ -20,7 +15,7 @@ exports.getUserById = async (req, res, next) => {
     userId: req.params?.id,
   };
   try {
-    const user = userService.getUserById(userInput);
+    const user = await userService.getUserById(userInput);
 
     res.status(200).json({status: "success", user});
   } catch (e) {
@@ -31,9 +26,9 @@ exports.getUserById = async (req, res, next) => {
 exports.current = async (req, res, next) => {
   try {
     const userInput = {
-      userId: req.params?.id,
+      userId: req.user.id,
     };
-    const user = userService.getCurrentUser(userInput);
+    const user = await userService.getCurrentUser(userInput);
 
     res.status(200).json({status: "success", user});
   } catch (e) {
@@ -53,7 +48,7 @@ exports.updateMe = async (req, res, next) => {
         }
         : undefined,
     };
-    const user = userService.updateCurrentUser(userInput);
+    const user = await userService.updateCurrentUser(userInput);
 
     res.status(200).json({
       status: "success",
@@ -71,7 +66,7 @@ exports.followUser = async (req, res, next) => {
       userLibraryId: req.user.library,
       candidateUserId: req.params.id,
     };
-    const data = userService.handleFollowUnfollow(followInput, "follow");
+    const data = await userService.handleFollowUnfollow(followInput, "follow");
 
     res.status(200).json({
       status: "success",
@@ -89,7 +84,10 @@ exports.unfollowUser = async (req, res, next) => {
       userLibraryId: req.user.library,
       candidateUserId: req.params.id,
     };
-    const data = userService.handleFollowUnfollow(followInput, "unfollow");
+    const data = await userService.handleFollowUnfollow(
+      followInput,
+      "unfollow",
+    );
 
     res.status(200).json({
       status: "success",
