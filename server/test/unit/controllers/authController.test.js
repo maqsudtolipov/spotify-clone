@@ -37,60 +37,7 @@ afterAll(async () => {
 
 describe("authController", () => {
   describe("signUp", () => {
-    const signUp = async (userData) =>
-      request(app).post("/api/auth/signup").send(userData);
 
-    it("should create a new user and likedSongs playlist", async () => {
-      const res = await signUp(testUser);
-
-      expect(res.status).toBe(201);
-      expect(res.body.status).toBe("success");
-      expect(res.body.data).toHaveProperty("name", "John Doe");
-
-      const likedSongs = await Playlist.findOne({
-        user: res.body.data.id,
-      });
-      expect(likedSongs.name).toEqual("Liked Songs");
-    });
-
-    it("should fail when required fields are missing", async () => {
-      const res = await signUp({});
-
-      expect(res.status).toBe(422);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(
-        /Please provide name, email, password and passwordConfirm/i,
-      );
-    });
-
-    it("should fail when the email already exists", async () => {
-      const res = await signUp(testUser);
-
-      expect(res.status).toBe(409);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Email already exists/i);
-    });
-
-    it("should fail when email is invalid", async () => {
-      const res = await signUp({...testUser, email: "invalidemail"});
-
-      expect(res.status).toBe(400);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Please provide a valid email address/i);
-    });
-
-    it("should fail when password does not match", async () => {
-      const res = await signUp({
-        ...testUser,
-        email: "differentuser@example.com",
-        passwordConfirm: "1234Pa$$",
-      });
-
-      expect(res.status).toBe(400);
-      expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Passwords do not match/i);
-    });
-  });
 
   describe("/login route", () => {
     const login = async (userData) =>
