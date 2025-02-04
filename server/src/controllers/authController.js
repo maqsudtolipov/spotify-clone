@@ -66,7 +66,6 @@ exports.refreshToken = async (req, res, next) => {
   try {
     const {refreshToken} = req.cookies;
 
-    // Check if the refresh token provided
     if (!refreshToken) {
       return next(new AppError("No refresh token provided", 401));
     }

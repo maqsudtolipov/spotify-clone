@@ -88,11 +88,11 @@ exports.refreshToken = async (refreshToken, res) => {
   } catch (e) {
     throw new AppError("Refresh token is invalid or expired", 401);
   }
+
   const userRefreshToken = await RefreshToken.findOne({
     token: refreshToken,
     userId: decodedRefreshToken.userId,
   });
-
   if (!userRefreshToken) {
     throw new AppError("Refresh token is invalid or expired", 401);
   }

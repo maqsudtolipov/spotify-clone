@@ -7,11 +7,10 @@ const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const request = require("supertest");
 const {testUsers} = require("../../testData");
 const User = require("../../../src/models/userModel");
-const File = require("../../../src/models/fileModel");
-const Library = require("../../../src/models/libraryModel");
 const validateAndExtractTokens = require("../../helpers/validateAndExtractTokens");
 const RefreshToken = require("../../../src/models/refreshTokenModel");
 const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
+const {generateRefreshToken} = require("../../../src/utils/genereateTokens");
 
 let server;
 beforeAll(async () => {
@@ -144,6 +143,74 @@ describe("authController", () => {
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid email or password/i);
+    });
+  });
+
+  describe("POST /refresh-token", () => {
+    let user, accessToken, refreshToken;
+
+    beforeAll(async () => {
+      const users = await createUsersAndLogin(1);
+      user = users[0];
+      accessToken = users[0].accessToken;
+      refreshToken = users[0].refreshToken;
+    });
+
+    it("should attach new access and refresh tokens to request", async () => {
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${refreshToken}`]);
+
+      validateAndExtractTokens(res).validate();
+    });
+
+    it("should return 401 if refresh token not provided", async () => {
+      const res = await request(app).post("/api/auth/refresh-token");
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toBe("No refresh token provided");
+    });
+
+    it("should return 401 if refresh token does not exist in database", async () => {
+      const refreshToken = generateRefreshToken("67a18d64f606691f74de757c"); // Random user id
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${refreshToken}`]);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toBe("Refresh token is invalid or expired");
+    });
+
+    it("should return 401 if refresh token is modified", async () => {
+      const refreshToken = generateRefreshToken("67a18dbf594c4cb869f05650"); // Random user id
+      const modifiedRefreshToken =
+        refreshToken.substring(0, refreshToken.length - 2) + "Kq";
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${modifiedRefreshToken}`]);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toBe("Refresh token is invalid or expired");
+    });
+
+    it("should send 401 if refresh token is expired", async () => {
+      const refreshToken = generateRefreshToken(
+        "67a18df9caa39510ae8d3578",
+        -1000000,
+      ); // Random user id
+
+      const res = await request(app)
+        .post("/api/auth/refresh-token")
+        .set("Cookie", [`refreshToken=${refreshToken}`]);
+
+      expect(res.status).toBe(401);
+      expect(res.body.status).toBe("fail");
+      expect(res.body.message).toBe("Refresh token is invalid or expired");
     });
   });
 
