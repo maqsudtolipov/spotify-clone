@@ -16,15 +16,6 @@ jest.mock("../../../src/models/userModel");
 jest.mock("../../../src/utils/attachCookieTokens");
 jest.mock("jsonwebtoken");
 
-let server;
-beforeAll(async () => {
-  server = app.listen(3009);
-});
-
-afterAll(async () => {
-  server.close();
-});
-
 beforeEach(() => {
   jest.resetAllMocks();
 });
