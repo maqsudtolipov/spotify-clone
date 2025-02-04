@@ -25,6 +25,7 @@ jobs:
         run: |
           cd server
           npm install
+
       - name: Set up environment variables
         run: |
           cd server
@@ -40,7 +41,13 @@ jobs:
           echo "IK_PRIVATE=${{ secrets.IK_PRIVATE }}" >> .env
           echo "IK_URL=${{ secrets.IK_URL }}" >> .env
           cat .env  # Output to logs for debugging
-      - name: Run tests
+
+      - name: Run unit tests
         run: |
           cd server
-          npm test
+          npm run test-unit
+
+      - name: Run production tests
+        run: |
+          cd server
+          npm run test-prod
