@@ -4,6 +4,7 @@ const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const uploadImgFile = require("../utils/uploadImgFile");
+const Playlist = require("../models/playlistModel");
 
 exports.uploadAndCreateSong = async (songInput) => {
   const songUpload = await imagekitUpload({
@@ -100,4 +101,39 @@ exports.updateSong = async (songInput) => {
     "id name artist song img plays duration",
   );
   return user.songs;
+};
+
+exports.likeSong = async (songInput) => {
+  const song = await Song.findById(songInput.songId);
+
+  if (!song) {
+    throw new AppError("Song not found", 404);
+  }
+
+  const updatedPlaylist = await Playlist.findByIdAndUpdate(
+    songInput.likedSongsId,
+    {
+      $addToSet: {songs: song.id},
+    },
+    {new: true},
+  );
+
+  return updatedPlaylist.songs;
+};
+
+exports.dislikeSong = async (songInput) => {
+  const song = await Song.findById(songInput.songId);
+
+  if (!song) {
+    throw new AppError("Song not found", 404);
+  }
+
+  const updatedPlaylist = await Playlist.findByIdAndUpdate(
+    songInput.likedSongsId,
+    {
+      $pull: {songs: song.id},
+    },
+    {new: true},
+  );
+  return updatedPlaylist.songs;
 };

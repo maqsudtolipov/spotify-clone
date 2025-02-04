@@ -93,26 +93,17 @@ exports.deleteSong = async (req, res, next) => {
   }
 };
 
-// Like Song
 exports.like = async (req, res, next) => {
   try {
-    const song = await Song.findById(req.params.id);
-
-    if (!song) {
-      return next(new AppError("Song not found", 404));
-    }
-
-    const updatedPlaylist = await Playlist.findByIdAndUpdate(
-      req.user.likedSongs,
-      {
-        $addToSet: {songs: song.id},
-      },
-      {new: true},
-    );
+    const songInput = {
+      songId: req.params.songId,
+      likedSongsId: req.user.likedSongs,
+    };
+    const likedSongs = await songService.likeSong(songInput);
 
     res.status(200).json({
       status: "success",
-      likedSongs: updatedPlaylist.songs,
+      likedSongs,
     });
   } catch (e) {
     next(e);
@@ -121,23 +112,15 @@ exports.like = async (req, res, next) => {
 
 exports.dislike = async (req, res, next) => {
   try {
-    const song = await Song.findById(req.params.id);
-
-    if (!song) {
-      return next(new AppError("Song not found", 404));
-    }
-
-    const updatedPlaylist = await Playlist.findByIdAndUpdate(
-      req.user.likedSongs,
-      {
-        $pull: {songs: song.id},
-      },
-      {new: true},
-    );
+    const songInput = {
+      songId: req.params.songId,
+      likedSongsId: req.user.likedSongs,
+    };
+    const likedSongs = await songService.dislikeSong(songInput);
 
     res.status(200).json({
       status: "success",
-      likedSongs: updatedPlaylist.songs,
+      likedSongs,
     });
   } catch (e) {
     next(e);
