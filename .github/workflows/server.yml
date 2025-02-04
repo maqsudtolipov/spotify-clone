@@ -47,7 +47,7 @@ jobs:
           cd server
           npm run test-unit
 
-      - name: Run production tests
+      - name: Run integration & e2e tests
         run: |
           cd server
-          npm run test-prod
+          npm run test-e2e
