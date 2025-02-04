@@ -5,11 +5,12 @@ const Song = require("../../src/models/songModel");
 const RefreshToken = require("../../src/models/refreshTokenModel");
 const InvalidAccessToken = require("../../src/models/invalidAccessTokenModel");
 const Playlist = require("../../src/models/playlistModel");
-const { MongoMemoryServer } = require("mongodb-memory-server");
+const {MongoMemoryServer} = require("mongodb-memory-server");
 
+let memoryDB;
 exports.connectToDatabase = async () => {
   // Create memory db
-  const memoryDB = await MongoMemoryServer.create();
+  memoryDB = await MongoMemoryServer.create();
   const dbUrl = memoryDB.getUri();
 
   // Set env files for test environment
@@ -38,6 +39,7 @@ exports.cleanupDatabaseAndDisconnect = async () => {
     console.error("🔴 ERROR during database cleanup");
   } finally {
     await mongoose.disconnect();
+    await memoryDB.stop();
     console.log("🟢 Database disconnected");
   }
 };
