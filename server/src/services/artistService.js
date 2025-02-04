@@ -11,8 +11,6 @@ exports.getArtistById = async (artistInput) => {
     populate: {path: "song img", select: "url"},
   });
 
-  console.log(user)
-
   if (!user || user.role !== "artist") {
     throw new AppError("Artist not found", 404);
   }
