@@ -118,35 +118,5 @@ describe("authController", () => {
     });
   });
 
-  describe("/logout route", () => {
-    let accessToken, refreshToken, userId;
 
-    beforeAll(async () => {
-      const res = await request(app).post("/api/auth/login").send({
-        email: "john@example.com",
-        password: "Pa$$1234",
-      });
-
-      userId = res.body.user.id;
-
-      const token = validateAndExtractTokens(res);
-      accessToken = token.accessToken;
-      refreshToken = token.refreshToken;
-    });
-
-    it("should delete all refresh tokens from database and blacklist access token", async () => {
-      const res = await request(app)
-        .get("/api/auth/logout")
-        .set("Cookie", [`accessToken=${accessToken}`]);
-      expect(res.status).toBe(204);
-
-      const refreshTokens = await RefreshToken.find({userId});
-      expect(refreshTokens.length).toBe(0);
-
-      const invalidAccessToken = await InvalidAccessToken.findOne({
-        token: accessToken,
-      });
-      expect(invalidAccessToken).toBeTruthy();
-    });
-  });
 });

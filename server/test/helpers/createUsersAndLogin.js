@@ -32,11 +32,18 @@ const createUsersAndLogin = async (numOfUsers) => {
         .get("set-cookie")
         .find((cookie) => cookie.startsWith("accessToken="))
         .match(/accessToken=([^;]+)/)[1] || null;
+    const refreshToken =
+      loginRes
+        .get("set-cookie")
+        .find((cookie) => cookie.startsWith("refreshToken="))
+        .match(/refreshToken=([^;]+)/)[1] || null;
+
     loggedInUsers.push({
       ...loginRes.body.user,
-      accessToken,
       email: userData.email,
       password: userData.password,
+      accessToken,
+      refreshToken,
     });
   }
 

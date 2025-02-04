@@ -11,6 +11,7 @@ const File = require("../../../src/models/fileModel");
 const Library = require("../../../src/models/libraryModel");
 const validateAndExtractTokens = require("../../helpers/validateAndExtractTokens");
 const RefreshToken = require("../../../src/models/refreshTokenModel");
+const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 
 let server;
 beforeAll(async () => {
@@ -143,6 +144,32 @@ describe("authController", () => {
       expect(res.status).toBe(401);
       expect(res.body.status).toBe("fail");
       expect(res.body.message).toMatch(/Invalid email or password/i);
+    });
+  });
+
+  describe("GET /logout", () => {
+    let user, accessToken, refreshToken;
+
+    beforeAll(async () => {
+      const users = await createUsersAndLogin(1);
+      user = users[0];
+      accessToken = users[0].accessToken;
+      refreshToken = users[0].refreshToken;
+    });
+
+    it("should delete all refresh tokens and blacklist current access token", async () => {
+      const res = await request(app)
+        .get("/api/auth/logout")
+        .set("Cookie", [`accessToken=${accessToken}`]);
+
+      const refreshTokens = await RefreshToken.find({user: user.id});
+      const invalidAccessToken = await InvalidAccessToken.findOne({
+        token: accessToken,
+      });
+
+      expect(refreshTokens.length).toBe(0);
+      expect(res.status).toBe(204);
+      expect(invalidAccessToken).toBeTruthy();
     });
   });
 });
