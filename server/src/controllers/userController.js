@@ -3,6 +3,7 @@ const AppError = require("../utils/AppError");
 const Library = require("../models/libraryModel");
 const userService = require("../services/userService");
 const filterLibraryItems = require("../utils/filterLibraryItems");
+const userHelpers = require("../helpers/userHelpers");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -78,63 +79,20 @@ exports.followUser = async (req, res, next) => {
       return next(new AppError("User cannot follow himself", 400));
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      {_id: currentUser.id, followings: {$ne: candidateUser.id}},
-      {
-        $addToSet: {followings: candidateUser.id},
-        $inc: {followingsCount: 1},
-      },
-      {
-        new: true,
-      },
+    const {updatedUser, updatedCandidate} = userHelpers.updateFollowStatus(
+      currentUser,
+      candidateUser,
+      "follow",
     );
 
     let library;
     if (candidateUser.role === "artist") {
-      library = await Library.findByIdAndUpdate(
+      library = await userHelpers.updateLibrary(
         req.user.library,
-        {
-          $addToSet: {
-            items: {
-              refId: candidateUser.id,
-              itemType: "artist",
-            },
-          },
-        },
-        {
-          new: true,
-        },
-      )
-        .populate([
-          {
-            path: "items.refId",
-            select: "name img user createdAt",
-            populate: [
-              {path: "user", select: "name", strictPopulate: false},
-              {path: "img", select: "url"},
-            ],
-          },
-        ])
-        .lean();
-      library.id = library._id;
-
-      library.items = filterLibraryItems(library.items);
+        candidateUser.id,
+        "unfollow",
+      );
     }
-
-    if (!updatedUser) {
-      return next(new AppError("User already following", 400));
-    }
-
-    const updatedCandidate = await User.findOneAndUpdate(
-      {_id: candidateUser.id, followers: {$ne: currentUser.id}},
-      {
-        $addToSet: {followers: currentUser.id},
-        $inc: {followersCount: 1},
-      },
-      {
-        new: true,
-      },
-    );
 
     res.status(200).json({
       status: "success",
@@ -168,60 +126,19 @@ exports.unfollowUser = async (req, res, next) => {
       return next(new AppError("User cannot unfollow himself", 400));
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      {_id: currentUser.id, followings: candidateUser.id},
-      {
-        $pull: {followings: candidateUser.id},
-        $inc: {followingsCount: -1},
-      },
-      {
-        new: true,
-      },
+    const {updatedUser, updatedCandidate} = userHelpers.updateFollowStatus(
+      currentUser,
+      candidateUser,
+      "unfollow",
     );
 
     let library;
     if (candidateUser.role === "artist") {
-      library = await Library.findByIdAndUpdate(
+      library = await userHelpers.updateLibrary(
         req.user.library,
-        {
-          $pull: {
-            items: {
-              refId: candidateUser.id,
-              itemType: "artist",
-            },
-          },
-        },
-        {new: true},
-      )
-        .populate([
-          {
-            path: "items.refId",
-            select: "name img user createdAt",
-            populate: [
-              {path: "user", select: "name", strictPopulate: false},
-              {path: "img", select: "url"},
-            ],
-          },
-        ])
-        .lean();
-      library.id = library._id;
-
-      library.items = filterLibraryItems(library.items);
-    }
-
-    const updatedCandidate = await User.findOneAndUpdate(
-      {_id: candidateUser.id, followers: currentUser.id},
-      {
-        $pull: {followers: currentUser.id},
-        $inc: {followersCount: -1},
-      },
-      {
-        new: true,
-      },
-    );
-
-    if (!updatedUser) {
-      return next(new AppError("User not following", 400));
+        candidateUser.id,
+        "unfollow",
+      );
     }
 
     res.status(200).json({
