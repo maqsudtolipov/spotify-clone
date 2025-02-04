@@ -11,7 +11,7 @@ const {imagekitUpload, imagekitDelete} = require("./ImageKit");
  * @returns {Promise<*>}
  */
 const uploadFiles = async (
-  {imgBuffer: file, imgFilename: fileName, folder},
+  {file, fileName, folder},
   isDefault,
   imagekitId,
   databaseId,

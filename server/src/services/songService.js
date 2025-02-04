@@ -1,4 +1,4 @@
-const {imagekitUpload, imagekitDelete} = require("../utils/ImageKit");
+const {imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");

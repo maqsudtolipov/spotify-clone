@@ -1,7 +1,7 @@
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const {imagekitUpload, imagekitDelete} = require("../utils/ImageKit");
+const {imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
 const uploadFiles = require("../utils/uploadFiles");
