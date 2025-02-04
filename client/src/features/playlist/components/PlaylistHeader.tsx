@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
+import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
 
 interface Data {
   type: 'playlist' | 'userPage';
@@ -27,7 +27,7 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
       img: faker.image.urlLoremFlickr({
         height: 240,
         width: 240,
-        category: 'nature',
+        category: 'nature'
       }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       description: faker.lorem.lines(2),
@@ -36,13 +36,13 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
         img: faker.image.urlLoremFlickr({
           height: 24,
           width: 24,
-          category: 'cat',
-        }),
+          category: 'cat'
+        })
       },
       statistics: [
         { name: 'saves', value: faker.number.int({ min: 20, max: 100 }) },
-        { name: 'songs', value: faker.number.int({ min: 20, max: 100 }) },
-      ],
+        { name: 'songs', value: faker.number.int({ min: 20, max: 100 }) }
+      ]
     };
 
     setPlaylist(data);

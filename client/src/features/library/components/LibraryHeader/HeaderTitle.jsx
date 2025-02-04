@@ -1,6 +1,6 @@
 import styles from './HeaderTitle.module.scss';
 import { RiAddLargeFill, RiArchiveStackLine } from 'react-icons/ri';
-import IconButton from '../../../ui-library/IconButton/IconButton.jsx';
+import IconButton from '../../../../ui-library/IconButton/IconButton.jsx';
 
 const HeaderTitle = ({ isCollapsed, onCollapse }) => {
   // INFO: Collapse hides "Your Library" text and "+" buttons

@@ -1,7 +1,7 @@
-import PlayHeader from '../../components/PlayHeader/PlayHeader.tsx';
+import PlayHeader from '../../../components/PlayHeader/PlayHeader.tsx';
 import PlaylistTable from './PlaylistTable.tsx';
 import PlaylistHeader from './PlaylistHeader.tsx';
-import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
 
 const Playlist = () => {
   const color =

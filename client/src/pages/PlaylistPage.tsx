@@ -1,4 +1,4 @@
-import Playlist from '../features/playlist/Playlist.tsx';
+import Playlist from '../features/playlist/components/Playlist.tsx';
 
 const PlaylistPage = () => {
   return <Playlist />;

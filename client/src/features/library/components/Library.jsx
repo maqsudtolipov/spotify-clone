@@ -4,7 +4,7 @@ import LibraryList from './LibraryList/LibraryList.jsx';
 import LibraryFilter from './LibraryFilter/LibraryFilter.tsx';
 import LibrarySort from './LibrarySort/LibrarySort.tsx';
 import LibrarySearch from './LibrarySearch/LibrarySearch.tsx';
-import { useLibraryResize } from '../../hooks/useLibraryResize.tsx';
+import { useLibraryResize } from '../../../hooks/useLibraryResize.tsx';
 
 const Library = () => {
   const { drag, resizeEl, libraryEl, isCollapsed, handleCollapse } =
