@@ -21,8 +21,8 @@ const uploadFiles = async (
   }
 
   const imgUpload = await imagekitUpload({
-    file: file,
-    fileName: fileName,
+    file,
+    fileName,
     folder,
   });
   const imgFile = await File.create(imgUpload);

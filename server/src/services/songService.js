@@ -9,7 +9,7 @@ const Playlist = require("../models/playlistModel");
 exports.uploadAndCreateSong = async (songInput) => {
   const songFile = await uploadFiles(
     {
-      imgBuffer: songInput.songBuffer,
+      file: songInput.songBuffer,
       fileName: songInput.songFilename,
       folder: "songs/",
     },
@@ -18,7 +18,7 @@ exports.uploadAndCreateSong = async (songInput) => {
 
   const imgFile = await uploadFiles(
     {
-      imgBuffer: songInput.imgBuffer,
+      file: songInput.imgBuffer,
       fileName: songInput.imgFilename,
       folder: "songs/",
     },
@@ -69,7 +69,7 @@ exports.updateSong = async (songInput) => {
   if (songInput.img) {
     const imgFile = await uploadFiles(
       {
-        imgBuffer: songInput.img.file,
+        file: songInput.img.file,
         fileName: songInput.img.fileName,
         folder: "spotify/songs/",
       },
@@ -83,7 +83,7 @@ exports.updateSong = async (songInput) => {
   if (songInput.song) {
     const songFile = await uploadFiles(
       {
-        imgBuffer: songInput.song.file,
+        file: songInput.song.file,
         fileName: songInput.song.fileName,
         folder: "spotify/songs/",
       },
