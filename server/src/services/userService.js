@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const uploadFiles = require("../utils/uploadFiles");
+const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.getAllUsers = async () => {
   return await User.find({}, "id name email role");
@@ -46,15 +47,7 @@ exports.getCurrentUser = async (userInput) => {
   user.id = user._id;
 
   // Filter library items
-  user.library.items = user.library.items.map((item) => ({
-    id: item.refId._id,
-    name: item.refId.name,
-    user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-    img: item.refId.img.url,
-    isPinned: item.isPinned,
-    itemType: item.itemType,
-    createdAt: item.refId.createdAt,
-  }));
+  user.library.items = filterLibraryItems(user.library.items);
 
   return user;
 };

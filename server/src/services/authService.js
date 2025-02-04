@@ -8,6 +8,7 @@ const {
 } = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
+const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.signUp = async (signUpInput) => {
   // Check if the user already exists
@@ -64,15 +65,7 @@ exports.login = async (email, password, res) => {
   await RefreshToken.create({userId: user.id, token: refreshToken});
 
   const userObject = user.toObject();
-  userObject.library.items = userObject.library.items.map((item) => ({
-    id: item.refId._id,
-    name: item.refId.name,
-    user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-    img: item.refId.img.url,
-    isPinned: item.isPinned,
-    itemType: item.itemType,
-    createdAt: item.refId.createdAt,
-  }));
+  userObject.library.items = filterLibraryItems(user.library.items);
 
   return userObject;
 };

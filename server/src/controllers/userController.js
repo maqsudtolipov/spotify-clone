@@ -1,8 +1,8 @@
 const User = require("../models/userModel");
-const imagekit = require("../utils/ImageKit");
 const AppError = require("../utils/AppError");
 const Library = require("../models/libraryModel");
 const userService = require("../services/userService");
+const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -118,15 +118,7 @@ exports.followUser = async (req, res, next) => {
         .lean();
       library.id = library._id;
 
-      library.items = library.items.map((item) => ({
-        id: item.refId._id,
-        name: item.refId.name,
-        user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-        img: item.refId.img.url,
-        isPinned: item.isPinned,
-        itemType: item.itemType,
-        createdAt: item.refId.createdAt,
-      }));
+      library.items = filterLibraryItems(library.items);
     }
 
     if (!updatedUser) {
@@ -214,15 +206,7 @@ exports.unfollowUser = async (req, res, next) => {
         .lean();
       library.id = library._id;
 
-      library.items = library.items.map((item) => ({
-        id: item.refId._id,
-        name: item.refId.name,
-        user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-        img: item.refId.img.url,
-        isPinned: item.isPinned,
-        itemType: item.itemType,
-        createdAt: item.refId.createdAt,
-      }));
+      library.items = filterLibraryItems(library.items);
     }
 
     const updatedCandidate = await User.findOneAndUpdate(
