@@ -1,16 +1,16 @@
 const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
-} = require("../../helpers/databaseHelpers");
-const app = require("../../../src/app");
-const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
+} = require("../helpers/databaseHelpers");
+const app = require("../../src/app");
+const createUsersAndLogin = require("../helpers/createUsersAndLogin");
 const request = require("supertest");
-const Playlist = require("../../../src/models/playlistModel");
-const User = require("../../../src/models/userModel");
-const File = require("../../../src/models/fileModel");
+const Playlist = require("../../src/models/playlistModel");
+const User = require("../../src/models/userModel");
+const File = require("../../src/models/fileModel");
 const fs = require("node:fs");
 const {resolve} = require("node:path");
-const Library = require("../../../src/models/libraryModel");
+const Library = require("../../src/models/libraryModel");
 
 let server;
 beforeAll(async () => {

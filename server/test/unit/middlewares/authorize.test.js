@@ -33,7 +33,11 @@ describe("Authorize middleware", () => {
   it("should return 403 if user is not authorized", async () => {
     User.findById.mockResolvedValue({id: "userId", role: "user"});
 
-    const {req, res, next} = middlewareMock({user: {id: "userId"}});
+    const {req, res, next} = middlewareMock(
+      {user: {id: "userId"}},
+      {},
+      true,
+    );
     const authorizeMiddleware = authorize(["admin"]);
     await authorizeMiddleware(req, res, next);
 

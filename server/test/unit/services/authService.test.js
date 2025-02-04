@@ -177,9 +177,11 @@ describe("refreshToken service", () => {
 });
 
 describe("logout service", () => {
-  it("should delete all refresh tokens and blocklist current access token", () => {
+  it("should delete all refresh tokens and blocklist current access token", async () => {
     jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
-    jest.spyOn(InvalidAccessToken, "create").mockResolvedValue({});
+    jest.spyOn(InvalidAccessToken, "create").mockResolvedValue();
+
+    await authService.logout("userId", "accessToken");
 
     expect(RefreshToken.deleteMany).toHaveBeenCalled();
     expect(InvalidAccessToken.create).toHaveBeenCalled();
