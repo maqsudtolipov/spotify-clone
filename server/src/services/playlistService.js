@@ -4,7 +4,7 @@ const AppError = require("../utils/AppError");
 const {imagekitUpload, imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
-const uploadImgFile = require("../utils/uploadImgFile");
+const uploadFiles = require("../utils/uploadFiles");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
@@ -58,7 +58,7 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  let imgFile = uploadImgFile(
+  let imgFile = uploadFiles(
     {
       file: playlistInput.imgBuffer,
       fileName: playlistInput.imgFilename,

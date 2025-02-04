@@ -2,27 +2,27 @@ const {imagekitUpload, imagekitDelete} = require("./ImageKit");
 /**
  * Uploads an image file to ImageKit and stored file information inside the database
  *
- * @param imgBuffer
- * @param imgFilename
+ * @param file
+ * @param fileName
  * @param folder
  * @param isDefault
  * @param imagekitId
  * @param databaseId
  * @returns {Promise<*>}
  */
-const uploadImgFile = async (
-  {imgBuffer, imgFilename, folder},
+const uploadFiles = async (
+  {imgBuffer: file, imgFilename: fileName, folder},
   isDefault,
   imagekitId,
   databaseId,
 ) => {
-  if (!imgBuffer || !imgFilename || !folder) {
+  if (!file || !fileName || !folder) {
     console.error("Missing required file fields");
   }
 
   const imgUpload = await imagekitUpload({
-    file: imgBuffer,
-    fileName: imgFilename,
+    file: file,
+    fileName: fileName,
     folder,
   });
   const imgFile = await File.create(imgUpload);
@@ -39,4 +39,4 @@ const uploadImgFile = async (
   return imgFile;
 };
 
-module.exports = uploadImgFile;
+module.exports = uploadFiles;

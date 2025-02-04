@@ -3,23 +3,27 @@ const File = require("../models/fileModel");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const uploadImgFile = require("../utils/uploadImgFile");
+const uploadFiles = require("../utils/uploadFiles");
 const Playlist = require("../models/playlistModel");
 
 exports.uploadAndCreateSong = async (songInput) => {
-  const songUpload = await imagekitUpload({
-    file: songInput.songBuffer,
-    fileName: songInput.songFilename,
-    folder: "songs/",
-  });
-  const songFile = await File.create(songUpload);
+  const songFile = await uploadFiles(
+    {
+      imgBuffer: songInput.songBuffer,
+      fileName: songInput.songFilename,
+      folder: "songs/",
+    },
+    false,
+  );
 
-  const imgUpload = await imagekitUpload({
-    file: songInput.imgBuffer,
-    fileName: songInput.imgFilename,
-    folder: "songs/",
-  });
-  const imgFile = await File.create(imgUpload);
+  const imgFile = await uploadFiles(
+    {
+      imgBuffer: songInput.imgBuffer,
+      fileName: songInput.imgFilename,
+      folder: "songs/",
+    },
+    false,
+  );
 
   const song = await Song.create({
     name: songInput.name,
@@ -63,7 +67,7 @@ exports.updateSong = async (songInput) => {
   }
 
   if (songInput.img) {
-    const imgFile = await uploadImgFile(
+    const imgFile = await uploadFiles(
       {
         imgBuffer: songInput.img.file,
         fileName: songInput.img.fileName,
@@ -77,7 +81,7 @@ exports.updateSong = async (songInput) => {
   }
 
   if (songInput.song) {
-    const songFile = await uploadImgFile(
+    const songFile = await uploadFiles(
       {
         imgBuffer: songInput.song.file,
         fileName: songInput.song.fileName,
