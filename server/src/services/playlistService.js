@@ -45,7 +45,7 @@ exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("isPublic isLikedSongs")
     .populate([
-      {path: "img", select: "url"},
+      {path: "img", select: "id url fileId"},
       {path: "user", select: "name"},
     ]);
 
@@ -58,16 +58,20 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  let imgFile = uploadFiles(
-    {
-      file: playlistInput.imgBuffer,
-      fileName: playlistInput.imgFilename,
-      folder: "playlists/",
-    },
-    playlist.img.isDefault,
-    playlist.img.fileId,
-    playlist.img.id,
-  );
+  let imgFile = playlist.img.id;
+  if (playlistInput.imgBuffer) {
+    const uploadedFile = uploadFiles(
+      {
+        file: playlistInput.imgBuffer,
+        fileName: playlistInput.imgFilename,
+        folder: "playlists/",
+      },
+      playlist.img.isDefault,
+      playlist.img.fileId,
+      playlist.img.id,
+    );
+    imgFile = uploadedFile.id;
+  }
 
   return await Playlist.findByIdAndUpdate(
     playlistInput.playlistId,
@@ -88,7 +92,7 @@ exports.deletePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("isPublic isLikedSongs")
     .populate([
-      {path: "img", select: "fileId isDefault"},
+      {path: "img", select: "id fileId isDefault"},
       {path: "user", select: "name"},
     ]);
 

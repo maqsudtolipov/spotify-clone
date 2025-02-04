@@ -1,80 +1,40 @@
 const User = require("../models/userModel");
 const imagekit = require("../utils/ImageKit");
 const AppError = require("../utils/AppError");
-const Playlist = require("../models/playlistModel");
 const Library = require("../models/libraryModel");
+const userService = require("../services/userService");
 
 exports.getAll = async (req, res, next) => {
   try {
-    const users = await User.find({}, "id name email role");
+    const users = userService.getAllUsers();
 
-    res.status(200).json({ status: "success", users });
+    res.status(200).json({status: "success", users});
   } catch (e) {
     next(e);
   }
 };
 
 exports.getUserById = async (req, res, next) => {
+  const userInput = {
+    userId: req.params?.id,
+  };
   try {
-    const user = await User.findById(
-      req.params.id,
-      "id name img color followers followersCount followings followingsCount",
-    );
+    const user = userService.getUserById(userInput);
 
-    if (!user) {
-      return next(new AppError("User not found", 404));
-    }
-
-    res.status(200).json({ status: "success", user });
+    res.status(200).json({status: "success", user});
   } catch (e) {
-    if (e.name === "CastError") {
-      return next(new AppError(`Invalid user id: ${e.value}`, 400));
-    }
-
     next(e);
   }
 };
 
 exports.current = async (req, res, next) => {
   try {
-    const user = await User.findById(
-      req.user.id,
-      "id name email img followers followersCount followings followingsCount",
-    )
-      .populate([
-        {
-          path: "library",
-          select: "items",
-          populate: [
-            {
-              path: "items.refId",
-              select: "name img user createdAt",
-              populate: [
-                { path: "user", select: "name", strictPopulate: false },
-                { path: "img", select: "url" },
-              ],
-            },
-          ],
-        },
-        {
-          path: "likedSongs",
-        },
-      ])
-      .lean();
-    // NOTE: virtual does not work with lean()
-    user.id = user._id;
+    const userInput = {
+      userId: req.params?.id,
+    };
+    const user = userService.getCurrentUser(userInput);
 
-    user.library.items = user.library.items.map((item) => ({
-      id: item.refId._id,
-      name: item.refId.name,
-      user: item.itemType === "playlist" ? item.refId.user.name : undefined,
-      img: item.refId.img.url,
-      isPinned: item.isPinned,
-      itemType: item.itemType,
-      createdAt: item.refId.createdAt,
-    }));
-
-    res.status(200).json({ status: "success", user });
+    res.status(200).json({status: "success", user});
   } catch (e) {
     next(e);
   }
@@ -82,33 +42,28 @@ exports.current = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
   try {
-    const inputData = {
-      name: req.body.name,
+    const userInput = {
+      userId: req.params?.id,
+      name: req.body?.name,
+      img: req.file
+        ? {
+          file: req.file.buffer,
+          fileName: req.file.filename,
+        }
+        : undefined,
     };
-
-    if (req.file) {
-      const imgKit = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: req.file.filename,
-        folder: "users/",
-      });
-      inputData.img = imgKit.url;
-    }
-
-    const newUser = await User.findByIdAndUpdate(req.user.id, inputData, {
-      new: true,
-      runValidators: true,
-    });
+    const user = userService.updateCurrentUser(userInput);
 
     res.status(200).json({
       status: "success",
-      user: newUser,
+      user,
     });
   } catch (e) {
     next(e);
   }
 };
 
+// FIXME: refactor
 exports.followUser = async (req, res, next) => {
   try {
     // Check users exist
@@ -124,10 +79,10 @@ exports.followUser = async (req, res, next) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { _id: currentUser.id, followings: { $ne: candidateUser.id } },
+      {_id: currentUser.id, followings: {$ne: candidateUser.id}},
       {
-        $addToSet: { followings: candidateUser.id },
-        $inc: { followingsCount: 1 },
+        $addToSet: {followings: candidateUser.id},
+        $inc: {followingsCount: 1},
       },
       {
         new: true,
@@ -155,8 +110,8 @@ exports.followUser = async (req, res, next) => {
             path: "items.refId",
             select: "name img user createdAt",
             populate: [
-              { path: "user", select: "name", strictPopulate: false },
-              { path: "img", select: "url" },
+              {path: "user", select: "name", strictPopulate: false},
+              {path: "img", select: "url"},
             ],
           },
         ])
@@ -179,10 +134,10 @@ exports.followUser = async (req, res, next) => {
     }
 
     const updatedCandidate = await User.findOneAndUpdate(
-      { _id: candidateUser.id, followers: { $ne: currentUser.id } },
+      {_id: candidateUser.id, followers: {$ne: currentUser.id}},
       {
-        $addToSet: { followers: currentUser.id },
-        $inc: { followersCount: 1 },
+        $addToSet: {followers: currentUser.id},
+        $inc: {followersCount: 1},
       },
       {
         new: true,
@@ -222,10 +177,10 @@ exports.unfollowUser = async (req, res, next) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { _id: currentUser.id, followings: candidateUser.id },
+      {_id: currentUser.id, followings: candidateUser.id},
       {
-        $pull: { followings: candidateUser.id },
-        $inc: { followingsCount: -1 },
+        $pull: {followings: candidateUser.id},
+        $inc: {followingsCount: -1},
       },
       {
         new: true,
@@ -244,15 +199,15 @@ exports.unfollowUser = async (req, res, next) => {
             },
           },
         },
-        { new: true },
+        {new: true},
       )
         .populate([
           {
             path: "items.refId",
             select: "name img user createdAt",
             populate: [
-              { path: "user", select: "name", strictPopulate: false },
-              { path: "img", select: "url" },
+              {path: "user", select: "name", strictPopulate: false},
+              {path: "img", select: "url"},
             ],
           },
         ])
@@ -271,10 +226,10 @@ exports.unfollowUser = async (req, res, next) => {
     }
 
     const updatedCandidate = await User.findOneAndUpdate(
-      { _id: candidateUser.id, followers: currentUser.id },
+      {_id: candidateUser.id, followers: currentUser.id},
       {
-        $pull: { followers: currentUser.id },
-        $inc: { followersCount: -1 },
+        $pull: {followers: currentUser.id},
+        $inc: {followersCount: -1},
       },
       {
         new: true,

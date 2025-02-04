@@ -74,7 +74,6 @@ exports.like = async (req, res, next) => {
       songId: req.params.id,
       likedSongsId: req.user.likedSongs,
     };
-    console.log(songInput)
     const likedSongs = await songService.likeSong(songInput);
 
     res.status(200).json({
