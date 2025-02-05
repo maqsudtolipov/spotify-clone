@@ -16,7 +16,7 @@ interface LibraryState {
 
 const initialState: LibraryState = {
   api: {
-    getPlaylist: { status: 'idle', error: null }
+    getPlaylist: { status: 'idle' }
   }
 };
 

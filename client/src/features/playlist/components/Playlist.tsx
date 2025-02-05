@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { getPlaylist } from '../playlistThunks.ts';
 import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
 import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
+import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -25,6 +26,8 @@ const Playlist = () => {
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
     '4d';
+
+  if (status === 'pending') return <LoadingScreen />;
 
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
