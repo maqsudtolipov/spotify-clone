@@ -1,4 +1,4 @@
-import Artist from '../features/artist/Artist.tsx';
+import Artist from '../features/artist/componens/Artist.tsx';
 
 const ArtistPage = () => {
   return <Artist />;

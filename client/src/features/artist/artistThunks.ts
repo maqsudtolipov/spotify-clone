@@ -3,9 +3,14 @@ import axios from '../../api/axios';
 
 export const getArtist = createAsyncThunk(
   'artist/getArtist',
-  async (id: string) => {
-    const res = await axios.get(`/artists/${id}`);
-    return res.data.artist;
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`/artists/${id}`);
+      return res.data.artist;
+    } catch (e) {
+      e.response.data.statusCode = e.response.status;
+      return rejectWithValue(e.response.data);
+    }
   }
 );
 

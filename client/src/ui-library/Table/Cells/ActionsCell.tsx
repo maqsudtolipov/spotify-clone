@@ -13,7 +13,7 @@ import Dropdown, { DropdownContext } from '../../Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../Dropdown/DropdownList.tsx';
 import DropdownItem from '../../Dropdown/DropdownItem.tsx';
-import EditSongDialog from '../../../features/artist/EditSongDialog.tsx';
+import EditSongDialog from '../../../features/artist/componens/EditSongDialog.tsx';
 import useOutsideClick from '../../../hooks/useOutsideClick.tsx';
 import { forwardRef, useContext } from 'react';
 import { useAppDispatch } from '../../../app/hooks.ts';

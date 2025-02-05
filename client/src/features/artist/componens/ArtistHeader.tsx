@@ -1,17 +1,17 @@
 import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useAppSelector } from '../../app/hooks.ts';
+import { useAppSelector } from '../../../app/hooks.ts';
 
 const ArtistHeader = () => {
   const { name, color, followersCount } = useAppSelector(
-    (state) => state.artist.data,
+    (state) => state.artist.data
   );
 
   return (
     <header
       className={styles.artistHeader}
       style={{
-        background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
+        background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`
       }}
     >
       <div className={styles.artistVerified}>

@@ -51,13 +51,13 @@ const playlistSlice = createSlice({
       })
       .addCase(getPlaylist.fulfilled, (state, { payload }) => {
         state.api.getPlaylist.status = 'fulfilled';
-        console.log(payload);
         state.data = payload;
       })
       .addCase(getPlaylist.rejected, (state, { payload }) => {
         state.api.getPlaylist.status = 'rejected';
         state.api.getPlaylist.statusCode = payload.statusCode;
         state.api.getPlaylist.error = payload.message;
+        state.data = null;
 
         if (payload.statusCode !== 404 && payload.statusCode !== 500) {
           toast.error(`Error: ${payload.status} - ${payload.message}`);
