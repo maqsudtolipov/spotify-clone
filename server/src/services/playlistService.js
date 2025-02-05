@@ -5,6 +5,7 @@ const {imagekitDelete} = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
 const uploadFiles = require("../utils/uploadFiles");
+const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
@@ -39,11 +40,24 @@ exports.createPlaylist = async (playlistInput) => {
     $addToSet: {playlists: newPlaylist.id},
   });
 
-  await Library.findByIdAndUpdate(playlistInput.libraryId, {
+  const library = await Library.findByIdAndUpdate(playlistInput.libraryId, {
     $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
-  });
+  })
+    .populate([
+      {
+        path: "items.refId",
+        select: "name img user createdAt",
+        populate: [
+          {path: "user", select: "name", strictPopulate: false},
+          {path: "img", select: "url"},
+        ],
+      },
+    ])
+    .lean();
+  library.id = library._id;
+  library.items = filterLibraryItems(library.items);
 
-  return newPlaylist;
+  return library;
 };
 
 exports.updatePlaylist = async (playlistInput) => {
