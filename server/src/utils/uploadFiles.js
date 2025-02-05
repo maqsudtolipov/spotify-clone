@@ -6,7 +6,7 @@ const File = require("../models/fileModel");
  * @param file
  * @param fileName
  * @param folder
- * @param isDefault
+ * @param isDefault - CRITICAL: if false it deletes the file
  * @param imagekitId
  * @param databaseId
  * @returns {Promise<*>}

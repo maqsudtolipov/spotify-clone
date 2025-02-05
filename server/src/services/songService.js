@@ -13,7 +13,7 @@ exports.uploadAndCreateSong = async (songInput) => {
       fileName: songInput.songFilename,
       folder: "songs/",
     },
-    false,
+    true,
   );
 
   const imgFile = await uploadFiles(
@@ -22,7 +22,7 @@ exports.uploadAndCreateSong = async (songInput) => {
       fileName: songInput.imgFilename,
       folder: "songs/",
     },
-    false,
+    true,
   );
 
   const song = await Song.create({
@@ -46,7 +46,6 @@ exports.uploadAndCreateSong = async (songInput) => {
   return updatedUser.songs;
 };
 
-// TODO: make sure to delete old files
 exports.updateSong = async (songInput) => {
   // Validate
   const song = await Song.findById(songInput.songId).populate("img song");
