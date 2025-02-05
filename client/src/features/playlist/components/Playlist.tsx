@@ -5,14 +5,14 @@ import GradientBackground from '../../../components/GradientBackground/GradientB
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { useEffect } from 'react';
-import { getArtist } from '../../artist/artistThunks.ts';
+import { getPlaylist } from '../playlistThunks.ts';
 
 const Playlist = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (id) dispatch(getArtist(id));
+    if (id) dispatch(getPlaylist({ id }));
     console.log(id);
   }, [id]);
 
@@ -20,6 +20,11 @@ const Playlist = () => {
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
     '4d';
+
+  // TODO: status codes
+  //   - 404: not found
+  //   - 500: server error
+  //   - anything else redirect to main page
 
   return (
     <div>
