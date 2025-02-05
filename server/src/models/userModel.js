@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      required: [true, "Please provide a color"],
     },
     role: {
       type: String,
@@ -121,13 +120,13 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// Default Path
-userSchema.path("color").default(generateRandomColor());
-
 // -- Hooks
 // Create likedSongs playlist on newUsers
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
+
+  // Generate color
+  this.color = generateRandomColor();
 
   // Create liked songs playlist for the user
   const likedSongsPlaylist = await Playlist.create({

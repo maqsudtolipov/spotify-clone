@@ -29,7 +29,6 @@ const playlistSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      required: [true, "Please provide a color"],
     },
     songs: [
       {
@@ -54,10 +53,6 @@ const playlistSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-playlistSchema
-  .path("color")
-  .default(userSchema.path("color").default(generateRandomColor()));
 
 const getDefaultPlaylistImgId = async (type = "playlist") => {
   const defaultFiles = {
@@ -102,6 +97,9 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
 
 playlistSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
+
+  // Generate color
+  this.color = generateRandomColor();
 
   const defaultPlaylistImgId = await getDefaultPlaylistImgId(
     this.isLikedSongs ? "likedSongs" : "playlist",
