@@ -1,9 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { getUser } from './userPageThunks.ts';
+import toast from 'react-hot-toast';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
+  error: string;
+  statusCode?: number;
 }
 
 interface UserPage {
@@ -26,9 +28,9 @@ const initialState: InitialState = {
   api: {
     getUser: {
       status: 'idle',
-      error: null,
-    },
-  },
+      error: ''
+    }
+  }
 };
 
 const userPageSlice = createSlice({
@@ -37,7 +39,7 @@ const userPageSlice = createSlice({
   reducers: {
     followersCountUpdated: (state, action) => {
       state.data.followersCount = action.payload;
-    },
+    }
   },
   extraReducers: (builder) =>
     builder
@@ -48,10 +50,16 @@ const userPageSlice = createSlice({
         state.api.getUser.status = 'fulfilled';
         state.data = action.payload;
       })
-      .addCase(getUser.rejected, (state) => {
+      .addCase(getUser.rejected, (state, { payload }) => {
         state.api.getUser.status = 'rejected';
+        state.api.getUser.statusCode = payload.statusCode;
+        state.api.getUser.error = payload.message;
         state.data = null;
-      }),
+
+        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
+          toast.error(`Error: ${payload.status} - ${payload.message}`);
+        }
+      })
 });
 
 export const { followersCountUpdated } = userPageSlice.actions;

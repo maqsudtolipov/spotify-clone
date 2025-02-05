@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';
-import UserProfile from './features/userPage/UserProfile.tsx';
+import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
 
 const AppRoutes = () => {

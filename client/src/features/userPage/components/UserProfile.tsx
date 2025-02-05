@@ -1,13 +1,15 @@
-import GradientBackground from '../../components/GradientBackground/GradientBackground.tsx';
-import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.tsx';
-import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { followUser, unfollowUser } from '../auth/userThunks.ts';
-import ImageHeader from '../../components/ImageHeader/ImageHeader.tsx';
-import { useParams } from 'react-router-dom';
+import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
+import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { followUser, unfollowUser } from '../../auth/userThunks.ts';
+import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getUser } from './userPageThunks.ts';
-import styles from '../../components/PlayHeader/PlayHeader.module.scss';
-import TransparentButton from '../../components/PlayHeader/TransparentButton.tsx';
+import { getUser } from '../userPageThunks.ts';
+import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
+import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
+import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
+import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
@@ -15,26 +17,35 @@ const isFollowed = (id: string, followings: string[]) => {
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
+  const { status, statusCode, error } = useAppSelector(
+    (state) => state.userPage.api.getUser
+  );
   const data = useAppSelector((state) => state.userPage?.data);
   const { followings, id: userId } = useAppSelector(
-    (state) => state.user?.data,
+    (state) => state.user?.data
   );
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (id) dispatch(getUser({ id }));
   }, [id]);
 
-  if (!data || !id) return <LoadingScreen />;
+  if (status === 'rejected') {
+    if (statusCode === 404) return <NotFound message={error} />;
+    if (statusCode === 500) return <ServerError />;
+    else navigate('/');
+  }
+  if (status === 'pending' || !data || !id) return <LoadingScreen />;
 
   const statistics = [
     { name: 'Followers', value: data.followersCount },
-    { name: 'Following', value: data.followingsCount },
+    { name: 'Following', value: data.followingsCount }
   ];
 
   return (
     <>
-      <ImageHeader data={{ ...data, type: 'userPage', statistics }} />
+      <ImageHeader data={{ ...data, statistics }} type="user" />
       <GradientBackground color={data.color}>
         {' '}
         <div className={styles.playerHeader}>
