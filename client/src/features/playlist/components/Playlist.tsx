@@ -30,11 +30,9 @@ const Playlist = () => {
   }
   if (status === 'pending' || !data) return <LoadingScreen />;
 
-  console.log(data);
-
   return (
     <div>
-      <PlaylistHeader color={data.color} />
+      <PlaylistHeader data={data} />
       <GradientBackground color={data.color}>
         <PlayHeader />
         <div className="p-5 pt-0">

@@ -1,26 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
+import { Playlist } from '../playlistSlice.ts';
 
-interface Data {
-  type: 'playlist' | 'userPage';
-  img: string;
-  name: string;
-  description?: string;
-  user?: {
-    img: string;
-    name: string;
-  };
-  statistics?: { name: string; value: number }[];
-}
-
-interface ArtistHeaderProps {
-  color: string;
-}
-
-const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
-  const [playlist, setPlaylist] = useState<Data>();
-
+const PlaylistHeader = ({ data }: Playlist) => {
   useEffect(() => {
     let data: Data = {
       type: 'playlist',
@@ -44,11 +27,9 @@ const PlaylistHeader = ({ color }: ArtistHeaderProps) => {
         { name: 'songs', value: faker.number.int({ min: 20, max: 100 }) }
       ]
     };
-
-    setPlaylist(data);
   }, []);
 
-  return playlist && <ImageHeader color={color} data={playlist} />;
+  return data && <ImageHeader data={data} type="playlist" />;
 };
 
 export default PlaylistHeader;

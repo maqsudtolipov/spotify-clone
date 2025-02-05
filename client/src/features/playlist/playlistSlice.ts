@@ -8,9 +8,20 @@ interface ApiStatus {
   statusCode?: number;
 }
 
-interface Playlist {
+export interface Playlist {
   id: string;
   name: string;
+  img: {
+    id: string;
+    url: string;
+  };
+  user: {
+    name: string;
+    img: {
+      id: string;
+      url: string;
+    };
+  };
   description?: string;
   color: string;
 }

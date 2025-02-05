@@ -11,7 +11,11 @@ exports.getPlaylist = async (playlistInput) => {
     .select("+isPublic")
     .populate([
       {path: "img", select: "url"},
-      {path: "user", select: "name"},
+      {
+        path: "user",
+        select: "name img",
+        populate: [{path: "img", select: "url"}],
+      },
     ]);
 
   if (
@@ -44,10 +48,14 @@ exports.createPlaylist = async (playlistInput) => {
 
 exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
-    .select("isPublic isLikedSongs")
+    .select("+isPublic +isLikedSongs")
     .populate([
-      {path: "img", select: "id url fileId"},
-      {path: "user", select: "name"},
+      {path: "img", select: "url"},
+      {
+        path: "user",
+        select: "name img",
+        populate: [{path: "img", select: "url"}],
+      },
     ]);
 
   if (!playlist || playlist.user.id !== playlistInput.userId) {
@@ -90,7 +98,7 @@ exports.updatePlaylist = async (playlistInput) => {
 
 exports.deletePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
-    .select("isPublic isLikedSongs")
+    .select("+isPublic +isLikedSongs")
     .populate([
       {path: "img", select: "id fileId isDefault"},
       {path: "user", select: "name"},
