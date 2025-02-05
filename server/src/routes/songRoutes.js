@@ -35,4 +35,8 @@ router
 router.route("/:id/like").post(ensureAuthenticated, songController.like);
 router.route("/:id/dislike").post(ensureAuthenticated, songController.dislike);
 
+router
+  .route("/:songId/addToPlaylist/:playlistId")
+  .post(ensureAuthenticated, songController.addSongToPlaylist);
+
 module.exports = router;

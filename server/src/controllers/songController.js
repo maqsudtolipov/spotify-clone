@@ -101,3 +101,18 @@ exports.dislike = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.addSongToPlaylist = async (req, res, next) => {
+  try {
+    const songInput = {
+      songId: req.params.songId,
+      playlistId: req.params.playlistId,
+    };
+
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};

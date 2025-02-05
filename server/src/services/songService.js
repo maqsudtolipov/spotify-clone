@@ -179,3 +179,5 @@ exports.dislikeSong = async (songInput) => {
   );
   return updatedPlaylist.songs;
 };
+
+// NOTE: similar to like/dislike
