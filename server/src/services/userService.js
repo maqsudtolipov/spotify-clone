@@ -12,7 +12,7 @@ exports.getUserById = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
     "id name img color followers followersCount followings followingsCount",
-  );
+  ).populate([{path: "img", select: "id url"}]);
 
   if (!user) {
     throw new AppError("User not found", 404);

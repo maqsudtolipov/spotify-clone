@@ -9,7 +9,11 @@ interface ApiStatus {
 }
 
 interface UserPage {
-  img: string;
+  id: string;
+  img: {
+    id: string;
+    url: string;
+  };
   name: string;
   color: string;
   followersCount: number;
