@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { deleteSong, getArtist, updateSong, uploadSong } from './artistThunks.ts';
+import toast from 'react-hot-toast';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
+  error: string;
+  statusCode?: number;
 }
 
 interface Song {
@@ -40,15 +42,15 @@ const initialState: InitialState = {
   api: {
     getArtist: {
       status: 'idle',
-      error: null
+      error: ''
     },
     uploadSong: {
       status: 'idle',
-      error: null
+      error: ''
     },
     updateSong: {
       status: 'idle',
-      error: null
+      error: ''
     }
   }
 };
@@ -62,7 +64,8 @@ const artistSlice = createSlice({
     }
   },
   extraReducers: (builder) =>
-    builder // Check authenticated
+    builder
+      // GET artist
       .addCase(getArtist.pending, (state) => {
         state.api.getArtist.status = 'pending';
       })
@@ -70,10 +73,17 @@ const artistSlice = createSlice({
         state.api.getArtist.status = 'fulfilled';
         state.data = action.payload;
       })
-      .addCase(getArtist.rejected, (state) => {
+      .addCase(getArtist.rejected, (state, { payload }) => {
         state.api.getArtist.status = 'rejected';
+        state.api.getArtist.statusCode = payload.statusCode;
+        state.api.getArtist.error = payload.message;
         state.data = null;
+
+        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
+          toast.error(`Error: ${payload.status} - ${payload.message}`);
+        }
       })
+
       .addCase(uploadSong.pending, (state) => {
         state.api.uploadSong.status = 'pending';
       })

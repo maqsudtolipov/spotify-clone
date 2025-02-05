@@ -1,14 +1,14 @@
-import Table from '../../ui-library/Table/Table.tsx';
-import TableRow from '../../ui-library/Table/TableRow.tsx';
-import TableCell from '../../ui-library/Table/TableCell.tsx';
-import IndexCell from '../../ui-library/Table/Cells/IndexCell.tsx';
-import InfoCell from '../../ui-library/Table/Cells/InfoCell.tsx';
-import TableBody from '../../ui-library/Table/TableBody.tsx';
-import LikeCell from '../../ui-library/Table/Cells/LikeCell.tsx';
-import ActionsCell from '../../ui-library/Table/Cells/ActionsCell.tsx';
-import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import secondsToTimeFormat from '../../helpers/secondsToTimeFormat.ts';
-import { dislikeSong, likeSong } from '../auth/userThunks.ts';
+import Table from '../../../ui-library/Table/Table.tsx';
+import TableRow from '../../../ui-library/Table/TableRow.tsx';
+import TableCell from '../../../ui-library/Table/TableCell.tsx';
+import IndexCell from '../../../ui-library/Table/Cells/IndexCell.tsx';
+import InfoCell from '../../../ui-library/Table/Cells/InfoCell.tsx';
+import TableBody from '../../../ui-library/Table/TableBody.tsx';
+import LikeCell from '../../../ui-library/Table/Cells/LikeCell.tsx';
+import ActionsCell from '../../../ui-library/Table/Cells/ActionsCell.tsx';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
+import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
 
 const ArtistTable = () => {
   const songs = useAppSelector((state) => state.artist?.data?.songs);

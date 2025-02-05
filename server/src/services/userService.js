@@ -12,11 +12,13 @@ exports.getUserById = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
     "id name img color followers followersCount followings followingsCount",
-  );
+  ).populate([{path: "img", select: "id url"}]);
 
   if (!user) {
     throw new AppError("User not found", 404);
   }
+
+  return user;
 };
 
 exports.getCurrentUser = async (userInput) => {
@@ -99,11 +101,8 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const {updatedUser, updatedCandidate} = await userHelpers.updateFollowStatus(
-    currentUser,
-    candidateUser,
-    action,
-  );
+  const {updatedUser, updatedCandidate} =
+    await userHelpers.updateFollowStatus(currentUser, candidateUser, action);
 
   let library;
   if (candidateUser.role === "artist") {
