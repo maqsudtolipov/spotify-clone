@@ -35,7 +35,7 @@ const LibraryList = ({ isCollapsed }) => {
       >
         <div className={showShadow ? styles.shadow : ''}></div>
         {items?.map((el) => (
-          <LibraryCard key={el.name} data={el} isCollapsed={isCollapsed} />
+          <LibraryCard data={el} isCollapsed={isCollapsed} />
         ))}
       </div>
     </div>
