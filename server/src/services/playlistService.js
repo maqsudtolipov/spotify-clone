@@ -40,9 +40,15 @@ exports.createPlaylist = async (playlistInput) => {
     $addToSet: {playlists: newPlaylist.id},
   });
 
-  const library = await Library.findByIdAndUpdate(playlistInput.libraryId, {
-    $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
-  })
+  const library = await Library.findByIdAndUpdate(
+    playlistInput.libraryId,
+    {
+      $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
+    },
+    {
+      new: true,
+    },
+  )
     .populate([
       {
         path: "items.refId",
