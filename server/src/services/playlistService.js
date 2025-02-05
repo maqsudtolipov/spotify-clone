@@ -14,9 +14,10 @@ exports.getPlaylist = async (playlistInput) => {
       {path: "user", select: "name"},
     ]);
 
-  const isPrivatePlaylist =
-    !playlist.isPublic && playlist.user.id !== playlistInput.userId;
-  if (!playlist || isPrivatePlaylist) {
+  if (
+    !playlist ||
+    (!playlist.isPublic && playlist.user.id !== playlistInput.userId)
+  ) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -49,8 +50,7 @@ exports.updatePlaylist = async (playlistInput) => {
       {path: "user", select: "name"},
     ]);
 
-  const notPersonalPlaylist = playlist.user.id !== playlistInput.userId;
-  if (!playlist || notPersonalPlaylist) {
+  if (!playlist || playlist.user.id !== playlistInput.userId) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -96,8 +96,7 @@ exports.deletePlaylist = async (playlistInput) => {
       {path: "user", select: "name"},
     ]);
 
-  const notPersonalPlaylist = playlist.user.id !== playlistInput.userId;
-  if (!playlist || notPersonalPlaylist) {
+  if (!playlist || playlist.user.id !== playlistInput.userId) {
     throw new AppError("Playlist not found", 404);
   }
 
@@ -122,14 +121,14 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     "+isPublic +isLikedSongs",
   );
 
-  const isPrivatePlaylist =
-    !playlist.isPublic && String(playlist.user) !== playlistInput.userId;
-  if (!playlist || isPrivatePlaylist) {
+  if (
+    !playlist ||
+    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
+  ) {
     throw new AppError("Playlist not found", 404);
   }
 
-  const isPersonalPlaylist = String(playlist.user) === playlistInput.userId;
-  if (playlist.isLikedSongs || isPersonalPlaylist) {
+  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
@@ -162,14 +161,14 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     "+isPublic +isLikedSongs",
   );
 
-  const isPrivatePlaylist =
-    !playlist.isPublic && String(playlist.user) !== playlistInput.userId;
-  if (!playlist || isPrivatePlaylist) {
+  if (
+    !playlist ||
+    (!playlist.isPublic && String(playlist.user) !== playlistInput.userId)
+  ) {
     throw new AppError("Playlist not found", 404);
   }
 
-  const isPersonalPlaylist = String(playlist.user) === playlistInput.userId;
-  if (playlist.isLikedSongs || isPersonalPlaylist) {
+  if (playlist.isLikedSongs || String(playlist.user) === playlistInput.userId) {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
