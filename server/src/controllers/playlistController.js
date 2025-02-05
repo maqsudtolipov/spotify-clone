@@ -6,11 +6,11 @@ exports.getPlaylist = async (req, res, next) => {
       playlistId: req.params.id,
       userId: req.user.id,
     };
-    const library = await playlistService.getPlaylist(playlistInput);
+    const playlist = await playlistService.getPlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
-      library,
+      playlist,
     });
   } catch (e) {
     next(e);
