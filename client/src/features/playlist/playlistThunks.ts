@@ -6,7 +6,7 @@ export const getPlaylist = createAsyncThunk(
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const res = await axios.get(`/playlists/${id}`);
-      return res.data.artist;
+      return res.data.playlist;
     } catch (err) {
       err.response.data.statusCode = err.response.status;
       return rejectWithValue(err.response.data);

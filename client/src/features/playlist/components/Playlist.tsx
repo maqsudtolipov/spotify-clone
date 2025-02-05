@@ -14,6 +14,7 @@ const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
     (state) => state.playlist.api.getPlaylist
   );
+  const { data } = useAppSelector((state) => state.playlist);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -22,22 +23,19 @@ const Playlist = () => {
     if (id) dispatch(getPlaylist({ id }));
   }, [id]);
 
-  const color =
-    '#' +
-    ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
-    '4d';
-
-  if (status === 'pending') return <LoadingScreen />;
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
     if (statusCode === 500) return <ServerError />;
     else navigate('/');
   }
+  if (status === 'pending' || !data) return <LoadingScreen />;
+
+  console.log(data);
 
   return (
     <div>
-      <PlaylistHeader color={color} />
-      <GradientBackground color={color}>
+      <PlaylistHeader color={data.color} />
+      <GradientBackground color={data.color}>
         <PlayHeader />
         <div className="p-5 pt-0">
           <PlaylistTable />
