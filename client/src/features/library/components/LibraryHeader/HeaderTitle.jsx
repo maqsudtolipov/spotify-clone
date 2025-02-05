@@ -1,9 +1,17 @@
 import styles from './HeaderTitle.module.scss';
 import { RiAddLargeFill, RiArchiveStackLine } from 'react-icons/ri';
 import IconButton from '../../../../ui-library/IconButton/IconButton.jsx';
+import { createPlaylist } from '../../../playlist/playlistThunks.ts';
+import { useAppDispatch } from '../../../../app/hooks.ts';
 
+// INFO: Collapse hides "Your Library" text and "+" buttons
 const HeaderTitle = ({ isCollapsed, onCollapse }) => {
-  // INFO: Collapse hides "Your Library" text and "+" buttons
+  const dispatch = useAppDispatch();
+
+  const handleCreatePlaylist = () => {
+    dispatch(createPlaylist());
+  };
+
   return (
     <div
       className={`${styles.title} ${isCollapsed ? styles.titleCollapsed : ''}`}
@@ -13,7 +21,7 @@ const HeaderTitle = ({ isCollapsed, onCollapse }) => {
         <span>Your Library</span>
       </div>
 
-      <IconButton>
+      <IconButton onClick={handleCreatePlaylist}>
         <RiAddLargeFill />
       </IconButton>
     </div>

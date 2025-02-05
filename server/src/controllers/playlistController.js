@@ -24,11 +24,11 @@ exports.createPlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const playlist = await playlistService.createPlaylist(playlistInput);
+    const library = await playlistService.createPlaylist(playlistInput);
 
     res.status(201).send({
       status: "success",
-      playlist,
+      library,
     });
   } catch (e) {
     next(e);
