@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { getCache, setCache } = require("../services/cacheService");
+const {getCache, setCache} = require("../services/cacheService");
 const File = require("./fileModel");
 
 // TODO: add length of all songs and count of songs
@@ -26,6 +26,10 @@ const playlistSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    color: {
+      type: String,
+      required: [true, "Please provide a color"],
+    },
     songs: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -44,11 +48,18 @@ const playlistSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true},
     timestamps: true,
   },
 );
+
+playlistSchema
+  .path("color")
+  .default(
+    () =>
+      `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")}4d`,
+  );
 
 const getDefaultPlaylistImgId = async (type = "playlist") => {
   const defaultFiles = {
@@ -70,12 +81,12 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
 
   if (!defaultFiles[type]) return null; // Handle unknown types
 
-  const { cacheKey, fileId, name, filePath, url } = defaultFiles[type];
+  const {cacheKey, fileId, name, filePath, url} = defaultFiles[type];
 
   let cachedImgId = getCache(cacheKey);
   if (cachedImgId) return cachedImgId;
 
-  let defaultFile = await File.findOne({ fileId });
+  let defaultFile = await File.findOne({fileId});
   if (!defaultFile) {
     defaultFile = await File.create({
       fileId,

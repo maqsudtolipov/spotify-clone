@@ -29,8 +29,9 @@ const playlistSlice = createSlice({
       .addCase(getPlaylist.pending, (state) => {
         state.api.getPlaylist.status = 'pending';
       })
-      .addCase(getPlaylist.fulfilled, (state) => {
+      .addCase(getPlaylist.fulfilled, (state, { payload }) => {
         state.api.getPlaylist.status = 'fulfilled';
+        console.log(payload);
       })
       .addCase(getPlaylist.rejected, (state, action) => {
         const payload = action.payload;

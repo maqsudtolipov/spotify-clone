@@ -8,7 +8,7 @@ const uploadFiles = require("../utils/uploadFiles");
 
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
-    .select("isPublic")
+    .select("+isPublic")
     .populate([
       {path: "img", select: "url"},
       {path: "user", select: "name"},
