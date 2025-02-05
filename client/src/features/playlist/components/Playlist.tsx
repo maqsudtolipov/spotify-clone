@@ -3,23 +3,28 @@ import PlaylistTable from './PlaylistTable.tsx';
 import PlaylistHeader from './PlaylistHeader.tsx';
 import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { useEffect } from 'react';
 import { getPlaylist } from '../playlistThunks.ts';
+import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
 
 const Playlist = () => {
   const { id } = useParams<{ id: string }>();
+  const { status, statusCode, error } = useAppSelector(
+    (state) => state.playlist.api.getPlaylist
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (id) dispatch(getPlaylist({ id }));
-    console.log(id);
   }, [id]);
 
   const color =
     '#' +
     ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') +
     '4d';
+
+  if (statusCode === 404) return <NotFound message={error} />;
 
   // TODO: status codes
   //   - 404: not found

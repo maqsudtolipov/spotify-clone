@@ -8,7 +8,7 @@ export const getPlaylist = createAsyncThunk(
       const res = await axios.get(`/artists/${id}`);
       return res.data.artist;
     } catch (err) {
-      console.log(err.response);
+      err.response.data.statusCode = err.response.status;
       return rejectWithValue(err.response.data);
     }
   }
