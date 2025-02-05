@@ -6,6 +6,7 @@ export const getUser = createAsyncThunk(
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const res = await axios.get(`/users/${id}`);
+      console.log(res);
       return res.data.user;
     } catch (e) {
       e.response.data.statusCode = e.response.status;

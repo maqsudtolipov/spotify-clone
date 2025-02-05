@@ -17,6 +17,8 @@ exports.getUserById = async (userInput) => {
   if (!user) {
     throw new AppError("User not found", 404);
   }
+
+  return user;
 };
 
 exports.getCurrentUser = async (userInput) => {
@@ -99,11 +101,8 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const {updatedUser, updatedCandidate} = await userHelpers.updateFollowStatus(
-    currentUser,
-    candidateUser,
-    action,
-  );
+  const {updatedUser, updatedCandidate} =
+    await userHelpers.updateFollowStatus(currentUser, candidateUser, action);
 
   let library;
   if (candidateUser.role === "artist") {
