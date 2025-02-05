@@ -99,7 +99,7 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const {updatedUser, updatedCandidate} = userHelpers.updateFollowStatus(
+  const {updatedUser, updatedCandidate} = await userHelpers.updateFollowStatus(
     currentUser,
     candidateUser,
     action,

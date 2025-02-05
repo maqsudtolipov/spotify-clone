@@ -31,11 +31,9 @@ const productionError = (err, res) => {
 };
 
 const developmentError = (prodError, devError, res) => {
-  res.status(devError.statusCode).json({
-    prod: {
-      status: prodError.status,
-      message: prodError.message,
-    },
+  res.status(prodError.statusCode).json({
+    status: prodError.status,
+    message: prodError.message,
     dev: {
       status: devError.status,
       message: devError.message,

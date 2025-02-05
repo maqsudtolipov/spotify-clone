@@ -24,11 +24,11 @@ exports.createPlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const playlist = await playlistService.createPlaylist(playlistInput);
+    const library = await playlistService.createPlaylist(playlistInput);
 
     res.status(201).send({
       status: "success",
-      playlist,
+      library,
     });
   } catch (e) {
     next(e);
@@ -82,7 +82,7 @@ exports.savePlaylistToLibrary = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const { updatedLibrary } =
+    const {updatedLibrary} =
       await playlistService.savePlaylistToLibrary(playlistInput);
 
     res.status(200).send({
@@ -101,7 +101,7 @@ exports.removePlaylistFromLibrary = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const { updatedLibrary } =
+    const {updatedLibrary} =
       await playlistService.removePlaylistFromLibrary(playlistInput);
 
     res.status(200).send({

@@ -1,7 +1,7 @@
 import styles from './LibraryList.module.scss';
 import LibraryCard from './LibraryCard/LibraryCard.tsx';
 import { useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '../../../app/hooks.ts';
+import { useAppSelector } from '../../../../app/hooks.ts';
 
 const LibraryList = ({ isCollapsed }) => {
   const { items } = useAppSelector((state) => state.library);
@@ -35,7 +35,7 @@ const LibraryList = ({ isCollapsed }) => {
       >
         <div className={showShadow ? styles.shadow : ''}></div>
         {items?.map((el) => (
-          <LibraryCard key={el.name} data={el} isCollapsed={isCollapsed} />
+          <LibraryCard data={el} isCollapsed={isCollapsed} />
         ))}
       </div>
     </div>

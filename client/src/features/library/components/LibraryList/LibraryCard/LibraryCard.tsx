@@ -29,7 +29,7 @@ const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
   };
 
   return (
-    <li className={styles.libraryCard}>
+    <li className={styles.libraryCard} key={data.id}>
       <CardImage
         src={data.img}
         name={`Cover for ${data.name}`}

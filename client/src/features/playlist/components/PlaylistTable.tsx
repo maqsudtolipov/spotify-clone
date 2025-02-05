@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import SortedTable from '../../ui-library/Table/SortedTable.tsx';
+import SortedTable from '../../../ui-library/Table/SortedTable.tsx';
 
 interface Item {
   img: string;
@@ -19,7 +19,7 @@ const PlaylistTable = () => {
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       artist: faker.person.fullName(),
       plays: faker.number.int(999),
-      isLiked: faker.datatype.boolean(),
+      isLiked: faker.datatype.boolean()
     }));
 
     setItems(fetchedItems);

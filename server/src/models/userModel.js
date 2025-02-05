@@ -4,6 +4,7 @@ const Playlist = require("./playlistModel");
 const Library = require("./libraryModel");
 const {getCache, setCache} = require("../services/cacheService");
 const File = require("./fileModel");
+const generateRandomColor = require("../utils/generateRandomColor");
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,7 +32,6 @@ const userSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      required: [true, "Please provide a color"],
     },
     role: {
       type: String,
@@ -114,24 +114,19 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true},
     timestamps: true,
   },
 );
-
-// Default Path
-userSchema
-  .path("color")
-  .default(
-    () =>
-      `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")}4d`,
-  );
 
 // -- Hooks
 // Create likedSongs playlist on newUsers
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
+
+  // Generate color
+  this.color = generateRandomColor();
 
   // Create liked songs playlist for the user
   const likedSongsPlaylist = await Playlist.create({
@@ -182,7 +177,7 @@ userSchema.statics.getDefaultUserImgId = async function () {
   let cachedImgId = getCache("defaultUserImgId");
   if (cachedImgId) return cachedImgId;
 
-  let defaultFile = await File.findOne({ fileId: "user" });
+  let defaultFile = await File.findOne({fileId: "user"});
 
   if (!defaultFile) {
     defaultFile = await File.create({
@@ -198,7 +193,7 @@ userSchema.statics.getDefaultUserImgId = async function () {
   }
 
   return defaultFile.id;
-}
+};
 
 const User = mongoose.model("User", userSchema);
 
