@@ -24,8 +24,18 @@ const Dropdown = ({ children, ...rest }: DropdownProps) => {
   const [openSub, setOpenSub] = useState('');
 
   const openDropdown = () => setIsOpen(true);
-  const closeDropdown = () => setIsOpen(false);
-  const toggleDropdown = () => setIsOpen((state) => !state);
+  const closeDropdown = () => {
+    setIsOpen(false);
+    setOpenSub('');
+  };
+  const toggleDropdown = () => {
+    if (isOpen) {
+      setIsOpen(false);
+      setOpenSub('');
+    } else {
+      setIsOpen(true);
+    }
+  };
 
   const openSubMenu = (name: string) => {
     // Closes on double click
