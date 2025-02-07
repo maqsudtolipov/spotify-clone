@@ -35,7 +35,7 @@ const RefPasser = forwardRef(({ id }) => {
         Delete
       </DropdownItem>
 
-      <AddToPlaylistItem />
+      <AddToPlaylistItem id={id} />
 
       <DropdownItem PreIcon={RiHeartFill}>Save to Liked Songs</DropdownItem>
       <DropdownItem PreIcon={RiShareForwardBoxFill}>Share</DropdownItem>

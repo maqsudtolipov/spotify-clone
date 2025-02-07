@@ -3,13 +3,28 @@ import { RiAddFill, RiArrowRightSLine } from 'react-icons/ri';
 import DropdownSubMenu from '../SubMenu/DropdownSubMenu.tsx';
 import { useContext } from 'react';
 import { DropdownContext } from '../Dropdown.tsx';
-import { useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { saveSongToPlaylist } from '../../../features/playlist/playlistThunks.ts';
 
-const AddToPlaylistItem = () => {
+interface AddToPlaylistItemProps {
+  id: string;
+}
+
+const AddToPlaylistItem = ({ id }: AddToPlaylistItemProps) => {
+  const playlists = useAppSelector((state) => state.user?.data?.playlists);
   const { openSubMenu } = useContext(DropdownContext);
-  const playlists = useAppSelector((state) => state.user.data.playlists);
 
-  if (!playlists.length) return null;
+  const dispatch = useAppDispatch();
+
+  if (!playlists.length || !id) return null;
+
+  const handleSaveToPlaylist = (
+    songId: string,
+    playlistId: string,
+    playlistName: string,
+  ) => {
+    dispatch(saveSongToPlaylist({ songId, playlistId, playlistName }));
+  };
 
   return (
     <DropdownItem
@@ -21,7 +36,13 @@ const AddToPlaylistItem = () => {
       Add to playlist
       <DropdownSubMenu name="addToPlaylist">
         {playlists.map((playlist) => (
-          <DropdownItem>{playlist.name}</DropdownItem>
+          <DropdownItem
+            onClick={() =>
+              handleSaveToPlaylist(id, playlist._id, playlist.name)
+            }
+          >
+            {playlist.name}
+          </DropdownItem>
         ))}
       </DropdownSubMenu>
     </DropdownItem>
