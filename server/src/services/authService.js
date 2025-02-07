@@ -38,6 +38,7 @@ exports.login = async (email, password, res) => {
           populate: [
             {path: "user", select: "name", strictPopulate: false},
             {path: "img", select: "url"},
+            {path: "playlists", select: "name"},
           ],
         },
       ],
