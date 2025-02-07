@@ -42,9 +42,8 @@ exports.login = async (email, password, res) => {
         },
       ],
     },
-    {
-      path: "likedSongs",
-    },
+    {path: "likedSongs"},
+    {path: "playlists", select: "name"},
   ]);
 
   if (!user) {

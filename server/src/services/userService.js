@@ -44,6 +44,7 @@ exports.getCurrentUser = async (userInput) => {
       {
         path: "likedSongs",
       },
+      {path: "playlists", select: "name"},
     ])
     .lean();
   // NOTE: virtual does not work with lean()

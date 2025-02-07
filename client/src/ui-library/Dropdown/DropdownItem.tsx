@@ -3,6 +3,7 @@ import styles from './Dropdown.module.scss';
 import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownItemProps {
+  closeOnClick?: boolean;
   underline?: boolean;
   isHighlighted?: boolean;
   PreIcon?: ElementType | null;
@@ -17,16 +18,19 @@ const DropdownItem = ({
   isHighlighted = false,
   PreIcon,
   PostIcon,
+  closeOnClick = true,
   onClick: propOnClick,
   children,
   ...rest
 }: DropdownItemProps) => {
+  const { closeDropdown } = useContext(DropdownContext);
+
   return (
     <li
       className={`${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`}
       onClick={() => {
         propOnClick && propOnClick();
-        // closeDropdown();
+        closeOnClick && closeDropdown();
       }}
       {...rest}
     >

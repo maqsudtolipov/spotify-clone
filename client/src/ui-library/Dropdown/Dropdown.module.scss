@@ -19,7 +19,7 @@
 }
 
 .item {
-  @apply w-48 p-3 flex items-center gap-3 text-sm text-neutral-100 text-opacity-90 rounded-sm  cursor-pointer;
+  @apply w-48 p-3 flex items-center gap-3 relative text-sm text-neutral-100 text-opacity-90 rounded-sm  cursor-pointer;
 
   span {
     @apply w-full;

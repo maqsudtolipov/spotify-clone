@@ -36,18 +36,20 @@ exports.createPlaylist = async (playlistInput) => {
     user: playlistInput.userId,
   });
 
-  await User.findByIdAndUpdate(playlistInput.userId, {
-    $addToSet: {playlists: newPlaylist.id},
-  });
+  const user = await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $addToSet: {playlists: newPlaylist.id},
+    },
+    {new: true},
+  ).populate([{path: "playlists", select: "name"}]);
 
   const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
       $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
     },
-    {
-      new: true,
-    },
+    {new: true},
   )
     .populate([
       {
@@ -63,7 +65,7 @@ exports.createPlaylist = async (playlistInput) => {
   library.id = library._id;
   library.items = filterLibraryItems(library.items);
 
-  return library;
+  return {library, playlists: user.playlists};
 };
 
 exports.updatePlaylist = async (playlistInput) => {

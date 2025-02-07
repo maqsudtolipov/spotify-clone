@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const uploadFiles = require("../utils/uploadFiles");
 const Playlist = require("../models/playlistModel");
+const songHelpers = require("../helpers/songHelpers");
 
 exports.uploadAndCreateSong = async (songInput) => {
   const songFile = await uploadFiles(
@@ -178,4 +179,22 @@ exports.dislikeSong = async (songInput) => {
     {new: true},
   );
   return updatedPlaylist.songs;
+};
+
+exports.addSongToPlaylist = async (songInput) => {
+  await songHelpers.addOrRemoveSongFromPlaylist(
+    songInput.songId,
+    songInput.playlistId,
+    songInput.userId,
+    "add",
+  );
+};
+
+exports.removeSongFromPlaylist = async (songInput) => {
+  await songHelpers.addOrRemoveSongFromPlaylist(
+    songInput.songId,
+    songInput.playlistId,
+    songInput.userId,
+    "remove",
+  );
 };
