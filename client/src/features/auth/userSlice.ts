@@ -1,12 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  dislikeSong,
-  getCurrent,
-  likeSong,
-  login,
-  logout,
-  signUp,
-} from './userThunks.ts';
+import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
 
 interface ApiStatus {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -66,6 +59,9 @@ const userSlice = createSlice({
   reducers: {
     followingsUpdated: (state, action) => {
       if (state.data) state.data.followings = action.payload;
+    },
+    playlistsUpdated: (state, action) => {
+      if (state.data) state.data.playlists = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -131,5 +127,5 @@ const userSlice = createSlice({
       }),
 });
 
-export const { followingsUpdated } = userSlice.actions;
+export const { followingsUpdated, playlistsUpdated } = userSlice.actions;
 export default userSlice.reducer;
