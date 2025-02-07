@@ -1,0 +1,33 @@
+const Song = require("../models/songModel");
+const AppError = require("../utils/AppError");
+const Playlist = require("../models/playlistModel");
+
+exports.addOrRemoveSongFromPlaylist = async (
+  songId,
+  playlistId,
+  userId,
+  action,
+) => {
+  const isAdding = action === "add";
+  const updateOperator = isAdding ? "$addToSet" : "$pull";
+
+  console.log(action, isAdding, updateOperator);
+
+  const song = await Song.findById(songId);
+  if (!song) {
+    throw new AppError("Song not found", 404);
+  }
+
+  const playlist = await Playlist.findById(playlistId).select("+isLikedSongs");
+  if (!playlist || String(playlist.user) !== userId) {
+    throw new AppError("Playlist not found", 404);
+  }
+
+  if (playlist.isLikedSongs) {
+    throw new AppError("You don't have permission to perform this action", 403);
+  }
+
+  await Playlist.findByIdAndUpdate(playlistId, {
+    [updateOperator]: {songs: song.id},
+  });
+};

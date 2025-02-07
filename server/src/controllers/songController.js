@@ -105,9 +105,11 @@ exports.dislike = async (req, res, next) => {
 exports.addSongToPlaylist = async (req, res, next) => {
   try {
     const songInput = {
+      userId: req.user.id,
       songId: req.params.songId,
       playlistId: req.params.playlistId,
     };
+    await songService.addSongToPlaylist(songInput);
 
     res.status(200).json({
       status: "success",
