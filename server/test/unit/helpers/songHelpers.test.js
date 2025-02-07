@@ -1,5 +1,4 @@
 const Song = require("../../../src/models/songModel");
-const songService = require("../../../src/services/songService");
 const AppError = require("../../../src/utils/AppError");
 const Playlist = require("../../../src/models/playlistModel");
 const songHelpers = require("../../../src/helpers/songHelpers");
