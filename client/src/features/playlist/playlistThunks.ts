@@ -28,21 +28,20 @@ export const createPlaylist = createAsyncThunk(
 
 export const saveSongToPlaylist = createAsyncThunk(
   'playlist/saveSong',
-  async (
-    {
-      songId,
-      playlistId,
-      playlistName,
-    }: { songId: string; playlistId: string; playlistName: string },
-    // { rejectWithValue },
-  ) => {
+  async ({
+    songId,
+    playlistId,
+    playlistName,
+  }: {
+    songId: string;
+    playlistId: string;
+    playlistName: string;
+  }) => {
     try {
       await axios.post(`/songs/${songId}/save/${playlistId}`);
       toast.success(`Song saved to playlist: ${playlistName}`);
-      // return res.data.playlist;
     } catch (err) {
-      // err.response.data.statusCode = err.response.status;
-      // return rejectWithValue(err.response.data);
+      // Do nothing if error
     }
   },
 );
