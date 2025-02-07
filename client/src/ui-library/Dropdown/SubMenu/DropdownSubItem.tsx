@@ -1,14 +1,16 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import styles from './DropdownSubMenu.module.scss';
+import { DropdownContext } from '../Dropdown.tsx';
 
 interface DropdownSubItemProps {
-  onClick?: () => void;
   children: ReactNode;
 }
 
-const DropdownSubItem = ({ onClick, children }: DropdownSubItemProps) => {
+const DropdownSubItem = ({ children }: DropdownSubItemProps) => {
+  const { closeDropdown } = useContext(DropdownContext);
+
   return (
-    <li className={styles.subDropdownItem} onClick={onClick}>
+    <li className={styles.subDropdownItem} onClick={closeDropdown}>
       {children}
     </li>
   );
