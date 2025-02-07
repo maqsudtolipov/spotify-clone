@@ -37,6 +37,7 @@ router.route("/:id/dislike").post(ensureAuthenticated, songController.dislike);
 
 router
   .route("/:songId/addToPlaylist/:playlistId")
-  .post(ensureAuthenticated, songController.addSongToPlaylist);
+  .post(ensureAuthenticated, songController.addSongToPlaylist)
+  .delete(ensureAuthenticated, songController.removeSongFromPlaylist);
 
 module.exports = router;
