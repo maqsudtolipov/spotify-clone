@@ -31,7 +31,9 @@ const EditSongDialog = forwardRef<
   return (
     <Dialog>
       <DialogTrigger>
-        <DropdownItem PreIcon={RiEditLine}>Edit</DropdownItem>
+        <DropdownItem PreIcon={RiEditLine} closeOnClick={false}>
+          Edit
+        </DropdownItem>
       </DialogTrigger>
       <DialogContent>
         <form
