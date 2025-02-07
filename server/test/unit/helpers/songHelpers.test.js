@@ -28,7 +28,7 @@ describe("songHelpers", () => {
       jest.spyOn(Song, "findById").mockReturnValue({
         select: jest.fn().mockReturnValue({name: "song"}),
       });
-      jest.spyOn(Playlist, "findById").mockReturnValue({
+      jest.spyOn(Playlist, "findOne").mockReturnValue({
         select: jest.fn().mockResolvedValue(null),
       });
 
@@ -36,7 +36,12 @@ describe("songHelpers", () => {
         .addOrRemoveSongFromPlaylist("songId", "playlistId", "userId", "add")
         .catch((e) => e);
 
-      expect(Playlist.findById).toHaveBeenCalledWith("playlistId");
+      expect(Playlist.findOne).toHaveBeenCalledWith({
+        _id: "playlistId",
+        songs: {
+          $ne: "songId",
+        },
+      });
       expect(error).toBeInstanceOf(AppError);
       expect(error.statusCode).toBe(404);
       expect(error.message).toBe("Playlist not found");
@@ -44,7 +49,7 @@ describe("songHelpers", () => {
 
     it("should throw 404 if playlist does not belong to user", async () => {
       jest.spyOn(Song, "findById").mockResolvedValue({name: "song"});
-      jest.spyOn(Playlist, "findById").mockReturnValue({
+      jest.spyOn(Playlist, "findOne").mockReturnValue({
         select: jest
           .fn()
           .mockResolvedValue({name: "playlist", user: "differentId"}),
@@ -54,7 +59,12 @@ describe("songHelpers", () => {
         .addOrRemoveSongFromPlaylist("songId", "playlistId", "userId", "add")
         .catch((e) => e);
 
-      expect(Playlist.findById).toHaveBeenCalledWith("playlistId");
+      expect(Playlist.findOne).toHaveBeenCalledWith({
+        _id: "playlistId",
+        songs: {
+          $ne: "songId",
+        },
+      });
       expect(error).toBeInstanceOf(AppError);
       expect(error.statusCode).toBe(404);
       expect(error.message).toBe("Playlist not found");
@@ -62,7 +72,7 @@ describe("songHelpers", () => {
 
     it("should return 403 if playlist is likedSongs", async () => {
       jest.spyOn(Song, "findById").mockResolvedValue({name: "song"});
-      jest.spyOn(Playlist, "findById").mockReturnValue({
+      jest.spyOn(Playlist, "findOne").mockReturnValue({
         select: jest.fn().mockResolvedValue({
           name: "playlist",
           user: "userId",
@@ -84,11 +94,11 @@ describe("songHelpers", () => {
     it("should add song inside playlist", async () => {
       jest
         .spyOn(Song, "findById")
-        .mockResolvedValue({id: "songId", name: "song"});
-      jest.spyOn(Playlist, "findById").mockReturnValue({
+        .mockResolvedValue({id: "songId", name: "song", duration: 120});
+      jest.spyOn(Playlist, "findOne").mockReturnValue({
         select: jest
           .fn()
-          .mockResolvedValue({id: "playlistId", user: "userId"}),
+          .mockResolvedValue({id: "playlistId", user: "userId", duration: 0}),
       });
       jest.spyOn(Playlist, "findByIdAndUpdate").mockResolvedValue(true);
 
@@ -101,14 +111,18 @@ describe("songHelpers", () => {
 
       expect(Playlist.findByIdAndUpdate).toHaveBeenCalledWith("playlistId", {
         $addToSet: {songs: "songId"},
+        $inc: {
+          duration: 120,
+          length: 1,
+        },
       });
     });
 
     it("should remove song from playlist", async () => {
       jest
         .spyOn(Song, "findById")
-        .mockResolvedValue({id: "songId", name: "song"});
-      jest.spyOn(Playlist, "findById").mockReturnValue({
+        .mockResolvedValue({id: "songId", name: "song", duration: 120});
+      jest.spyOn(Playlist, "findOne").mockReturnValue({
         select: jest
           .fn()
           .mockResolvedValue({id: "playlistId", user: "userId"}),
@@ -124,6 +138,10 @@ describe("songHelpers", () => {
 
       expect(Playlist.findByIdAndUpdate).toHaveBeenCalledWith("playlistId", {
         $pull: {songs: "songId"},
+        $inc: {
+          duration: -120,
+          length: -1,
+        },
       });
     });
   });
