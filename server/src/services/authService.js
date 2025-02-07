@@ -38,14 +38,12 @@ exports.login = async (email, password, res) => {
           populate: [
             {path: "user", select: "name", strictPopulate: false},
             {path: "img", select: "url"},
-            {path: "playlists", select: "name"},
           ],
         },
       ],
     },
-    {
-      path: "likedSongs",
-    },
+    {path: "likedSongs"},
+    {path: "playlists", select: "name"},
   ]);
 
   if (!user) {
