@@ -1,3 +1,4 @@
+import styles from './SubDropdown.module.scss';
 import { DropdownContext } from '../Dropdown.tsx';
 import { useContext } from 'react';
 
@@ -6,10 +7,22 @@ interface SubDropdownListProps {
 }
 
 const SubDropdownList = ({ name }: SubDropdownListProps) => {
-  const { openSub } = useContext(DropdownContext);
+  const { openSub, closeDropdown } = useContext(DropdownContext);
+
+  // Dropdown closes on sub item clicks
+  const handleSubClick = (e: MouseEvent) => {
+    e.preventDefault();
+    closeDropdown();
+  };
 
   return name === openSub ? (
-    <p className="absolute top-0 right-0">yay</p>
+    <div className={styles.subDropdown}>
+      <ul className={styles.subDropdownList}>
+        <li className={styles.subDropdownItem}>One Playlist</li>
+        <li className={styles.subDropdownItem}>Two Playlist</li>
+        <li className={styles.subDropdownItem}>Three Playlist</li>
+      </ul>
+    </div>
   ) : null;
 };
 
