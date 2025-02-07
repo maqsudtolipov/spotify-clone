@@ -11,14 +11,19 @@ exports.addOrRemoveSongFromPlaylist = async (
   const isAdding = action === "add";
   const updateOperator = isAdding ? "$addToSet" : "$pull";
 
-  console.log(action, isAdding, updateOperator);
-
   const song = await Song.findById(songId);
   if (!song) {
     throw new AppError("Song not found", 404);
   }
 
-  const playlist = await Playlist.findById(playlistId).select("+isLikedSongs");
+  const playlist = await Playlist.findOne({
+    _id: playlistId,
+    songs: isAdding
+      ? {
+        $ne: songId,
+      }
+      : songId,
+  }).select("+isLikedSongs");
   if (!playlist || String(playlist.user) !== userId) {
     throw new AppError("Playlist not found", 404);
   }
@@ -29,5 +34,9 @@ exports.addOrRemoveSongFromPlaylist = async (
 
   await Playlist.findByIdAndUpdate(playlistId, {
     [updateOperator]: {songs: song.id},
+    $inc: {
+      duration: isAdding ? +song.duration : -song.duration,
+      length: isAdding ? +1 : -1,
+    },
   });
 };
