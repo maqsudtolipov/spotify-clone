@@ -18,7 +18,7 @@ import useOutsideClick from '../../../hooks/useOutsideClick.tsx';
 import { forwardRef, useContext } from 'react';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deleteSong } from '../../../features/artist/artistThunks.ts';
-import SubDropdownList from '../../Dropdown/SubDropdown/SubDropdownList.tsx';
+import DropdownSubMenu from '../../Dropdown/SubMenu/DropdownSubMenu.tsx';
 
 // FIXME: not a good method
 const RefPasser = forwardRef(({ id }) => {
@@ -47,7 +47,7 @@ const RefPasser = forwardRef(({ id }) => {
         onClick={() => openSubMenu('addToPlaylist')}
       >
         Add to playlist
-        <SubDropdownList name="addToPlaylist" />
+        <DropdownSubMenu name="addToPlaylist" />
       </DropdownItem>
       <DropdownItem PreIcon={RiHeartFill}>Save to Liked Songs</DropdownItem>
       <DropdownItem PreIcon={RiShareForwardBoxFill}>Share</DropdownItem>
