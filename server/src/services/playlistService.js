@@ -168,7 +168,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     },
   });
 
-  const updatedLibrary = await Library.findByIdAndUpdate(
+  const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
       $addToSet: {
@@ -179,10 +179,23 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
       },
     },
     {new: true},
-  );
+  )
+    .populate([
+      {
+        path: "items.refId",
+        select: "name img user createdAt",
+        populate: [
+          {path: "user", select: "name", strictPopulate: false},
+          {path: "img", select: "url"},
+        ],
+      },
+    ])
+    .lean();
+  library.id = library._id;
+  library.items = filterLibraryItems(library.items);
 
   return {
-    updatedLibrary,
+    library,
   };
 };
 
@@ -208,7 +221,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     },
   });
 
-  const updatedLibrary = await Library.findByIdAndUpdate(
+  const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
       $pull: {
@@ -219,9 +232,22 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
       },
     },
     {new: true},
-  );
+  )
+    .populate([
+      {
+        path: "items.refId",
+        select: "name img user createdAt",
+        populate: [
+          {path: "user", select: "name", strictPopulate: false},
+          {path: "img", select: "url"},
+        ],
+      },
+    ])
+    .lean();
+  library.id = library._id;
+  library.items = filterLibraryItems(library.items);
 
   return {
-    updatedLibrary,
+    library,
   };
 };
