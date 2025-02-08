@@ -4,6 +4,7 @@ import { setLibraryItems } from '../library/librarySlice.ts';
 import { likedPlaylistsUpdated, playlistsUpdated } from '../auth/userSlice.ts';
 import toast from 'react-hot-toast';
 
+// Main
 export const getPlaylist = createAsyncThunk(
   'playlist/getPlaylist',
   async ({ id }: { id: string }, { rejectWithValue }) => {
@@ -26,6 +27,21 @@ export const createPlaylist = createAsyncThunk(
   }
 );
 
+export const deletePlaylist = createAsyncThunk(
+  'playlist/deletePlaylist',
+  async ({ id }: { id: string }, {}) => {
+    try {
+      const res = await axios.delete(`/playlists/${id}`);
+      console.log(res);
+
+      toast.success('Playlist deleted successfully');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
+// Additional
 export const savePlaylist = createAsyncThunk(
   'playlist/savePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
