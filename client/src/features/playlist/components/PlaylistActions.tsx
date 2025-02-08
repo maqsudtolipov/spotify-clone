@@ -15,6 +15,9 @@ const PlaylistActions = ({ data }: Playlist) => {
     (state) => state.user?.data?.likedPlaylists
   );
   const userId = useAppSelector((state) => state.user?.data?._id);
+  const likedSongsId = useAppSelector(
+    (state) => state.user?.data?.likedSongs._id
+  );
 
   const dispatch = useAppDispatch();
 
@@ -25,6 +28,7 @@ const PlaylistActions = ({ data }: Playlist) => {
     dispatch(removePlaylist({ id }));
   };
 
+  const isLikedSongs = data._id === likedSongsId;
   const isPersonalPlaylist = data.user._id === userId;
 
   return (
@@ -43,6 +47,7 @@ const PlaylistActions = ({ data }: Playlist) => {
       <PlaylistHeaderActions
         id={data.id}
         isPersonalPlaylist={isPersonalPlaylist}
+        isLikedSongs={isLikedSongs}
       />
     </PlayHeader>
   );

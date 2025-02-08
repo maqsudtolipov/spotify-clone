@@ -10,11 +10,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface PlaylistHeaderActionsProps {
   id: string;
+  isLikedSongs: boolean;
   isPersonalPlaylist: boolean;
 }
 
 const PlaylistHeaderActions = ({
                                  id,
+                                 isLikedSongs,
                                  isPersonalPlaylist
                                }: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
@@ -33,7 +35,7 @@ const PlaylistHeaderActions = ({
 
       <DropdownList position="bottom-right">
         {/*<DropdownItem PreIcon={RiEditLine}>Edit Details</DropdownItem>*/}
-        {isPersonalPlaylist && (
+        {isPersonalPlaylist && !isLikedSongs && (
           <DropdownItem
             PreIcon={RiDeleteBin6Line}
             underline={false}
