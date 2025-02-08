@@ -7,6 +7,7 @@ import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 interface PlaylistHeaderActionsProps {
   id: string;
@@ -15,10 +16,10 @@ interface PlaylistHeaderActionsProps {
 }
 
 const PlaylistHeaderActions = ({
-                                 id,
-                                 isLikedSongs,
-                                 isPersonalPlaylist
-                               }: PlaylistHeaderActionsProps) => {
+  id,
+  isLikedSongs,
+  isPersonalPlaylist,
+}: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
