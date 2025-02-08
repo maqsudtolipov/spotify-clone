@@ -6,7 +6,7 @@ import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface PlaylistHeaderActionsProps {
   id: string;
@@ -21,7 +21,6 @@ const PlaylistHeaderActions = ({
                                }: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleDeletePlaylist = async (id: string) => {
     await dispatch(deletePlaylist({ id }));
@@ -30,6 +29,7 @@ const PlaylistHeaderActions = ({
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(window.location.href);
+    toast.success('Link copied to clipboard');
   };
 
   return (

@@ -24,6 +24,7 @@ export const createPlaylist = createAsyncThunk(
     const res = await axios.post(`/playlists/`);
     dispatch(setLibraryItems(res.data.library.items));
     dispatch(playlistsUpdated(res.data.playlists));
+    toast.success('New playlist is created');
   }
 );
 
@@ -31,9 +32,7 @@ export const deletePlaylist = createAsyncThunk(
   'playlist/deletePlaylist',
   async ({ id }: { id: string }, {}) => {
     try {
-      const res = await axios.delete(`/playlists/${id}`);
-      console.log(res);
-
+      await axios.delete(`/playlists/${id}`);
       toast.success('Playlist deleted successfully');
     } catch (e) {
       console.log(e);
