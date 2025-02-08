@@ -140,10 +140,20 @@ exports.deletePlaylist = async (playlistInput) => {
     await File.findByIdAndDelete(playlist.img.id);
   }
 
+  // Delete the playlist
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
-  await Library.findByIdAndUpdate(playlistInput.playlistId, {
-    $pull: {items: {refId: playlistInput.playlistId, itemType: "playlist"}},
-  });
+
+  // Remove the playlist from Users' likedSongs array
+  await User.updateMany(
+    {likedPlaylists: playlistInput.playlistId},
+    {$pull: {likedPlaylists: playlistInput.playlistId}},
+  );
+
+  // Remove playlist from all libraries
+  await Library.updateMany(
+    {"items.refId": playlistInput.playlistId},
+    {$pull: {items: {refId: playlistInput.playlistId}}},
+  );
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
