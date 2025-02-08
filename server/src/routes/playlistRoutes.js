@@ -18,12 +18,12 @@ router
   )
   .delete(ensureAuthenticated, playlistController.deletePlaylist);
 
-router.patch(
+router.post(
   "/save/:id",
   ensureAuthenticated,
   playlistController.savePlaylistToLibrary,
 );
-router.patch(
+router.delete(
   "/remove/:id",
   ensureAuthenticated,
   playlistController.removePlaylistFromLibrary,

@@ -27,7 +27,10 @@ exports.signUp = async (signUpInput) => {
 
 exports.login = async (email, password, res) => {
   // Find user and populate fields
-  const user = await User.findOne({email}, "id name img password").populate([
+  const user = await User.findOne(
+    {email},
+    "id name img password likedPlaylists",
+  ).populate([
     {
       path: "library",
       select: "items",

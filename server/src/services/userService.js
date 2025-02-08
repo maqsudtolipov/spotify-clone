@@ -24,7 +24,7 @@ exports.getUserById = async (userInput) => {
 exports.getCurrentUser = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
-    "id name email img followers followersCount followings followingsCount",
+    "id name email img followers followersCount followings followingsCount likedPlaylists",
   )
     .populate([
       {

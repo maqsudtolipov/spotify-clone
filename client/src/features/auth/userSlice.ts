@@ -43,14 +43,14 @@ const initialState: InitialState = {
     getCurrent: { status: 'idle', error: null },
     signUp: {
       status: 'idle',
-      error: null,
+      error: null
     },
     login: {
       status: 'idle',
-      error: null,
+      error: null
     },
-    logout: { status: 'idle', error: null },
-  },
+    logout: { status: 'idle', error: null }
+  }
 };
 
 const userSlice = createSlice({
@@ -63,6 +63,9 @@ const userSlice = createSlice({
     playlistsUpdated: (state, action) => {
       if (state.data) state.data.playlists = action.payload;
     },
+    likedPlaylistsUpdated: (state, action) => {
+      if (state.data) state.data.likedPlaylists = action.payload;
+    }
   },
   extraReducers: (builder) =>
     builder
@@ -124,8 +127,9 @@ const userSlice = createSlice({
       })
       .addCase(dislikeSong.fulfilled, (state, action) => {
         if (state.data) state.data.likedSongs.songs = action.payload;
-      }),
+      })
 });
 
-export const { followingsUpdated, playlistsUpdated } = userSlice.actions;
+export const { followingsUpdated, playlistsUpdated, likedPlaylistsUpdated } =
+  userSlice.actions;
 export default userSlice.reducer;
