@@ -1,12 +1,12 @@
 import Dropdown from '../../../ui-library/Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
-import { RiDeleteBin6Line, RiMoreFill } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiFileCopyLine, RiMoreFill } from 'react-icons/ri';
 import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
 import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface PlaylistHeaderActionsProps {
   id: string;
@@ -21,10 +21,15 @@ const PlaylistHeaderActions = ({
                                }: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleDeletePlaylist = async (id: string) => {
     await dispatch(deletePlaylist({ id }));
     navigate('/');
+  };
+
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
   };
 
   return (
@@ -38,14 +43,18 @@ const PlaylistHeaderActions = ({
         {isPersonalPlaylist && !isLikedSongs && (
           <DropdownItem
             PreIcon={RiDeleteBin6Line}
-            underline={false}
+            underline={true}
             onClick={() => handleDeletePlaylist(id)}
           >
             Delete
           </DropdownItem>
         )}
 
-        {/*<DropdownItem PreIcon={RiShareForwardBoxFill}>Share</DropdownItem>*/}
+        {!isLikedSongs && (
+          <DropdownItem PreIcon={RiFileCopyLine} onClick={handleCopyLink}>
+            Copy link
+          </DropdownItem>
+        )}
       </DropdownList>
     </Dropdown>
   );
