@@ -1,16 +1,12 @@
 import styles from './PlayHeader.module.scss';
-import HeaderActions from './HeaderActions.tsx';
-import TransparentButton from './TransparentButton.tsx';
-import PlayButton from './PlayButton.tsx';
+import { ReactNode } from 'react';
 
-const PlayHeader = () => {
-  return (
-    <div className={styles.playerHeader}>
-      <PlayButton />
-      <TransparentButton />
-      <HeaderActions />
-    </div>
-  );
+interface PlayHeaderProps {
+  children?: ReactNode;
+}
+
+const PlayHeader = ({ children }: PlayHeaderProps) => {
+  return <div className={styles.playerHeader}>{children}</div>;
 };
 
 export default PlayHeader;
