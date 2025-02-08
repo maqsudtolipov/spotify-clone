@@ -1,10 +1,10 @@
 import PlayHeader from '../../../components/PlayHeader/PlayHeader.tsx';
 import PlayButton from '../../../components/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
-import HeaderActions from '../../../components/PlayHeader/HeaderActions.tsx';
 import { Playlist } from '../playlistSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
+import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
 
 const isLiked = (id: string, likedPlaylists: string[]) => {
   return likedPlaylists.includes(id);
@@ -12,9 +12,12 @@ const isLiked = (id: string, likedPlaylists: string[]) => {
 
 const PlaylistActions = ({ data }: Playlist) => {
   const likedPlaylists = useAppSelector(
-    (state) => state.user?.data?.likedPlaylists
+    (state) => state.user?.data?.likedPlaylists,
   );
   const userId = useAppSelector((state) => state.user?.data?._id);
+  const likedSongsId = useAppSelector(
+    (state) => state.user?.data?.likedSongs._id,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -25,6 +28,7 @@ const PlaylistActions = ({ data }: Playlist) => {
     dispatch(removePlaylist({ id }));
   };
 
+  const isLikedSongs = data._id === likedSongsId;
   const isPersonalPlaylist = data.user._id === userId;
 
   return (
@@ -40,7 +44,12 @@ const PlaylistActions = ({ data }: Playlist) => {
           }}
         />
       )}
-      <HeaderActions />
+      {!isLikedSongs && (
+        <PlaylistHeaderActions
+          id={data.id}
+          isPersonalPlaylist={isPersonalPlaylist}
+        />
+      )}
     </PlayHeader>
   );
 };

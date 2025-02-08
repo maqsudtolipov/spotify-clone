@@ -140,10 +140,42 @@ exports.deletePlaylist = async (playlistInput) => {
     await File.findByIdAndDelete(playlist.img.id);
   }
 
+  // Delete the playlist
   await Playlist.findByIdAndDelete(playlistInput.playlistId);
-  await Library.findByIdAndUpdate(playlistInput.playlistId, {
-    $pull: {items: {refId: playlistInput.playlistId, itemType: "playlist"}},
-  });
+
+  // Remove the playlist from Users' likedSongs array
+  await User.updateMany(
+    {likedPlaylists: playlistInput.playlistId},
+    {$pull: {likedPlaylists: playlistInput.playlistId}},
+  );
+
+  // Remove playlist from all libraries
+  await Library.updateMany(
+    {"items.refId": playlistInput.playlistId},
+    {$pull: {items: {refId: playlistInput.playlistId}}},
+  );
+
+  // Return updated user data
+  const user = await User.findById(playlistInput.userId).populate([
+    {path: "playlists", select: "name"},
+  ]);
+
+  const library = await Library.findById(playlistInput.libraryId)
+    .populate([
+      {
+        path: "items.refId",
+        select: "name img user createdAt",
+        populate: [
+          {path: "user", select: "name", strictPopulate: false},
+          {path: "img", select: "url"},
+        ],
+      },
+    ])
+    .lean();
+  library.id = library._id;
+  library.items = filterLibraryItems(library.items);
+
+  return {library, playlists: user.playlists};
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
