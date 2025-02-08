@@ -14,7 +14,7 @@ export const getPlaylist = createAsyncThunk(
       err.response.data.statusCode = err.response.status;
       return rejectWithValue(err.response.data);
     }
-  },
+  }
 );
 
 export const createPlaylist = createAsyncThunk(
@@ -23,16 +23,23 @@ export const createPlaylist = createAsyncThunk(
     const res = await axios.post(`/playlists/`);
     dispatch(setLibraryItems(res.data.library.items));
     dispatch(playlistsUpdated(res.data.playlists));
-  },
+  }
+);
+
+export const savePlaylist = createAsyncThunk(
+  'playlist/createPlaylist',
+  async ({ id }: { id: string }, { dispatch }) => {
+    const res = await axios.post(`/save/${id}`);
+  }
 );
 
 export const saveSongToPlaylist = createAsyncThunk(
   'playlist/saveSong',
   async ({
-    songId,
-    playlistId,
-    playlistName,
-  }: {
+           songId,
+           playlistId,
+           playlistName
+         }: {
     songId: string;
     playlistId: string;
     playlistName: string;
@@ -43,5 +50,5 @@ export const saveSongToPlaylist = createAsyncThunk(
     } catch (err) {
       // Do nothing if error
     }
-  },
+  }
 );

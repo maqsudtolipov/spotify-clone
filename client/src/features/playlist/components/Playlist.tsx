@@ -34,7 +34,7 @@ const Playlist = () => {
     <div>
       <PlaylistHeader data={data} />
       <GradientBackground color={data.color}>
-        <PlaylistActions />
+        <PlaylistActions data={data} />
 
         <div className="p-5 pt-0">
           <PlaylistTable />
