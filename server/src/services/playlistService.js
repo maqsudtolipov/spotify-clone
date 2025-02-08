@@ -162,11 +162,17 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  const user = await User.findByIdAndUpdate(playlistInput.userId, {
-    $addToSet: {
-      likedPlaylists: playlist.id,
+  const user = await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $addToSet: {
+        likedPlaylists: playlist.id,
+      },
     },
-  }).select("likedPlaylists");
+    {
+      new: true,
+    },
+  ).select("likedPlaylists");
 
   const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
@@ -216,11 +222,17 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  const user = await User.findByIdAndUpdate(playlistInput.userId, {
-    $pull: {
-      likedPlaylists: playlist.id,
+  const user = await User.findByIdAndUpdate(
+    playlistInput.userId,
+    {
+      $pull: {
+        likedPlaylists: playlist.id,
+      },
     },
-  }).select("likedPlaylists");
+    {
+      new: true,
+    },
+  ).select("likedPlaylists");
 
   const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
