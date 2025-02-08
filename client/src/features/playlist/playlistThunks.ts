@@ -29,10 +29,28 @@ export const createPlaylist = createAsyncThunk(
 export const savePlaylist = createAsyncThunk(
   'playlist/savePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
-    const res = await axios.post(`/playlists/save/${id}`);
-    console.log(res.data);
-    dispatch(setLibraryItems(res.data.library.items));
-    dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
+    try {
+      const res = await axios.post(`/playlists/save/${id}`);
+      dispatch(setLibraryItems(res.data.library.items));
+      dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
+      toast.success('Playlist saved to your library');
+    } catch (e) {
+      console.log('savePlaylist thunk', e);
+    }
+  }
+);
+
+export const removePlaylist = createAsyncThunk(
+  'playlist/removePlaylist',
+  async ({ id }: { id: string }, { dispatch }) => {
+    try {
+      const res = await axios.delete(`/playlists/remove/${id}`);
+      dispatch(setLibraryItems(res.data.library.items));
+      dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
+      toast.success('Playlist removed from your library');
+    } catch (e) {
+      console.log('removePlaylist thunk', e);
+    }
   }
 );
 
