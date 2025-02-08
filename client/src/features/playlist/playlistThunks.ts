@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../api/axios';
 import { setLibraryItems } from '../library/librarySlice.ts';
-import { playlistsUpdated } from '../auth/userSlice.ts';
+import { likedPlaylistsUpdated, playlistsUpdated } from '../auth/userSlice.ts';
 import toast from 'react-hot-toast';
 
 export const getPlaylist = createAsyncThunk(
@@ -27,9 +27,12 @@ export const createPlaylist = createAsyncThunk(
 );
 
 export const savePlaylist = createAsyncThunk(
-  'playlist/createPlaylist',
+  'playlist/savePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
-    const res = await axios.post(`/save/${id}`);
+    const res = await axios.post(`/playlists/save/${id}`);
+    console.log(res.data);
+    dispatch(setLibraryItems(res.data.library.items));
+    dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
   }
 );
 
