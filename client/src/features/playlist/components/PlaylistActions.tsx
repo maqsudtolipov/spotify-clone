@@ -14,6 +14,7 @@ const PlaylistActions = ({ data }: Playlist) => {
   const likedPlaylists = useAppSelector(
     (state) => state.user?.data?.likedPlaylists
   );
+  const userId = useAppSelector((state) => state.user?.data?._id);
 
   const dispatch = useAppDispatch();
 
@@ -24,17 +25,21 @@ const PlaylistActions = ({ data }: Playlist) => {
     dispatch(removePlaylist({ id }));
   };
 
+  const isPersonalPlaylist = data.user._id === userId;
+
   return (
     <PlayHeader>
       <PlayButton />
-      <TransparentButton
-        text={isLiked(data.id, likedPlaylists) ? 'Remove' : 'Save'}
-        onClick={() => {
-          isLiked(data.id, likedPlaylists)
-            ? handleRemove(data.id)
-            : handleSave(data.id);
-        }}
-      />
+      {!isPersonalPlaylist && (
+        <TransparentButton
+          text={isLiked(data.id, likedPlaylists) ? 'Remove' : 'Save'}
+          onClick={() => {
+            isLiked(data.id, likedPlaylists)
+              ? handleRemove(data.id)
+              : handleSave(data.id);
+          }}
+        />
+      )}
       <HeaderActions />
     </PlayHeader>
   );
