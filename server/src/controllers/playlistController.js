@@ -67,10 +67,13 @@ exports.deletePlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    await playlistService.deletePlaylist(playlistInput);
+    const {library, playlists} =
+      await playlistService.deletePlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
+      library,
+      playlists,
     });
   } catch (e) {
     next(e);
