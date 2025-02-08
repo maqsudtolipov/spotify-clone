@@ -40,7 +40,10 @@ const PlaylistActions = ({ data }: Playlist) => {
           }}
         />
       )}
-      <PlaylistHeaderActions id={data.id} />
+      <PlaylistHeaderActions
+        id={data.id}
+        isPersonalPlaylist={isPersonalPlaylist}
+      />
     </PlayHeader>
   );
 };

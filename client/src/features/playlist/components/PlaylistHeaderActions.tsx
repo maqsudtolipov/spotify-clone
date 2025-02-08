@@ -10,9 +10,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface PlaylistHeaderActionsProps {
   id: string;
+  isPersonalPlaylist: boolean;
 }
 
-const PlaylistHeaderActions = ({ id }: PlaylistHeaderActionsProps) => {
+const PlaylistHeaderActions = ({
+                                 id,
+                                 isPersonalPlaylist
+                               }: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -29,13 +33,16 @@ const PlaylistHeaderActions = ({ id }: PlaylistHeaderActionsProps) => {
 
       <DropdownList position="bottom-right">
         {/*<DropdownItem PreIcon={RiEditLine}>Edit Details</DropdownItem>*/}
-        <DropdownItem
-          PreIcon={RiDeleteBin6Line}
-          underline={false}
-          onClick={() => handleDeletePlaylist(id)}
-        >
-          Delete
-        </DropdownItem>
+        {isPersonalPlaylist && (
+          <DropdownItem
+            PreIcon={RiDeleteBin6Line}
+            underline={false}
+            onClick={() => handleDeletePlaylist(id)}
+          >
+            Delete
+          </DropdownItem>
+        )}
+
         {/*<DropdownItem PreIcon={RiShareForwardBoxFill}>Share</DropdownItem>*/}
       </DropdownList>
     </Dropdown>
