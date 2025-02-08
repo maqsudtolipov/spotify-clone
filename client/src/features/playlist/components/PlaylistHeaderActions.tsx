@@ -11,13 +11,11 @@ import toast from 'react-hot-toast';
 
 interface PlaylistHeaderActionsProps {
   id: string;
-  isLikedSongs: boolean;
   isPersonalPlaylist: boolean;
 }
 
 const PlaylistHeaderActions = ({
   id,
-  isLikedSongs,
   isPersonalPlaylist,
 }: PlaylistHeaderActionsProps) => {
   const dispatch = useAppDispatch();
@@ -41,7 +39,7 @@ const PlaylistHeaderActions = ({
 
       <DropdownList position="bottom-right">
         {/*<DropdownItem PreIcon={RiEditLine}>Edit Details</DropdownItem>*/}
-        {isPersonalPlaylist && !isLikedSongs && (
+        {isPersonalPlaylist && (
           <DropdownItem
             PreIcon={RiDeleteBin6Line}
             underline={true}
@@ -51,11 +49,9 @@ const PlaylistHeaderActions = ({
           </DropdownItem>
         )}
 
-        {!isLikedSongs && (
-          <DropdownItem PreIcon={RiFileCopyLine} onClick={handleCopyLink}>
-            Copy link
-          </DropdownItem>
-        )}
+        <DropdownItem PreIcon={RiFileCopyLine} onClick={handleCopyLink}>
+          Copy link
+        </DropdownItem>
       </DropdownList>
     </Dropdown>
   );

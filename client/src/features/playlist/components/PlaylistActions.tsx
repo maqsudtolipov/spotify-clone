@@ -12,11 +12,11 @@ const isLiked = (id: string, likedPlaylists: string[]) => {
 
 const PlaylistActions = ({ data }: Playlist) => {
   const likedPlaylists = useAppSelector(
-    (state) => state.user?.data?.likedPlaylists
+    (state) => state.user?.data?.likedPlaylists,
   );
   const userId = useAppSelector((state) => state.user?.data?._id);
   const likedSongsId = useAppSelector(
-    (state) => state.user?.data?.likedSongs._id
+    (state) => state.user?.data?.likedSongs._id,
   );
 
   const dispatch = useAppDispatch();
@@ -44,11 +44,12 @@ const PlaylistActions = ({ data }: Playlist) => {
           }}
         />
       )}
-      <PlaylistHeaderActions
-        id={data.id}
-        isPersonalPlaylist={isPersonalPlaylist}
-        isLikedSongs={isLikedSongs}
-      />
+      {!isLikedSongs && (
+        <PlaylistHeaderActions
+          id={data.id}
+          isPersonalPlaylist={isPersonalPlaylist}
+        />
+      )}
     </PlayHeader>
   );
 };
