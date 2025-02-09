@@ -1,5 +1,12 @@
 .button {
-  @apply py-2 px-4  inline-flex justify-center items-center text-sm font-bold bg-white text-black rounded-full;
+  // Size
+  @apply py-2 px-4 text-sm;
+
+  // Display
+  @apply inline-flex items-center justify-center;
+
+  // Rest
+  @apply font-bold bg-white text-black rounded-full transition-transform;
 
   &:hover {
     @apply bg-neutral-100 scale-105;
