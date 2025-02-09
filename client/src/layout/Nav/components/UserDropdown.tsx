@@ -1,5 +1,5 @@
 import NavTooltip from './NavTooltip.jsx';
-import Avatar, { AvatarFallback } from '../../../ui-library/Avatar/Avatar.tsx';
+import { Avatar, AvatarFallback } from '../../../ui-library/Avatar/Avatar.tsx';
 import Dropdown from '../../../ui-library/Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
