@@ -7,7 +7,7 @@ interface InputProps {
   placeholder?: string;
 }
 
-const Input = ({ type, name, label, placeholder, ...rest }: InputProps) => {
+const Input = ({ type, name, label, placeholder }: InputProps) => {
   return (
     <div>
       {label && (
@@ -20,7 +20,6 @@ const Input = ({ type, name, label, placeholder, ...rest }: InputProps) => {
         type={type}
         name={name}
         placeholder={placeholder}
-        {...rest}
       />
     </div>
   );
