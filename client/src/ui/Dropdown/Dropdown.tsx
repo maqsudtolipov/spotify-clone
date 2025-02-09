@@ -11,16 +11,14 @@ interface DropdownContextValue {
   closeSubMenu: () => void;
 }
 
-export const DropdownContext = createContext<DropdownContextValue>(
-  {} as DropdownContextValue,
-);
-
 interface DropdownProps {
   children: ReactNode;
 }
 
-const Dropdown = ({ children, ...rest }: DropdownProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+export const DropdownContext = createContext<DropdownContextValue | null>(null);
+
+const Dropdown = ({ children }: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [openSub, setOpenSub] = useState('');
 
   const openDropdown = () => setIsOpen(true);
@@ -38,27 +36,22 @@ const Dropdown = ({ children, ...rest }: DropdownProps) => {
   };
 
   const openSubMenu = (name: string) => {
-    // Closes on double click
-    if (name === openSub) {
-      setOpenSub('');
-    } else {
-      setOpenSub(name);
-    }
+    name === openSub ? setOpenSub('') : setOpenSub(name);
   };
   const closeSubMenu = () => setOpenSub('');
 
-  const contextValue = {
-    isOpen,
-    openSub,
-    openDropdown,
-    closeDropdown,
-    toggleDropdown,
-    openSubMenu,
-    closeSubMenu,
-  };
-
   return (
-    <DropdownContext.Provider value={contextValue} {...rest}>
+    <DropdownContext.Provider
+      value={{
+        isOpen,
+        openSub,
+        openDropdown,
+        closeDropdown,
+        toggleDropdown,
+        openSubMenu,
+        closeSubMenu,
+      }}
+    >
       <div className={styles.dropdown}>{children}</div>
     </DropdownContext.Provider>
   );

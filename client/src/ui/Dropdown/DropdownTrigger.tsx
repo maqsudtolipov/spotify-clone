@@ -2,12 +2,17 @@ import { MouseEvent, ReactNode, useContext } from 'react';
 import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownTriggerProps {
-  children: ReactNode;
   className?: string;
+  children: ReactNode;
 }
 
-const DropdownTrigger = ({ children, ...rest }: DropdownTriggerProps) => {
-  const { toggleDropdown } = useContext(DropdownContext);
+const DropdownTrigger = ({ className, children }: DropdownTriggerProps) => {
+  const context = useContext(DropdownContext);
+  if (!context) {
+    throw new Error('DropdownTrigger should be used within the Dropdown');
+  }
+
+  const { toggleDropdown } = context;
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -15,7 +20,7 @@ const DropdownTrigger = ({ children, ...rest }: DropdownTriggerProps) => {
   };
 
   return (
-    <div onClick={handleClick} {...rest}>
+    <div onClick={handleClick} className={className}>
       {children}
     </div>
   );

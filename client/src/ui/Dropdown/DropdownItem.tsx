@@ -1,18 +1,17 @@
 import { ElementType, ReactNode, useContext } from 'react';
-import styles from './Dropdown.module.scss';
+import styles from './DropdownItem.module.scss';
 import { DropdownContext } from './Dropdown.tsx';
 
 interface DropdownItemProps {
+  children: ReactNode;
   closeOnClick?: boolean;
   underline?: boolean;
   isHighlighted?: boolean;
   PreIcon?: ElementType | null;
   PostIcon?: ElementType | null;
   onClick?: () => void;
-  children: ReactNode;
 }
 
-// FIXME: 😁 I don't know whats happening here
 const DropdownItem = ({
   underline = false,
   isHighlighted = false,
@@ -21,19 +20,22 @@ const DropdownItem = ({
   closeOnClick = true,
   onClick: propOnClick,
   children,
-  ...rest
 }: DropdownItemProps) => {
-  const { closeDropdown } = useContext(DropdownContext);
+  const context = useContext(DropdownContext);
+  if (!context) {
+    throw new Error('DropdownList should be used within the Dropdown');
+  }
+  const { closeDropdown } = context;
+
+  const handleClick = () => {
+    propOnClick && propOnClick();
+    closeOnClick && closeDropdown();
+  };
+
+  const className = `${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`;
 
   return (
-    <li
-      className={`${styles.item} ${underline ? styles.underline : ''} ${isHighlighted ? styles.highlighted : ''}`}
-      onClick={() => {
-        propOnClick && propOnClick();
-        closeOnClick && closeDropdown();
-      }}
-      {...rest}
-    >
+    <li className={className} onClick={handleClick}>
       {PreIcon && <PreIcon className={styles.icon} />}
       <span>{children}</span>
       {PostIcon && (

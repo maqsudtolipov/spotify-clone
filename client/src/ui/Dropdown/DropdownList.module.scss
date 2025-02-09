@@ -1,0 +1,22 @@
+.listContainer {
+  // Size
+  @apply p-1;
+
+  // Position
+  @apply absolute z-20;
+
+  // Rest
+  @apply bg-neutral-800 rounded shadow-lg shadow-black/[0.5];
+}
+
+.bottom-left {
+  bottom: 0;
+  right: 0;
+  transform: translate(0, calc(100% + 8px));
+}
+
+.bottom-right {
+  bottom: 0;
+  left: 0;
+  transform: translate(0, calc(100% + 8px));
+}

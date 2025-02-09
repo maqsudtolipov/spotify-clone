@@ -1,29 +1,32 @@
-import styles from './Dropdown.module.scss';
-import { forwardRef, ReactNode, useContext } from 'react';
+import styles from './DropdownList.module.scss';
+import { ReactNode, useContext } from 'react';
 import { DropdownContext } from './Dropdown.tsx';
 import useOutsideClick from '../../hooks/useOutsideClick.tsx';
 
 interface DropdownListProps {
-  position?: 'bottom-left' | 'bottom-right';
   children: ReactNode;
+  position?: 'bottom-left' | 'bottom-right';
 }
 
-// FIXME: not a good method
-const DropdownList = forwardRef<HTMLUListElement, DropdownListProps>(
-  ({ position = 'bottom-left', children, ...rest }, ref) => {
-    const { isOpen, closeDropdown } = useContext(DropdownContext);
-    const { ref: hookRef } = useOutsideClick(closeDropdown);
-
-    return isOpen ? (
-      <ul
-        ref={ref || hookRef}
-        className={`${styles.listContainer} ${styles[position]}`}
-        {...rest}
-      >
-        {children}
-      </ul>
-    ) : null;
+const DropdownList = ({
+  position = 'bottom-left',
+  children,
+}: DropdownListProps) => {
+  const context = useContext(DropdownContext);
+  if (!context) {
+    throw new Error('DropdownList should be used within the Dropdown');
   }
-);
+
+  const { isOpen, closeDropdown } = context;
+  const { ref } = useOutsideClick(closeDropdown);
+
+  if (!isOpen) return null;
+
+  return (
+    <ul ref={ref} className={`${styles.listContainer} ${styles[position]}`}>
+      {children}
+    </ul>
+  );
+};
 
 export default DropdownList;

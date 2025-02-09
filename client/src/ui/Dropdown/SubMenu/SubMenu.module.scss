@@ -1,0 +1,8 @@
+.subMenu {
+  @apply absolute top-0 right-0 z-30;
+  transform: translate(calc(-100% + 12px), 0);
+}
+
+.subMenuList {
+  @apply p-1 bg-neutral-800 rounded shadow-2xl shadow-black/[0.5];
+}
