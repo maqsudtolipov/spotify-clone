@@ -7,31 +7,24 @@ interface DialogContextValue {
   toggleDialog: () => void;
 }
 
-export const DialogContext = createContext<DialogContextValue>(
-  {} as DialogContextValue,
-);
+export const DialogContext = createContext<DialogContextValue | null>(null);
 
 interface DialogProps {
   children: ReactNode;
 }
 
 const Dialog = ({ children }: DialogProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
   const toggleDialog = () => setIsOpen((prev) => !prev);
 
-  const contextValue = {
-    isOpen,
-    openDialog,
-    closeDialog,
-    toggleDialog,
-  };
-
   return (
-    <DialogContext.Provider value={contextValue}>
-      <div>{children}</div>
+    <DialogContext.Provider
+      value={{ isOpen, openDialog, closeDialog, toggleDialog }}
+    >
+      {children}
     </DialogContext.Provider>
   );
 };

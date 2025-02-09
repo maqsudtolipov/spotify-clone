@@ -1,0 +1,22 @@
+.dialogBackground {
+  // Size
+  @apply w-full h-full;
+
+  // Display
+  @apply flex items-center justify-center;
+
+  // Position
+  @apply absolute top-0 left-0;
+  z-index: 1000;
+
+  // Rest
+  @apply bg-black bg-opacity-30 backdrop-blur-sm;
+}
+
+.dialog {
+  // Size
+  @apply p-6;
+
+  // Rest
+  @apply bg-neutral-800 rounded-lg;
+}

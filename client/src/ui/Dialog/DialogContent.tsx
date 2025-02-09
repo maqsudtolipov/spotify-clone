@@ -1,19 +1,22 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, MouseEvent, useContext } from 'react';
 import { DialogContext } from './Dialog.tsx';
 import { createPortal } from 'react-dom';
-import useOutsideClick from '../../hooks/useOutsideClick.tsx';
-import styles from './Dialog.module.scss';
-import IconButton from '../IconButton/IconButton';
-import { RiCloseLargeFill } from 'react-icons/ri';
+import styles from './DialogContent.module.scss';
+import DialogHeader from './DialogHeader.tsx';
 
 interface DialogContentProps {
   children: ReactNode;
 }
 
 const DialogContent = ({ children }: DialogContentProps) => {
-  const { isOpen, closeDialog } = useContext(DialogContext);
+  const context = useContext(DialogContext);
+  if (!context) {
+    throw new Error('DialogContent should be used within the Dialog');
+  }
 
-  const handleClose = (e: Event) => {
+  const { isOpen, closeDialog } = context;
+
+  const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return;
     closeDialog();
   };
@@ -21,16 +24,8 @@ const DialogContent = ({ children }: DialogContentProps) => {
   return isOpen
     ? createPortal(
         <div className={styles.dialogBackground} onClick={handleClose}>
-          <div className={styles.dialog}>
-            <div className={styles.dialogHeader}>
-              <span>Upload a new song</span>
-              <IconButton onClick={closeDialog}>
-                <RiCloseLargeFill />
-              </IconButton>
-            </div>
-
-            {children}
-          </div>
+          <DialogHeader />
+          <div className={styles.dialog}>{children}</div>
         </div>,
         document.body,
       )

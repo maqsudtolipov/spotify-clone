@@ -6,10 +6,14 @@ interface DialogTriggerProps {
 }
 
 const DialogTrigger = ({ children }: DialogTriggerProps) => {
-  const { toggleDialog } = useContext(DialogContext);
+  const context = useContext(DialogContext);
+  if (!context) {
+    throw new Error('DialogTrigger should be used within the Dialog');
+  }
+
+  const { toggleDialog } = context;
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-    console.log('toggle dialog trigger');
     event.stopPropagation();
     toggleDialog();
   };
