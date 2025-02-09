@@ -1,4 +1,4 @@
-import styles from './Card.module.scss';
+import styles from './CardDescription.module.scss';
 
 interface CardDescriptionProps {
   name: string;

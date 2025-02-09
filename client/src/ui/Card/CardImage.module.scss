@@ -1,0 +1,42 @@
+.cardImage {
+  // Size
+  @apply mb-2;
+
+  // Position
+  @apply relative;
+
+  // Rest
+  @apply rounded-md overflow-hidden;
+
+  img {
+    @apply w-full aspect-square;
+  }
+}
+
+.cardImageRounded img {
+  @apply rounded-full;
+}
+
+.imageIcon {
+  // Size
+  @apply p-3;
+
+  // Display
+  @apply hidden;
+
+  // Position
+  @apply absolute bottom-2 right-2;
+
+  // Rest
+  @apply size-12 leading-none text-black bg-green-500 rounded-full cursor-pointer;
+
+  transition: all 0.1s ease-out;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
+
+  &:active {
+    @apply bg-green-600 scale-100;
+  }
+}

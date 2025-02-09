@@ -1,4 +1,4 @@
-import styles from './Card.module.scss';
+import styles from './CardImage.module.scss';
 import { RiPlayLargeFill } from 'react-icons/ri';
 
 interface CardImageProps {
