@@ -1,11 +1,6 @@
 .cardImage {
-  // Size
   @apply mb-2;
-
-  // Position
   @apply relative;
-
-  // Rest
   @apply rounded-md overflow-hidden;
 
   img {
@@ -18,16 +13,9 @@
 }
 
 .imageIcon {
-  // Size
   @apply p-3;
-
-  // Display
   @apply hidden;
-
-  // Position
   @apply absolute bottom-2 right-2;
-
-  // Rest
   @apply size-12 leading-none text-black bg-green-500 rounded-full cursor-pointer;
 
   transition: all 0.1s ease-out;

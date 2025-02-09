@@ -1,19 +1,11 @@
 .label {
-  // Size
   @apply mb-1.5 text-base;
-
-  // Rest
   @apply font-medium;
 }
 
 .input {
-  // Size
   @apply w-full px-3 py-2;
-
-  // Display
   @apply block;
-
-  // Rest
   @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
 
   &Invalid {

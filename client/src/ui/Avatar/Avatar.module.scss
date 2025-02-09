@@ -1,21 +1,11 @@
 .avatar {
-  // Size
   @apply size-12;
-
-  // Display
   @apply flex items-center justify-center;
-
-  // Rest
   @apply bg-neutral-800 rounded-full;
 }
 
 .fallback {
-  // Size
   @apply size-8;
-
-  // Display
   @apply flex items-center justify-center;
-
-  // Rest
   @apply bg-green-500 rounded-full;
 }

@@ -1,10 +1,5 @@
 .dialogHeader {
-  // Size
   @apply w-full mb-6;
-
-  // Display
   @apply flex items-center justify-between;
-
-  // Rest
   @apply text-xl font-bold;
 }

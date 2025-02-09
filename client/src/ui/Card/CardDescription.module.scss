@@ -1,18 +1,10 @@
 .name {
-  // Size
   @apply mb-1;
-
-  // Display
   @apply block;
-
-  // Rest
   @apply text-base text-white;
 }
 
 .description {
-  // Display
   @apply block;
-
-  // Rest
   @apply text-sm text-neutral-400;
 }

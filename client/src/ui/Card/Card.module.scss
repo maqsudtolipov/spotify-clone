@@ -1,11 +1,6 @@
 .card {
-  // Size
   @apply p-3;
-
-  // Position
   @apply relative;
-
-  // Rest
   @apply bg-white bg-opacity-0 rounded-md cursor-pointer;
 
   &:hover {
@@ -16,4 +11,3 @@
     @apply inline-block;
   }
 }
-

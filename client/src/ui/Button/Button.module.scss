@@ -1,11 +1,6 @@
 .button {
-  // Size
   @apply py-2 px-4 text-sm;
-
-  // Display
   @apply inline-flex items-center justify-center;
-
-  // Rest
   @apply font-bold bg-white text-black rounded-full transition-transform;
 
   &:hover {

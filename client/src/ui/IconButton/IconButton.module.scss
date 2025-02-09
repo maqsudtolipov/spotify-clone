@@ -1,11 +1,6 @@
 .button {
-  // Size
   @apply size-8;
-
-  // Display
   @apply flex items-center justify-center;
-
-  // Rest
   @apply text-base text-neutral-400;
 
   svg {
