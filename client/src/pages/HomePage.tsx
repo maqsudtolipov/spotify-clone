@@ -3,7 +3,7 @@ import History from '../features/history/History.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
-import CardsList from '../components/CardsList/CardsList.tsx';
+import CardsList from '../ui/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;

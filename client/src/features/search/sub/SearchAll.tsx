@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import Heading2 from '../../../ui/Typography/Heading2.tsx';
 import SortedTable from '../../../ui/Table/SortedTable.tsx';
-import CardsList from '../../../components/CardsList/CardsList.tsx';
+import CardsList from '../../../ui/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
