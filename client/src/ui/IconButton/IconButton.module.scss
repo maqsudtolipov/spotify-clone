@@ -1,5 +1,12 @@
 .button {
-  @apply size-8 flex items-center justify-center text-base text-neutral-400;
+  // Size
+  @apply size-8;
+
+  // Display
+  @apply flex items-center justify-center;
+
+  // Rest
+  @apply text-base text-neutral-400;
 
   svg {
     @apply scale-110;

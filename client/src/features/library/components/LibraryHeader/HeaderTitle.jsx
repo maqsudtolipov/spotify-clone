@@ -1,6 +1,6 @@
 import styles from './HeaderTitle.module.scss';
 import { RiAddLargeFill, RiArchiveStackLine } from 'react-icons/ri';
-import IconButton from '../../../../ui/IconButton/IconButton.jsx';
+import IconButton from '../../../../ui/IconButton/IconButton.tsx';
 import { createPlaylist } from '../../../playlist/playlistThunks.ts';
 import { useAppDispatch } from '../../../../app/hooks.ts';
 

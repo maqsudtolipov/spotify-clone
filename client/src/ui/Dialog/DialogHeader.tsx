@@ -1,5 +1,5 @@
 import styles from './DialogHeader.module.scss';
-import IconButton from '../IconButton/IconButton';
+import IconButton from '../IconButton/IconButton.tsx';
 import { RiCloseLargeFill } from 'react-icons/ri';
 import { useContext } from 'react';
 import { DialogContext } from './Dialog.tsx';
