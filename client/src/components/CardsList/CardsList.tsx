@@ -1,6 +1,6 @@
 import styles from './CardsList.module.scss';
-import Card from '../../ui-library/Card/Card.tsx';
-import Heading2 from '../../ui-library/Typography/Heading2.tsx';
+import Card from '../../ui/Card/Card.tsx';
+import Heading2 from '../../ui/Typography/Heading2.tsx';
 
 interface CardDate {
   img: string;

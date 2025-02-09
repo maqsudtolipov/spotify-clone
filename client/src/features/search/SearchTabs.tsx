@@ -1,6 +1,6 @@
-import Tabs from '../../ui-library/Tabs/Tabs';
-import TabsList from '../../ui-library/Tabs/TabsList';
-import Tab from '../../ui-library/Tabs/Tab';
+import Tabs from '../../ui/Tabs/Tabs';
+import TabsList from '../../ui/Tabs/TabsList';
+import Tab from '../../ui/Tabs/Tab';
 
 interface SearchTabsProps {
   handleTabChange: (

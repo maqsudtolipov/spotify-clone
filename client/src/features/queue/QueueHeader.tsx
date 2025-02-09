@@ -1,6 +1,6 @@
 import styles from './Queue.module.scss';
 import { RiCloseLargeFill } from 'react-icons/ri';
-import IconButton from '../../ui-library/IconButton/IconButton';
+import IconButton from '../../ui/IconButton/IconButton';
 import { ReactEventHandler } from 'react';
 
 const QueueHeader = ({ onClick }: { onClick?: ReactEventHandler }) => {

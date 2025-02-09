@@ -1,10 +1,10 @@
 import styles from './UploadSongDialog.module.scss';
-import Dialog from '../../../ui-library/Dialog/Dialog.tsx';
-import DialogContent from '../../../ui-library/Dialog/DialogContent.tsx';
-import DialogTrigger from '../../../ui-library/Dialog/DialogTrigger.tsx';
+import Dialog from '../../../ui/Dialog/Dialog.tsx';
+import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
+import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
 import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
-import Input from '../../../ui-library/Input/Input.tsx';
-import Button from '../../../ui-library/Button/Button';
+import Input from '../../../ui/Input/Input.tsx';
+import Button from '../../../ui/Button/Button';
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { uploadSong } from '../artistThunks.ts';
