@@ -2,7 +2,7 @@ import GradientBackground from '../../../ui/GradientBackground/GradientBackgroun
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
-import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
+import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUser } from '../userPageThunks.ts';

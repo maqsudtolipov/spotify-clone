@@ -11,7 +11,7 @@ interface ImageHeaderProps {
 // TODO: Refactor if needed
 const ImageHeader = ({ data, type }: ImageHeaderProps) => {
   const gradient = {
-    background: `linear-gradient(${data.color}, ${data.color}), linear-gradient(#171717, #171717)`
+    background: `linear-gradient(${data.color}, ${data.color}), linear-gradient(#171717, #171717)`,
   };
 
   return (
@@ -21,14 +21,17 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
         src={data.img.url}
         alt={data.name}
       />
+
       <div>
         <span className={styles.type}>
           {type === 'playlist' ? 'Playlist' : 'User'}
         </span>
         <h1 className={styles.name}>{data.name}</h1>
+
         {description && (
           <p className={styles.description}>{data.description}</p>
         )}
+
         <div className={styles.statistics}>
           {data.user && (
             <div className={styles.user}>
@@ -36,6 +39,7 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
               <span>{data.user.name}</span>
             </div>
           )}
+
           {data.statistics && (
             <span>
               {`${data.user ? '• ' : ''}${data.statistics
