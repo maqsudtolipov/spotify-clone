@@ -1,12 +1,12 @@
-import Table from '../Table.tsx';
-import TableHeader from '../TableHeader.tsx';
-import TableCell from '../TableCell.tsx';
-import TableBody from '../TableBody.tsx';
-import TableRow from '../TableRow.tsx';
-import IndexCell from '../Cells/IndexCell.tsx';
-import InfoCell from '../Cells/InfoCell.tsx';
-import LikeCell from '../Cells/LikeCell.tsx';
-import ActionsCell from '../Cells/ActionsCell.tsx';
+import Table from '../../Table.tsx';
+import TableHeader from '../../TableHeader.tsx';
+import TableCell from '../../TableCell.tsx';
+import TableBody from '../../TableBody.tsx';
+import TableRow from '../../TableRow.tsx';
+import IndexCell from '../../Cells/IndexCell.tsx';
+import InfoCell from '../../Cells/InfoCell.tsx';
+import LikeCell from '../../Cells/LikeCell.tsx';
+import ActionsCell from '../../Cells/ActionsCell.tsx';
 import { RiArrowDownSFill, RiArrowUpSFill } from 'react-icons/ri';
 import useSortBy from './hooks/useSortBy.ts';
 
