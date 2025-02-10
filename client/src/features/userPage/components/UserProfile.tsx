@@ -1,4 +1,4 @@
-import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';

@@ -1,6 +1,6 @@
 import PlaylistTable from './PlaylistTable.tsx';
 import PlaylistHeader from './PlaylistHeader.tsx';
-import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { useEffect } from 'react';

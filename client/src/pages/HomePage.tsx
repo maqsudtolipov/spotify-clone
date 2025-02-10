@@ -2,7 +2,7 @@ import styles from './HomePage.module.scss';
 import History from '../features/history/History.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import GradientBackground from '../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../ui/GradientBackground/GradientBackground.tsx';
 import CardsList from '../ui/CardsList/CardsList.tsx';
 
 interface CardItem {
