@@ -1,4 +1,4 @@
-import styles from './PlayHeader.module.scss';
+import styles from './TransparentButton.module.scss';
 import { MouseEventHandler } from 'react';
 
 interface FollowButtonProps {

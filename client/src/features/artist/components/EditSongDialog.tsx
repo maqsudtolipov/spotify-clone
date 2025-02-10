@@ -6,7 +6,7 @@ import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
 import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
 import styles from './UploadSongDialog.module.scss';
 import Input from '../../../ui/Input/Input.tsx';
-import Button from '../../../ui/Button/Button';
+import Button from '../../../ui/Button/Button.tsx';
 import { RiEditLine } from 'react-icons/ri';
 import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 

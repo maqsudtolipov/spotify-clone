@@ -1,7 +1,7 @@
 import Dropdown from '../../../ui/Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../../ui/Dropdown/DropdownTrigger.tsx';
 import { RiDeleteBin6Line, RiFileCopyLine, RiMoreFill } from 'react-icons/ri';
-import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
+import styles from './PlaylistActions.module.scss';
 import DropdownList from '../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 import { useAppDispatch } from '../../../app/hooks.ts';

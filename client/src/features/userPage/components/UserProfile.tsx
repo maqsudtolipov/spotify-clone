@@ -6,8 +6,8 @@ import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUser } from '../userPageThunks.ts';
-import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
-import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
+import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
+import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
 import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 
