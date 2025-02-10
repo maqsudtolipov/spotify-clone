@@ -1,6 +1,6 @@
 import styles from './Artist.module.scss';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useAppSelector } from '../../../app/hooks.ts';
+import { useAppSelector } from '../../../redux/hooks.ts';
 
 const ArtistHeader = () => {
   const { name, color, followersCount } = useAppSelector(

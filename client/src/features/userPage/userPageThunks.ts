@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios.js';
+import axios from '../../axios/axios.js';
 
 export const getUser = createAsyncThunk(
   'userPage/getUser',

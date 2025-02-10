@@ -1,5 +1,5 @@
 import React, { FormEvent, forwardRef, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { updateSong } from '../artistThunks.ts';
 import Dialog from '../../../ui/Dialog/Dialog.tsx';
 import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';

@@ -1,7 +1,7 @@
 import PlaylistTable from './PlaylistTable.tsx';
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { useEffect } from 'react';
 import { getPlaylist } from '../playlistThunks.ts';
 import NotFound from '../../../ui/StatusScreens/NotFound.tsx';

@@ -1,7 +1,7 @@
 import styles from './LibrarySearch.module.scss';
 import { RiCloseLargeLine, RiSearchLine } from 'react-icons/ri';
 import { ChangeEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { searchLibraryItems } from '../../librarySlice.ts';
 
 const LibrarySearch = () => {

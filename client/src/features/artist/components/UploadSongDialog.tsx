@@ -6,7 +6,7 @@ import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import Input from '../../../ui/Input/Input.tsx';
 import Button from '../../../ui/Button/Button.tsx';
 import { FormEvent, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { uploadSong } from '../artistThunks.ts';
 
 const UploadSongDialog = () => {

@@ -5,7 +5,7 @@ import DropdownList from '../DropdownList.tsx';
 import EditSongDialog from '../../../features/artist/components/EditSongDialog.tsx';
 import DropdownItem from '../DropdownItem.tsx';
 import AddToPlaylistItem from './AddToPlaylistItem.tsx';
-import { useAppDispatch } from '../../../app/hooks.ts';
+import { useAppDispatch } from '../../../redux/hooks.ts';
 import { deleteSong } from '../../../features/artist/artistThunks.ts';
 
 interface SongActionsDropdownProps {

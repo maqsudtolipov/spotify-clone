@@ -2,7 +2,7 @@ import ArtistTable from './ArtistTable.tsx';
 import ArtistHeader from './ArtistHeader.tsx';
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { useEffect } from 'react';
 import { getArtist } from '../artistThunks.ts';
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';

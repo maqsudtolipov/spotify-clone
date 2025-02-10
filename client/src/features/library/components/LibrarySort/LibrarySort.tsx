@@ -4,7 +4,7 @@ import { RiCheckFill, RiListUnordered } from 'react-icons/ri';
 import DropdownTrigger from '../../../../ui/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { sortLibraryItems } from '../../librarySlice.ts';
 
 const LibrarySort = () => {

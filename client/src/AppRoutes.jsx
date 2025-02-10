@@ -4,7 +4,7 @@ import ForgotPassword from './features/auth/ForgotPassword.tsx';
 import ResetPassword from './features/auth/ResetPassword.tsx';
 import Home from './features/home/Home.tsx';
 import Login from './features/auth/Login.tsx';
-import { useAppDispatch, useAppSelector } from './app/hooks.ts';
+import { useAppDispatch, useAppSelector } from './redux/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';

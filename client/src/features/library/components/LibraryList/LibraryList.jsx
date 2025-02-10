@@ -1,7 +1,7 @@
 import styles from './LibraryList.module.scss';
 import LibraryCard from './LibraryCard/LibraryCard.tsx';
 import { useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '../../../../app/hooks.ts';
+import { useAppSelector } from '../../../../redux/hooks.ts';
 
 const LibraryList = ({ isCollapsed }) => {
   const { items } = useAppSelector((state) => state.library);

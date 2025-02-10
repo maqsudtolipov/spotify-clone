@@ -3,7 +3,7 @@ import { RiAddFill, RiArrowRightSLine } from 'react-icons/ri';
 import SubMenu from '../SubMenu/SubMenu.tsx';
 import { useContext } from 'react';
 import { DropdownContext } from '../Dropdown.tsx';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { saveSongToPlaylist } from '../../../features/playlist/playlistThunks.ts';
 
 interface AddToPlaylistItemProps {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios';
+import axios from '../../axios/axios';
 import { followingsUpdated } from './userSlice.ts';
 import { followersCountUpdated } from '../userPage/userPageSlice.ts';
 import { listenersCountUpdated } from '../artist/artistSlice.ts';

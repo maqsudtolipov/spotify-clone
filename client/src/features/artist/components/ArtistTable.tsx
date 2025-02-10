@@ -6,7 +6,7 @@ import InfoCell from '../../../ui/Table/custom/SortedTable/Cells/InfoCell.tsx';
 import TableBody from '../../../ui/Table/TableBody.tsx';
 import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
 import ActionsCell from '../../../ui/Table/custom/SortedTable/Cells/ActionsCell.tsx';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
 import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
 
