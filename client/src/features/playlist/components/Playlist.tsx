@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { useEffect } from 'react';
 import { getPlaylist } from '../playlistThunks.ts';
-import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
-import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
-import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
+import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
+import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
+import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
 
 const Playlist = () => {

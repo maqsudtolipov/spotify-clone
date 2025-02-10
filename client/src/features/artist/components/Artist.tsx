@@ -5,14 +5,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import { useEffect } from 'react';
 import { getArtist } from '../artistThunks.ts';
-import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
+import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../../components/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 import UploadSongDialog from './UploadSongDialog.tsx';
-import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
-import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
+import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
+import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
