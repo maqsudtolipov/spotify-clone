@@ -1,4 +1,4 @@
-import styles from './Table.module.scss';
+import styles from './TableHeader.module.scss';
 import { ReactNode } from 'react';
 
 interface TableHeader {

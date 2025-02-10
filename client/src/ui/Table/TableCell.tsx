@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
 interface TableCellProps {
+  children: ReactNode;
   className?: string;
   alignRight?: boolean;
   minimize?: boolean;
   onClick?: () => void;
-  children: ReactNode;
 }
 
 const TableCell = ({
@@ -13,12 +13,10 @@ const TableCell = ({
   alignRight,
   minimize,
   children,
-  ...rest
 }: TableCellProps) => {
   return (
     <td
-      className={`${className ? className : ''} ${alignRight ? 'text-right' : ''} ${minimize ? 'w-1' : ''}`}
-      {...rest}
+      className={`${className} ${alignRight ? 'text-right' : ''} ${minimize ? 'w-1' : ''}`}
     >
       {children}
     </td>
