@@ -1,5 +1,5 @@
-import styles from './Cells.module.scss';
-import TableCell from '../TableCell.tsx';
+import styles from './InfoCell.module.scss';
+import TableCell from '../../../TableCell.tsx';
 
 interface InfoCellProps {
   img: string;

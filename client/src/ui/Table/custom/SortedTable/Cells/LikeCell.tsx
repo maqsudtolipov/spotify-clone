@@ -1,6 +1,6 @@
-import styles from './Cells.module.scss';
+import styles from './LikeCell.module.scss';
 import { RiHeartFill } from 'react-icons/ri';
-import TableCell from '../TableCell.tsx';
+import TableCell from '../../../TableCell.tsx';
 
 interface LikeCellProps {
   isLiked: boolean;

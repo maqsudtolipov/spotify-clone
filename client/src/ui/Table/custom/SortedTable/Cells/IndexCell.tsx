@@ -1,5 +1,5 @@
-import styles from './Cells.module.scss';
-import TableCell from '../TableCell.tsx';
+import styles from './IndexCell.module.scss';
+import TableCell from '../../../TableCell.tsx';
 import { ReactNode } from 'react';
 import { RiPlayLargeFill } from 'react-icons/ri';
 

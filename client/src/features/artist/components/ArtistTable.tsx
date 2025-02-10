@@ -1,11 +1,11 @@
 import Table from '../../../ui/Table/Table.tsx';
 import TableRow from '../../../ui/Table/TableRow.tsx';
 import TableCell from '../../../ui/Table/TableCell.tsx';
-import IndexCell from '../../../ui/Table/Cells/IndexCell.tsx';
-import InfoCell from '../../../ui/Table/Cells/InfoCell.tsx';
+import IndexCell from '../../../ui/Table/custom/SortedTable/Cells/IndexCell.tsx';
+import InfoCell from '../../../ui/Table/custom/SortedTable/Cells/InfoCell.tsx';
 import TableBody from '../../../ui/Table/TableBody.tsx';
-import LikeCell from '../../../ui/Table/Cells/LikeCell.tsx';
-import ActionsCell from '../../../ui/Table/Cells/ActionsCell.tsx';
+import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
+import ActionsCell from '../../../ui/Table/custom/SortedTable/Cells/ActionsCell.tsx';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
 import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
