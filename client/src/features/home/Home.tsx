@@ -1,9 +1,9 @@
-import styles from './HomePage.module.scss';
-import History from '../features/history/History.tsx';
+import styles from './Home.module.scss';
+import History from '../history/History.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import GradientBackground from '../ui/GradientBackground/GradientBackground.tsx';
-import CardsList from '../ui/CardsList/CardsList.tsx';
+import GradientBackground from '../../ui/GradientBackground/GradientBackground.tsx';
+import CardsList from '../../ui/CardsList/CardsList.tsx';
 
 interface CardItem {
   img: string;
@@ -12,7 +12,7 @@ interface CardItem {
   type: string;
 }
 
-const HomePage = () => {
+const Home = () => {
   const [gradientColor, setGradientColor] = useState<string>(
     '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'),
   );
@@ -50,4 +50,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Home;
