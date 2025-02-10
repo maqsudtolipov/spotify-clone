@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 export const useLibraryResize = () => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const [drag, setDrag] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [drag, setDrag] = useState(false);
   const resizeRef = useRef<HTMLElement>();
   const libraryRef = useRef<HTMLElement>();
 
   useEffect(() => {
-    const resizeEl = resizeRef.current as HTMLElement;
-    const libraryEl = libraryRef.current as HTMLElement;
+    const resizeEl = resizeRef.current;
+    const libraryEl = libraryRef.current;
 
     if (resizeEl && libraryEl) {
       const handleMouseDown = () => {
