@@ -1,14 +1,13 @@
-import styles from './Tabs.module.scss';
-import ArrowButton from './ArrowButton.jsx';
 import { useEffect, useRef, useState } from 'react';
 
-const TabsList = ({ children, ...rest }) => {
+const useScrollArrows = () => {
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
+    if (!el) return;
 
     const updateArrowVisibility = () => {
       const differenceRight =
@@ -37,28 +36,23 @@ const TabsList = ({ children, ...rest }) => {
   }, []);
 
   const handleScrollRight = () => {
+    if (!ref.current) return;
     ref.current.scrollLeft =
       ref.current.scrollWidth - ref.current.getBoundingClientRect().width;
   };
 
   const handleScrollLeft = () => {
+    if (!ref.current) return;
     ref.current.scrollLeft = 0;
   };
 
-  return (
-    <div className="relative" {...rest}>
-      <div className={styles.tabsList} ref={ref}>
-        {children}
-      </div>
-
-      {showLeftArrow && (
-        <ArrowButton position="left" onClick={handleScrollLeft} />
-      )}
-      {showRightArrow && (
-        <ArrowButton position="right" onClick={handleScrollRight} />
-      )}
-    </div>
-  );
+  return {
+    ref,
+    showLeftArrow,
+    showRightArrow,
+    handleScrollRight,
+    handleScrollLeft,
+  };
 };
 
-export default TabsList;
+export default useScrollArrows;

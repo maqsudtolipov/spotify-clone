@@ -1,6 +1,6 @@
-import Tabs from '../../ui/Tabs/Tabs';
-import TabsList from '../../ui/Tabs/TabsList';
-import Tab from '../../ui/Tabs/Tab';
+import Tabs from '../../ui/Tabs/Tabs.tsx';
+import TabsList from '../../ui/Tabs/TabsList.tsx';
+import Tab from '../../ui/Tabs/Tab.tsx';
 
 interface HistoryTabsProps {
   selectedFilter: string;
