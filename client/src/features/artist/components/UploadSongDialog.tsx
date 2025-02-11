@@ -20,15 +20,14 @@ const UploadSongDialog = () => {
 
     if (formRef.current) {
       const formData = new FormData(formRef.current);
-      dispatch(uploadSong({ formData }));
+      dispatch(uploadSong(formData));
     }
   };
 
   return (
     <Dialog>
       <DialogTrigger>
-        <TransparentButton text="Upload Song" onClick={() => {
-        }} />
+        <TransparentButton text="Upload Song" onClick={() => {}} />
       </DialogTrigger>
       <DialogContent>
         <form

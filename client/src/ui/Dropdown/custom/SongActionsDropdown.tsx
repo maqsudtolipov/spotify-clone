@@ -16,7 +16,7 @@ const SongActionsDropdown = ({ id }: SongActionsDropdownProps) => {
   const dispatch = useAppDispatch();
 
   const handleDeleteSong = (id: string) => {
-    dispatch(deleteSong({ id }));
+    dispatch(deleteSong(id));
   };
 
   return (
