@@ -8,7 +8,7 @@ interface FollowButtonProps {
 
 const TransparentButton = ({ text, onClick }: FollowButtonProps) => {
   return (
-    <button className={styles.followButton} onClick={onClick}>
+    <button className={styles.transparentButton} onClick={onClick}>
       {text}
     </button>
   );
