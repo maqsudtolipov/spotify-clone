@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import AppRoutes from './AppRoutes.jsx';
 import './index.scss';
 import { Provider } from 'react-redux';
-import { store } from './app/store.ts';
+import { store } from './redux/store.ts';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 

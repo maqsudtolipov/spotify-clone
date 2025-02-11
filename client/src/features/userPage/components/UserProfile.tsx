@@ -1,15 +1,15 @@
-import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
-import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
+import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
-import ImageHeader from '../../../components/ImageHeader/ImageHeader.tsx';
+import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUser } from '../userPageThunks.ts';
-import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
-import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
-import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
-import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
+import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
+import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
+import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
+import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);

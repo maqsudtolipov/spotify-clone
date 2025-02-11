@@ -1,0 +1,12 @@
+.transparentButton {
+  @apply px-4 py-1.5;
+  @apply text-sm border border-neutral-500 rounded-full;
+
+  &:hover {
+    @apply border-white scale-105;
+  }
+
+  &:active {
+    @apply border-neutral-600 scale-100;
+  }
+}

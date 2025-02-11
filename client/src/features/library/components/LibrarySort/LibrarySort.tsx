@@ -1,10 +1,10 @@
 import styles from './LibrarySort.module.scss';
-import Dropdown from '../../../../ui-library/Dropdown/Dropdown.tsx';
+import Dropdown from '../../../../ui/Dropdown/Dropdown.tsx';
 import { RiCheckFill, RiListUnordered } from 'react-icons/ri';
-import DropdownTrigger from '../../../../ui-library/Dropdown/DropdownTrigger.tsx';
-import DropdownList from '../../../../ui-library/Dropdown/DropdownList.tsx';
-import DropdownItem from '../../../../ui-library/Dropdown/DropdownItem.tsx';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks.ts';
+import DropdownTrigger from '../../../../ui/Dropdown/DropdownTrigger.tsx';
+import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
+import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { sortLibraryItems } from '../../librarySlice.ts';
 
 const LibrarySort = () => {

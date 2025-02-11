@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import styles from '../AppRoutes.module.scss';
+import styles from './Layout.module.scss';
 import Nav from './Nav/Nav';
 import Library from '../features/library/components/Library';
 import Footer from './Footer/Footer.tsx';
@@ -32,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: '#aaa'
+          color: '#aaa',
         }}
       >
         <button className="btn" onClick={() => setIsQueueOpen((prev) => !prev)}>
@@ -43,7 +43,7 @@ const Layout = ({ children }: LayoutProps) => {
           style={{
             display: 'flex',
             gap: '8px',
-            marginTop: '8px'
+            marginTop: '8px',
           }}
         >
           <Link to="/">Home</Link>

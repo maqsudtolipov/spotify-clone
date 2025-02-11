@@ -1,8 +1,8 @@
-import PlayHeader from '../../../components/PlayHeader/PlayHeader.tsx';
-import PlayButton from '../../../components/PlayHeader/PlayButton.tsx';
-import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
+import PlayHeader from '../../../ui/PlayHeader/PlayHeader.tsx';
+import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
+import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import { Playlist } from '../playlistSlice.ts';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
 import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
 

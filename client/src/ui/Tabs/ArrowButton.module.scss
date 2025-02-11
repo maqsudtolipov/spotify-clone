@@ -1,0 +1,20 @@
+.arrowButton {
+  @apply absolute top-0;
+  @apply text-neutral-400 bg-neutral-800 rounded-full;
+
+  svg {
+    @apply size-8 p-1;
+  }
+
+  &:hover {
+    @apply text-white bg-neutral-700;
+  }
+}
+
+.arrowButtonRight {
+  @apply right-0;
+}
+
+.arrowButtonLeft {
+  @apply left-0;
+}

@@ -1,0 +1,18 @@
+.tableHeader {
+  @apply border-b border-neutral-500 border-opacity-20;
+
+  td span {
+    @apply inline-flex items-center;
+    @apply relative;
+    @apply select-none cursor-pointer;
+
+    svg {
+      @apply absolute -right-6;
+      @apply text-green-500 scale-150;
+    }
+  }
+
+  td span:hover {
+    @apply text-white;
+  }
+}

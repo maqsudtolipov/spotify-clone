@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios';
+import axios from '../../axios/axios';
 import { setLibraryItems } from '../library/librarySlice.ts';
 import { likedPlaylistsUpdated, playlistsUpdated } from '../auth/userSlice.ts';
 import toast from 'react-hot-toast';

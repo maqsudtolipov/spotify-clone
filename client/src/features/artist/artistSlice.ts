@@ -1,58 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { deleteSong, getArtist, updateSong, uploadSong } from './artistThunks.ts';
-import toast from 'react-hot-toast';
-
-interface ApiStatus {
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string;
-  statusCode?: number;
-}
-
-interface Song {
-  id: string;
-  name: string;
-  artist: string;
-  img: { id: string; url: string };
-  song: { id: string; url: string };
-  plays: number;
-  duration: number;
-}
-
-interface Artist {
-  id: string;
-  name: string;
-  img: string;
-  role: string;
-  color: string;
-  followersCount: number;
-  songs: Song[];
-}
-
-interface InitialState {
-  data: Artist | null;
-  api: {
-    getArtist: ApiStatus;
-    uploadSong: ApiStatus;
-    updateSong: ApiStatus;
-  };
-}
+import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
+import { InitialState } from './artistTypes.ts';
+import { RootState } from '../../redux/store.ts';
 
 const initialState: InitialState = {
   data: null,
   api: {
-    getArtist: {
-      status: 'idle',
-      error: ''
-    },
-    uploadSong: {
-      status: 'idle',
-      error: ''
-    },
-    updateSong: {
-      status: 'idle',
-      error: ''
-    }
-  }
+    getArtist: { status: 'idle', error: '' },
+    uploadSong: { status: 'idle', error: '' },
+    updateSong: { status: 'idle', error: '' },
+  },
 };
 
 const artistSlice = createSlice({
@@ -61,7 +19,7 @@ const artistSlice = createSlice({
   reducers: {
     listenersCountUpdated: (state, action) => {
       if (state.data) state.data.followersCount = action.payload;
-    }
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -73,17 +31,11 @@ const artistSlice = createSlice({
         state.api.getArtist.status = 'fulfilled';
         state.data = action.payload;
       })
-      .addCase(getArtist.rejected, (state, { payload }) => {
-        state.api.getArtist.status = 'rejected';
-        state.api.getArtist.statusCode = payload.statusCode;
-        state.api.getArtist.error = payload.message;
-        state.data = null;
-
-        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
-          toast.error(`Error: ${payload.status} - ${payload.message}`);
-        }
+      .addCase(getArtist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'getArtist');
       })
 
+      // POST songs
       .addCase(uploadSong.pending, (state) => {
         state.api.uploadSong.status = 'pending';
       })
@@ -91,9 +43,11 @@ const artistSlice = createSlice({
         state.api.uploadSong.status = 'fulfilled';
         if (state.data) state.data.songs = action.payload;
       })
-      .addCase(uploadSong.rejected, (state) => {
-        state.api.uploadSong.status = 'rejected';
+      .addCase(uploadSong.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'uploadSong');
       })
+
+      // PATCH songs/:id
       .addCase(updateSong.pending, (state) => {
         state.api.updateSong.status = 'pending';
       })
@@ -101,14 +55,19 @@ const artistSlice = createSlice({
         state.api.updateSong.status = 'fulfilled';
         if (state.data) state.data.songs = action.payload;
       })
-      .addCase(updateSong.rejected, (state) => {
-        state.api.updateSong.status = 'rejected';
+      .addCase(updateSong.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'updateSong');
       })
+
+      // DELETE songs/:id
       .addCase(deleteSong.fulfilled, (state, action) => {
         state.api.updateSong.status = 'fulfilled';
         if (state.data) state.data.songs = action.payload;
-      })
+      }),
 });
+
+export const selectArtist = (state: RootState) => state.artist.data;
+export const selectArtistSongs = (state: RootState) => state.artist.data?.songs;
 
 export const { listenersCountUpdated } = artistSlice.actions;
 export default artistSlice.reducer;

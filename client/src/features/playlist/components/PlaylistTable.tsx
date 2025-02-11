@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import SortedTable from '../../../ui-library/Table/SortedTable.tsx';
+import SortedTable from '../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 
 interface Item {
   img: string;

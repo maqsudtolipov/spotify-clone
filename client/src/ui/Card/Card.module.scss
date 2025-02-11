@@ -1,0 +1,13 @@
+.card {
+  @apply p-3;
+  @apply relative;
+  @apply bg-white bg-opacity-0 rounded-md cursor-pointer;
+
+  &:hover {
+    @apply bg-opacity-5;
+  }
+
+  &:hover .imageIcon {
+    @apply inline-block;
+  }
+}

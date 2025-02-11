@@ -1,0 +1,17 @@
+.button {
+  @apply size-8;
+  @apply flex items-center justify-center;
+  @apply text-base text-neutral-400;
+
+  svg {
+    @apply scale-110;
+  }
+
+  &:hover {
+    @apply text-white bg-neutral-800 rounded-full;
+  }
+
+  &:active {
+    @apply bg-black;
+  }
+}

@@ -1,10 +1,10 @@
-import Dropdown from '../../../ui-library/Dropdown/Dropdown.tsx';
-import DropdownTrigger from '../../../ui-library/Dropdown/DropdownTrigger.tsx';
+import Dropdown from '../../../ui/Dropdown/Dropdown.tsx';
+import DropdownTrigger from '../../../ui/Dropdown/DropdownTrigger.tsx';
 import { RiDeleteBin6Line, RiFileCopyLine, RiMoreFill } from 'react-icons/ri';
-import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
-import DropdownList from '../../../ui-library/Dropdown/DropdownList.tsx';
-import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
-import { useAppDispatch } from '../../../app/hooks.ts';
+import styles from './PlaylistActions.module.scss';
+import DropdownList from '../../../ui/Dropdown/DropdownList.tsx';
+import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
+import { useAppDispatch } from '../../../redux/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';

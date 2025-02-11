@@ -1,17 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
-import SearchPage from './pages/SearchPage.tsx';
-import ArtistPage from './pages/ArtistPage.tsx';
-import ForgotPassword from './pages/auth/ForgotPassword.tsx';
-import ResetPassword from './pages/auth/ResetPassword.tsx';
-import HomePage from './pages/HomePage.tsx';
+import ForgotPassword from './features/auth/ForgotPassword.tsx';
+import ResetPassword from './features/auth/ResetPassword.tsx';
+import Home from './features/home/Home.tsx';
 import Login from './features/auth/Login.tsx';
-import { useAppDispatch, useAppSelector } from './app/hooks.ts';
+import { useAppDispatch, useAppSelector } from './redux/hooks.ts';
 import { useEffect } from 'react';
 import { getCurrent } from './features/auth/userThunks.ts';
 import SignUp from './features/auth/SignUp.tsx';
 import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
+import Search from './features/search/Search.tsx';
+import Artist from './features/artist/components/Artist.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
@@ -30,7 +30,7 @@ const AppRoutes = () => {
             path="/"
             element={
               <Layout>
-                <HomePage />
+                <Home />
               </Layout>
             }
           />
@@ -38,7 +38,7 @@ const AppRoutes = () => {
             path="/search"
             element={
               <Layout>
-                <SearchPage />
+                <Search />
               </Layout>
             }
           />
@@ -54,7 +54,7 @@ const AppRoutes = () => {
             path="/artist/:id"
             element={
               <Layout>
-                <ArtistPage />
+                <Artist />
               </Layout>
             }
           />

@@ -3,7 +3,7 @@ import styles from './AuthForm.module.scss';
 import AuthContainer from './AuthContainer.tsx';
 import { RiLoaderFill } from 'react-icons/ri';
 import { Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts';
 import { useState } from 'react';
 import { signUp } from './userThunks.ts';
 

@@ -1,18 +1,18 @@
 import ArtistTable from './ArtistTable.tsx';
 import ArtistHeader from './ArtistHeader.tsx';
-import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { useEffect } from 'react';
 import { getArtist } from '../artistThunks.ts';
-import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
-import styles from '../../../components/PlayHeader/PlayHeader.module.scss';
-import PlayButton from '../../../components/PlayHeader/PlayButton.tsx';
-import TransparentButton from '../../../components/PlayHeader/TransparentButton.tsx';
+import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
+import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
+import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
+import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
 import UploadSongDialog from './UploadSongDialog.tsx';
-import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
-import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
+import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
+import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
@@ -21,7 +21,7 @@ const isFollowed = (id: string, followings: string[]) => {
 const Artist = () => {
   const { id } = useParams<{ id: string }>();
   const { status, statusCode, error } = useAppSelector(
-    (state) => state.artist.api.getArtist
+    (state) => state.artist.api.getArtist,
   );
   const data = useAppSelector((state) => state.artist.data);
   const { followings, id: userId } = useAppSelector((state) => state.user.data);
@@ -53,7 +53,7 @@ const Artist = () => {
 
   return (
     <>
-      <ArtistHeader />
+      {data && <ArtistHeader />}
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
           <PlayButton />

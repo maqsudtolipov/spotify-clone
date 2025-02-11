@@ -1,0 +1,26 @@
+.table {
+  @apply w-full;
+  @apply text-sm text-neutral-500 border-spacing-0;
+
+  td {
+    @apply p-2;
+
+    //svg {
+    //  @apply h-0 invisible pointer-events-none;
+    //}
+
+    &:first-child {
+      @apply pl-4;
+      @apply rounded-tl rounded-bl;
+    }
+
+    &:last-child {
+      @apply pr-4;
+      @apply rounded-tr rounded-br;
+    }
+  }
+
+  tr:hover td {
+    @apply bg-white bg-opacity-10;
+  }
+}

@@ -1,0 +1,14 @@
+.subMenuItem {
+  @apply w-48 p-3 text-sm;
+  @apply flex items-center gap-3;
+  @apply relative;
+  @apply text-neutral-100 text-opacity-90 rounded-sm cursor-pointer;
+
+  span {
+    @apply w-full;
+  }
+
+  &:hover {
+    @apply bg-white bg-opacity-10;
+  }
+}

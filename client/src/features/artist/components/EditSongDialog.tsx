@@ -1,14 +1,14 @@
 import React, { FormEvent, forwardRef, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { updateSong } from '../artistThunks.ts';
-import Dialog from '../../../ui-library/Dialog/Dialog.tsx';
-import DialogTrigger from '../../../ui-library/Dialog/DialogTrigger.tsx';
-import DialogContent from '../../../ui-library/Dialog/DialogContent.tsx';
+import Dialog from '../../../ui/Dialog/Dialog.tsx';
+import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
+import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
 import styles from './UploadSongDialog.module.scss';
-import Input from '../../../ui-library/Input/Input.tsx';
-import Button from '../../../ui-library/Button/Button';
+import Input from '../../../ui/Input/Input.tsx';
+import Button from '../../../ui/Button/Button.tsx';
 import { RiEditLine } from 'react-icons/ri';
-import DropdownItem from '../../../ui-library/Dropdown/DropdownItem.tsx';
+import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 
 const EditSongDialog = forwardRef<
   HTMLUListElement | HTMLDivElement | HTMLFormElement,

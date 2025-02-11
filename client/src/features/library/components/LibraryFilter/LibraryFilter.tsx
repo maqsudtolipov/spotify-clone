@@ -1,7 +1,7 @@
-import Tabs from '../../../../ui-library/Tabs/Tabs.jsx';
-import TabsList from '../../../../ui-library/Tabs/TabsList.jsx';
-import Tab from '../../../../ui-library/Tabs/Tab.jsx';
-import { useAppDispatch } from '../../../../app/hooks.ts';
+import Tabs from '../../../../ui/Tabs/Tabs.js';
+import TabsList from '../../../../ui/Tabs/TabsList.js';
+import Tab from '../../../../ui/Tabs/Tab.js';
+import { useAppDispatch } from '../../../../redux/hooks.ts';
 import { filterLibraryItems } from '../../librarySlice.ts';
 
 const LibraryFilter = () => {

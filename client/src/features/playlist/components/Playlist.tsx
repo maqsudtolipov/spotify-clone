@@ -1,18 +1,18 @@
 import PlaylistTable from './PlaylistTable.tsx';
-import PlaylistHeader from './PlaylistHeader.tsx';
-import GradientBackground from '../../../components/GradientBackground/GradientBackground.tsx';
+import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { useEffect } from 'react';
 import { getPlaylist } from '../playlistThunks.ts';
-import NotFound from '../../../components/ErrorScreens/NotFound.tsx';
-import ServerError from '../../../components/ErrorScreens/ServerError.tsx';
-import LoadingScreen from '../../../components/LoadingScreen/LoadingScreen.tsx';
+import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
+import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
+import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
+import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
-    (state) => state.playlist.api.getPlaylist
+    (state) => state.playlist.api.getPlaylist,
   );
   const { data } = useAppSelector((state) => state.playlist);
   const { id } = useParams<{ id: string }>();
@@ -32,7 +32,7 @@ const Playlist = () => {
 
   return (
     <div>
-      <PlaylistHeader data={data} />
+      <ImageHeader data={data} type="playlist" />
       <GradientBackground color={data.color}>
         <PlaylistActions data={data} />
 
