@@ -21,7 +21,7 @@ const isFollowed = (id: string, followings: string[]) => {
 const Artist = () => {
   const { id } = useParams<{ id: string }>();
   const { status, statusCode, error } = useAppSelector(
-    (state) => state.artist.api.getArtist
+    (state) => state.artist.api.getArtist,
   );
   const data = useAppSelector((state) => state.artist.data);
   const { followings, id: userId } = useAppSelector((state) => state.user.data);
@@ -53,7 +53,7 @@ const Artist = () => {
 
   return (
     <>
-      <ArtistHeader />
+      {data && <ArtistHeader />}
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
           <PlayButton />

@@ -10,10 +10,10 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { uploadSong } from '../artistThunks.ts';
 
 const UploadSongDialog = () => {
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const id = useAppSelector((state) => state.user?.data?.id);
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
   const dispatch = useAppDispatch();
+
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const UploadSongDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <TransparentButton text="Upload Song" onClick={() => {}} />
+        <TransparentButton text="Upload Song" />
       </DialogTrigger>
       <DialogContent>
         <form

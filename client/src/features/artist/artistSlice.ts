@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { deleteSong, getArtist, updateSong, uploadSong } from './artistThunks.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 import { InitialState } from './artistTypes.ts';
+import { RootState } from '../../redux/store.ts';
 
 const initialState: InitialState = {
   data: null,
@@ -64,6 +65,8 @@ const artistSlice = createSlice({
         if (state.data) state.data.songs = action.payload;
       }),
 });
+
+export const selectArtist = (state: RootState) => state.artist.data;
 
 export const { listenersCountUpdated } = artistSlice.actions;
 export default artistSlice.reducer;

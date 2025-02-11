@@ -3,7 +3,7 @@ import { MouseEventHandler } from 'react';
 
 interface FollowButtonProps {
   text: string;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const TransparentButton = ({ text, onClick }: FollowButtonProps) => {
