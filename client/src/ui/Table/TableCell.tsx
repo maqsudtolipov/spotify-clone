@@ -12,11 +12,13 @@ const TableCell = ({
   className,
   alignRight,
   minimize,
+  onClick,
   children,
 }: TableCellProps) => {
   return (
     <td
       className={`${className} ${alignRight ? 'text-right' : ''} ${minimize ? 'w-1' : ''}`}
+      onClick={onClick}
     >
       {children}
     </td>

@@ -67,6 +67,7 @@ const artistSlice = createSlice({
 });
 
 export const selectArtist = (state: RootState) => state.artist.data;
+export const selectArtistSongs = (state: RootState) => state.artist.data?.songs;
 
 export const { listenersCountUpdated } = artistSlice.actions;
 export default artistSlice.reducer;
