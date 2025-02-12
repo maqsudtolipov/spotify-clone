@@ -5,10 +5,18 @@ interface InputProps {
   name: string;
   label?: string;
   placeholder?: string;
+  isValid?: boolean;
   onChange?: (arg0: any) => any;
 }
 
-const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
+const Input = ({
+  type,
+  name,
+  label,
+  placeholder,
+  isValid,
+  onChange,
+}: InputProps) => {
   return (
     <div>
       {label && (
@@ -17,7 +25,7 @@ const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
         </label>
       )}
       <input
-        className={`${styles.input} ${type === 'file' ? styles.inputFile : ''}`}
+        className={`${styles.input} ${type === 'file' ? styles.inputFile : ''} ${isValid ? '' : styles.inputInvalid}`}
         type={type}
         name={name}
         id={name}

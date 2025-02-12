@@ -19,12 +19,16 @@
   }
 }
 
+.imgInvalid {
+  @apply outline outline-2 outline-offset-2 outline-red-900;
+}
+
 .inputsContainer {
   @apply flex flex-col gap-2;
 }
 
 .previewImg {
-  @apply flex items-center justify-center w-full;
+  @apply flex items-center justify-center w-full overflow-hidden rounded-md;
 
   img {
     @apply h-52 w-52;
@@ -45,6 +49,10 @@
   svg {
     @apply mb-2 text-6xl;
   }
+}
+
+.error {
+  @apply text-sm text-neutral-400 leading-tight;
 }
 
 .warn {
