@@ -28,7 +28,10 @@
 }
 
 .previewImg {
-  @apply flex items-center justify-center w-full overflow-hidden rounded-md;
+  @apply w-full;
+  @apply flex items-center justify-center;
+  @apply overflow-hidden;
+  @apply rounded-md;
 
   img {
     @apply h-52 w-52;

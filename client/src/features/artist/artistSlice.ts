@@ -10,6 +10,7 @@ const initialState: InitialState = {
     getArtist: { status: 'idle', error: '' },
     uploadSong: { status: 'idle', error: '' },
     updateSong: { status: 'idle', error: '' },
+    deleteSong: { status: 'idle', error: '' },
   },
 };
 
@@ -33,6 +34,7 @@ const artistSlice = createSlice({
       })
       .addCase(getArtist.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'getArtist');
+        state.data = null;
       })
 
       // POST songs
@@ -60,9 +62,16 @@ const artistSlice = createSlice({
       })
 
       // DELETE songs/:id
+      .addCase(deleteSong.pending, (state) => {
+        state.api.deleteSong.status = 'pending';
+      })
+
       .addCase(deleteSong.fulfilled, (state, action) => {
         state.api.updateSong.status = 'fulfilled';
         if (state.data) state.data.songs = action.payload;
+      })
+      .addCase(deleteSong.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'deleteSong');
       }),
 });
 

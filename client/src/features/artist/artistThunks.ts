@@ -13,7 +13,7 @@ export const getArtist = createAsyncThunk<
     const res = await axios.get(`/artists/${id}`);
     return res.data.artist;
   } catch (e) {
-    rejectWithValue(handleAxiosError(e));
+    return rejectWithValue(handleAxiosError(e));
   }
 });
 
@@ -26,7 +26,7 @@ export const uploadSong = createAsyncThunk<
     const res = await axios.post(`/songs`, formData);
     return res.data.songs;
   } catch (e) {
-    rejectWithValue(handleAxiosError(e));
+    return rejectWithValue(handleAxiosError(e));
   }
 });
 
@@ -39,7 +39,7 @@ export const updateSong = createAsyncThunk<
     const res = await axios.patch(`/songs/${id}`, formData);
     return res.data.songs;
   } catch (e) {
-    rejectWithValue(handleAxiosError(e));
+    return rejectWithValue(handleAxiosError(e));
   }
 });
 
@@ -52,6 +52,6 @@ export const deleteSong = createAsyncThunk<
     const res = await axios.delete(`/songs/${id}`);
     return res.data.songs;
   } catch (e) {
-    rejectWithValue(handleAxiosError(e));
+    return rejectWithValue(handleAxiosError(e));
   }
 });

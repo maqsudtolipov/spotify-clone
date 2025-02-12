@@ -4,7 +4,7 @@ import { updateSong } from '../artistThunks.ts';
 import Dialog from '../../../ui/Dialog/Dialog.tsx';
 import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
 import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
-import styles from './uploadSong/UploadSongDialog.module.scss';
+import styles from './uploadSong/UploadSongForm.module.scss';
 import Input from '../../../ui/Input/Input.tsx';
 import Button from '../../../ui/Button/Button.tsx';
 import { RiEditLine } from 'react-icons/ri';

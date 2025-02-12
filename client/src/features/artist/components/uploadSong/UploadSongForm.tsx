@@ -1,4 +1,4 @@
-import styles from './UploadSongDialog.module.scss';
+import styles from './UploadSongForm.module.scss';
 import { RiPencilLine } from 'react-icons/ri';
 import Input from '../../../../ui/Input/Input.tsx';
 import Button from '../../../../ui/Button/Button.tsx';
