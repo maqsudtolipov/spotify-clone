@@ -5,9 +5,10 @@ interface InputProps {
   name: string;
   label?: string;
   placeholder?: string;
+  onChange?: (any) => any;
 }
 
-const Input = ({ type, name, label, placeholder }: InputProps) => {
+const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
   return (
     <div>
       {label && (
@@ -20,6 +21,7 @@ const Input = ({ type, name, label, placeholder }: InputProps) => {
         type={type}
         name={name}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );

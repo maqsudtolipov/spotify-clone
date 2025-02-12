@@ -5,23 +5,28 @@ import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import Input from '../../../ui/Input/Input.tsx';
 import Button from '../../../ui/Button/Button.tsx';
-import { FormEvent, useRef } from 'react';
+import { ChangeEvent, FormEvent, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
-import { uploadSong } from '../artistThunks.ts';
 
 const UploadSongDialog = () => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
   const dispatch = useAppDispatch();
 
   const formRef = useRef<HTMLFormElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formRef.current) {
-      const formData = new FormData(formRef.current);
-      dispatch(uploadSong(formData));
+    if (formRef.current && imgRef.current) {
+      // const formData = new FormData(formRef.current);
+      // dispatch(uploadSong(formData));
     }
+  };
+
+  const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!imgRef.current || !e.target.files) return;
+    imgRef.current.src = URL.createObjectURL(e.target.files[0]);
   };
 
   return (
@@ -40,6 +45,7 @@ const UploadSongDialog = () => {
             name="img"
             label="Cover Image"
             placeholder="Song cover img"
+            onChange={handleChangeImg}
           />
           <Input
             type="file"
@@ -57,6 +63,7 @@ const UploadSongDialog = () => {
             {status === 'pending' ? 'Uploading' : 'Upload'}
           </Button>
         </form>
+        <img ref={imgRef} src="" alt="Img preview" />
       </DialogContent>
     </Dialog>
   );
