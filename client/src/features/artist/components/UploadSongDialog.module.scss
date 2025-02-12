@@ -1,19 +1,48 @@
 .dialogForm {
   @apply grid grid-cols-[auto_300px] gap-4;
-  //width: 600px;
-}
 
-.imgContainer {
-  input {
-    @apply hidden;
+  button {
+    @apply mt-4;
   }
 }
 
-.previewImg {
-  @apply w-52;
+.imgContainer {
+  @apply relative overflow-hidden;
   @apply rounded-md shadow-black/40 shadow-2xl;
 
-  &:hover {
-    @apply cursor-pointer;
+  input {
+    @apply hidden;
+  }
+
+  &:hover .overlay {
+    @apply flex;
+  }
+}
+
+.inputsContainer {
+  @apply flex flex-col gap-2;
+}
+
+.previewImg {
+  @apply flex items-center justify-center w-full;
+
+  img {
+    @apply h-52 w-52;
+    @apply object-cover object-center;
+
+    &:hover {
+      @apply cursor-pointer;
+    }
+  }
+}
+
+.overlay {
+  @apply w-full h-full;
+  @apply hidden flex-col items-center justify-center;
+  @apply absolute;
+  @apply bg-black/75 cursor-pointer;
+
+  svg {
+    @apply mb-2 text-6xl;
   }
 }

@@ -17,7 +17,7 @@ const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
         </label>
       )}
       <input
-        className={styles.input}
+        className={`${styles.input} ${type === 'file' ? styles.inputFile : ''}`}
         type={type}
         name={name}
         id={name}

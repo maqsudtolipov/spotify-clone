@@ -6,13 +6,15 @@ import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import Input from '../../../ui/Input/Input.tsx';
 import Button from '../../../ui/Button/Button.tsx';
 import { ChangeEvent, FormEvent, useRef } from 'react';
-import { useAppSelector } from '../../../redux/hooks.ts';
-
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { uploadSong } from '../artistThunks.ts';
+import { RiPencilLine } from 'react-icons/ri';
 // @ts-ignore
 import previewImg from '../../../public/img-preview.png';
 
 const UploadSongDialog = () => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
+  const dispatch = useAppDispatch();
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -21,8 +23,8 @@ const UploadSongDialog = () => {
     e.preventDefault();
 
     if (formRef.current && imgRef.current) {
-      // const formData = new FormData(formRef.current);
-      // dispatch(uploadSong(formData));
+      const formData = new FormData(formRef.current);
+      dispatch(uploadSong(formData));
     }
   };
 
@@ -43,13 +45,12 @@ const UploadSongDialog = () => {
           onSubmit={handleFormSubmit}
         >
           <div className={styles.imgContainer}>
-            <label htmlFor="img">
-              <img
-                ref={imgRef}
-                className={styles.previewImg}
-                src={previewImg}
-                alt="Img preview"
-              />
+            <label htmlFor="img" className={styles.previewImg}>
+              <img ref={imgRef} src={previewImg} alt="Img preview" />
+              <div className={styles.overlay}>
+                <RiPencilLine />
+                <span>Choose image</span>
+              </div>
             </label>
             <Input
               type="file"
@@ -58,18 +59,18 @@ const UploadSongDialog = () => {
               onChange={handleChangeImg}
             />
           </div>
-          <div>
+          <div className={styles.inputsContainer}>
             <Input
-              type="file"
-              name="song"
-              label="Song file"
-              placeholder="Song file"
-            />
-            <Input
+              label="Song name"
               type="text"
               name="name"
-              label="Song Name"
               placeholder="Song name"
+            />
+            <Input
+              label="Song file"
+              type="file"
+              name="song"
+              placeholder="Song file"
             />
             <Button type="submit">
               {status === 'pending' ? 'Uploading' : 'Upload'}
