@@ -76,6 +76,10 @@ const UploadSongDialog = () => {
               {status === 'pending' ? 'Uploading' : 'Upload'}
             </Button>
           </div>
+
+          <p className={styles.warn}>
+            * Please ensure your files are not copyrighted. Do not upload personal or inappropriate images.
+          </p>
         </form>
       </DialogContent>
     </Dialog>

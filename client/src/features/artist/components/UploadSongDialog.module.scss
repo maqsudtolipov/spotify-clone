@@ -1,5 +1,5 @@
 .dialogForm {
-  @apply grid grid-cols-[auto_300px] gap-4;
+  @apply grid grid-cols-[208px_300px] gap-4;
 
   button {
     @apply mt-4;
@@ -45,4 +45,9 @@
   svg {
     @apply mb-2 text-6xl;
   }
+}
+
+.warn {
+  @apply text-xs font-semibold;
+  grid-column: 1/-1;
 }
