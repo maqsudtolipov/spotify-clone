@@ -5,7 +5,7 @@ interface InputProps {
   name: string;
   label?: string;
   placeholder?: string;
-  onChange?: (any) => any;
+  onChange?: (arg0: any) => any;
 }
 
 const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
@@ -20,6 +20,7 @@ const Input = ({ type, name, label, placeholder, onChange }: InputProps) => {
         className={styles.input}
         type={type}
         name={name}
+        id={name}
         placeholder={placeholder}
         onChange={onChange}
       />

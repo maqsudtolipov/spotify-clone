@@ -6,11 +6,13 @@ import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import Input from '../../../ui/Input/Input.tsx';
 import Button from '../../../ui/Button/Button.tsx';
 import { ChangeEvent, FormEvent, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { useAppSelector } from '../../../redux/hooks.ts';
+
+// @ts-ignore
+import previewImg from '../../../public/img-preview.png';
 
 const UploadSongDialog = () => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
-  const dispatch = useAppDispatch();
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -40,30 +42,40 @@ const UploadSongDialog = () => {
           className={styles.dialogForm}
           onSubmit={handleFormSubmit}
         >
-          <Input
-            type="file"
-            name="img"
-            label="Cover Image"
-            placeholder="Song cover img"
-            onChange={handleChangeImg}
-          />
-          <Input
-            type="file"
-            name="song"
-            label="Song file"
-            placeholder="Song file"
-          />
-          <Input
-            type="text"
-            name="name"
-            label="Song Name"
-            placeholder="Song name"
-          />
-          <Button type="submit">
-            {status === 'pending' ? 'Uploading' : 'Upload'}
-          </Button>
+          <div className={styles.imgContainer}>
+            <label htmlFor="img">
+              <img
+                ref={imgRef}
+                className={styles.previewImg}
+                src={previewImg}
+                alt="Img preview"
+              />
+            </label>
+            <Input
+              type="file"
+              name="img"
+              placeholder="Song cover img"
+              onChange={handleChangeImg}
+            />
+          </div>
+          <div>
+            <Input
+              type="file"
+              name="song"
+              label="Song file"
+              placeholder="Song file"
+            />
+            <Input
+              type="text"
+              name="name"
+              label="Song Name"
+              placeholder="Song name"
+            />
+            <Button type="submit">
+              {status === 'pending' ? 'Uploading' : 'Upload'}
+            </Button>
+          </div>
         </form>
-        <img ref={imgRef} src="" alt="Img preview" />
       </DialogContent>
     </Dialog>
   );

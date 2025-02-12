@@ -1,3 +1,19 @@
 .dialogForm {
-  @apply flex flex-col gap-4;
+  @apply grid grid-cols-[auto_300px] gap-4;
+  //width: 600px;
+}
+
+.imgContainer {
+  input {
+    @apply hidden;
+  }
+}
+
+.previewImg {
+  @apply w-52;
+  @apply rounded-md shadow-black/40 shadow-2xl;
+
+  &:hover {
+    @apply cursor-pointer;
+  }
 }
