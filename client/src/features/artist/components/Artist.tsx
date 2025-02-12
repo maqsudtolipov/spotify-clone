@@ -52,7 +52,7 @@ const Artist = () => {
   if (status === 'pending' || !data || !id) return <LoadingScreen />;
 
   return (
-    <>
+    <div className={styles.artistPage}>
       {data && <ArtistHeader />}
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
@@ -76,7 +76,7 @@ const Artist = () => {
           <ArtistTable />
         </div>
       </GradientBackground>
-    </>
+    </div>
   );
 };
 
