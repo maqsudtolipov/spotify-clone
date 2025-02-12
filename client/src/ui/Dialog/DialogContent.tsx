@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent, useContext } from 'react';
+import { MouseEvent, ReactNode, useContext } from 'react';
 import { DialogContext } from './Dialog.tsx';
 import { createPortal } from 'react-dom';
 import styles from './DialogContent.module.scss';
@@ -24,8 +24,10 @@ const DialogContent = ({ children }: DialogContentProps) => {
   return isOpen
     ? createPortal(
         <div className={styles.dialogBackground} onClick={handleClose}>
-          <DialogHeader />
-          <div className={styles.dialog}>{children}</div>
+          <div className={styles.dialog}>
+            <DialogHeader />
+            {children}
+          </div>
         </div>,
         document.body,
       )
