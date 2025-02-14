@@ -2,7 +2,7 @@ import Dropdown from '../Dropdown.tsx';
 import DropdownTrigger from '../DropdownTrigger.tsx';
 import { RiDeleteBin6Line, RiHeartFill, RiMoreFill, RiShareForwardBoxFill, RiUserHeartLine } from 'react-icons/ri';
 import DropdownList from '../DropdownList.tsx';
-import EditSongDialog from '../../../features/artist/components/EditSongDialog.tsx';
+import EditSongDialog from '../../../features/artist/components/editSong/EditSongDialog.tsx';
 import DropdownItem from '../DropdownItem.tsx';
 import AddToPlaylistItem from './AddToPlaylistItem.tsx';
 import { useAppDispatch } from '../../../redux/hooks.ts';
