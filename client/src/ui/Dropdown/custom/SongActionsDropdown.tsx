@@ -24,7 +24,7 @@ const SongActionsDropdown = ({ id }: SongActionsDropdownProps) => {
       <DropdownTrigger>
         <RiMoreFill />
       </DropdownTrigger>
-      <DropdownList>
+      <DropdownList removeOutsideClick={true}>
         <EditSongDialog id={id} />
         <DropdownItem
           PreIcon={RiDeleteBin6Line}

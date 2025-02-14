@@ -4,12 +4,14 @@ import { DropdownContext } from './Dropdown.tsx';
 import useOutsideClick from '../../hooks/useOutsideClick.tsx';
 
 interface DropdownListProps {
-  children: ReactNode;
   position?: 'bottom-left' | 'bottom-right';
+  removeOutsideClick?: boolean;
+  children: ReactNode;
 }
 
 const DropdownList = ({
   position = 'bottom-left',
+  removeOutsideClick = false,
   children,
 }: DropdownListProps) => {
   const context = useContext(DropdownContext);
@@ -18,7 +20,8 @@ const DropdownList = ({
   }
 
   const { isOpen, closeDropdown } = context;
-  const { ref } = useOutsideClick(closeDropdown);
+
+  const { ref } = useOutsideClick(closeDropdown, removeOutsideClick);
 
   if (!isOpen) return null;
 

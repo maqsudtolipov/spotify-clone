@@ -12,7 +12,6 @@ import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
 import { selectArtist } from '../artistSlice.ts';
 
 const isSongLiked = (id: string, likedSongs: string[]) => {
-  console.log(id, likedSongs);
   return likedSongs.includes(id);
 };
 
@@ -26,7 +25,6 @@ const ArtistTable = () => {
   if (!likedSongs || !artist) return null;
 
   const handleLikeSong = (id: string) => {
-    console.log(id);
     dispatch(likeSong({ id }));
   };
 
