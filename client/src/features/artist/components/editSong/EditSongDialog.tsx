@@ -4,12 +4,13 @@ import DialogContent from '../../../../ui/Dialog/DialogContent.tsx';
 import { RiEditLine } from 'react-icons/ri';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import EditSongForm from './EditSongForm.tsx';
+import { forwardRef } from 'react';
 
 interface EditSongDialogProps {
   id: string;
 }
 
-const EditSongDialog = ({ id }: EditSongDialogProps) => {
+const EditSongDialog = forwardRef(({ id }: EditSongDialogProps, ref) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -17,11 +18,11 @@ const EditSongDialog = ({ id }: EditSongDialogProps) => {
           Edit
         </DropdownItem>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent ref={ref}>
         <EditSongForm id={id} />
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default EditSongDialog;

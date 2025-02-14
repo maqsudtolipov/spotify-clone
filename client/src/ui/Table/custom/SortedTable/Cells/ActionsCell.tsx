@@ -1,6 +1,7 @@
 import styles from './ActionCell.module.scss';
 import TableCell from '../../../TableCell.tsx';
 import SongActionsDropdown from '../../../../Dropdown/custom/SongActionsDropdown.tsx';
+import Dropdown from '../../../../Dropdown/Dropdown.tsx';
 
 // const RefPasser = forwardRef(({ id }) => {
 //   const { closeDropdown } = useContext(DropdownContext);
@@ -40,7 +41,9 @@ interface ActionsCellProps {
 const ActionsCell = ({ id }: ActionsCellProps) => {
   return (
     <TableCell className={styles.actionsCell} minimize={true}>
-      <SongActionsDropdown id={id} />
+      <Dropdown>
+        <SongActionsDropdown id={id} />
+      </Dropdown>
     </TableCell>
   );
 };
