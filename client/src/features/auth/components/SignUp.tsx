@@ -58,6 +58,7 @@ const Login = () => {
 
   const {
     register,
+    watch,
     formState: { errors },
     handleSubmit,
   } = useForm({
@@ -68,7 +69,7 @@ const Login = () => {
       passwordConfirm: '',
     },
   });
-
+  console.log(errors.passwordConfirm);
   const handleFormSubmit = async (input: FormInput) => {
     if (validateInput(input).errorMessages.length === 0) {
       setErrorMessages([]);
@@ -148,13 +149,23 @@ const Login = () => {
               })}
             />
 
-            {/*{errors?.password?.type === 'required' && (*/}
-            {/*  <p className={styles.error}>This field is required</p>*/}
-            {/*)}*/}
+            {errors?.password?.type === 'required' && (
+              <p className={styles.error}>This field is required</p>
+            )}
 
-            {/*{errors?.password?.type === 'pattern' && (*/}
-            {/*  <p className={styles.error}>Please provide valid email</p>*/}
-            {/*)}*/}
+            {(errors?.password?.type === 'minLength' ||
+              errors?.password?.type === 'maxLength') && (
+              <p className={styles.error}>
+                Password must be between 8 and 16 characters.
+              </p>
+            )}
+
+            {errors?.password?.type === 'pattern' && (
+              <p className={styles.error}>
+                Password must include an uppercase letter, lowercase letter,
+                number, and special character ($, !, %, &, *).
+              </p>
+            )}
           </div>
 
           <div>
@@ -163,14 +174,20 @@ const Login = () => {
               type="password"
               placeholder="Confirm your password"
               required={true}
-              {...register('passwordConfirm')}
+              {...register('passwordConfirm', {
+                required: true,
+                validate: (value: string) => {
+                  if (watch('password') !== value) return true;
+                },
+              })}
             />
-          </div>
+            {errors?.passwordConfirm?.type === 'required' && (
+              <p className={styles.error}>This field is required</p>
+            )}
 
-          <div>
-            {errorMessages.map((message) => (
-              <p className={styles.message}>- {message}</p>
-            ))}
+            {errors?.passwordConfirm?.type === 'validate' && (
+              <p className={styles.error}>Passwords do not match</p>
+            )}
           </div>
 
           <button className={styles.button} type="submit">
