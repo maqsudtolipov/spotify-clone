@@ -5,7 +5,7 @@
 }
 
 .title {
-  @apply mb-10;
+  @apply mb-8;
   @apply text-center text-3xl font-bold text-green-500;
 }
 
@@ -15,14 +15,10 @@
 
 .input {
   @apply w-full px-3 py-2;
-  @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
+  @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-40 rounded-md;
 
   &Invalid {
-    @apply border-red-500;
-  }
-
-  &Valid {
-    @apply border-green-500;
+    @apply border-red-900;
   }
 
   &::placeholder {
