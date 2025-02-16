@@ -1,38 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
-
-interface ApiStatus {
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  img: string;
-  followers: string[];
-  followersCount: number;
-  followings: string[];
-  followingsCount: number;
-  likedSongs: {
-    id: string;
-    songs: string[];
-  };
-}
-
-interface InitialState {
-  data: User | null;
-  isAuth: boolean;
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
-  api: {
-    getCurrent: ApiStatus;
-    signUp: ApiStatus;
-    login: ApiStatus;
-    logout: ApiStatus;
-  };
-}
+import { InitialState } from './userTypes.ts';
 
 const initialState: InitialState = {
   data: null,
@@ -40,17 +8,11 @@ const initialState: InitialState = {
   status: 'idle',
   error: null,
   api: {
-    getCurrent: { status: 'idle', error: null },
-    signUp: {
-      status: 'idle',
-      error: null
-    },
-    login: {
-      status: 'idle',
-      error: null
-    },
-    logout: { status: 'idle', error: null }
-  }
+    getCurrent: { status: 'idle', error: '' },
+    signUp: { status: 'idle', error: '' },
+    login: { status: 'idle', error: '' },
+    logout: { status: 'idle', error: '' },
+  },
 };
 
 const userSlice = createSlice({
@@ -65,7 +27,7 @@ const userSlice = createSlice({
     },
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
-    }
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -127,7 +89,7 @@ const userSlice = createSlice({
       })
       .addCase(dislikeSong.fulfilled, (state, action) => {
         if (state.data) state.data.likedSongs.songs = action.payload;
-      })
+      }),
 });
 
 export const { followingsUpdated, playlistsUpdated, likedPlaylistsUpdated } =
