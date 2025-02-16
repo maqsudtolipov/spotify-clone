@@ -1,7 +1,7 @@
-import Dialog from '../../../../ui/Dialog/Dialog.tsx';
-import DialogContent from '../../../../ui/Dialog/DialogContent.tsx';
-import DialogTrigger from '../../../../ui/Dialog/DialogTrigger.tsx';
-import TransparentButton from '../../../../ui/Button/TransparentButton.tsx';
+import Dialog from '../../../../../ui/Dialog/Dialog.tsx';
+import DialogContent from '../../../../../ui/Dialog/DialogContent.tsx';
+import DialogTrigger from '../../../../../ui/Dialog/DialogTrigger.tsx';
+import TransparentButton from '../../../../../ui/Button/TransparentButton.tsx';
 import UploadSongForm from './UploadSongForm.tsx';
 
 const UploadSongDialog = () => {

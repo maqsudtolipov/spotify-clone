@@ -1,8 +1,8 @@
-import Dialog from '../../../../ui/Dialog/Dialog.tsx';
-import DialogTrigger from '../../../../ui/Dialog/DialogTrigger.tsx';
-import DialogContent from '../../../../ui/Dialog/DialogContent.tsx';
+import Dialog from '../../../../../ui/Dialog/Dialog.tsx';
+import DialogTrigger from '../../../../../ui/Dialog/DialogTrigger.tsx';
+import DialogContent from '../../../../../ui/Dialog/DialogContent.tsx';
 import { RiEditLine } from 'react-icons/ri';
-import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
+import DropdownItem from '../../../../../ui/Dropdown/DropdownItem.tsx';
 import EditSongForm from './EditSongForm.tsx';
 import { forwardRef } from 'react';
 

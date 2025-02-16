@@ -1,20 +1,33 @@
-import styles from '../uploadSong/UploadSongForm.module.scss';
-import Input from '../../../../ui/Input/Input.tsx';
-import Button from '../../../../ui/Button/Button.tsx';
+import styles from '../Forms.module.scss';
 import { RiPencilLine } from 'react-icons/ri';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import Input from '../../../../../ui/Input/Input.tsx';
+import Button from '../../../../../ui/Button/Button.tsx';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks.ts';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import { updateSong } from '../../artistThunks.ts';
+// @ts-ignore
+import previewImg from '../../../../../public/img-preview.png';
+import { uploadSong } from '../../../artistThunks.ts';
 
-interface EditSongFormProps {
-  id: string;
-}
+const validateForm = (formData: FormData) => {
+  const name = formData.get('name') as string;
+  const img = formData.get('img') as File;
+  const song = formData.get('song') as File;
+  let newErrors = { img: '', name: '', song: '' };
 
-// NOTE: similar to UploadSongForm
-const EditSongForm = ({ id }: EditSongFormProps) => {
+  if (!name || name.length < 3 || name.length > 24) {
+    newErrors.name = 'Song name must be between 3 and 24 characters.';
+  }
+  if (img && !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)) {
+    newErrors.img = 'Image must be in JPEG, PNG, or WEBP format.';
+  }
+  if (song && song.type !== 'audio/mpeg') {
+    newErrors.song = 'Songs must be in MP3 format.';
+  }
+  return newErrors;
+};
+
+const UploadSongForm = () => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
-  const songs = useAppSelector((state) => state.artist?.data?.songs);
-  const song = songs?.find((s) => s.id === id);
   const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState({
@@ -25,38 +38,16 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  if (!song) return null;
-
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formRef.current) return;
 
-    let newErrors = { name: '', img: '', song: '' };
-
     const formData = new FormData(formRef.current);
-    const name = formData.get('name') as string;
-    const img = formData.get('img') as File;
-    const songFile = formData.get('song') as File;
-
-    if (name.length < 3 || name.length > 24) {
-      newErrors.name = 'Song name must be between 3 and 24 characters.';
-    }
-
-    if (
-      img.size &&
-      !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)
-    ) {
-      newErrors.img = 'Image must be in JPEG, PNG, or WEBP format.';
-    }
-
-    if (songFile.size && songFile.type !== 'audio/mpeg') {
-      newErrors.song = 'Songs must in MP3 format.';
-    }
-
+    const newErrors = validateForm(formData);
     setErrors(newErrors);
 
     if (!newErrors.name && !newErrors.img && !newErrors.song) {
-      dispatch(updateSong({ id, formData }));
+      dispatch(uploadSong(formData));
     }
   };
 
@@ -80,7 +71,7 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
           className={`${styles.imgContainer} ${errors.img ? styles.imgInvalid : ''}`}
         >
           <label htmlFor="img" className={styles.previewImg}>
-            <img ref={imgRef} src={song.img.url} alt="Img preview" />
+            <img ref={imgRef} src={previewImg} alt="Img preview" />
             <div className={styles.overlay}>
               <RiPencilLine />
               <span>Choose image</span>
@@ -102,7 +93,6 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
           name="name"
           isValid={!errors.name}
           placeholder="Song name"
-          value={song.name}
         />
         {errors.name && <p className={styles.error}>{errors.name}</p>}
 
@@ -116,7 +106,7 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
         {errors.song && <p className={styles.error}>{errors.song}</p>}
 
         <Button type="submit">
-          {status === 'pending' ? 'Update' : 'Updating'}
+          {status === 'pending' ? 'Uploading' : 'Upload'}
         </Button>
       </div>
 
@@ -128,4 +118,4 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
   );
 };
 
-export default EditSongForm;
+export default UploadSongForm;

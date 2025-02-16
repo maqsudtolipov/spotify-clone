@@ -3,7 +3,7 @@ import styles from './Input.module.scss';
 interface InputProps {
   type: string;
   name: string;
-  value?: string;
+  defaultValue?: string;
   label?: string;
   placeholder?: string;
   isValid?: boolean;
@@ -13,7 +13,7 @@ interface InputProps {
 const Input = ({
   type,
   name,
-  value,
+  defaultValue,
   label,
   placeholder,
   isValid,
@@ -33,7 +33,7 @@ const Input = ({
         name={name}
         placeholder={placeholder}
         onChange={onChange}
-        defaultValue={value}
+        defaultValue={defaultValue}
       />
     </div>
   );
