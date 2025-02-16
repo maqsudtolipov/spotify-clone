@@ -24,7 +24,7 @@ const Artist = () => {
     (state) => state.artist.api.getArtist,
   );
   const data = useAppSelector((state) => state.artist.data);
-  const { followings, id: userId } = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -49,7 +49,10 @@ const Artist = () => {
     if (statusCode === 500) return <ServerError />;
     else navigate('/');
   }
-  if (status === 'pending' || !data || !id) return <LoadingScreen />;
+  if (status === 'pending' || !data || !id || !userData)
+    return <LoadingScreen />;
+
+  const { followings, id: userId } = userData;
 
   return (
     <div className={styles.artistPage}>
