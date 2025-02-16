@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 
 const handleAxiosError = (e: unknown) => {
+  console.log(e.response);
   if (e instanceof AxiosError && e.response) {
     return {
       ...e.response.data,

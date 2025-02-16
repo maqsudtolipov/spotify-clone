@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
 import { InitialState } from './userTypes.ts';
+import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
 const initialState: InitialState = {
   data: null,
@@ -55,6 +56,7 @@ const userSlice = createSlice({
       .addCase(signUp.rejected, (state) => {
         state.api.signUp.status = 'rejected';
       })
+
       // Login
       .addCase(login.pending, (state) => {
         state.api.login.status = 'pending';
@@ -64,8 +66,9 @@ const userSlice = createSlice({
         state.data = action.payload;
         state.isAuth = true;
       })
-      .addCase(login.rejected, (state) => {
-        state.api.login.status = 'rejected';
+      .addCase(login.rejected, (state, action) => {
+        console.log(action.payload);
+        handleRejectedThunk(state, action, 'login');
         state.data = null;
         state.isAuth = false;
       })
