@@ -139,9 +139,22 @@ const Login = () => {
               className={`${styles.input} ${validInputs.includes('password') && validInputs.includes('passwordConfirm') ? styles.inputValid : ''}`}
               type="password"
               placeholder="Enter your password"
-              required={true}
-              {...register('password')}
+              {...register('password', {
+                required: true,
+                minLength: 8,
+                maxLength: 16,
+                pattern:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              })}
             />
+
+            {/*{errors?.password?.type === 'required' && (*/}
+            {/*  <p className={styles.error}>This field is required</p>*/}
+            {/*)}*/}
+
+            {/*{errors?.password?.type === 'pattern' && (*/}
+            {/*  <p className={styles.error}>Please provide valid email</p>*/}
+            {/*)}*/}
           </div>
 
           <div>
