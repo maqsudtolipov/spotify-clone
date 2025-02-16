@@ -119,8 +119,19 @@ const Login = () => {
               type="email"
               placeholder="Enter your email"
               required={true}
-              {...register('email')}
+              {...register('email', {
+                required: true,
+                pattern: /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/,
+              })}
             />
+
+            {errors?.email?.type === 'required' && (
+              <p className={styles.error}>This field is required</p>
+            )}
+
+            {errors?.email?.type === 'pattern' && (
+              <p className={styles.error}>Please provide valid email</p>
+            )}
           </div>
 
           <div>
