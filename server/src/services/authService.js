@@ -14,7 +14,7 @@ exports.signUp = async (signUpInput) => {
   // Check if the user already exists
   const existingUser = await User.findOne({email: signUpInput.email});
   if (existingUser) {
-    throw new AppError("Email already exists", 409);
+    throw new AppError("User already exists", 409);
   }
 
   const userInput = {

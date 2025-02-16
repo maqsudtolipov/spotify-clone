@@ -46,6 +46,7 @@ const userSlice = createSlice({
         state.data = null;
         state.isAuth = false;
       })
+
       // Sign up
       .addCase(signUp.pending, (state) => {
         state.api.signUp.status = 'pending';
@@ -53,8 +54,8 @@ const userSlice = createSlice({
       .addCase(signUp.fulfilled, (state) => {
         state.api.signUp.status = 'fulfilled';
       })
-      .addCase(signUp.rejected, (state) => {
-        state.api.signUp.status = 'rejected';
+      .addCase(signUp.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'signUp');
       })
 
       // Login
@@ -67,11 +68,11 @@ const userSlice = createSlice({
         state.isAuth = true;
       })
       .addCase(login.rejected, (state, action) => {
-        console.log(action.payload);
         handleRejectedThunk(state, action, 'login');
         state.data = null;
         state.isAuth = false;
       })
+
       // Logout
       .addCase(logout.pending, (state) => {
         state.api.logout.status = 'pending';

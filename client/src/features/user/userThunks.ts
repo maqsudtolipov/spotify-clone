@@ -25,13 +25,18 @@ interface SigUpInput {
   passwordConfirm: string;
 }
 
-export const signUp = createAsyncThunk(
-  'user/signup',
-  async (input: SigUpInput) => {
+export const signUp = createAsyncThunk<
+  User,
+  SigUpInput,
+  { rejectValue: RejectValue }
+>('user/signUp', async (input, { rejectWithValue }) => {
+  try {
     const res = await axios.post('/auth/signup', input);
     return res.data;
-  },
-);
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
 
 export const login = createAsyncThunk<
   User,
