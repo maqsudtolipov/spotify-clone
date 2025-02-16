@@ -32,6 +32,13 @@ const ArtistTable = () => {
     dispatch(dislikeSong({ id }));
   };
 
+  if (artist.songs.length < 1)
+    return (
+      <p className="py-16 text-neutral-400 text-center">
+        Artist does not have songs
+      </p>
+    );
+
   return (
     <Table>
       <TableBody>

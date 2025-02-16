@@ -30,5 +30,6 @@ export interface InitialState {
     getArtist: ApiStatus;
     uploadSong: ApiStatus;
     updateSong: ApiStatus;
+    deleteSong: ApiStatus;
   };
 }
