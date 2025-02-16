@@ -63,6 +63,11 @@
   @apply text-sm text-neutral-400;
 }
 
+.error {
+  @apply mt-2;
+  @apply text-sm text-neutral-400 leading-tight;
+}
+
 .link {
   @apply mt-2.5;
   @apply block;

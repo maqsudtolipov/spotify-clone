@@ -56,7 +56,11 @@ const Login = () => {
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [validInputs, setValidInputs] = useState<string[]>([]);
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     defaultValues: {
       name: '',
       email: '',
@@ -91,9 +95,22 @@ const Login = () => {
               className={`${styles.input} ${validInputs.includes('name') ? styles.inputValid : ''}`}
               type="text"
               placeholder="Enter your name"
-              required={true}
-              {...register('name')}
+              {...register('name', {
+                required: true,
+                minLength: 3,
+                maxLength: 24,
+              })}
             />
+            {errors?.name?.type === 'required' && (
+              <p className={styles.error}>This field is required</p>
+            )}
+
+            {(errors?.name?.type === 'minLength' ||
+              errors?.name?.type === 'maxLength') && (
+              <p className={styles.error}>
+                Name must be between 3 and 24 characters.
+              </p>
+            )}
           </div>
 
           <div>

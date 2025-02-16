@@ -23,7 +23,7 @@ const validateEmail = (email: string) => {
 
 const Login = () => {
   const { isAuth } = useAppSelector((state) => state.user);
-  const {status} = useAppSelector(state => state.user.api.login);
+  const { status } = useAppSelector((state) => state.user.api.login);
   const dispatch = useAppDispatch();
 
   const { register, handleSubmit, watch } = useForm({
@@ -77,7 +77,9 @@ const Login = () => {
             Login
           </button>
 
-          <Link className={styles.link} to="/signup">Sign Up here</Link>
+          <Link className={styles.link} to="/signup">
+            Sign Up here
+          </Link>
         </form>
       </AuthContainer>
     );
