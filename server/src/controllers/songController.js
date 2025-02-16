@@ -20,7 +20,7 @@ exports.uploadSong = async (req, res, next) => {
     };
     const songs = await songService.uploadAndCreateSong(songInput);
 
-    res.status(201).json({status: "success", songs});
+    res.status(201).json({ status: "success", songs });
   } catch (e) {
     next(e);
   }
@@ -30,25 +30,25 @@ exports.updateSong = async (req, res, next) => {
   try {
     const songInput = {
       songId: req.params.id,
-      userId: req.user.id,
+      artistId: req.user.id,
       name: req.body?.name || undefined,
       img: req.files.img
         ? {
-          file: req.files.img[0].buffer,
-          fileName: req.files.img[0].filename,
-        }
+            file: req.files.img[0].buffer,
+            fileName: req.files.img[0].filename,
+          }
         : null,
       song: req.files.song
         ? {
-          file: req.files.song[0].filename,
-          fileName: req.files.song[0].filename,
-          duration: req.files.song[0].duration,
-        }
+            file: req.files.song[0].filename,
+            fileName: req.files.song[0].filename,
+            duration: req.files.song[0].duration,
+          }
         : null,
     };
     const songs = await songService.updateSong(songInput);
 
-    res.status(200).json({status: "success", songs});
+    res.status(200).json({ status: "success", songs });
   } catch (e) {
     next(e);
   }
@@ -62,7 +62,7 @@ exports.deleteSong = async (req, res, next) => {
     };
     const songs = await songService.deleteSong(songInput);
 
-    res.status(200).json({status: "success", songs});
+    res.status(200).json({ status: "success", songs });
   } catch (e) {
     next(e);
   }
