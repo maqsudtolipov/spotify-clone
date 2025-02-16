@@ -1,9 +1,12 @@
 .form {
-  @apply w-72  px-6 py-8 pt-6 flex flex-col gap-2.5 bg-neutral-800 rounded-2xl;
+  @apply w-72  px-6 py-8 pt-6;
+  @apply flex flex-col gap-2.5;
+  @apply bg-neutral-800 rounded-2xl;
 }
 
 .title {
-  @apply mb-10 text-center text-3xl font-bold text-green-500;
+  @apply mb-10;
+  @apply text-center text-3xl font-bold text-green-500;
 }
 
 .container {
@@ -11,7 +14,8 @@
 }
 
 .input {
-  @apply w-full px-3 py-2 leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
+  @apply w-full px-3 py-2;
+  @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-50 rounded-md;
 
   &Invalid {
     @apply border-red-500;
@@ -41,7 +45,9 @@
 }
 
 .button {
-  @apply w-full py-2 px-4 flex items-center justify-center gap-2 text-sm text-center font-bold bg-green-500 text-black rounded-full;
+  @apply w-full py-2 px-4;
+  @apply flex items-center justify-center gap-2;
+  @apply text-sm text-center font-bold bg-green-500 text-black rounded-full;
 
   svg {
     animation: rotate 3s linear infinite;
@@ -58,7 +64,9 @@
 }
 
 .link {
-  @apply mt-2.5 block text-sm text-center text-neutral-400 underline;
+  @apply mt-2.5;
+  @apply block;
+  @apply text-sm text-center text-neutral-400 underline;
 }
 
 @keyframes rotate {
