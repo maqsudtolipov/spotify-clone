@@ -3,8 +3,8 @@ import styles from './AuthForm.module.scss';
 import AuthContainer from './AuthContainer.tsx';
 import { RiLoaderFill } from 'react-icons/ri';
 import { Link, Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts';
-import { login } from './userThunks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { login } from '../userThunks.ts';
 
 interface FormInput {
   email: string;
