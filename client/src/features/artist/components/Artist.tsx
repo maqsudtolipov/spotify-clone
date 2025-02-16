@@ -75,9 +75,7 @@ const Artist = () => {
           {id === userId && data.role === 'artist' && <UploadSongDialog />}
         </div>
 
-        <div className="p-5 pt-0">
-          <ArtistTable />
-        </div>
+        <ArtistTable />
       </GradientBackground>
     </div>
   );

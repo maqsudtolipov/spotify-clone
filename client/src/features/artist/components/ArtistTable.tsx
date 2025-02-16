@@ -5,11 +5,11 @@ import IndexCell from '../../../ui/Table/custom/SortedTable/Cells/IndexCell.tsx'
 import InfoCell from '../../../ui/Table/custom/SortedTable/Cells/InfoCell.tsx';
 import TableBody from '../../../ui/Table/TableBody.tsx';
 import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
-import ActionsCell from '../../../ui/Table/custom/SortedTable/Cells/ActionsCell.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
 import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
 import { selectArtist } from '../artistSlice.ts';
+import ArtistSongActionsCell from './actionsCell/ArtistSongActionsCell.tsx';
 
 const isSongLiked = (id: string, likedSongs: string[]) => {
   return likedSongs.includes(id);
@@ -40,31 +40,32 @@ const ArtistTable = () => {
     );
 
   return (
-    <Table>
-      <TableBody>
-        {artist.songs.map((item, index) => (
-          <TableRow key={item.id}>
-            <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img.url} name={item.name} />
-            <TableCell>{item.plays}</TableCell>
+    <div className="p-5 pt-0">
+      <Table>
+        <TableBody>
+          {artist.songs.map((item, index) => (
+            <TableRow key={item.id}>
+              <IndexCell>{index + 1}</IndexCell>
+              <InfoCell img={item.img.url} name={item.name} />
+              <TableCell>{item.plays}</TableCell>
 
-            <LikeCell
-              isLiked={isSongLiked(item.id, likedSongs)}
-              onClick={() =>
-                isSongLiked(item.id, likedSongs)
-                  ? handleDislikeSong(item.id)
-                  : handleLikeSong(item.id)
-              }
-            />
-            <TableCell minimize={true}>
-              {secondsToTimeFormat(item.duration)}
-            </TableCell>
-
-            <ActionsCell id={item.id} />
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              <LikeCell
+                isLiked={isSongLiked(item.id, likedSongs)}
+                onClick={() =>
+                  isSongLiked(item.id, likedSongs)
+                    ? handleDislikeSong(item.id)
+                    : handleLikeSong(item.id)
+                }
+              />
+              <TableCell minimize={true}>
+                {secondsToTimeFormat(item.duration)}
+              </TableCell>
+              <ArtistSongActionsCell id={item.id} artistId={artist.id} />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

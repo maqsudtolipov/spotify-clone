@@ -20,7 +20,7 @@ const AddToPlaylistItem = ({ id }: AddToPlaylistItemProps) => {
   const playlists = useAppSelector((state) => state.user?.data?.playlists);
   const dispatch = useAppDispatch();
 
-  if (!playlists.length || !id) return null;
+  if (!id) return null;
 
   const handleSaveToPlaylist = (
     songId: string,
@@ -39,15 +39,19 @@ const AddToPlaylistItem = ({ id }: AddToPlaylistItemProps) => {
     >
       Add to playlist
       <SubMenu name="addToPlaylist">
-        {playlists.map((playlist) => (
-          <DropdownItem
-            onClick={() =>
-              handleSaveToPlaylist(id, playlist._id, playlist.name)
-            }
-          >
-            {playlist.name}
-          </DropdownItem>
-        ))}
+        {playlists.length > 0 ? (
+          playlists.map((playlist) => (
+            <DropdownItem
+              onClick={() =>
+                handleSaveToPlaylist(id, playlist._id, playlist.name)
+              }
+            >
+              {playlist.name}
+            </DropdownItem>
+          ))
+        ) : (
+          <p>You don't have playlists</p>
+        )}
       </SubMenu>
     </DropdownItem>
   );
