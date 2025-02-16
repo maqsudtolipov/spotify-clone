@@ -13,8 +13,8 @@ interface EditSongFormProps {
 // NOTE: similar to UploadSongForm
 const EditSongForm = ({ id }: EditSongFormProps) => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
-  const songs = useAppSelector((state) => state.artist.data.songs);
-  const song = songs.find((s) => s.id === id);
+  const songs = useAppSelector((state) => state.artist?.data?.songs);
+  const song = songs?.find((s) => s.id === id);
   const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState({
