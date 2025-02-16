@@ -10,7 +10,7 @@ import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import { followUser, unfollowUser } from '../../auth/userThunks.ts';
-import UploadSongDialog from './UploadSongDialog.tsx';
+import UploadSongDialog from './forms/uploadSong/UploadSongDialog.tsx';
 import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
 import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 
@@ -24,7 +24,7 @@ const Artist = () => {
     (state) => state.artist.api.getArtist,
   );
   const data = useAppSelector((state) => state.artist.data);
-  const { followings, id: userId } = useAppSelector((state) => state.user.data);
+  const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -44,15 +44,20 @@ const Artist = () => {
     }
   };
 
+  console.log(status, statusCode);
+
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
     if (statusCode === 500) return <ServerError />;
     else navigate('/');
   }
-  if (status === 'pending' || !data || !id) return <LoadingScreen />;
+  if (status === 'pending' || !data || !id || !userData)
+    return <LoadingScreen />;
+
+  const { followings, id: userId } = userData;
 
   return (
-    <>
+    <div className={styles.artistPage}>
       {data && <ArtistHeader />}
       <GradientBackground color={data.color}>
         <div className={styles.playerHeader}>
@@ -68,15 +73,11 @@ const Artist = () => {
           )}
 
           {id === userId && data.role === 'artist' && <UploadSongDialog />}
-
-          {/*<HeaderActions />*/}
         </div>
 
-        <div className="p-5 pt-0">
-          <ArtistTable />
-        </div>
+        <ArtistTable />
       </GradientBackground>
-    </>
+    </div>
   );
 };
 

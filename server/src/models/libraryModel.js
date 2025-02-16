@@ -4,7 +4,6 @@ const librarySchema = new mongoose.Schema(
   {
     items: [
       {
-        _id: false,
         refId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: function () {

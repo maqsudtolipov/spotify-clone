@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-const useOutsideClick = (handler: () => void) => {
+const useOutsideClick = (handler: () => void, ignore?: boolean) => {
+  if (ignore) return { ref: null };
+
   const ref = useRef<HTMLDivElement | HTMLUListElement | null>(null);
   const exceptionRef = useRef<HTMLDivElement | null>(null);
 

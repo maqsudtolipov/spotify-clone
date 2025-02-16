@@ -12,6 +12,7 @@ const GradientBackground = ({
   children,
 }: GradientBackgroundProps) => {
   const style = {
+    height: '100%',
     backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
         linear-gradient(
         ${color},

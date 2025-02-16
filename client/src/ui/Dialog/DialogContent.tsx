@@ -1,14 +1,15 @@
-import { ReactNode, MouseEvent, useContext } from 'react';
+import { forwardRef, MouseEvent, ReactNode, Ref, useContext } from 'react';
 import { DialogContext } from './Dialog.tsx';
 import { createPortal } from 'react-dom';
 import styles from './DialogContent.module.scss';
 import DialogHeader from './DialogHeader.tsx';
 
 interface DialogContentProps {
+  ref?: Ref<HTMLDivElement>;
   children: ReactNode;
 }
 
-const DialogContent = ({ children }: DialogContentProps) => {
+const DialogContent = forwardRef(({ children }: DialogContentProps, ref) => {
   const context = useContext(DialogContext);
   if (!context) {
     throw new Error('DialogContent should be used within the Dialog');
@@ -23,13 +24,19 @@ const DialogContent = ({ children }: DialogContentProps) => {
 
   return isOpen
     ? createPortal(
-        <div className={styles.dialogBackground} onClick={handleClose}>
-          <DialogHeader />
-          <div className={styles.dialog}>{children}</div>
+        <div
+          ref={ref && ref}
+          className={styles.dialogBackground}
+          onClick={handleClose}
+        >
+          <div className={styles.dialog}>
+            <DialogHeader />
+            {children}
+          </div>
         </div>,
         document.body,
       )
     : null;
-};
+});
 
 export default DialogContent;

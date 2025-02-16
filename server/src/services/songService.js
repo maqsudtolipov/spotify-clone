@@ -1,4 +1,4 @@
-const {imagekitDelete} = require("../utils/ImageKit");
+const { imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Song = require("../models/songModel");
 const User = require("../models/userModel");
@@ -35,13 +35,13 @@ exports.uploadAndCreateSong = async (songInput) => {
   });
 
   const updatedUser = await User.findOneAndUpdate(
-    {_id: songInput.artistId},
-    {$push: {songs: song.id}},
-    {new: true},
+    { _id: songInput.artistId },
+    { $push: { songs: song.id } },
+    { new: true },
   ).populate({
     path: "songs",
     select: "id name artist plays duration",
-    populate: {path: "song img", select: "url"},
+    populate: { path: "song img", select: "url" },
   });
 
   return updatedUser.songs;
@@ -55,7 +55,7 @@ exports.updateSong = async (songInput) => {
     throw new AppError("Song not found", 404);
   }
 
-  if (songInput.userId !== String(song.artist)) {
+  if (songInput.artistId !== String(song.artist)) {
     throw new AppError("You are not owner of this song", 403);
   }
 
@@ -100,10 +100,11 @@ exports.updateSong = async (songInput) => {
     runValidator: true,
   });
 
-  const user = await User.findById(songInput.userId).populate(
-    "songs",
-    "id name artist song img plays duration",
-  );
+  const user = await User.findById(songInput.artistId).populate({
+    path: "songs",
+    select: "id name artist plays duration",
+    populate: { path: "song img", select: "url" },
+  });
   return user.songs;
 };
 
@@ -140,7 +141,7 @@ exports.deleteSong = async (songInput) => {
   const user = await User.findById(songInput.userId).populate({
     path: "songs",
     select: "id name artist plays duration",
-    populate: {path: "song img", select: "url"},
+    populate: { path: "song img", select: "url" },
   });
 
   return user.songs;
@@ -156,9 +157,9 @@ exports.likeSong = async (songInput) => {
   const updatedPlaylist = await Playlist.findByIdAndUpdate(
     songInput.likedSongsId,
     {
-      $addToSet: {songs: song.id},
+      $addToSet: { songs: song.id },
     },
-    {new: true},
+    { new: true },
   );
 
   return updatedPlaylist.songs;
@@ -174,9 +175,9 @@ exports.dislikeSong = async (songInput) => {
   const updatedPlaylist = await Playlist.findByIdAndUpdate(
     songInput.likedSongsId,
     {
-      $pull: {songs: song.id},
+      $pull: { songs: song.id },
     },
-    {new: true},
+    { new: true },
   );
   return updatedPlaylist.songs;
 };
