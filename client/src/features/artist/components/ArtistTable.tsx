@@ -43,7 +43,7 @@ const ArtistTable = () => {
     <Table>
       <TableBody>
         {artist.songs.map((item, index) => (
-          <TableRow key={item.name}>
+          <TableRow key={item.id}>
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell img={item.img.url} name={item.name} />
             <TableCell>{item.plays}</TableCell>
