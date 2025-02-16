@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import libraryReducer from '../features/library/librarySlice.ts';
-import userReducer from '../features/auth/userSlice.ts';
+import userReducer from '../features/user/userSlice.ts';
 import artistReducer from '../features/artist/artistSlice.ts';
 import userPageReducer from '../features/userPage/userPageSlice.ts';
 import playlistReducer from '../features/playlist/playlistSlice.ts';

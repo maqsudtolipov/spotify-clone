@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
 import Home from './features/home/Home.tsx';
-import Login from './features/auth/components/Login.tsx';
+import Login from './features/user/components/Login.tsx';
 import { useAppDispatch, useAppSelector } from './redux/hooks.ts';
 import { useEffect } from 'react';
-import { getCurrent } from './features/auth/userThunks.ts';
-import SignUp from './features/auth/components/SignUp.tsx';
+import { getCurrent } from './features/user/userThunks.ts';
+import SignUp from './features/user/components/SignUp.tsx';
 import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
 import Search from './features/search/Search.tsx';
