@@ -37,6 +37,7 @@ export const updateSong = createAsyncThunk<
 >('artist/updateSong', async ({ id, formData }, { rejectWithValue }) => {
   try {
     const res = await axios.patch(`/songs/${id}`, formData);
+    console.log(res.data);
     return res.data.songs;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));

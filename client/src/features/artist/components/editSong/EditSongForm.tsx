@@ -13,6 +13,8 @@ interface EditSongFormProps {
 // NOTE: similar to UploadSongForm
 const EditSongForm = ({ id }: EditSongFormProps) => {
   const status = useAppSelector((state) => state.artist.api.uploadSong.status);
+  const songs = useAppSelector((state) => state.artist.data.songs);
+  const song = songs.find((s) => s.id === id);
   const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState({
@@ -23,6 +25,8 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
+  if (!song) return null;
+
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formRef.current) return;
@@ -32,15 +36,20 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
     const formData = new FormData(formRef.current);
     const name = formData.get('name') as string;
     const img = formData.get('img') as File;
-    const song = formData.get('song') as File;
+    const songFile = formData.get('song') as File;
 
     if (name.length < 3 || name.length > 24) {
       newErrors.name = 'Song name must be between 3 and 24 characters.';
     }
-    if (img && !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)) {
+
+    if (
+      img.size &&
+      !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)
+    ) {
       newErrors.img = 'Image must be in JPEG, PNG, or WEBP format.';
     }
-    if (song && song.type !== 'audio/mpeg') {
+
+    if (songFile.size && songFile.type !== 'audio/mpeg') {
       newErrors.song = 'Songs must in MP3 format.';
     }
 
@@ -71,7 +80,7 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
           className={`${styles.imgContainer} ${errors.img ? styles.imgInvalid : ''}`}
         >
           <label htmlFor="img" className={styles.previewImg}>
-            <img ref={imgRef} src={''} alt="Img preview" />
+            <img ref={imgRef} src={song.img.url} alt="Img preview" />
             <div className={styles.overlay}>
               <RiPencilLine />
               <span>Choose image</span>
@@ -93,6 +102,7 @@ const EditSongForm = ({ id }: EditSongFormProps) => {
           name="name"
           isValid={!errors.name}
           placeholder="Song name"
+          value={song.name}
         />
         {errors.name && <p className={styles.error}>{errors.name}</p>}
 

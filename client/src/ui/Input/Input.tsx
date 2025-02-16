@@ -3,6 +3,7 @@ import styles from './Input.module.scss';
 interface InputProps {
   type: string;
   name: string;
+  value?: string;
   label?: string;
   placeholder?: string;
   isValid?: boolean;
@@ -12,6 +13,7 @@ interface InputProps {
 const Input = ({
   type,
   name,
+  value,
   label,
   placeholder,
   isValid,
@@ -25,12 +27,13 @@ const Input = ({
         </label>
       )}
       <input
+        id={name}
         className={`${styles.input} ${type === 'file' ? styles.inputFile : ''} ${isValid ? '' : styles.inputInvalid}`}
         type={type}
         name={name}
-        id={name}
         placeholder={placeholder}
         onChange={onChange}
+        defaultValue={value}
       />
     </div>
   );
