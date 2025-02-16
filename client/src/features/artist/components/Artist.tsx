@@ -44,6 +44,8 @@ const Artist = () => {
     }
   };
 
+  console.log(status, statusCode);
+
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
     if (statusCode === 500) return <ServerError />;

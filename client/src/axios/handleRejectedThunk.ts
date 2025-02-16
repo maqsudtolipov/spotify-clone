@@ -7,6 +7,7 @@ const handleRejectedThunk = (
   apiLink: string,
 ) => {
   if (action.payload) {
+    state.api[apiLink].status = 'rejected';
     state.api[apiLink].statusCode = action.payload.statusCode;
     state.api[apiLink].error = action.payload.message;
 
