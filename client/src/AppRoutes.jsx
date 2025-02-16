@@ -1,7 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
-import ForgotPassword from './features/auth/ForgotPassword.tsx';
-import ResetPassword from './features/auth/ResetPassword.tsx';
 import Home from './features/home/Home.tsx';
 import Login from './features/auth/components/Login.tsx';
 import { useAppDispatch, useAppSelector } from './redux/hooks.ts';
@@ -82,8 +80,6 @@ const AppRoutes = () => {
         <>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </>
       )}
