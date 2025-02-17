@@ -9,6 +9,9 @@ import IndexCell from '../../../ui/Table/custom/SortedTable/Cells/IndexCell.tsx'
 import InfoCell from '../../../ui/Table/custom/SortedTable/Cells/InfoCell.tsx';
 import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
 import PlaylistActionsCell from './actionsCell/PlaylistActionsCell.tsx';
+import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
+import { dislikeSong, likeSong } from '../../user/userThunks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 
 interface Item {
   id: string;
@@ -23,7 +26,16 @@ interface SortedTableProps {
   songs: Item[];
 }
 
+const isSongLiked = (id: string, likedSongs: string[]) => {
+  return likedSongs.includes(id);
+};
+
 const PlaylistTable = ({ songs }) => {
+  const likedSongs = useAppSelector(
+    (state) => state.user?.data?.likedSongs?.songs,
+  );
+  const dispatch = useAppDispatch();
+
   const {
     sortedItems,
     sortBy,
@@ -33,12 +45,21 @@ const PlaylistTable = ({ songs }) => {
     sortByPlays,
   } = useSortBy(songs);
 
+
   if (sortedItems.length < 1)
     return (
       <p className="py-16 text-neutral-400 text-center">
         Playlist does not have songs yet
       </p>
     );
+
+  const handleLikeSong = (id: string) => {
+    dispatch(likeSong({ id }));
+  };
+
+  const handleDislikeSong = (id: string) => {
+    dispatch(dislikeSong({ id }));
+  };
 
   return (
     <div className="p-5 pt-0">
@@ -76,8 +97,18 @@ const PlaylistTable = ({ songs }) => {
                 artist={item.artist.name}
               />
               <TableCell>{item.plays}</TableCell>
-              <LikeCell isLiked={item.isLiked} />
-              <TableCell minimize={true}>2:18</TableCell>
+              <LikeCell
+                isLiked={isSongLiked(item.id, likedSongs)}
+                onClick={() =>
+                  isSongLiked(item.id, likedSongs)
+                    ? handleDislikeSong(item.id)
+                    : handleLikeSong(item.id)
+                }
+              />
+              <TableCell minimize={true}>
+                {' '}
+                {secondsToTimeFormat(item.duration)}
+              </TableCell>
               <PlaylistActionsCell id={item.id} />
             </TableRow>
           ))}
