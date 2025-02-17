@@ -4,7 +4,11 @@ import { RiCloseLargeFill } from 'react-icons/ri';
 import { useContext } from 'react';
 import { DialogContext } from './Dialog.tsx';
 
-const DialogHeader = () => {
+interface DialogHeaderProps {
+  title: string;
+}
+
+const DialogHeader = ({ title }: DialogHeaderProps) => {
   const context = useContext(DialogContext);
   if (!context) {
     throw new Error('DialogHeader should be used within the Dialog');
@@ -14,7 +18,7 @@ const DialogHeader = () => {
 
   return (
     <div className={styles.dialogHeader}>
-      <span>Upload a new song</span>
+      <span>{title}</span>
       <IconButton onClick={closeDialog}>
         <RiCloseLargeFill />
       </IconButton>

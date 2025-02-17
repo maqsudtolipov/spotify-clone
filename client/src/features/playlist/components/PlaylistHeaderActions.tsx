@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../redux/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import EditPlaylistDialog from './editPlaylistDialog/EditPlaylistDialog.tsx';
 
 interface PlaylistHeaderActionsProps {
   id: string;
@@ -38,7 +39,7 @@ const PlaylistHeaderActions = ({
       </DropdownTrigger>
 
       <DropdownList position="bottom-right">
-        {/*<DropdownItem PreIcon={RiEditLine}>Edit Details</DropdownItem>*/}
+        <EditPlaylistDialog />
         {isPersonalPlaylist && (
           <DropdownItem
             PreIcon={RiDeleteBin6Line}

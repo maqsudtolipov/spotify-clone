@@ -18,7 +18,7 @@ const EditSongDialog = forwardRef(({ id }: EditSongDialogProps, ref) => {
           Edit
         </DropdownItem>
       </DialogTrigger>
-      <DialogContent ref={ref}>
+      <DialogContent ref={ref} title="Edit song">
         <EditSongForm id={id} />
       </DialogContent>
     </Dialog>
