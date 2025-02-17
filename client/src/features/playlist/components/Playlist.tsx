@@ -9,6 +9,7 @@ import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import SortedTable from '../../../ui/Table/custom/SortedTable/SortedTable.tsx';
+import styles from './Playlist.module.scss';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -31,7 +32,7 @@ const Playlist = () => {
   if (status === 'pending' || !data) return <LoadingScreen />;
 
   return (
-    <div>
+    <div className={styles.playlist}>
       <ImageHeader data={data} type="playlist" />
       <GradientBackground color={data.color}>
         <PlaylistActions data={data} />
