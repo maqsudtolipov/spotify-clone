@@ -4,6 +4,9 @@ import { followingsUpdated } from './userSlice.ts';
 import { followersCountUpdated } from '../userPage/userPageSlice.ts';
 import { listenersCountUpdated } from '../artist/artistSlice.ts';
 import { setLibraryItems } from '../library/librarySlice.ts';
+import { User } from './userTypes.ts';
+import { RejectValue } from '../../axios/axiosTypes.ts';
+import handleAxiosError from '../../axios/handleAxiosError.ts';
 
 // Checks whether the user is authenticated using cookies
 export const getCurrent = createAsyncThunk(
@@ -12,7 +15,7 @@ export const getCurrent = createAsyncThunk(
     const res = await axios.get('/users/current');
     dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
-  }
+  },
 );
 
 interface SigUpInput {
@@ -22,27 +25,33 @@ interface SigUpInput {
   passwordConfirm: string;
 }
 
-export const signUp = createAsyncThunk(
-  'user/signup',
-  async (input: SigUpInput) => {
+export const signUp = createAsyncThunk<
+  User,
+  SigUpInput,
+  { rejectValue: RejectValue }
+>('user/signUp', async (input, { rejectWithValue }) => {
+  try {
     const res = await axios.post('/auth/signup', input);
     return res.data;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
   }
-);
+});
 
-interface LoginInput {
-  email: string;
-  password: string;
-}
-
-export const login = createAsyncThunk(
-  'user/login',
-  async (input: LoginInput, { dispatch }) => {
+export const login = createAsyncThunk<
+  User,
+  { email: string; password: string },
+  { rejectValue: RejectValue }
+>('user/login', async (input, { dispatch, rejectWithValue }) => {
+  try {
     const res = await axios.post('/auth/login', input);
+
     dispatch(setLibraryItems(res.data.user.library.items));
     return res.data.user;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
   }
-);
+});
 
 export const logout = createAsyncThunk('user/logout', async () => {
   const res = await axios.get('/auth/logout');
@@ -63,7 +72,7 @@ export const followUser = createAsyncThunk(
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
       dispatch(setLibraryItems(res.data.data.library.items));
     }
-  }
+  },
 );
 
 export const unfollowUser = createAsyncThunk(
@@ -78,7 +87,7 @@ export const unfollowUser = createAsyncThunk(
       dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
       dispatch(setLibraryItems(res.data.data.library.items));
     }
-  }
+  },
 );
 
 // Like
@@ -87,7 +96,7 @@ export const likeSong = createAsyncThunk(
   async ({ id }: { id: string }) => {
     const res = await axios.post(`/songs/${id}/like`);
     return res.data.likedSongs;
-  }
+  },
 );
 
 export const dislikeSong = createAsyncThunk(
@@ -95,5 +104,5 @@ export const dislikeSong = createAsyncThunk(
   async ({ id }: { id: string }) => {
     const res = await axios.post(`/songs/${id}/dislike`);
     return res.data.likedSongs;
-  }
+  },
 );

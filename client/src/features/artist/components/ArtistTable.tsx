@@ -7,7 +7,7 @@ import TableBody from '../../../ui/Table/TableBody.tsx';
 import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import secondsToTimeFormat from '../../../helpers/secondsToTimeFormat.ts';
-import { dislikeSong, likeSong } from '../../auth/userThunks.ts';
+import { dislikeSong, likeSong } from '../../user/userThunks.ts';
 import { selectArtist } from '../artistSlice.ts';
 import ArtistSongActionsCell from './actionsCell/ArtistSongActionsCell.tsx';
 

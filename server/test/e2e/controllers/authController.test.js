@@ -55,7 +55,7 @@ describe("authController", () => {
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe("fail");
-      expect(res.body.message).toMatch(/Email already exists/i);
+      expect(res.body.message).toMatch(/User already exists/i);
     });
 
     it("should return 400 when email is invalid", async () => {

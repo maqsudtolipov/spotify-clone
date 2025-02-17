@@ -9,7 +9,7 @@ import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
-import { followUser, unfollowUser } from '../../auth/userThunks.ts';
+import { followUser, unfollowUser } from '../../user/userThunks.ts';
 import UploadSongDialog from './forms/uploadSong/UploadSongDialog.tsx';
 import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
 import ServerError from '../../../ui/StatusScreens/ServerError.tsx';

@@ -1,7 +1,7 @@
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
-import { followUser, unfollowUser } from '../../auth/userThunks.ts';
+import { followUser, unfollowUser } from '../../user/userThunks.ts';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';

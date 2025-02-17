@@ -1,38 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
-
-interface ApiStatus {
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  img: string;
-  followers: string[];
-  followersCount: number;
-  followings: string[];
-  followingsCount: number;
-  likedSongs: {
-    id: string;
-    songs: string[];
-  };
-}
-
-interface InitialState {
-  data: User | null;
-  isAuth: boolean;
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string | null;
-  api: {
-    getCurrent: ApiStatus;
-    signUp: ApiStatus;
-    login: ApiStatus;
-    logout: ApiStatus;
-  };
-}
+import { InitialState } from './userTypes.ts';
+import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
 const initialState: InitialState = {
   data: null,
@@ -40,17 +9,11 @@ const initialState: InitialState = {
   status: 'idle',
   error: null,
   api: {
-    getCurrent: { status: 'idle', error: null },
-    signUp: {
-      status: 'idle',
-      error: null
-    },
-    login: {
-      status: 'idle',
-      error: null
-    },
-    logout: { status: 'idle', error: null }
-  }
+    getCurrent: { status: 'idle', error: '' },
+    signUp: { status: 'idle', error: '' },
+    login: { status: 'idle', error: '' },
+    logout: { status: 'idle', error: '' },
+  },
 };
 
 const userSlice = createSlice({
@@ -65,7 +28,7 @@ const userSlice = createSlice({
     },
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
-    }
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -83,6 +46,7 @@ const userSlice = createSlice({
         state.data = null;
         state.isAuth = false;
       })
+
       // Sign up
       .addCase(signUp.pending, (state) => {
         state.api.signUp.status = 'pending';
@@ -90,9 +54,10 @@ const userSlice = createSlice({
       .addCase(signUp.fulfilled, (state) => {
         state.api.signUp.status = 'fulfilled';
       })
-      .addCase(signUp.rejected, (state) => {
-        state.api.signUp.status = 'rejected';
+      .addCase(signUp.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'signUp');
       })
+
       // Login
       .addCase(login.pending, (state) => {
         state.api.login.status = 'pending';
@@ -102,11 +67,12 @@ const userSlice = createSlice({
         state.data = action.payload;
         state.isAuth = true;
       })
-      .addCase(login.rejected, (state) => {
-        state.api.login.status = 'rejected';
+      .addCase(login.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'login');
         state.data = null;
         state.isAuth = false;
       })
+
       // Logout
       .addCase(logout.pending, (state) => {
         state.api.logout.status = 'pending';
@@ -127,7 +93,7 @@ const userSlice = createSlice({
       })
       .addCase(dislikeSong.fulfilled, (state, action) => {
         if (state.data) state.data.likedSongs.songs = action.payload;
-      })
+      }),
 });
 
 export const { followingsUpdated, playlistsUpdated, likedPlaylistsUpdated } =

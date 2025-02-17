@@ -15,9 +15,7 @@ const handleRejectedThunk = (
       action.payload.statusCode !== 404 &&
       action.payload.statusCode !== 500
     ) {
-      toast.error(
-        `Error: ${action.payload.status} - ${action.payload.message}`,
-      );
+      toast.error(action.payload.message);
     }
   }
 };
