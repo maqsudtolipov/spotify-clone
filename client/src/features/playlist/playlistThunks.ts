@@ -5,20 +5,20 @@ import { likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
+import { Playlist } from './playlistTypes.ts';
 
-// Main
-export const getPlaylist = createAsyncThunk(
-  'playlist/getPlaylist',
-  async ({ id }: { id: string }, { rejectWithValue }) => {
-    try {
-      const res = await axios.get(`/playlists/${id}`);
-      return res.data.playlist;
-    } catch (err) {
-      err.response.data.statusCode = err.response.status;
-      return rejectWithValue(err.response.data);
-    }
-  },
-);
+export const getPlaylist = createAsyncThunk<
+  Playlist,
+  string,
+  { rejectValue: RejectValue }
+>('playlist/getPlaylist', async (id, { rejectWithValue }) => {
+  try {
+    const res = await axios.get(`/playlists/${id}`);
+    return res.data.playlist;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
 
 export const createPlaylist = createAsyncThunk(
   'playlist/createPlaylist',

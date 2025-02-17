@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getPlaylist, removeSongFromPlaylist } from './playlistThunks.ts';
-import toast from 'react-hot-toast';
 import { LibraryState } from './playlistTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -25,15 +24,9 @@ const playlistSlice = createSlice({
         state.api.getPlaylist.status = 'fulfilled';
         state.data = payload;
       })
-      .addCase(getPlaylist.rejected, (state, { payload }) => {
-        state.api.getPlaylist.status = 'rejected';
-        state.api.getPlaylist.statusCode = payload.statusCode;
-        state.api.getPlaylist.error = payload.message;
+      .addCase(getPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'getPlaylist');
         state.data = null;
-
-        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
-          toast.error(`Error: ${payload.status} - ${payload.message}`);
-        }
       })
 
       // Remove

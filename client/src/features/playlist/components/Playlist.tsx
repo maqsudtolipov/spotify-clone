@@ -21,7 +21,7 @@ const Playlist = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (id) dispatch(getPlaylist({ id }));
+    if (id) dispatch(getPlaylist(id));
   }, [id]);
 
   if (status === 'rejected') {
