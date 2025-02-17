@@ -19,8 +19,18 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
     (state) => state.playlist?.data?.user?.id,
   );
   const playlistId = useAppSelector((state) => state.playlist?.data?.id);
+  const likedSongsPlaylistId = useAppSelector(
+    (state) => state.user?.data?.likedSongs._id,
+  );
   const context = useContext(DropdownContext);
-  if (!context || !userId || !playlistUserId || !playlistId) return null;
+  if (
+    !context ||
+    !userId ||
+    !playlistUserId ||
+    !playlistId ||
+    !likedSongsPlaylistId
+  )
+    return null;
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +47,7 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
         <RiMoreFill />
       </DropdownTrigger>
       <DropdownList ref={ref} removeOutsideClick={true}>
-        {userId === playlistUserId && (
+        {userId === playlistUserId && likedSongsPlaylistId !== playlistId && (
           <DropdownItem
             PreIcon={RiDeleteBin6Line}
             underline={true}
