@@ -16,14 +16,18 @@ export interface Playlist {
     url: string;
   };
   user: {
+    id: string;
     name: string;
     img: {
       id: string;
       url: string;
     };
+    role: 'user' | 'artist';
   };
   description?: string;
   color: string;
+  length: number;
+  duration: number;
 }
 
 interface LibraryState {
@@ -36,8 +40,8 @@ interface LibraryState {
 const initialState: LibraryState = {
   data: null,
   api: {
-    getPlaylist: { status: 'idle', error: '' }
-  }
+    getPlaylist: { status: 'idle', error: '' },
+  },
 };
 
 const playlistSlice = createSlice({
@@ -62,7 +66,7 @@ const playlistSlice = createSlice({
         if (payload.statusCode !== 404 && payload.statusCode !== 500) {
           toast.error(`Error: ${payload.status} - ${payload.message}`);
         }
-      })
+      }),
 });
 
 export default playlistSlice.reducer;
