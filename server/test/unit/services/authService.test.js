@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 
 describe("signUp service", () => {
-  it("should throw AppError if email already exists", async () => {
+  it("should throw AppError if user already exists", async () => {
     jest
       .spyOn(User, "findOne")
       .mockResolvedValue({email: "user@example.com"});
@@ -31,7 +31,7 @@ describe("signUp service", () => {
 
     expect(error).toBeInstanceOf(AppError);
     expect(error.statusCode).toBe(409);
-    expect(error.message).toBe("Email already exists");
+    expect(error.message).toBe("User already exists");
   });
 
   it("should create a user with the default img id", async () => {
