@@ -17,6 +17,17 @@ exports.getPlaylist = async (playlistInput) => {
         select: "name img role",
         populate: [{ path: "img", select: "url" }],
       },
+      {
+        path: "songs",
+        select: "id name artist plays duration",
+        populate: [
+          { path: "song img", select: "url" },
+          {
+            path: "artist",
+            select: "id name",
+          },
+        ],
+      },
     ]);
 
   if (

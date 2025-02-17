@@ -1,4 +1,3 @@
-import PlaylistTable from './PlaylistTable.tsx';
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
@@ -9,6 +8,7 @@ import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
+import SortedTable from '../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -37,7 +37,7 @@ const Playlist = () => {
         <PlaylistActions data={data} />
 
         <div className="p-5 pt-0">
-          <PlaylistTable />
+          <SortedTable items={data.songs} />
         </div>
       </GradientBackground>
     </div>

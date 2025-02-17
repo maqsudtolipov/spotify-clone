@@ -62,7 +62,11 @@ const SortedTable = ({ items }: SortedTableProps) => {
         {sortedItems.map((item, index) => (
           <TableRow key={item.name}>
             <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} artist={item.artist} />
+            <InfoCell
+              img={item.img.url}
+              name={item.name}
+              artist={item.artist.name}
+            />
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>
