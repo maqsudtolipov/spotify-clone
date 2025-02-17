@@ -1,7 +1,7 @@
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const {imagekitDelete} = require("../utils/ImageKit");
+const { imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
 const uploadFiles = require("../utils/uploadFiles");
@@ -11,11 +11,11 @@ exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic")
     .populate([
-      {path: "img", select: "url"},
+      { path: "img", select: "url" },
       {
         path: "user",
-        select: "name img",
-        populate: [{path: "img", select: "url"}],
+        select: "name img role",
+        populate: [{ path: "img", select: "url" }],
       },
     ]);
 
@@ -39,25 +39,25 @@ exports.createPlaylist = async (playlistInput) => {
   const user = await User.findByIdAndUpdate(
     playlistInput.userId,
     {
-      $addToSet: {playlists: newPlaylist.id},
+      $addToSet: { playlists: newPlaylist.id },
     },
-    {new: true},
-  ).populate([{path: "playlists", select: "name"}]);
+    { new: true },
+  ).populate([{ path: "playlists", select: "name" }]);
 
   const library = await Library.findByIdAndUpdate(
     playlistInput.libraryId,
     {
-      $addToSet: {items: {refId: newPlaylist.id, itemType: "playlist"}},
+      $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
     },
-    {new: true},
+    { new: true },
   )
     .populate([
       {
         path: "items.refId",
         select: "name img user createdAt",
         populate: [
-          {path: "user", select: "name", strictPopulate: false},
-          {path: "img", select: "url"},
+          { path: "user", select: "name role", strictPopulate: false },
+          { path: "img", select: "url" },
         ],
       },
     ])
@@ -65,18 +65,18 @@ exports.createPlaylist = async (playlistInput) => {
   library.id = library._id;
   library.items = filterLibraryItems(library.items);
 
-  return {library, playlists: user.playlists};
+  return { library, playlists: user.playlists };
 };
 
 exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
-      {path: "img", select: "url"},
+      { path: "img", select: "url" },
       {
         path: "user",
-        select: "name img",
-        populate: [{path: "img", select: "url"}],
+        select: "name img role",
+        populate: [{ path: "img", select: "url" }],
       },
     ]);
 
@@ -122,8 +122,8 @@ exports.deletePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
-      {path: "img", select: "id fileId isDefault"},
-      {path: "user", select: "name"},
+      { path: "img", select: "id fileId isDefault" },
+      { path: "user", select: "name" },
     ]);
 
   if (!playlist || playlist.user.id !== playlistInput.userId) {
@@ -145,19 +145,19 @@ exports.deletePlaylist = async (playlistInput) => {
 
   // Remove the playlist from Users' likedSongs array
   await User.updateMany(
-    {likedPlaylists: playlistInput.playlistId},
-    {$pull: {likedPlaylists: playlistInput.playlistId}},
+    { likedPlaylists: playlistInput.playlistId },
+    { $pull: { likedPlaylists: playlistInput.playlistId } },
   );
 
   // Remove playlist from all libraries
   await Library.updateMany(
-    {"items.refId": playlistInput.playlistId},
-    {$pull: {items: {refId: playlistInput.playlistId}}},
+    { "items.refId": playlistInput.playlistId },
+    { $pull: { items: { refId: playlistInput.playlistId } } },
   );
 
   // Return updated user data
   const user = await User.findById(playlistInput.userId).populate([
-    {path: "playlists", select: "name"},
+    { path: "playlists", select: "name" },
   ]);
 
   const library = await Library.findById(playlistInput.libraryId)
@@ -166,8 +166,8 @@ exports.deletePlaylist = async (playlistInput) => {
         path: "items.refId",
         select: "name img user createdAt",
         populate: [
-          {path: "user", select: "name", strictPopulate: false},
-          {path: "img", select: "url"},
+          { path: "user", select: "name", strictPopulate: false },
+          { path: "img", select: "url" },
         ],
       },
     ])
@@ -175,7 +175,7 @@ exports.deletePlaylist = async (playlistInput) => {
   library.id = library._id;
   library.items = filterLibraryItems(library.items);
 
-  return {library, playlists: user.playlists};
+  return { library, playlists: user.playlists };
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
@@ -216,15 +216,15 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
         },
       },
     },
-    {new: true},
+    { new: true },
   )
     .populate([
       {
         path: "items.refId",
         select: "name img user createdAt",
         populate: [
-          {path: "user", select: "name", strictPopulate: false},
-          {path: "img", select: "url"},
+          { path: "user", select: "name", strictPopulate: false },
+          { path: "img", select: "url" },
         ],
       },
     ])
@@ -276,15 +276,15 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
         },
       },
     },
-    {new: true},
+    { new: true },
   )
     .populate([
       {
         path: "items.refId",
         select: "name img user createdAt",
         populate: [
-          {path: "user", select: "name", strictPopulate: false},
-          {path: "img", select: "url"},
+          { path: "user", select: "name", strictPopulate: false },
+          { path: "img", select: "url" },
         ],
       },
     ])
