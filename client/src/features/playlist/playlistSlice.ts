@@ -7,6 +7,7 @@ const initialState: LibraryState = {
   data: null,
   api: {
     getPlaylist: { status: 'idle', error: '' },
+    removeSong: { status: 'idle', error: '' },
   },
 };
 

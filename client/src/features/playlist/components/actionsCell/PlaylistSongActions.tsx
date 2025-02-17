@@ -7,6 +7,7 @@ import { RiDeleteBin6Line, RiMoreFill } from 'react-icons/ri';
 import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import AddToPlaylistItem from '../../../../ui/Dropdown/custom/AddToPlaylistItem.tsx';
+import { removeSongFromPlaylist } from '../../playlistThunks.ts';
 
 interface PlaylistSongActionsProps {
   id: string;
@@ -17,13 +18,18 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
   const playlistUserId = useAppSelector(
     (state) => state.playlist?.data?.user?.id,
   );
+  const playlistId = useAppSelector((state) => state.playlist?.data?.id);
   const context = useContext(DropdownContext);
-  if (!context || !userId || !playlistUserId) return null;
+  if (!context || !userId || !playlistUserId || !playlistId) return null;
 
   const dispatch = useAppDispatch();
 
   const { closeDropdown } = context;
   const { ref } = useOutsideClick(closeDropdown);
+
+  const handleRemoveSong = (songId: string, playlistId: string) => {
+    dispatch(removeSongFromPlaylist({ songId, playlistId }));
+  };
 
   return (
     <>
@@ -32,7 +38,11 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
       </DropdownTrigger>
       <DropdownList ref={ref} removeOutsideClick={true}>
         {userId === playlistUserId && (
-          <DropdownItem PreIcon={RiDeleteBin6Line} underline={true}>
+          <DropdownItem
+            PreIcon={RiDeleteBin6Line}
+            underline={true}
+            onClick={() => handleRemoveSong(id, playlistId)}
+          >
             Remove
           </DropdownItem>
         )}

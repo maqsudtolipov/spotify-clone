@@ -3,6 +3,9 @@ import axios from '../../axios/axios';
 import { setLibraryItems } from '../library/librarySlice.ts';
 import { likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
+import { Song } from '../artist/artistTypes.ts';
+import { RejectValue } from '../../axios/axiosTypes.ts';
+import handleAxiosError from '../../axios/handleAxiosError.ts';
 
 // Main
 export const getPlaylist = createAsyncThunk(
@@ -91,6 +94,25 @@ export const saveSongToPlaylist = createAsyncThunk(
       toast.success(`Song saved to playlist: ${playlistName}`);
     } catch (err) {
       // Do nothing if error
+    }
+  },
+);
+
+export const removeSongFromPlaylist = createAsyncThunk<
+  Song[],
+  { songId: string; playlistId: string },
+  { rejectValue: RejectValue }
+>(
+  'playlist/removeSong',
+  async ({ songId, playlistId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(`/songs/${songId}/remove/${playlistId}`);
+      toast.success(`Song removed from your playlist`);
+
+      console.log(res.data);
+      return res.data.songs;
+    } catch (e) {
+      return rejectWithValue(handleAxiosError(e));
     }
   },
 );
