@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPlaylist, removeSongFromPlaylist } from './playlistThunks.ts';
+import { createPlaylist, getPlaylist, removeSongFromPlaylist } from './playlistThunks.ts';
 import { LibraryState } from './playlistTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -7,6 +7,7 @@ const initialState: LibraryState = {
   data: null,
   api: {
     getPlaylist: { status: 'idle', error: '' },
+    createPlaylist: { status: 'idle', error: '' },
     removeSong: { status: 'idle', error: '' },
   },
 };
@@ -17,6 +18,7 @@ const playlistSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // GET playlist
       .addCase(getPlaylist.pending, (state) => {
         state.api.getPlaylist.status = 'pending';
       })
@@ -27,6 +29,17 @@ const playlistSlice = createSlice({
       .addCase(getPlaylist.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'getPlaylist');
         state.data = null;
+      })
+
+      // CREATE playlist
+      .addCase(createPlaylist.pending, (state) => {
+        state.api.createPlaylist.status = 'pending';
+      })
+      .addCase(createPlaylist.fulfilled, (state) => {
+        state.api.createPlaylist.status = 'fulfilled';
+      })
+      .addCase(createPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'createPlaylist');
       })
 
       // Remove

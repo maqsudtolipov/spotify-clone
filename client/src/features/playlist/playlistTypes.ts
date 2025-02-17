@@ -41,6 +41,7 @@ export interface LibraryState {
   data: Playlist | null;
   api: {
     getPlaylist: ApiStatus;
+    createPlaylist: ApiStatus;
     removeSong: ApiStatus;
   };
 }

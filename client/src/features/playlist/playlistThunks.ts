@@ -20,17 +20,20 @@ export const getPlaylist = createAsyncThunk<
   }
 });
 
-export const createPlaylist = createAsyncThunk(
-  'playlist/createPlaylist',
-  async (_, { dispatch }) => {
+export const createPlaylist = createAsyncThunk<
+  any,
+  any,
+  { rejectValue: RejectValue }
+>('playlist/createPlaylist', async (_, { dispatch, rejectWithValue }) => {
+  try {
     const res = await axios.post(`/playlists/`);
-
     dispatch(setLibraryItems(res.data.library.items));
     dispatch(playlistsUpdated(res.data.playlists));
-
     toast.success('New playlist is created');
-  },
-);
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
 
 export const deletePlaylist = createAsyncThunk(
   'playlist/deletePlaylist',
