@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { useAppDispatch } from '../../../../redux/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { DropdownContext } from '../../../../ui/Dropdown/Dropdown.tsx';
 import useOutsideClick from '../../../../hooks/useOutsideClick.tsx';
 import DropdownTrigger from '../../../../ui/Dropdown/DropdownTrigger.tsx';
-import { RiDeleteBin6Line, RiHeartFill, RiMoreFill, RiShareForwardBoxFill, RiUserHeartLine } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiMoreFill } from 'react-icons/ri';
 import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import AddToPlaylistItem from '../../../../ui/Dropdown/custom/AddToPlaylistItem.tsx';
@@ -13,13 +13,17 @@ interface PlaylistSongActionsProps {
 }
 
 const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
+  const userId = useAppSelector((state) => state.user?.data?.id);
+  const playlistUserId = useAppSelector(
+    (state) => state.playlist?.data?.user?.id,
+  );
   const context = useContext(DropdownContext);
-  if (!context) return null;
+  if (!context || !userId || !playlistUserId) return null;
 
   const dispatch = useAppDispatch();
 
   const { closeDropdown } = context;
-  const { ref, exceptionRef } = useOutsideClick(closeDropdown);
+  const { ref } = useOutsideClick(closeDropdown);
 
   return (
     <>
@@ -27,13 +31,14 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
         <RiMoreFill />
       </DropdownTrigger>
       <DropdownList ref={ref} removeOutsideClick={true}>
-        <DropdownItem PreIcon={RiDeleteBin6Line} underline={true}>
-          Remove
-        </DropdownItem>
+        {userId === playlistUserId && (
+          <DropdownItem PreIcon={RiDeleteBin6Line} underline={true}>
+            Remove
+          </DropdownItem>
+        )}
         <AddToPlaylistItem id={id} />
-        <DropdownItem PreIcon={RiHeartFill}>Save to Liked Songs</DropdownItem>
-        <DropdownItem PreIcon={RiShareForwardBoxFill}>Share</DropdownItem>
-        <DropdownItem PreIcon={RiUserHeartLine}>Go to Artist</DropdownItem>
+        {/*<DropdownItem PreIcon={RiHeartFill}>Save to Liked Songs</DropdownItem>*/}
+        {/*<DropdownItem PreIcon={RiUserHeartLine}>Go to Artist</DropdownItem>*/}
       </DropdownList>
     </>
   );
