@@ -35,7 +35,7 @@ const ArtistTable = () => {
   if (artist.songs.length < 1)
     return (
       <p className="py-16 text-neutral-400 text-center">
-        Artist does not have songs
+        Artist does not have songs yet
       </p>
     );
 

@@ -33,6 +33,13 @@ const SortedTable = ({ items }: SortedTableProps) => {
     sortByPlays,
   } = useSortBy(items);
 
+  if (sortedItems.length < 1)
+    return (
+      <p className="py-16 text-neutral-400 text-center">
+        Playlist does not have songs yet
+      </p>
+    );
+
   return (
     <Table>
       <TableHeader>
