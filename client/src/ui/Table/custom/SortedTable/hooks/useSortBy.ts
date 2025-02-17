@@ -18,7 +18,6 @@ const useSortBy = (items: Item[]) => {
   );
 
   useEffect(() => {
-    setSortedItems(items);
     changeSortBy(sortBy);
   }, [items]);
 
