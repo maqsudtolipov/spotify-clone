@@ -4,6 +4,16 @@ export interface ApiStatus {
   statusCode?: number;
 }
 
+export interface Song {
+  id: string;
+  name: string;
+  artist: string;
+  img: { id: string; url: string };
+  song: { id: string; url: string };
+  plays: number;
+  duration: number;
+}
+
 export interface Playlist {
   id: string;
   name: string;
@@ -20,6 +30,7 @@ export interface Playlist {
     };
     role: 'user' | 'artist';
   };
+  songs: Song[];
   description?: string;
   color: string;
   length: number;
@@ -30,5 +41,6 @@ export interface LibraryState {
   data: Playlist | null;
   api: {
     getPlaylist: ApiStatus;
+    removeSong: ApiStatus;
   };
 }
