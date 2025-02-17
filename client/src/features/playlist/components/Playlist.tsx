@@ -36,10 +36,7 @@ const Playlist = () => {
       <ImageHeader data={data} type="playlist" />
       <GradientBackground color={data.color}>
         <PlaylistActions data={data} />
-
-        <div className="p-5 pt-0">
-          <PlaylistTable songs={data.songs} />
-        </div>
+        <PlaylistTable songs={data.songs} />
       </GradientBackground>
     </div>
   );

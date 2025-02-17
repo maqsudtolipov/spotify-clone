@@ -8,7 +8,7 @@ import TableRow from '../../../ui/Table/TableRow.tsx';
 import IndexCell from '../../../ui/Table/custom/SortedTable/Cells/IndexCell.tsx';
 import InfoCell from '../../../ui/Table/custom/SortedTable/Cells/InfoCell.tsx';
 import LikeCell from '../../../ui/Table/custom/SortedTable/Cells/LikeCell.tsx';
-import ActionsCell from '../../../ui/Table/custom/SortedTable/Cells/ActionsCell.tsx';
+import PlaylistActionsCell from './actionsCell/PlaylistActionsCell.tsx';
 
 interface Item {
   id: string;
@@ -41,47 +41,49 @@ const PlaylistTable = ({ songs }) => {
     );
 
   return (
-    <Table>
-      <TableHeader>
-        <TableCell>
-          <span onClick={sortByDefault}>#</span>
-        </TableCell>
-        <TableCell>
-          <span onClick={sortByAlphabetically}>
-            Title
-            {sortBy === 'alphabetically' &&
-              (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
-          </span>
-        </TableCell>
-        <TableCell>
-          <span onClick={sortByPlays}>
-            Plays
-            {sortBy === 'plays' &&
-              (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
-          </span>
-        </TableCell>
-        <TableCell>&nbsp;</TableCell>
-        <TableCell>Time</TableCell>
-        <TableCell>&nbsp;</TableCell>
-      </TableHeader>
+    <div className="p-5 pt-0">
+      <Table>
+        <TableHeader>
+          <TableCell>
+            <span onClick={sortByDefault}>#</span>
+          </TableCell>
+          <TableCell>
+            <span onClick={sortByAlphabetically}>
+              Title
+              {sortBy === 'alphabetically' &&
+                (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
+            </span>
+          </TableCell>
+          <TableCell>
+            <span onClick={sortByPlays}>
+              Plays
+              {sortBy === 'plays' &&
+                (isAscending ? <RiArrowUpSFill /> : <RiArrowDownSFill />)}
+            </span>
+          </TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>Time</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableHeader>
 
-      <TableBody>
-        {sortedItems.map((item, index) => (
-          <TableRow key={item.name}>
-            <IndexCell>{index + 1}</IndexCell>
-            <InfoCell
-              img={item.img.url}
-              name={item.name}
-              artist={item.artist.name}
-            />
-            <TableCell>{item.plays}</TableCell>
-            <LikeCell isLiked={item.isLiked} />
-            <TableCell minimize={true}>2:18</TableCell>
-            <ActionsCell id={item.id} />
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        <TableBody>
+          {sortedItems.map((item, index) => (
+            <TableRow key={item.name}>
+              <IndexCell>{index + 1}</IndexCell>
+              <InfoCell
+                img={item.img.url}
+                name={item.name}
+                artist={item.artist.name}
+              />
+              <TableCell>{item.plays}</TableCell>
+              <LikeCell isLiked={item.isLiked} />
+              <TableCell minimize={true}>2:18</TableCell>
+              <PlaylistActionsCell id={item.id} />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
