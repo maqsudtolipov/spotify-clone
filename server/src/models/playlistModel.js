@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {getCache, setCache} = require("../services/cacheService");
+const { getCache, setCache } = require("../services/cacheService");
 const File = require("./fileModel");
 const generateRandomColor = require("../utils/generateRandomColor");
 
@@ -15,8 +15,7 @@ const playlistSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      minLength: [3, "Name must be at least 3 characters long"],
-      maxLength: [50, "Name must be at most 50 characters long"],
+      maxLength: [120, "Name must be at most 120 characters long"],
     },
     img: {
       type: mongoose.Schema.Types.ObjectId,
@@ -58,8 +57,8 @@ const playlistSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true},
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
   },
 );
@@ -84,12 +83,12 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
 
   if (!defaultFiles[type]) return null; // Handle unknown types
 
-  const {cacheKey, fileId, name, filePath, url} = defaultFiles[type];
+  const { cacheKey, fileId, name, filePath, url } = defaultFiles[type];
 
   let cachedImgId = getCache(cacheKey);
   if (cachedImgId) return cachedImgId;
 
-  let defaultFile = await File.findOne({fileId});
+  let defaultFile = await File.findOne({ fileId });
   if (!defaultFile) {
     defaultFile = await File.create({
       fileId,

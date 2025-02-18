@@ -35,6 +35,19 @@ export const createPlaylist = createAsyncThunk<
   }
 });
 
+export const editPlaylist = createAsyncThunk<
+  Playlist,
+  { id: string; formData: FormData },
+  { rejectValue: RejectValue }
+>('playlist/editPlaylist', async ({ id, formData }, { rejectWithValue }) => {
+  try {
+    const res = await axios.patch(`/playlists/${id}`, formData);
+    console.log(res);
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
+
 export const deletePlaylist = createAsyncThunk(
   'playlist/deletePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {

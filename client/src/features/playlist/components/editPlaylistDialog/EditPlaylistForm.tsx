@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import styles from '../../../artist/components/forms/Forms.module.scss';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { RiPencilLine } from 'react-icons/ri';
 import Input from '../../../../ui/Input/Input.tsx';
 import Button from '../../../../ui/Button/Button.tsx';
@@ -19,7 +19,12 @@ const EditPlaylistForm = () => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  console.log(playlist);
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    console.log(formRef.current);
+  };
 
   const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!imgRef.current || !e.target.files) return;
@@ -31,7 +36,11 @@ const EditPlaylistForm = () => {
   };
 
   return (
-    <form className={`${styles.editPlaylist} ${styles.dialogForm}`}>
+    <form
+      ref={formRef}
+      className={`${styles.editPlaylist} ${styles.dialogForm}`}
+      onSubmit={handleFormSubmit}
+    >
       <div className="flex flex-col gap-2">
         <div
           className={`${styles.imgContainer} ${errors.img ? styles.imgInvalid : ''}`}
@@ -71,15 +80,8 @@ const EditPlaylistForm = () => {
           id="description"
           rows={3}
           value={playlist.description}
+          maxLength={120}
         />
-        {/*<Input*/}
-        {/*  label="Song file"*/}
-        {/*  type="file"*/}
-        {/*  name="song"*/}
-        {/*  isValid={!errors.song}*/}
-        {/*  placeholder="Song file"*/}
-        {/*/>*/}
-        {/*{errors.song && <p className={styles.error}>{errors.song}</p>}*/}
       </div>
       <Button type="submit">
         {status === 'pending' ? 'Updating' : 'Update'}
