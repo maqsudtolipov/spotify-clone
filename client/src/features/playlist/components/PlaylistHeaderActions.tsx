@@ -38,7 +38,7 @@ const PlaylistHeaderActions = ({
         <RiMoreFill className={styles.actionsButton} role="button" />
       </DropdownTrigger>
 
-      <DropdownList position="bottom-right">
+      <DropdownList position="bottom-right" removeOutsideClick={true}>
         <EditPlaylistDialog />
         {isPersonalPlaylist && (
           <DropdownItem

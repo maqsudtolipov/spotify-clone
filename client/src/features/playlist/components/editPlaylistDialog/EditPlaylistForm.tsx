@@ -3,12 +3,13 @@ import styles from '../../../artist/components/forms/Forms.module.scss';
 import { ChangeEvent, useRef, useState } from 'react';
 import { RiPencilLine } from 'react-icons/ri';
 import Input from '../../../../ui/Input/Input.tsx';
+import Button from '../../../../ui/Button/Button.tsx';
 
 // NOTE: similar to EditSong form
 const EditPlaylistForm = () => {
-  // const status = useAppSelector(
-  //   (state) => state.playlist.api.editPlaylist.status,
-  // );
+  const status = useAppSelector(
+    (state) => state.playlist.api.editPlaylist.status,
+  );
   const playlist = useAppSelector((state) => state.playlist.data);
   const dispatch = useAppDispatch();
 
@@ -20,7 +21,6 @@ const EditPlaylistForm = () => {
 
   console.log(playlist);
 
-
   const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!imgRef.current || !e.target.files) return;
 
@@ -31,7 +31,7 @@ const EditPlaylistForm = () => {
   };
 
   return (
-    <form className={styles.dialogForm}>
+    <form className={`${styles.editPlaylist} ${styles.dialogForm}`}>
       <div className="flex flex-col gap-2">
         <div
           className={`${styles.imgContainer} ${errors.img ? styles.imgInvalid : ''}`}
@@ -52,7 +52,38 @@ const EditPlaylistForm = () => {
         </div>
         {errors.img && <p className={styles.error}>{errors.img}</p>}
       </div>
-      <div>b</div>
+
+      <div className={styles.inputsContainer}>
+        <Input
+          label="Song name"
+          type="text"
+          name="name"
+          isValid={!errors.name}
+          placeholder="Song name"
+          defaultValue={playlist.name}
+        />
+        {errors.name && <p className={styles.error}>{errors.name}</p>}
+
+        <label htmlFor="description">Description</label>
+        <textarea
+          className={styles.textarea}
+          name="description"
+          id="description"
+          rows={3}
+          value={playlist.description}
+        />
+        {/*<Input*/}
+        {/*  label="Song file"*/}
+        {/*  type="file"*/}
+        {/*  name="song"*/}
+        {/*  isValid={!errors.song}*/}
+        {/*  placeholder="Song file"*/}
+        {/*/>*/}
+        {/*{errors.song && <p className={styles.error}>{errors.song}</p>}*/}
+      </div>
+      <Button type="submit">
+        {status === 'pending' ? 'Updating' : 'Update'}
+      </Button>
       <p className={styles.warn}>
         * Please ensure your files are not copyrighted. Do not upload personal
         or inappropriate images.
