@@ -4,6 +4,27 @@ import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { RiPencilLine } from 'react-icons/ri';
 import Input from '../../../../ui/Input/Input.tsx';
 import Button from '../../../../ui/Button/Button.tsx';
+import { editPlaylist } from '../../playlistThunks.ts';
+
+const validateForm = (formData: FormData) => {
+  const img = formData.get('img') as File;
+  const name = formData.get('name') as string;
+  const description = formData.get('description') as string;
+  const errors = { name: '', img: '' };
+
+  if (name.length < 3 || name.length > 24) {
+    errors.name = 'Song name must be between 3 and 24 characters.';
+  }
+  if (
+    img &&
+    img.size &&
+    !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)
+  ) {
+    errors.img = 'Image must be in JPEG, PNG, or WEBP format.';
+  }
+
+  return errors;
+};
 
 // NOTE: similar to EditSong form
 const EditPlaylistForm = () => {
@@ -15,7 +36,7 @@ const EditPlaylistForm = () => {
 
   if (!playlist) return null;
 
-  const [errors, setErrors] = useState({ img: '', name: '', description: '' });
+  const [errors, setErrors] = useState({ img: '', name: '' });
   const formRef = useRef<HTMLFormElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
@@ -23,7 +44,13 @@ const EditPlaylistForm = () => {
     e.preventDefault();
     if (!formRef.current) return;
 
-    console.log(formRef.current);
+    const formData = new FormData(formRef.current);
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
+
+    if (!errors.name && !errors.img) {
+      dispatch(editPlaylist({ id: playlist.id, formData }));
+    }
   };
 
   const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
