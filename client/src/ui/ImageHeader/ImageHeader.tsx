@@ -3,7 +3,6 @@ import { meta } from 'eslint-plugin-react/lib/rules/jsx-props-no-spread-multi';
 import { Playlist } from '../../features/playlist/playlistSlice.ts';
 import { Link } from 'react-router-dom';
 import secondsToHourAndMins from '../../features/playlist/helpers/secondsToHourAndMins.ts';
-import description = meta.docs.description;
 
 interface ImageHeaderProps {
   data: Playlist;
@@ -30,7 +29,7 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
         </span>
         <h1 className={styles.name}>{data.name}</h1>
 
-        {description && (
+        {data.description && (
           <p className={styles.description}>{data.description}</p>
         )}
 

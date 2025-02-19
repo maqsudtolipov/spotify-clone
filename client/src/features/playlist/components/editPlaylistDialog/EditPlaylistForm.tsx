@@ -106,7 +106,7 @@ const EditPlaylistForm = () => {
           name="description"
           id="description"
           rows={3}
-          value={playlist.description}
+          defaultValue={playlist.description}
           maxLength={120}
         />
       </div>
