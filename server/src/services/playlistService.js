@@ -83,7 +83,7 @@ exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
-      { path: "img", select: "url" },
+      { path: "img", select: "url isDefault fileId" },
       {
         path: "user",
         select: "name img role",
@@ -101,7 +101,7 @@ exports.updatePlaylist = async (playlistInput) => {
 
   let imgFile = playlist.img.id;
   if (playlistInput.imgBuffer) {
-    const uploadedFile = uploadFiles(
+    const uploadedFile = await uploadFiles(
       {
         file: playlistInput.imgBuffer,
         fileName: playlistInput.imgFilename,
