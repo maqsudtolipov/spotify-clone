@@ -126,7 +126,9 @@ exports.updatePlaylist = async (playlistInput) => {
       new: true,
       runValidators: true,
     },
-  );
+  )
+    .select("name description img")
+    .populate({ path: "img", select: "url" });
 };
 
 exports.deletePlaylist = async (playlistInput) => {

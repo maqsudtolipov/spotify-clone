@@ -42,7 +42,7 @@ export const editPlaylist = createAsyncThunk<
 >('playlist/editPlaylist', async ({ id, formData }, { rejectWithValue }) => {
   try {
     const res = await axios.patch(`/playlists/${id}`, formData);
-    console.log(res);
+    return res.data.playlist;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
   }
