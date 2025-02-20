@@ -1,6 +1,6 @@
 import styles from './Queue.module.scss';
-import CardImage from '../library/components/LibraryList/LibraryCard/CardImage.tsx';
-import CardInfo from '../library/components/LibraryList/LibraryCard/CardInfo.tsx';
+import CardImage from '../../library/components/LibraryList/LibraryCard/CardImage.tsx';
+import CardInfo from '../../library/components/LibraryList/LibraryCard/CardInfo.tsx';
 import React from 'react';
 import { RiDraggable } from 'react-icons/ri';
 

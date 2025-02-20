@@ -1,5 +1,5 @@
 import styles from './Queue.module.scss';
-import QueueHeader from './QueueHeader.tsx';
+import QueueHeader from './header/QueueHeader.tsx';
 import QueueList from './QueueList.tsx';
 
 interface QueueProps {
@@ -7,21 +7,10 @@ interface QueueProps {
 }
 
 const Queue = ({ isQueueOpen }: QueueProps) => {
-  // useEffect(() => {
-  //   console.log('hit effect');
-  //   if (!isOpen) {
-  //     setTimeout(() => setIsOpen(true), 3000);
-  //     console.log('hit interval');
-  //   }
-  // }, [isOpen]);
-  //
-  // const handleToggle = () => setIsOpen((prev) => !prev);
-
   return (
     <div
       className={`${styles.queue} ${!isQueueOpen ? styles.queueHidden : ''}`}
     >
-      {/*<QueueHeader onClick={handleToggle} />*/}
       <QueueHeader />
       <QueueList />
     </div>

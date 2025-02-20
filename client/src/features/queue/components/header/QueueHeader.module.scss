@@ -1,0 +1,8 @@
+.header {
+  @apply p-4;
+  @apply flex items-center justify-between;
+
+  span {
+    @apply font-bold;
+  }
+}

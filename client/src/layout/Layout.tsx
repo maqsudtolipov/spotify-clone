@@ -3,7 +3,7 @@ import styles from './Layout.module.scss';
 import Nav from './Nav/Nav';
 import Library from '../features/library/components/Library';
 import Footer from './Footer/Footer.tsx';
-import Queue from '../features/queue/Queue.tsx';
+import Queue from '../features/queue/components/Queue.tsx';
 import { Link } from 'react-router-dom';
 
 interface LayoutProps {

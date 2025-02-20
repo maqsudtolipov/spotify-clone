@@ -9,13 +9,7 @@
   @apply hidden;
 }
 
-.header {
-  @apply p-4 flex items-center justify-between;
 
-  span {
-    @apply font-bold;
-  }
-}
 
 .queueList {
   @apply p-2 overflow-y-scroll;
