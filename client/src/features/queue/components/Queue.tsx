@@ -25,8 +25,9 @@ const Queue = ({}: QueueProps) => {
           <RiArrowLeftWideLine />
         </div>
       )}
+
       <div className={styles.queue}>
-        <QueueHeader />
+        <QueueHeader onClick={handleClose} />
         <QueueList />
       </div>
     </div>

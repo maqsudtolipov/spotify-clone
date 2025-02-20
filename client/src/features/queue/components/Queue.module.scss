@@ -1,7 +1,7 @@
 .container {
   @apply h-full w-[30px];
   @apply relative overflow-hidden;
-  @apply border-2 border-[darkorange];
+  @apply rounded-xl;
 
   transition: all 0800ms;
 
@@ -18,13 +18,13 @@
   @apply w-[330px];
   @apply grid grid-cols-1;
   @apply overflow-hidden;
-  @apply bg-neutral-900 rounded-xl;
+  @apply bg-neutral-900;
 }
 
 .toggleArea {
   @apply flex h-full w-full items-center justify-center;
   @apply absolute;
-  @apply bg-neutral-900 bg-opacity-100 cursor-pointer border-2 border-[cadetblue];
+  @apply bg-neutral-900 bg-opacity-100 cursor-pointer;
 
   z-index: 1000;
   transition: all 0800ms;
