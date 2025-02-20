@@ -8,7 +8,12 @@ const initialState: Queue = {
 const queueSlice = createSlice({
   name: 'queue',
   initialState,
-  reducers: {},
+  reducers: {
+    setItems: (state, action) => {
+      state.items = action.payload;
+    },
+  },
 });
 
+export const { setItems } = queueSlice.actions;
 export default queueSlice.reducer;

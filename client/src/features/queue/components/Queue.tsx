@@ -4,9 +4,7 @@ import { RiArrowLeftWideLine } from 'react-icons/ri';
 import QueueList from './list/QueueList.tsx';
 import { useState } from 'react';
 
-interface QueueProps {
-  isQueueOpen: boolean;
-}
+interface QueueProps {}
 
 const Queue = ({}: QueueProps) => {
   const [isOpen, setIsOpen] = useState(false);

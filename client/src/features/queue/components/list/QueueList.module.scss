@@ -1,6 +1,5 @@
 .queueList {
-  @apply p-2 overflow-y-scroll;
-  height: calc(100% - 64px);
+  @apply p-2;
 }
 
 .shadow {

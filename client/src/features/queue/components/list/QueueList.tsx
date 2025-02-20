@@ -2,6 +2,8 @@ import styles from './QueueList.module.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import QueueCard from '../card/QueueCard.tsx';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { setItems } from '../../queueSlice.ts';
 
 interface LibraryCardData {
   id: string;
@@ -11,21 +13,22 @@ interface LibraryCardData {
 }
 
 const QueueList = () => {
-  const [items, setItems] = useState<LibraryCardData[]>();
-  const [dragOverId, setDragOverId] = useState<string>('');
+  const items = useAppSelector((state) => state.queue.items);
+  const dispatch = useAppDispatch();
 
+  const [dragOverId, setDragOverId] = useState<string>('');
   const [showShadow, setShowShadow] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    const fetchedItems = Array.from({ length: 200 }, () => ({
+    const fetchedItems = Array.from({ length: 40 }, () => ({
       id: faker.database.mongodbObjectId(),
       img: faker.image.url({ height: 120, width: 120 }),
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       artist: faker.person.fullName(),
     }));
 
-    setItems(fetchedItems);
+    dispatch(setItems(fetchedItems));
   }, []);
 
   const handleSort = (id: string) => {
@@ -36,7 +39,7 @@ const QueueList = () => {
 
       if (selectedItem) itemsClone.splice(newPlace, 0, selectedItem);
 
-      setItems(itemsClone);
+      dispatch(setItems(itemsClone));
       setDragOverId('');
     }
   };
@@ -61,7 +64,7 @@ const QueueList = () => {
   }, []);
 
   return (
-    <div className="h-full relative">
+    <div className="h-full overflow-y-scroll">
       <div className={showShadow ? styles.shadow : ''}></div>
       <ul ref={ref} className={styles.queueList}>
         {items &&
