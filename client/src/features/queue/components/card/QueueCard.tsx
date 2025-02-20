@@ -1,6 +1,6 @@
-import styles from './Queue.module.scss';
-import CardImage from '../../library/components/LibraryList/LibraryCard/CardImage.tsx';
-import CardInfo from '../../library/components/LibraryList/LibraryCard/CardInfo.tsx';
+import styles from './QueueCard.module.scss';
+import CardImage from '../../../library/components/LibraryList/LibraryCard/CardImage.tsx';
+import CardInfo from '../../../library/components/LibraryList/LibraryCard/CardInfo.tsx';
 import React from 'react';
 import { RiDraggable } from 'react-icons/ri';
 
@@ -21,14 +21,14 @@ interface QueueCardProps {
 
 // TODO: This should be separated form LibraryCard component
 const QueueCard = ({
-                     data,
-                     isActive,
-                     draggable,
-                     onDragEnter,
-                     onDragOver,
-                     onDragEnd,
-                     ...rest
-                   }: QueueCardProps) => {
+  data,
+  isActive,
+  draggable,
+  onDragEnter,
+  onDragOver,
+  onDragEnd,
+  ...rest
+}: QueueCardProps) => {
   const { img, name, artist } = data;
 
   return (

@@ -1,7 +1,7 @@
 import styles from './QueueList.module.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import QueueCard from '../QueueCard.tsx';
+import QueueCard from '../card/QueueCard.tsx';
 
 interface LibraryCardData {
   id: string;
