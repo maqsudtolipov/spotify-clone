@@ -1,12 +1,13 @@
 import styles from './Queue.module.scss';
 import QueueHeader from './header/QueueHeader.tsx';
 import { RiArrowLeftWideLine } from 'react-icons/ri';
+import QueueList from './list/QueueList.tsx';
 
 interface QueueProps {
   isQueueOpen: boolean;
 }
 
-const Queue = ({ isQueueOpen }: QueueProps) => {
+const Queue = ({  }: QueueProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.toggleArea}>
@@ -14,7 +15,7 @@ const Queue = ({ isQueueOpen }: QueueProps) => {
       </div>
       <div className={styles.queue}>
         <QueueHeader />
-        {/*<QueueList />*/}
+        <QueueList />
       </div>
     </div>
   );

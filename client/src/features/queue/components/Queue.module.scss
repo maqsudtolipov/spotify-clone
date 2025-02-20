@@ -22,14 +22,15 @@
   @apply absolute;
   @apply bg-neutral-900 bg-opacity-100 cursor-pointer border-2 border-[cadetblue];
 
+  z-index: 1000;
   transition: all 0800ms;
 
   svg {
-    @apply text-neutral-400 text-[24px];
+    @apply text-neutral-400 text-2xl;
   }
 
   &:hover {
-    @apply bg-opacity-50;
+    @apply bg-opacity-80;
 
     svg {
       @apply text-white;
