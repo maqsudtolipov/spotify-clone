@@ -2,6 +2,7 @@ import { Queue } from './queueTypes.ts';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: Queue = {
+  current: 0,
   items: [],
 };
 
@@ -12,8 +13,14 @@ const queueSlice = createSlice({
     setItems: (state, action) => {
       state.items = action.payload;
     },
+    playNext: (state) => {
+      const nextItem = state.items.shift();
+      if (nextItem) {
+        state.items.push(nextItem);
+      }
+    },
   },
 });
 
-export const { setItems } = queueSlice.actions;
+export const { setItems, playNext } = queueSlice.actions;
 export default queueSlice.reducer;

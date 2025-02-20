@@ -6,5 +6,6 @@ export interface Song {
 }
 
 export interface Queue {
+  current: number;
   items: Song[];
 }
