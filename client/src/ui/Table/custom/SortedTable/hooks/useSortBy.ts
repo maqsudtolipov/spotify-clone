@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Item {
   id: string;
@@ -11,11 +11,15 @@ interface Item {
 
 // TODO: sort by likes and duration
 const useSortBy = (items: Item[]) => {
-  const [sortedItems, setSortedItems] = useState([...items]);
+  const [sortedItems, setSortedItems] = useState<Item[]>([]);
   const [isAscending, setIsAscending] = useState(true);
   const [sortBy, setSortBy] = useState<'alphabetically' | 'plays' | 'default'>(
     'default',
   );
+
+  useEffect(() => {
+    changeSortBy(sortBy);
+  }, [items]);
 
   const changeSortBy = (sortOption: 'alphabetically' | 'plays' | 'default') => {
     switch (sortOption) {

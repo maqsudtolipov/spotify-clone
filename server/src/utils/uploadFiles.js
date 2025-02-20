@@ -1,4 +1,4 @@
-const {imagekitUpload, imagekitDelete} = require("./ImageKit");
+const { imagekitUpload, imagekitDelete } = require("./ImageKit");
 const File = require("../models/fileModel");
 /**
  * Uploads an image file to ImageKit and stored file information inside the database
@@ -12,7 +12,7 @@ const File = require("../models/fileModel");
  * @returns {Promise<*>}
  */
 const uploadFiles = async (
-  {file, fileName, folder},
+  { file, fileName, folder },
   isDefault,
   imagekitId,
   databaseId,
@@ -31,10 +31,10 @@ const uploadFiles = async (
   if (!isDefault) {
     if (!imagekitId || !databaseId) {
       console.error("Missing fields for file deletion");
+    } else {
+      await imagekitDelete(imagekitId);
+      await File.findByIdAndDelete(databaseId);
     }
-
-    await imagekitDelete(imagekitId);
-    await File.findByIdAndDelete(databaseId);
   }
 
   return imgFile;

@@ -1,7 +1,8 @@
 import styles from './ImageHeader.module.scss';
 import { meta } from 'eslint-plugin-react/lib/rules/jsx-props-no-spread-multi';
 import { Playlist } from '../../features/playlist/playlistSlice.ts';
-import description = meta.docs.description;
+import { Link } from 'react-router-dom';
+import secondsToHourAndMins from '../../features/playlist/helpers/secondsToHourAndMins.ts';
 
 interface ImageHeaderProps {
   data: Playlist;
@@ -28,18 +29,22 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
         </span>
         <h1 className={styles.name}>{data.name}</h1>
 
-        {description && (
+        {data.description && (
           <p className={styles.description}>{data.description}</p>
         )}
 
         <div className={styles.statistics}>
           {data.user && (
-            <div className={styles.user}>
+            <Link
+              to={`/${data.user.role}/${data.user.id}`}
+              className={styles.user}
+            >
               <img src={data.user.img.url} alt={data.user.name} />
               <span>{data.user.name}</span>
-            </div>
+            </Link>
           )}
 
+          {/* TODO: normalize */}
           {data.statistics && (
             <span>
               {`${data.user ? '• ' : ''}${data.statistics
@@ -47,6 +52,9 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
                 .join(' • ')}`}
             </span>
           )}
+
+          {type === 'playlist' &&
+            `•  ${data.length} songs, ${secondsToHourAndMins(data.duration)}`}
         </div>
       </div>
     </header>

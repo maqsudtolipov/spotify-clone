@@ -1,4 +1,3 @@
-import PlaylistTable from './PlaylistTable.tsx';
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
@@ -9,6 +8,8 @@ import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
 import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
+import styles from './Playlist.module.scss';
+import PlaylistTable from './PlaylistTable.tsx';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -20,7 +21,7 @@ const Playlist = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (id) dispatch(getPlaylist({ id }));
+    if (id) dispatch(getPlaylist(id));
   }, [id]);
 
   if (status === 'rejected') {
@@ -31,14 +32,11 @@ const Playlist = () => {
   if (status === 'pending' || !data) return <LoadingScreen />;
 
   return (
-    <div>
+    <div className={styles.playlist}>
       <ImageHeader data={data} type="playlist" />
       <GradientBackground color={data.color}>
         <PlaylistActions data={data} />
-
-        <div className="p-5 pt-0">
-          <PlaylistTable />
-        </div>
+        <PlaylistTable songs={data.songs} />
       </GradientBackground>
     </div>
   );

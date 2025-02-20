@@ -33,6 +33,13 @@ const SortedTable = ({ items }: SortedTableProps) => {
     sortByPlays,
   } = useSortBy(items);
 
+  if (sortedItems.length < 1)
+    return (
+      <p className="py-16 text-neutral-400 text-center">
+        Playlist does not have songs yet
+      </p>
+    );
+
   return (
     <Table>
       <TableHeader>
@@ -62,7 +69,11 @@ const SortedTable = ({ items }: SortedTableProps) => {
         {sortedItems.map((item, index) => (
           <TableRow key={item.name}>
             <IndexCell>{index + 1}</IndexCell>
-            <InfoCell img={item.img} name={item.name} artist={item.artist} />
+            <InfoCell
+              img={item.img.url}
+              name={item.name}
+              artist={item.artist.name}
+            />
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>

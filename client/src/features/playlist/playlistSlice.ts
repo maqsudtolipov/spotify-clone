@@ -1,43 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPlaylist } from './playlistThunks.ts';
-import toast from 'react-hot-toast';
-
-interface ApiStatus {
-  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  error: string;
-  statusCode?: number;
-}
-
-export interface Playlist {
-  id: string;
-  name: string;
-  img: {
-    id: string;
-    url: string;
-  };
-  user: {
-    name: string;
-    img: {
-      id: string;
-      url: string;
-    };
-  };
-  description?: string;
-  color: string;
-}
-
-interface LibraryState {
-  data: Playlist | null;
-  api: {
-    getPlaylist: ApiStatus;
-  };
-}
+import { createPlaylist, editPlaylist, getPlaylist, removeSongFromPlaylist } from './playlistThunks.ts';
+import { LibraryState } from './playlistTypes.ts';
+import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
 const initialState: LibraryState = {
   data: null,
   api: {
-    getPlaylist: { status: 'idle', error: '' }
-  }
+    getPlaylist: { status: 'idle', error: '' },
+    createPlaylist: { status: 'idle', error: '' },
+    editPlaylist: { status: 'idle', error: '' },
+    removeSong: { status: 'idle', error: '' },
+  },
 };
 
 const playlistSlice = createSlice({
@@ -46,6 +19,7 @@ const playlistSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // GET playlist
       .addCase(getPlaylist.pending, (state) => {
         state.api.getPlaylist.status = 'pending';
       })
@@ -53,16 +27,53 @@ const playlistSlice = createSlice({
         state.api.getPlaylist.status = 'fulfilled';
         state.data = payload;
       })
-      .addCase(getPlaylist.rejected, (state, { payload }) => {
-        state.api.getPlaylist.status = 'rejected';
-        state.api.getPlaylist.statusCode = payload.statusCode;
-        state.api.getPlaylist.error = payload.message;
+      .addCase(getPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'getPlaylist');
         state.data = null;
+      })
 
-        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
-          toast.error(`Error: ${payload.status} - ${payload.message}`);
+      // CREATE playlist
+      .addCase(createPlaylist.pending, (state) => {
+        state.api.createPlaylist.status = 'pending';
+      })
+      .addCase(createPlaylist.fulfilled, (state) => {
+        state.api.createPlaylist.status = 'fulfilled';
+      })
+      .addCase(createPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'createPlaylist');
+      })
+
+      // UPDATE playlist
+      .addCase(editPlaylist.pending, (state) => {
+        state.api.editPlaylist.status = 'pending';
+      })
+      .addCase(editPlaylist.fulfilled, (state, action) => {
+        state.api.editPlaylist.status = 'fulfilled';
+        console.log(action);
+        state.data.name = action.payload.name;
+        state.data.img.url = action.payload.img.url;
+        state.data.description = action.payload.description;
+      })
+      .addCase(editPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'editPlaylist');
+      })
+
+      // Remove
+      .addCase(removeSongFromPlaylist.pending, (state) => {
+        state.api.removeSong.status = 'pending';
+      })
+      .addCase(removeSongFromPlaylist.fulfilled, (state, action) => {
+        state.api.removeSong.status = 'fulfilled';
+
+        if (state.data?.songs) {
+          state.data.songs = [...state.data.songs].filter(
+            (song) => song.id !== action.payload,
+          );
         }
       })
+      .addCase(removeSongFromPlaylist.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'removeSong');
+      }),
 });
 
 export default playlistSlice.reducer;
