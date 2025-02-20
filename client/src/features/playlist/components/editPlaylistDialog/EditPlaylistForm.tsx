@@ -9,7 +9,7 @@ import { editPlaylist } from '../../playlistThunks.ts';
 const validateForm = (formData: FormData) => {
   const img = formData.get('img') as File;
   const name = formData.get('name') as string;
-  const description = formData.get('description') as string;
+  // const description = formData.get('description') as string;
   const errors = { name: '', img: '' };
 
   if (name.length < 3 || name.length > 24) {
