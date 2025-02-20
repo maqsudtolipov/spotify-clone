@@ -5,8 +5,12 @@
 
   transition: all 0800ms;
 
-  &:hover {
+  &Closed:hover {
     @apply w-[60px];
+  }
+
+  &Open {
+    @apply w-[330px];
   }
 }
 
