@@ -1,4 +1,4 @@
-import styles from '../Queue.module.scss';
+import styles from './QueueHeader.module.scss';
 import { RiCloseLargeFill } from 'react-icons/ri';
 import IconButton from '../../../../ui/IconButton/IconButton.tsx';
 

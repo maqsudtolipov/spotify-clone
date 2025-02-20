@@ -1,6 +1,6 @@
 import styles from './Queue.module.scss';
 import QueueHeader from './header/QueueHeader.tsx';
-import QueueList from './QueueList.tsx';
+import QueueList from './list/QueueList.tsx';
 
 interface QueueProps {
   isQueueOpen: boolean;
