@@ -1,6 +1,6 @@
 import styles from './Queue.module.scss';
 import QueueHeader from './header/QueueHeader.tsx';
-import QueueList from './list/QueueList.tsx';
+import { RiArrowLeftWideLine } from 'react-icons/ri';
 
 interface QueueProps {
   isQueueOpen: boolean;
@@ -8,11 +8,14 @@ interface QueueProps {
 
 const Queue = ({ isQueueOpen }: QueueProps) => {
   return (
-    <div
-      className={`${styles.queue} ${!isQueueOpen ? styles.queueHidden : ''}`}
-    >
-      <QueueHeader />
-      <QueueList />
+    <div className={styles.container}>
+      <div className={styles.toggleArea}>
+        <RiArrowLeftWideLine />
+      </div>
+      <div className={styles.queue}>
+        <QueueHeader />
+        {/*<QueueList />*/}
+      </div>
     </div>
   );
 };
