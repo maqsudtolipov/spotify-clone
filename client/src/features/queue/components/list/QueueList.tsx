@@ -23,7 +23,7 @@ const QueueList = () => {
   useEffect(() => {
     const fetchedItems = Array.from({ length: 40 }, () => ({
       id: faker.database.mongodbObjectId(),
-      img: faker.image.url({ height: 120, width: 120 }),
+      img: { url: faker.image.url({ height: 120, width: 120 }) },
       name: `${faker.word.adjective()} ${faker.word.noun()}`,
       artist: faker.person.fullName(),
     }));

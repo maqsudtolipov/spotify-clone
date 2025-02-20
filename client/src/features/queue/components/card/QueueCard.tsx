@@ -40,7 +40,7 @@ const QueueCard = ({
       onDragEnd={onDragEnd}
       {...rest}
     >
-      <CardImage src={img} name={`Cover for ${name}`} />
+      <CardImage src={img.url} name={`Cover for ${name}`} />
       <CardInfo name={name} owner={artist} />
       <RiDraggable className={styles.cardIcon} />
     </li>

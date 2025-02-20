@@ -16,7 +16,7 @@
 
 .queue {
   @apply w-[330px] h-full;
-  @apply grid grid-cols-1;
+  @apply grid grid-rows-[auto_1fr];
   @apply overflow-hidden;
   @apply bg-neutral-900;
 }
