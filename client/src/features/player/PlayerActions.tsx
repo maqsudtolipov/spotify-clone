@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../redux/hooks';
-import { playNext } from '../queue/queueSlice.ts';
+import { playNext, playPrev } from '../queue/queueSlice.ts';
 
 const PlayerActions = () => {
   const dispatch = useAppDispatch();
@@ -8,10 +8,14 @@ const PlayerActions = () => {
     dispatch(playNext());
   };
 
+  const handlePlayPrev = () => {
+    dispatch(playPrev());
+  };
+
   return (
     <div>
       <div className="flex gap-4 p-2">
-        <button>prev</button>
+        <button onClick={handlePlayPrev}>prev</button>
         <button>play</button>
         <button onClick={handlePlayNext}>next</button>
       </div>

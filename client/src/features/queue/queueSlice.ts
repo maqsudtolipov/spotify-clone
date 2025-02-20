@@ -19,8 +19,14 @@ const queueSlice = createSlice({
         state.items.push(nextItem);
       }
     },
+    playPrev: (state) => {
+      const last = state.items.pop();
+      if (last) {
+        state.items.unshift(last);
+      }
+    }
   },
 });
 
-export const { setItems, playNext } = queueSlice.actions;
+export const { setItems, playNext, playPrev } = queueSlice.actions;
 export default queueSlice.reducer;
