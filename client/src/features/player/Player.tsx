@@ -1,9 +1,12 @@
-import React from 'react';
+import styles from './Player.module.scss';
+import PlayerActions from './PlayerActions.tsx';
 
 const Player = () => {
   return (
-    <div style={{ gridColumn: '1/-1', gridRow: '3/4', padding: '16px' }}>
-      player
+    <div className={styles.player}>
+      <div>song</div>
+      <PlayerActions />
+      <div>volume</div>
     </div>
   );
 };
