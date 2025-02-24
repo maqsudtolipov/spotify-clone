@@ -1,0 +1,21 @@
+.actions {
+  @apply flex flex-col;
+}
+
+.buttonsContainer {
+  @apply p-2;
+  @apply flex items-center gap-4;
+}
+
+.actionBtn {
+  @apply p-1;
+  @apply text-neutral-400 text-3xl cursor-pointer;
+
+  &:hover {
+    @apply text-white;
+  }
+}
+
+.playPauseBtn {
+  @apply text-white text-4xl cursor-pointer;
+}
