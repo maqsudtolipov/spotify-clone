@@ -1,40 +1,18 @@
 import styles from './PlayerActions.module.scss';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { playNext, playPrev } from '../queue/queueSlice.ts';
 import { IoPauseCircle, IoPlayCircle, IoPlaySkipBack, IoPlaySkipForward, IoRepeat, IoShuffle } from 'react-icons/io5';
-import { useEffect, useRef, useState } from 'react';
+import useAudioPlayer from '../hooks/useAudioPlayer.ts';
 
 const PlayerActions = () => {
-  const song = useAppSelector((state) => state.queue.items[0]);
-  const dispatch = useAppDispatch();
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    if (audioRef.current && song) {
-      audioRef.current.src = song.song.url;
-
-      if (isPlaying) audioRef.current.play();
-    }
-  }, [song?._id]);
-
-  const handlePlayPause = () => {
-    setIsPlaying((prev) => !prev);
-    if (!isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-  };
-
-  const handlePlayNext = async () => {
-    dispatch(playNext());
-  };
-
-  const handlePlayPrev = async () => {
-    dispatch(playPrev());
-  };
+  const {
+    audioRef,
+    isPlaying,
+    duration,
+    calcTime,
+    handlePlayPause,
+    handlePlayNext,
+    handlePlayPrev,
+    handleMetaLoad,
+  } = useAudioPlayer();
 
   return (
     <div className={styles.actions}>
@@ -68,7 +46,9 @@ const PlayerActions = () => {
         <IoRepeat className={styles.actionBtn} role="button" />
       </div>
       <div>
-        <audio ref={audioRef} src=""></audio>
+        <p>{calcTime(duration)}</p>
+
+        <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>
     </div>
   );

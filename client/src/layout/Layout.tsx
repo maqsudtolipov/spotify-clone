@@ -4,7 +4,7 @@ import Nav from './Nav/Nav';
 import Library from '../features/library/components/Library';
 import Footer from './Footer/Footer.tsx';
 import Queue from '../features/queue/components/Queue.tsx';
-import Player from '../features/player/Player.tsx';
+import Player from '../features/player/components/Player.tsx';
 
 interface LayoutProps {
   children: ReactNode;
