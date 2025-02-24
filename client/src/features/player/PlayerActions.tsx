@@ -1,10 +1,18 @@
 import styles from './PlayerActions.module.scss';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { playNext, playPrev } from '../queue/queueSlice.ts';
 import { IoPlayCircle, IoPlaySkipBack, IoPlaySkipForward, IoRepeat, IoShuffle } from 'react-icons/io5';
+import { useEffect, useRef } from 'react';
 
 const PlayerActions = () => {
+  const song = useAppSelector((state) => state.queue.items[0]);
   const dispatch = useAppDispatch();
+
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    audioRef.current.src = song.song.url;
+  }, [song._id]);
 
   const handlePlayNext = () => {
     dispatch(playNext());
@@ -26,14 +34,16 @@ const PlayerActions = () => {
 
         <IoPlayCircle className={styles.playPauseBtn} role="button" />
 
-        <IoPlaySkipForward className={styles.actionBtn} role="button"       onClick={handlePlayNext}/>
-        <IoRepeat
+        <IoPlaySkipForward
           className={styles.actionBtn}
           role="button"
-
+          onClick={handlePlayNext}
         />
+        <IoRepeat className={styles.actionBtn} role="button" />
       </div>
-      <div>line</div>
+      <div>
+        <audio ref={audioRef} src=""></audio>
+      </div>
     </div>
   );
 };
