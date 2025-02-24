@@ -12,8 +12,12 @@ const PlayerActions = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    audioRef.current.src = song.song.url;
-  }, [song._id]);
+    if (audioRef.current && song) {
+      audioRef.current.src = song.song.url;
+
+      if (isPlaying) audioRef.current.play();
+    }
+  }, [song?._id]);
 
   const handlePlayPause = () => {
     setIsPlaying((prev) => !prev);
@@ -24,11 +28,11 @@ const PlayerActions = () => {
     }
   };
 
-  const handlePlayNext = () => {
+  const handlePlayNext = async () => {
     dispatch(playNext());
   };
 
-  const handlePlayPrev = () => {
+  const handlePlayPrev = async () => {
     dispatch(playPrev());
   };
 
