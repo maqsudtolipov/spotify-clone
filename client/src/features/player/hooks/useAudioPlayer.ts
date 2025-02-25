@@ -18,6 +18,9 @@ const useAudioPlayer = () => {
   useEffect(() => {
     if (audioRef.current && song) {
       audioRef.current.src = song.song.url;
+      setCurrentTime(0); // Reset current time when the song changes
+      if (progressRef.current) progressRef.current.value = '0'; // Reset progress bar
+      setDuration(0); // Reset duration on song change
     }
   }, [song?._id]);
 
@@ -34,9 +37,25 @@ const useAudioPlayer = () => {
 
   const handlePlayNext = () => {
     dispatch(playNext());
+    resetPlayer();
   };
+
   const handlePlayPrev = () => {
     dispatch(playPrev());
+    resetPlayer();
+  };
+
+  // Reset player when moving to next or previous song
+  const resetPlayer = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
+    if (progressRef.current)
+      progressRef.current.style.setProperty('--range-width', `${0}%`);
+    setCurrentTime(0);
+    if (progressRef.current) progressRef.current.value = '0'; // Reset progress bar
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    animationRef.current = undefined; // Clear any previous animation frame
   };
 
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = (e) => {
