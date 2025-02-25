@@ -14,23 +14,40 @@ const useAudioPlayer = () => {
   const progressRef = useRef<HTMLInputElement>(null);
   const animationRef = useRef<number>();
 
-  // Effect to update audio source and play/pause based on song change
+  // Updates audio source and resets player
   useEffect(() => {
     if (audioRef.current && song) {
       audioRef.current.src = song.song.url;
-      setCurrentTime(0); // Reset current time when the song changes
-      if (progressRef.current) progressRef.current.value = '0'; // Reset progress bar
-      setDuration(0); // Reset duration on song change
+      resetPlayer();
     }
   }, [song?._id]);
 
+  // Reset player when moving to next or previous song
+  const resetPlayer = () => {
+    setDuration(0);
+    setCurrentTime(0);
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
+    if (progressRef.current) {
+      progressRef.current.value = '0';
+      progressRef.current.style.setProperty('--range-width', `${0}%`); // Reset
+    }
+
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    animationRef.current = undefined;
+  };
+
   const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
+    const audioEl = audioRef.current;
+
     if (!isPlaying) {
-      audioRef.current?.play();
+      audioEl?.play();
       animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
-      audioRef.current?.pause();
+      audioEl?.pause();
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     }
   };
@@ -45,24 +62,13 @@ const useAudioPlayer = () => {
     resetPlayer();
   };
 
-  // Reset player when moving to next or previous song
-  const resetPlayer = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-    }
-    if (progressRef.current)
-      progressRef.current.style.setProperty('--range-width', `${0}%`);
-    setCurrentTime(0);
-    if (progressRef.current) progressRef.current.value = '0'; // Reset progress bar
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    animationRef.current = undefined; // Clear any previous animation frame
-  };
-
+  // Updates duration and progress bar max value when audio is loaded
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = (e) => {
     const audioEl = e.target as HTMLAudioElement;
     const seconds = Math.floor(audioEl.duration);
     setDuration(seconds);
-    if (isPlaying) audioEl.play();
+
+    if (isPlaying) audioEl.play(); // If isPlaying true auto plays new song
     if (progressRef.current) progressRef.current.max = String(seconds);
   };
 
@@ -76,11 +82,12 @@ const useAudioPlayer = () => {
 
   const changeCurrentTime = () => {
     if (progressRef.current) {
+      const current = Number(progressRef.current.value);
       progressRef.current.style.setProperty(
         '--range-width',
-        `${(Number(progressRef.current.value) / duration) * 100}%`,
+        `${(current / duration) * 100}%`,
       );
-      setCurrentTime(Number(progressRef.current.value));
+      setCurrentTime(current);
     }
   };
 

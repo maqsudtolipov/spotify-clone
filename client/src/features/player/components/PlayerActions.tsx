@@ -5,10 +5,10 @@ import useAudioPlayer from '../hooks/useAudioPlayer.ts';
 const PlayerActions = () => {
   const {
     currentTime,
-    audioRef,
     isPlaying,
-    duration,
+    audioRef,
     progressRef,
+    duration,
     changeRange,
     formatTime,
     togglePlayPause,
