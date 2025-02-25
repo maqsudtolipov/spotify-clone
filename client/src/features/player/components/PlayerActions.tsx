@@ -9,6 +9,7 @@ const PlayerActions = () => {
     isPlaying,
     duration,
     progressRef,
+    changeRange,
     formatTime,
     togglePlayPause,
     handlePlayNext,
@@ -51,7 +52,12 @@ const PlayerActions = () => {
         <p>{formatTime(currentTime)}</p>
         <p>{formatTime(duration)}</p>
 
-        <input ref={progressRef} className={styles.range} type="range" />
+        <input
+          ref={progressRef}
+          className={styles.range}
+          type="range"
+          onChange={changeRange}
+        />
 
         <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>

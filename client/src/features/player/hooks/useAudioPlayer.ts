@@ -40,6 +40,12 @@ const useAudioPlayer = () => {
     if (progressRef.current) progressRef.current.max = String(seconds);
   };
 
+  const changeRange = () => {
+    if (audioRef.current && progressRef.current) {
+      audioRef.current.currentTime = Number(progressRef.current.value);
+    }
+  };
+
   const formatTime = (secs: number) => {
     const minutes = String(Math.floor(secs / 60)).padStart(2, '0');
     const seconds = String(Math.floor(secs % 60)).padStart(2, '0');
@@ -52,6 +58,7 @@ const useAudioPlayer = () => {
     audioRef,
     progressRef,
     duration,
+    changeRange,
     formatTime,
     togglePlayPause,
     handlePlayNext,
