@@ -15,9 +15,9 @@ const useAudioPlayer = () => {
     if (audioRef.current && song) {
       audioRef.current.src = song.song.url;
     }
-  }, [song?._id]); // Dependency on song and isPlaying
+  }, [song?._id]);
 
-  const handlePlayPause = () => {
+  const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
     if (!isPlaying) {
       audioRef.current?.play();
@@ -26,22 +26,16 @@ const useAudioPlayer = () => {
     }
   };
 
-  const handlePlayNext = async () => {
-    dispatch(playNext());
-  };
-
-  const handlePlayPrev = async () => {
-    dispatch(playPrev());
-  };
+  const handlePlayNext = () => dispatch(playNext());
+  const handlePlayPrev = () => dispatch(playPrev());
 
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = (e) => {
-    if (e.target) {
-      setDuration(Number(e.target.duration));
-      if (isPlaying) e.target.play();
-    }
+    const audioEl = e.target as HTMLAudioElement;
+    setDuration(Number(audioEl.duration));
+    if (isPlaying) audioEl.play();
   };
 
-  const calcTime = (secs: number) => {
+  const formatTime = (secs: number) => {
     const minutes = String(Math.floor(secs / 60)).padStart(2, '0');
     const seconds = String(Math.floor(secs % 60)).padStart(2, '0');
     return `${minutes}:${seconds}`;
@@ -51,8 +45,8 @@ const useAudioPlayer = () => {
     audioRef,
     isPlaying,
     duration,
-    calcTime,
-    handlePlayPause,
+    formatTime,
+    togglePlayPause,
     handlePlayNext,
     handlePlayPrev,
     handleMetaLoad,

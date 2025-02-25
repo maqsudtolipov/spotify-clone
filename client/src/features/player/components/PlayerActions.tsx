@@ -7,8 +7,8 @@ const PlayerActions = () => {
     audioRef,
     isPlaying,
     duration,
-    calcTime,
-    handlePlayPause,
+    formatTime,
+    togglePlayPause,
     handlePlayNext,
     handlePlayPrev,
     handleMetaLoad,
@@ -28,13 +28,13 @@ const PlayerActions = () => {
           <IoPlayCircle
             className={styles.playPauseBtn}
             role="button"
-            onClick={handlePlayPause}
+            onClick={togglePlayPause}
           />
         ) : (
           <IoPauseCircle
             className={styles.playPauseBtn}
             role="button"
-            onClick={handlePlayPause}
+            onClick={togglePlayPause}
           />
         )}
 
@@ -46,7 +46,7 @@ const PlayerActions = () => {
         <IoRepeat className={styles.actionBtn} role="button" />
       </div>
       <div>
-        <p>{calcTime(duration)}</p>
+        <p>{formatTime(duration)}</p>
 
         <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>
