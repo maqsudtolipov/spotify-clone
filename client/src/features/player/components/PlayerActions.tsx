@@ -48,6 +48,8 @@ const PlayerActions = () => {
       <div>
         <p>{formatTime(duration)}</p>
 
+        <input className={styles.range} type="range" />
+
         <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>
     </div>
