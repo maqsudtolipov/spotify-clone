@@ -12,6 +12,7 @@ const useAudioPlayer = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
+  const animationRef = useRef<number>();
 
   // Effect to update audio source and play/pause based on song change
   useEffect(() => {
@@ -24,13 +25,19 @@ const useAudioPlayer = () => {
     setIsPlaying((prev) => !prev);
     if (!isPlaying) {
       audioRef.current?.play();
+      animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
       audioRef.current?.pause();
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     }
   };
 
-  const handlePlayNext = () => dispatch(playNext());
-  const handlePlayPrev = () => dispatch(playPrev());
+  const handlePlayNext = () => {
+    dispatch(playNext());
+  };
+  const handlePlayPrev = () => {
+    dispatch(playPrev());
+  };
 
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = (e) => {
     const audioEl = e.target as HTMLAudioElement;
@@ -38,6 +45,14 @@ const useAudioPlayer = () => {
     setDuration(seconds);
     if (isPlaying) audioEl.play();
     if (progressRef.current) progressRef.current.max = String(seconds);
+  };
+
+  const whilePlaying = () => {
+    if (progressRef.current && audioRef.current) {
+      progressRef.current.value = String(audioRef.current.currentTime);
+      changeCurrentTime();
+      animationRef.current = requestAnimationFrame(whilePlaying);
+    }
   };
 
   const changeCurrentTime = () => {
