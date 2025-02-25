@@ -40,9 +40,20 @@ const useAudioPlayer = () => {
     if (progressRef.current) progressRef.current.max = String(seconds);
   };
 
+  const changeCurrentTime = () => {
+    if (progressRef.current) {
+      progressRef.current.style.setProperty(
+        '--range-width',
+        `${(Number(progressRef.current.value) / duration) * 100}%`,
+      );
+      setCurrentTime(Number(progressRef.current.value));
+    }
+  };
+
   const changeRange = () => {
     if (audioRef.current && progressRef.current) {
       audioRef.current.currentTime = Number(progressRef.current.value);
+      changeCurrentTime();
     }
   };
 
