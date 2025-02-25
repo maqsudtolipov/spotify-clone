@@ -7,8 +7,11 @@ const useAudioPlayer = () => {
   let dispatch = useAppDispatch();
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+
   const audioRef = useRef<HTMLAudioElement>(null);
+  const progressRef = useRef<HTMLInputElement>(null);
 
   // Effect to update audio source and play/pause based on song change
   useEffect(() => {
@@ -31,8 +34,10 @@ const useAudioPlayer = () => {
 
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = (e) => {
     const audioEl = e.target as HTMLAudioElement;
-    setDuration(Number(audioEl.duration));
+    const seconds = Math.floor(audioEl.duration);
+    setDuration(seconds);
     if (isPlaying) audioEl.play();
+    if (progressRef.current) progressRef.current.max = String(seconds);
   };
 
   const formatTime = (secs: number) => {
@@ -42,8 +47,10 @@ const useAudioPlayer = () => {
   };
 
   return {
-    audioRef,
+    currentTime,
     isPlaying,
+    audioRef,
+    progressRef,
     duration,
     formatTime,
     togglePlayPause,

@@ -4,9 +4,11 @@ import useAudioPlayer from '../hooks/useAudioPlayer.ts';
 
 const PlayerActions = () => {
   const {
+    currentTime,
     audioRef,
     isPlaying,
     duration,
+    progressRef,
     formatTime,
     togglePlayPause,
     handlePlayNext,
@@ -46,9 +48,10 @@ const PlayerActions = () => {
         <IoRepeat className={styles.actionBtn} role="button" />
       </div>
       <div>
+        <p>{formatTime(currentTime)}</p>
         <p>{formatTime(duration)}</p>
 
-        <input className={styles.range} type="range" />
+        <input ref={progressRef} className={styles.range} type="range" />
 
         <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>
