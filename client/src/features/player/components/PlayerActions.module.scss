@@ -1,10 +1,9 @@
 .actions {
-  @apply flex flex-col;
+  @apply flex flex-col items-stretch gap-3;
 }
 
 .buttonsContainer {
-  @apply p-2;
-  @apply flex items-center gap-4;
+  @apply self-center flex items-center gap-4;
 }
 
 .actionBtn {
@@ -18,6 +17,14 @@
 
 .playPauseBtn {
   @apply text-white text-4xl cursor-pointer;
+}
+
+.rangeContainer {
+  @apply flex items-center gap-2;
+}
+
+.time {
+  @apply text-xs text-neutral-400;
 }
 
 // ----- Range Styles ---- //
@@ -64,7 +71,6 @@
     top: 0;
     left: 0;
     z-index: 100;
-
   }
 
   &::-moz-range-progress {

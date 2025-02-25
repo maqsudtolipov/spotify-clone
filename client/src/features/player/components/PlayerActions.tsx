@@ -48,16 +48,15 @@ const PlayerActions = () => {
         />
         <IoRepeat className={styles.actionBtn} role="button" />
       </div>
-      <div>
-        <p>{formatTime(currentTime)}</p>
-        <p>{formatTime(duration)}</p>
-
+      <div className={styles.rangeContainer}>
+        <p className={styles.time}>{formatTime(currentTime)}</p>
         <input
           ref={progressRef}
           className={styles.range}
           type="range"
           onChange={changeRange}
         />
+        <p  className={styles.time}>{formatTime(duration)}</p>
 
         <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
       </div>
