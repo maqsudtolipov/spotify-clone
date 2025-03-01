@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { ReactEventHandler, useEffect, useRef, useState } from 'react';
-import { playNext, playPrev } from '../../queue/queueSlice.ts';
+import { playNext, playPrev, toggleIsShuffled } from '../../queue/queueSlice.ts';
 
 const useAudioPlayer = () => {
   const song = useAppSelector((state) => state.queue.items[0]);
+  const isShuffled = useAppSelector((state) => state.queue.isShuffled);
   let dispatch = useAppDispatch();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -121,6 +122,10 @@ const useAudioPlayer = () => {
     setIsLooping((prev) => !prev);
   };
 
+  const handleToggleIsShuffled = () => {
+    dispatch(toggleIsShuffled());
+  };
+
   const formatTime = (secs: number) => {
     const minutes = String(Math.floor(secs / 60)).padStart(2, '0');
     const seconds = String(Math.floor(secs % 60)).padStart(2, '0');
@@ -131,6 +136,7 @@ const useAudioPlayer = () => {
     currentTime,
     isPlaying,
     isLooping,
+    isShuffled,
     audioElementRef,
     progressElementRef,
     duration,
@@ -142,6 +148,7 @@ const useAudioPlayer = () => {
     handleMetaLoad,
     toggleIsLooping,
     handleSongEnded,
+    handleToggleIsShuffled
   };
 };
 

@@ -7,6 +7,7 @@ const PlayerActions = () => {
     currentTime,
     isPlaying,
     isLooping,
+    isShuffled,
     audioElementRef,
     progressElementRef,
     duration,
@@ -17,13 +18,20 @@ const PlayerActions = () => {
     handlePlayPrev,
     toggleIsLooping,
     handleMetaLoad,
-    handleSongEnded
+    handleSongEnded,
+    handleToggleIsShuffled,
   } = useAudioPlayer();
 
   return (
     <div className={styles.actions}>
       <div className={styles.buttonsContainer}>
-        <IoShuffle className={styles.actionBtn} role="button" />
+        <button
+          className={`${styles.actionBtn} ${isShuffled ? styles.actionBtnActive : ''}`}
+          onClick={handleToggleIsShuffled}
+        >
+          <IoShuffle />
+        </button>
+
         <IoPlaySkipBack
           className={styles.actionBtn}
           role="button"

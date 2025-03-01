@@ -36,8 +36,12 @@ const queueSlice = createSlice({
         state.items.unshift(last);
       }
     },
+    toggleIsShuffled: (state) => {
+      state.isShuffled = !state.isShuffled;
+    },
   },
 });
 
-export const { setItems, playNext, playPrev } = queueSlice.actions;
+export const { setItems, playNext, playPrev, toggleIsShuffled } =
+  queueSlice.actions;
 export default queueSlice.reducer;
