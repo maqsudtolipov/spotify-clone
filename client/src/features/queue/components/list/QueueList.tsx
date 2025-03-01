@@ -1,6 +1,5 @@
 import styles from './QueueList.module.scss';
 import React, { useEffect, useRef, useState } from 'react';
-import { faker } from '@faker-js/faker';
 import QueueCard from '../card/QueueCard.tsx';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { setItems } from '../../queueSlice.ts';
@@ -19,17 +18,6 @@ const QueueList = () => {
   const [dragOverId, setDragOverId] = useState<string>('');
   const [showShadow, setShowShadow] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 40 }, () => ({
-      id: faker.database.mongodbObjectId(),
-      img: { url: faker.image.url({ height: 120, width: 120 }) },
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      artist: faker.person.fullName(),
-    }));
-
-    dispatch(setItems(fetchedItems));
-  }, []);
 
   const handleSort = (id: string) => {
     if (items) {
@@ -67,7 +55,7 @@ const QueueList = () => {
     <div className="h-full overflow-y-scroll">
       <div className={showShadow ? styles.shadow : ''}></div>
       <ul ref={ref} className={styles.queueList}>
-        {items &&
+        {items.length ? (
           items.map((item) => (
             <QueueCard
               key={item.name}
@@ -81,7 +69,10 @@ const QueueList = () => {
               }}
               onDragEnd={() => handleSort(item.id)}
             />
-          ))}
+          ))
+        ) : (
+          <p className='py-2 text-neutral-400 text-center'>There are no songs in the queue.</p>
+        )}
       </ul>
     </div>
   );
