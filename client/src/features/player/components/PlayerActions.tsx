@@ -6,6 +6,7 @@ const PlayerActions = () => {
   const {
     currentTime,
     isPlaying,
+    isLooping,
     audioElementRef,
     progressElementRef,
     duration,
@@ -14,6 +15,7 @@ const PlayerActions = () => {
     togglePlayPause,
     handlePlayNext,
     handlePlayPrev,
+    toggleIsLooping,
     handleMetaLoad,
   } = useAudioPlayer();
 
@@ -41,12 +43,15 @@ const PlayerActions = () => {
           />
         )}
 
-        <IoPlaySkipForward
-          className={styles.actionBtn}
-          role="button"
-          onClick={handlePlayNext}
-        />
-        <IoRepeat className={styles.actionBtn} role="button" />
+        <button onClick={handlePlayNext} className={styles.actionBtn}>
+          <IoPlaySkipForward />
+        </button>
+        <button
+          className={`${styles.actionBtn} ${isLooping ? styles.actionBtnActive : ''}`}
+          onClick={toggleIsLooping}
+        >
+          <IoRepeat />
+        </button>
       </div>
       <div className={styles.rangeContainer}>
         <p className={styles.time}>{formatTime(currentTime)}</p>

@@ -8,10 +8,39 @@
 
 .actionBtn {
   @apply p-1;
+  @apply relative;
   @apply text-neutral-400 text-3xl cursor-pointer;
 
+  svg {
+    @apply p-1;
+    @apply relative;
+    @apply text-neutral-400 text-3xl cursor-pointer;
+  }
+
+  &.actionBtnActive {
+    svg {
+      @apply text-green-400;
+
+      &:hover {
+        @apply text-green-400; // Hover effect when active
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 0px);
+      height: 4px;
+      width: 4px;
+      background: #4ade80;
+      border-radius: 50%;
+    }
+  }
+
   &:hover {
-    @apply text-white;
+    @apply text-white scale-105; // Default hover effect
   }
 }
 

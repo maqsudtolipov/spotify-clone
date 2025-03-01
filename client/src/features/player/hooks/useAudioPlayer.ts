@@ -7,6 +7,7 @@ const useAudioPlayer = () => {
   let dispatch = useAppDispatch();
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -16,7 +17,7 @@ const useAudioPlayer = () => {
 
   // Updates audio source and stops animations
   useEffect(() => {
-    if (song.song.url && audioElementRef.current) {
+    if (song?.song?.url && audioElementRef.current) {
       animationFrameRef.current = undefined;
       audioElementRef.current.src = song.song.url;
     }
@@ -105,6 +106,10 @@ const useAudioPlayer = () => {
     }
   };
 
+  const toggleIsLooping = () => {
+    setIsLooping((prev) => !prev);
+  };
+
   const formatTime = (secs: number) => {
     const minutes = String(Math.floor(secs / 60)).padStart(2, '0');
     const seconds = String(Math.floor(secs % 60)).padStart(2, '0');
@@ -114,6 +119,7 @@ const useAudioPlayer = () => {
   return {
     currentTime,
     isPlaying,
+    isLooping,
     audioElementRef,
     progressElementRef,
     duration,
@@ -123,6 +129,7 @@ const useAudioPlayer = () => {
     handlePlayNext,
     handlePlayPrev,
     handleMetaLoad,
+    toggleIsLooping,
   };
 };
 
