@@ -6,8 +6,8 @@ const PlayerActions = () => {
   const {
     currentTime,
     isPlaying,
-    audioRef,
-    progressRef,
+    audioElRef,
+    progressElRef,
     duration,
     changeRange,
     formatTime,
@@ -51,14 +51,20 @@ const PlayerActions = () => {
       <div className={styles.rangeContainer}>
         <p className={styles.time}>{formatTime(currentTime)}</p>
         <input
-          ref={progressRef}
+          ref={progressElRef}
           className={styles.range}
           type="range"
           onChange={changeRange}
         />
-        <p  className={styles.time}>{formatTime(duration)}</p>
+        <p className={styles.time}>{formatTime(duration)}</p>
 
-        <audio ref={audioRef} src="" onLoadedMetadata={handleMetaLoad}></audio>
+        <audio
+          ref={audioElRef}
+          src=""
+          onLoadedMetadata={handleMetaLoad}
+          preload="metadata"
+          // autoPlay={true}
+        ></audio>
       </div>
     </div>
   );
