@@ -11,12 +11,12 @@
 }
 
 .actionBtn {
-  @apply p-1;
+  @apply p-1 size-8;
   @apply relative;
   @apply text-neutral-400 text-3xl cursor-pointer;
 
   svg {
-    @apply p-1;
+    //@apply p-1;
     @apply relative;
     @apply text-neutral-400 text-3xl cursor-pointer;
   }

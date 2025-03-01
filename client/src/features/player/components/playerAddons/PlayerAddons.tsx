@@ -1,6 +1,8 @@
 import styles from '../playerActions/PlayerActions.module.scss';
 import { forwardRef, Ref, useEffect, useRef, useState } from 'react';
-import { IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-icons/io5';
+import { IoList, IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-icons/io5';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { closeQueue, openQueue } from '../../../queue/queueSlice.ts';
 
 // TODO: For actions
 // 1. Add volume change button - now
@@ -8,6 +10,8 @@ import { IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-ic
 // 3. Add full screen player + unsplash API - future
 
 const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
+  const isOpen = useAppSelector((state) => state.queue.isOpen);
+  const dispatch = useAppDispatch();
   const [volume, setVolume] = useState(100);
   const volumeElementRef = useRef<HTMLInputElement | null>(null);
 
@@ -28,8 +32,18 @@ const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
     }
   };
 
+  const toggleIsOpen = () => {
+    isOpen ? dispatch(closeQueue()) : dispatch(openQueue());
+  };
+
   return (
     <div className={styles.volumeContainer}>
+      <button
+        className={`${styles.actionBtn} ${isOpen ? styles.actionBtnActive : ''}`}
+        onClick={toggleIsOpen}
+      >
+        <IoList />
+      </button>
       <div className={styles.volumeIcon}>
         {volume === 0 && <IoVolumeOff />}
         {volume > 0 && volume < 34 && <IoVolumeLow />}

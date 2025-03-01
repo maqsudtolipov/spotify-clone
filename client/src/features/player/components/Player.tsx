@@ -6,7 +6,6 @@ const Player = () => {
     <div className={styles.player}>
       <div>song</div>
       <PlayerActions />
-      <div>volume</div>
     </div>
   );
 };

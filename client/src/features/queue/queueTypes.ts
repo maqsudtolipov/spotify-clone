@@ -12,6 +12,7 @@ export interface Song {
 export interface Queue {
   current: number;
   isShuffled: boolean;
+  isOpen: boolean;
   items: Song[];
   originalItems: Song[];
 }

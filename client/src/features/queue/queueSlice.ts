@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState: Queue = {
   current: 0,
   isShuffled: true,
+  isOpen: false,
   items: [],
   originalItems: [],
 };
@@ -41,9 +42,21 @@ const queueSlice = createSlice({
         state.items = state.originalItems;
       }
     },
+    openQueue: (state) => {
+      state.isOpen = true;
+    },
+    closeQueue: (state) => {
+      state.isOpen = false;
+    },
   },
 });
 
-export const { setItems, playNext, playPrev, toggleIsShuffled } =
-  queueSlice.actions;
+export const {
+  setItems,
+  playNext,
+  playPrev,
+  toggleIsShuffled,
+  openQueue,
+  closeQueue,
+} = queueSlice.actions;
 export default queueSlice.reducer;

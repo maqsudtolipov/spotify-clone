@@ -2,15 +2,22 @@ import styles from './Queue.module.scss';
 import QueueHeader from './header/QueueHeader.tsx';
 import { RiArrowLeftWideLine } from 'react-icons/ri';
 import QueueList from './list/QueueList.tsx';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { closeQueue, openQueue } from '../queueSlice.ts';
 
 interface QueueProps {}
 
 const Queue = ({}: QueueProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useAppSelector((state) => state.queue.isOpen);
+  const dispatch = useAppDispatch();
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => {
+    dispatch(openQueue());
+  };
+  const handleClose = () => {
+    dispatch(closeQueue());
+  };
 
   const containerClass = isOpen
     ? `${styles.container} ${styles.containerOpen}`
