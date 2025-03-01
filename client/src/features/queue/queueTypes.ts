@@ -5,11 +5,13 @@ export interface Song {
   name: string;
   artist: string;
   song: {
-    url: string
-  }
+    url: string;
+  };
 }
 
 export interface Queue {
   current: number;
+  isShuffled: boolean;
   items: Song[];
+  originalItems: Song[];
 }

@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: Queue = {
   current: 0,
+  isShuffled: true,
   items: [],
+  originalItems: [],
 };
 
 const queueSlice = createSlice({
@@ -11,7 +13,16 @@ const queueSlice = createSlice({
   initialState,
   reducers: {
     setItems: (state, action) => {
-      state.items = action.payload;
+      state.originalItems = action.payload;
+      // Shuffles items
+      if (state.isShuffled) {
+        state.items = action.payload
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+      } else {
+        state.items = action.payload;
+      }
     },
     playNext: (state) => {
       const nextItem = state.items.shift();
@@ -24,7 +35,7 @@ const queueSlice = createSlice({
       if (last) {
         state.items.unshift(last);
       }
-    }
+    },
   },
 });
 
