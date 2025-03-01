@@ -1,10 +1,25 @@
 import styles from './SongInfo.module.scss';
-import { useAppSelector } from '../../../../redux/hooks.ts';
-import { RiHeartLine } from 'react-icons/ri';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
+import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
+
+const isSongLiked = (id: string, likedSongs: string[]) => {
+  return likedSongs.includes(id);
+};
 
 const SongInfo = () => {
   const song = useAppSelector((state) => state.queue.items[0]);
-  console.log(song);
+  const likedSongs =
+    useAppSelector((state) => state.user?.data?.likedSongs?.songs) || [];
+  const dispatch = useAppDispatch();
+
+  const handleLikeSong = (id: string) => {
+    dispatch(likeSong({ id }));
+  };
+
+  const handleDislikeSong = (id: string) => {
+    dispatch(dislikeSong({ id }));
+  };
 
   return (
     <div className={styles.songInfo}>
@@ -15,8 +30,10 @@ const SongInfo = () => {
           <p className={styles.artist}>{song.artist.name}</p>
         </div>
       </div>
-      <button className={styles.likeBtn}>
-        <RiHeartLine />
+      <button
+        className={`${styles.likeBtn} ${isSongLiked(song._id, likedSongs) ? styles.likeBtnActive : ''}`}
+      >
+        {isSongLiked(song._id, likedSongs) ? <RiHeartFill /> : <RiHeartLine />}
       </button>
     </div>
   );
