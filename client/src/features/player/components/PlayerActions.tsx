@@ -17,6 +17,7 @@ const PlayerActions = () => {
     handlePlayPrev,
     toggleIsLooping,
     handleMetaLoad,
+    handleSongEnded
   } = useAudioPlayer();
 
   return (
@@ -65,9 +66,10 @@ const PlayerActions = () => {
 
         <audio
           ref={audioElementRef}
+          preload="metadata"
           src=""
           onLoadedMetadata={handleMetaLoad}
-          preload="metadata"
+          onEnded={handleSongEnded}
         ></audio>
       </div>
     </div>

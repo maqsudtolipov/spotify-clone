@@ -73,6 +73,17 @@ const useAudioPlayer = () => {
     }
   };
 
+  // TODO: if song ended and loop is on repeat current song, else play next one
+  const handleSongEnded: ReactEventHandler<HTMLAudioElement> = () => {
+    resetPlayer();
+    if (isLooping) {
+      audioElementRef.current?.play();
+      animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
+    } else {
+      handlePlayNext();
+    }
+  };
+
   // Changes progress value and updates current time on every frame
   const animationWhilePlaying = () => {
     if (progressElementRef.current && audioElementRef.current) {
@@ -130,6 +141,7 @@ const useAudioPlayer = () => {
     handlePlayPrev,
     handleMetaLoad,
     toggleIsLooping,
+    handleSongEnded,
   };
 };
 
