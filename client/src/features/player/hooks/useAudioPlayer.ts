@@ -2,9 +2,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { ReactEventHandler, useEffect, useRef, useState } from 'react';
 import { playNext, playPrev } from '../../queue/queueSlice.ts';
 
-// Steps
-// 1. Change song src when song changes
-
 const useAudioPlayer = () => {
   const song = useAppSelector((state) => state.queue.items[0]);
   let dispatch = useAppDispatch();
@@ -13,75 +10,45 @@ const useAudioPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const audioElRef = useRef<HTMLAudioElement>(null);
-  const progressElRef = useRef<HTMLInputElement>(null);
-  const animationRef = useRef<number>();
+  const audioElementRef = useRef<HTMLAudioElement>(null);
+  const progressElementRef = useRef<HTMLInputElement>(null);
+  const animationFrameRef = useRef<number>();
 
-  // Updates audio source and resets player
+  // Updates audio source and stops animations
   useEffect(() => {
-    if (song?.song?.url && audioElRef.current) {
-      animationRef.current = undefined;
-      audioElRef.current.src = song.song.url;
+    if (song.song.url && audioElementRef.current) {
+      animationFrameRef.current = undefined;
+      audioElementRef.current.src = song.song.url;
     }
-
-    // if (audioRef.current && song) {
-    //   audioRef.current.src = song.song.url;
-    //   resetPlayer();
-    // }
   }, [song]);
 
   useEffect(() => {
-    console.log(duration, isPlaying);
-    if (duration !== 0 && isPlaying) {
-      audioElRef.current.play();
-      animationRef.current = requestAnimationFrame(animationWhilePlaying);
+    if (audioElementRef.current && duration !== 0 && isPlaying) {
+      audioElementRef.current.play();
+      animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
     }
   }, [duration, isPlaying]);
 
   const resetPlayer = () => {
-    progressElRef.current.value = 0;
-    progressElRef.current.style.setProperty('--range-width', `0%`);
+    if (progressElementRef.current) {
+      progressElementRef.current.value = '0';
+      progressElementRef.current.style.setProperty('--range-width', `0%`);
+    }
     setCurrentTime(0);
   };
-
-  // Reset player when moving to next or previous song
-  // const resetPlayer = () => {
-  // setDuration(0);
-  // setCurrentTime(0);
-  //
-  // if (audioRef.current) {
-  //   audioRef.current.currentTime = 0;
-  // }
-  // if (progressRef.current) {
-  //   progressRef.current.value = '0';
-  //   progressRef.current.style.setProperty('--range-width', `${0}%`); // Reset
-  // }
-  //
-  // if (animationRef.current) cancelAnimationFrame(animationRef.current);
-  // animationRef.current = undefined;
-  // };
 
   const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
 
     if (!isPlaying) {
-      audioElRef.current?.play();
-      animationRef.current = requestAnimationFrame(animationWhilePlaying);
+      audioElementRef.current?.play();
+      animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
     } else {
-      audioElRef.current?.pause();
-      animationRef.current = null;
-      // cancelAnimationFrame(animationRef.current);
+      audioElementRef.current?.pause();
+      if (animationFrameRef.current)
+        cancelAnimationFrame(animationFrameRef.current);
+      // animationFrameRef.current = null;
     }
-
-    // setIsPlaying((prev) => !prev);
-    // const audioEl = audioRef.current;
-    // if (!isPlaying) {
-    //   audioEl?.play();
-    //   animationRef.current = requestAnimationFrame(whilePlaying);
-    // } else {
-    //   audioEl?.pause();
-    //   if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    // }
   };
 
   const handlePlayNext = () => {
@@ -94,84 +61,47 @@ const useAudioPlayer = () => {
     dispatch(playPrev());
   };
 
-  // const resetPlayer = () => {
-  //   // setCurrentTime(0);
-  //   // setDuration(0);
-  //   // cancelAnimationFrame(animationRef.current);
-  //   // animationRef.current = null;
-  //   // animationRef.current = null;
-  // };
-
-  // Runs on song meta loaded
+  // Sets song durations and resets range
   const handleMetaLoad: ReactEventHandler<HTMLAudioElement> = () => {
-    if (audioElRef.current && progressElRef.current) {
-      const loadedAudioDuration = Math.floor(audioElRef.current.duration);
-      progressElRef.current.value = '0';
-      progressElRef.current.max = String(loadedAudioDuration);
+    if (audioElementRef.current && progressElementRef.current) {
+      const loadedAudioDuration = Math.floor(audioElementRef.current.duration);
+      progressElementRef.current.value = '0';
+      progressElementRef.current.max = String(loadedAudioDuration);
+
       setDuration(loadedAudioDuration);
-
-      // if (isPlaying) {
-      //   audioElRef.current?.play();
-      //   animationRef.current = requestAnimationFrame(animationWhilePlaying);
-      // }
     }
-
-    // const audioEl = e.target as HTMLAudioElement;
-    // const seconds = Math.floor(audioEl.duration);
-    // setDuration(seconds);
-    //
-    // if (isPlaying) audioEl.play(); // If isPlaying true auto plays new song
-    // if (progressRef.current) progressRef.current.max = String(seconds);
   };
 
-  // Changes progress value and updates current time every fps
+  // Changes progress value and updates current time on every frame
   const animationWhilePlaying = () => {
-    if (progressElRef.current && audioElRef.current) {
-      progressElRef.current.value = String(audioElRef.current.currentTime);
-
-      console.log(
-        'debug',
-        progressElRef.current.value,
-        audioElRef.current.currentTime,
-        duration,
+    if (progressElementRef.current && audioElementRef.current) {
+      progressElementRef.current.value = String(
+        audioElementRef.current.currentTime,
       );
-      console.log('ANIMATION: ', animationRef.current);
 
-      progressElRef.current.style.setProperty(
+      progressElementRef.current.style.setProperty(
         '--range-width',
-        `${(Number(progressElRef.current.value) / duration) * 100}%`,
+        `${(Number(progressElementRef.current.value) / duration) * 100}%`,
       );
-      setCurrentTime(audioElRef.current.currentTime);
 
-      if (animationRef.current) {
+      setCurrentTime(audioElementRef.current.currentTime);
+
+      if (animationFrameRef.current) {
         requestAnimationFrame(animationWhilePlaying);
       }
     }
   };
 
-  const whilePlaying = () => {
-    // if (progressRef.current && audioRef.current) {
-    //   progressRef.current.value = String(audioRef.current.currentTime);
-    //   changeCurrentTime();
-    //   animationRef.current = requestAnimationFrame(whilePlaying);
-    // }
-  };
-
   const changeRange = () => {
-    if (progressElRef.current && audioElRef.current) {
-      audioElRef.current.currentTime = Number(progressElRef.current.value);
-      progressElRef.current.style.setProperty(
-        '--range-width',
-        `${(Number(progressElRef.current.value) / duration) * 100}%`,
+    if (progressElementRef.current && audioElementRef.current) {
+      audioElementRef.current.currentTime = Number(
+        progressElementRef.current.value,
       );
-      setCurrentTime(audioElRef.current.currentTime);
-
-      // const current = Number(progressElRef.current.value);
-      // progressElRef.current.style.setProperty(
-      //   '--range-width',
-      //   `${(current / duration) * 100}%`,
-      // );
-      // setCurrentTime(current);
+      progressElementRef.current.style.setProperty(
+        '--range-width',
+        `${(Number(progressElementRef.current.value) / duration) * 100}%`,
+      );
+      setCurrentTime(audioElementRef.current.currentTime);
     }
   };
 
@@ -184,8 +114,8 @@ const useAudioPlayer = () => {
   return {
     currentTime,
     isPlaying,
-    audioElRef,
-    progressElRef,
+    audioElementRef,
+    progressElementRef,
     duration,
     changeRange,
     formatTime,
