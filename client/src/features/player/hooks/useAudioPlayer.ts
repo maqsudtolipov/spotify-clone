@@ -73,7 +73,7 @@ const useAudioPlayer = () => {
     }
   };
 
-  // TODO: if song ended and loop is on repeat current song, else play next one
+  // If song ended and loop is on repeat current song, else play next one
   const handleSongEnded: ReactEventHandler<HTMLAudioElement> = () => {
     resetPlayer();
     if (isLooping) {
