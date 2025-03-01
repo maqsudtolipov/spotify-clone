@@ -1,5 +1,5 @@
 import styles from '../playerActions/PlayerActions.module.scss';
-import { useRef, useState } from 'react';
+import { forwardRef, Ref, useEffect, useRef, useState } from 'react';
 import { IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-icons/io5';
 
 // TODO: For actions
@@ -7,9 +7,15 @@ import { IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-ic
 // 2. Add mini on screen player - future
 // 3. Add full screen player + unsplash API - future
 
-const PlayerAddons = () => {
-  const [volume, setVolume] = useState(0);
+const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
+  const [volume, setVolume] = useState(100);
   const volumeElementRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (volumeElementRef.current) {
+      volumeElementRef.current.style.setProperty('--range-width', `100%`);
+    }
+  }, []);
 
   const handleVolumeChange = () => {
     if (volumeElementRef.current) {
@@ -18,6 +24,7 @@ const PlayerAddons = () => {
         '--range-width',
         `${volumeElementRef.current.value}%`,
       );
+      if (ref?.current) ref.current.volume = volume / 100;
     }
   };
 
@@ -39,6 +46,6 @@ const PlayerAddons = () => {
       />
     </div>
   );
-};
+});
 
 export default PlayerAddons;

@@ -65,7 +65,7 @@
 
 .range {
   $bg-color: #4d4d4d;
-  --range-width: 40px;
+  --range-width: 0px;
 
   width: 100%;
   height: 4px;
@@ -180,7 +180,7 @@
 
 // Volume
 .volumeContainer {
-  @apply flex items-center gap-2;
+  @apply flex items-center justify-end gap-2;
 
   input[type='range'] {
     width: 100px;

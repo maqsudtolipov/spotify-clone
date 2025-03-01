@@ -87,7 +87,7 @@ const PlayerActions = () => {
           ></audio>
         </div>
       </div>
-      <PlayerAddons />
+      <PlayerAddons ref={audioElementRef} />
     </>
   );
 };
