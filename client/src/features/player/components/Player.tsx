@@ -1,5 +1,5 @@
 import styles from './Player.module.scss';
-import PlayerActions from './PlayerActions.tsx';
+import PlayerActions from './playerActions/PlayerActions.tsx';
 
 const Player = () => {
   return (
