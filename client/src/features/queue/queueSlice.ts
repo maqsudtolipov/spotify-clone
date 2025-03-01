@@ -14,15 +14,7 @@ const queueSlice = createSlice({
   reducers: {
     setItems: (state, action) => {
       state.originalItems = action.payload;
-      // Shuffles items
-      if (state.isShuffled) {
-        state.items = action.payload
-          .map((value) => ({ value, sort: Math.random() }))
-          .sort((a, b) => a.sort - b.sort)
-          .map(({ value }) => value);
-      } else {
-        state.items = action.payload;
-      }
+      state.items = action.payload;
     },
     playNext: (state) => {
       const nextItem = state.items.shift();
@@ -38,6 +30,16 @@ const queueSlice = createSlice({
     },
     toggleIsShuffled: (state) => {
       state.isShuffled = !state.isShuffled;
+
+      // Shuffles items
+      if (state.isShuffled) {
+        state.items = [...state.originalItems]
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+      } else {
+        state.items = state.originalItems;
+      }
     },
   },
 });
