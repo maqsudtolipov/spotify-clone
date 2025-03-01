@@ -3,9 +3,12 @@ import { ReactEventHandler, useEffect, useRef, useState } from 'react';
 import { playNext, playPrev, toggleIsShuffled } from '../../queue/queueSlice.ts';
 
 const useAudioPlayer = () => {
-  const song = useAppSelector((state) => state.queue.items[0]);
+  const songs = useAppSelector((state) => state.queue.items);
   const isShuffled = useAppSelector((state) => state.queue.isShuffled);
   let dispatch = useAppDispatch();
+
+  const isEmpty = songs.length === 0;
+  const song = songs[0] || null;
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
@@ -133,6 +136,7 @@ const useAudioPlayer = () => {
   };
 
   return {
+    isEmpty,
     currentTime,
     isPlaying,
     isLooping,
@@ -148,7 +152,7 @@ const useAudioPlayer = () => {
     handleMetaLoad,
     toggleIsLooping,
     handleSongEnded,
-    handleToggleIsShuffled
+    handleToggleIsShuffled,
   };
 };
 

@@ -1,5 +1,9 @@
 .actions {
   @apply flex flex-col items-stretch gap-3;
+
+  &Disabled {
+    @apply opacity-70 grayscale pointer-events-none;
+  }
 }
 
 .buttonsContainer {

@@ -4,6 +4,7 @@ import useAudioPlayer from '../hooks/useAudioPlayer.ts';
 
 const PlayerActions = () => {
   const {
+    isEmpty,
     currentTime,
     isPlaying,
     isLooping,
@@ -23,7 +24,9 @@ const PlayerActions = () => {
   } = useAudioPlayer();
 
   return (
-    <div className={styles.actions}>
+    <div
+      className={`${styles.actions} ${isEmpty ? styles.actionsDisabled : ''}`}
+    >
       <div className={styles.buttonsContainer}>
         <button
           className={`${styles.actionBtn} ${isShuffled ? styles.actionBtnActive : ''}`}
@@ -68,6 +71,7 @@ const PlayerActions = () => {
           ref={progressElementRef}
           className={styles.range}
           type="range"
+          defaultValue={0}
           onChange={changeRange}
         />
         <p className={styles.time}>{formatTime(duration)}</p>
