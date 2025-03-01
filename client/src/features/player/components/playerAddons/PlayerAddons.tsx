@@ -22,8 +22,8 @@ const PlayerAddons = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className={styles.volumeContainer}>
+      <div className={styles.volumeIcon}>
         {volume === 0 && <IoVolumeOff />}
         {volume > 0 && volume < 34 && <IoVolumeLow />}
         {volume >= 34 && volume < 66 && <IoVolumeMedium />}
