@@ -21,6 +21,8 @@ const SongInfo = () => {
     dispatch(dislikeSong({ id }));
   };
 
+  if (!song) return <div></div>;
+
   return (
     <div className={styles.songInfo}>
       <img src={song.img.url} alt={`${song.name} cover`} />
@@ -33,7 +35,11 @@ const SongInfo = () => {
       <button
         className={`${styles.likeBtn} ${isSongLiked(song._id, likedSongs) ? styles.likeBtnActive : ''}`}
       >
-        {isSongLiked(song._id, likedSongs) ? <RiHeartFill /> : <RiHeartLine />}
+        {isSongLiked(song._id, likedSongs) ? (
+          <RiHeartFill onClick={() => handleDislikeSong(song._id)} />
+        ) : (
+          <RiHeartLine onClick={() => handleLikeSong(song._id)} />
+        )}
       </button>
     </div>
   );
