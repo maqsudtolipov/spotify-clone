@@ -5,6 +5,7 @@ import { Playlist } from '../playlistSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
 import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
+import { setItems } from '../../queue/queueSlice.ts';
 
 const isLiked = (id: string, likedPlaylists: string[]) => {
   return likedPlaylists.includes(id);
@@ -21,6 +22,9 @@ const PlaylistActions = ({ data }: Playlist) => {
 
   const dispatch = useAppDispatch();
 
+  const handlePlay = () => {
+    dispatch(setItems(data.songs));
+  };
   const handleSave = (id: string) => {
     dispatch(savePlaylist({ id }));
   };
@@ -33,7 +37,7 @@ const PlaylistActions = ({ data }: Playlist) => {
 
   return (
     <PlayHeader>
-      <PlayButton />
+      <PlayButton onClick={handlePlay}/>
       {!isPersonalPlaylist && (
         <TransparentButton
           text={isLiked(data.id, likedPlaylists) ? 'Remove' : 'Save'}

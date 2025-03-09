@@ -1,0 +1,43 @@
+.container {
+  @apply h-full w-[30px];
+  @apply relative overflow-hidden;
+  @apply rounded-xl;
+
+  transition: all 0800ms;
+
+  &Closed:hover {
+    @apply w-[60px];
+  }
+
+  &Open {
+    @apply w-[330px];
+  }
+}
+
+.queue {
+  @apply w-[330px] h-full;
+  @apply grid grid-rows-[auto_1fr];
+  @apply overflow-hidden;
+  @apply bg-neutral-900;
+}
+
+.toggleArea {
+  @apply flex h-full w-full items-center justify-center;
+  @apply absolute;
+  @apply bg-neutral-900 bg-opacity-100 cursor-pointer;
+
+  z-index: 1000;
+  transition: all 0800ms;
+
+  svg {
+    @apply text-neutral-400 text-2xl;
+  }
+
+  &:hover {
+    @apply bg-opacity-80;
+
+    svg {
+      @apply text-white;
+    }
+  }
+}

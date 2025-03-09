@@ -7,6 +7,7 @@ import { setLibraryItems } from '../library/librarySlice.ts';
 import { User } from './userTypes.ts';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
+import toast from 'react-hot-toast';
 
 // Checks whether the user is authenticated using cookies
 export const getCurrent = createAsyncThunk(
@@ -32,6 +33,7 @@ export const signUp = createAsyncThunk<
 >('user/signUp', async (input, { rejectWithValue }) => {
   try {
     const res = await axios.post('/auth/signup', input);
+    toast.success('Your account is created!');
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
@@ -45,8 +47,9 @@ export const login = createAsyncThunk<
 >('user/login', async (input, { dispatch, rejectWithValue }) => {
   try {
     const res = await axios.post('/auth/login', input);
-
     dispatch(setLibraryItems(res.data.user.library.items));
+    toast.success('Welcome back!');
+
     return res.data.user;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
