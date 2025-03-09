@@ -37,11 +37,9 @@ const PlayerActions = () => {
             <IoShuffle />
           </button>
 
-          <IoPlaySkipBack
-            className={styles.actionBtn}
-            role="button"
-            onClick={handlePlayPrev}
-          />
+          <button className={styles.actionBtn}>
+            <IoPlaySkipBack onClick={handlePlayPrev} />
+          </button>
 
           {!isPlaying ? (
             <IoPlayCircle
@@ -57,7 +55,7 @@ const PlayerActions = () => {
             />
           )}
 
-          <button onClick={handlePlayNext} className={styles.actionBtn}>
+          <button className={styles.actionBtn} onClick={handlePlayNext}>
             <IoPlaySkipForward />
           </button>
           <button

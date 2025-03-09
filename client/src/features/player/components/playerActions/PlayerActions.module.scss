@@ -7,18 +7,16 @@
 }
 
 .buttonsContainer {
-  @apply self-center flex items-center gap-4;
+  @apply self-center flex items-center gap-2;
 }
 
 .actionBtn {
   @apply p-1 size-8;
   @apply relative;
-  @apply text-neutral-400 text-3xl cursor-pointer;
 
   svg {
-    //@apply p-1;
-    @apply relative;
-    @apply text-neutral-400 text-3xl cursor-pointer;
+    @apply size-full;
+    @apply text-neutral-400 cursor-pointer;
   }
 
   &.actionBtnActive {
@@ -49,7 +47,8 @@
 }
 
 .playPauseBtn {
-  @apply text-white text-4xl cursor-pointer;
+  @apply mx-1;
+  @apply size-9 text-white cursor-pointer;
 }
 
 .rangeContainer {
