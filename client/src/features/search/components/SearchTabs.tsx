@@ -1,6 +1,6 @@
-import Tabs from '../../ui/Tabs/Tabs.tsx';
-import TabsList from '../../ui/Tabs/TabsList.tsx';
-import Tab from '../../ui/Tabs/Tab.tsx';
+import Tabs from '../../../ui/Tabs/Tabs.tsx';
+import TabsList from '../../../ui/Tabs/TabsList.tsx';
+import Tab from '../../../ui/Tabs/Tab.tsx';
 
 interface SearchTabsProps {
   handleTabChange: (
