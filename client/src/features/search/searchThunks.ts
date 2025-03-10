@@ -7,10 +7,10 @@ export const searchMain = createAsyncThunk<
   unknown,
   string,
   { rejectValue: RejectValue }
->('search/searchMain', async (query, { rejectWithValue }) => {
+>('search/searchMain', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search?query=${query}`);
-    console.log(res);
+    const res = await axios.get(`/search?name=${name}`);
+    console.log(res.data);
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
   }
