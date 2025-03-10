@@ -11,6 +11,7 @@ export const searchMain = createAsyncThunk<
   try {
     const res = await axios.get(`/search?name=${name}`);
     console.log(res.data);
+    return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
   }
