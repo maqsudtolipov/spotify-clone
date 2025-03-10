@@ -9,6 +9,7 @@ const userRouter = require("./routes/userRoutes");
 const artistRouter = require("./routes/artistRoutes");
 const songRouter = require("./routes/songRoutes");
 const playlistRouter = require("./routes/playlistRoutes");
+const searchRouter = require("./routes/searchRoutes");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/users", userRouter);
 app.use("/api/artists", artistRouter);
 app.use("/api/songs", songRouter);
 app.use("/api/playlists", playlistRouter);
+app.use("/api/search", searchRouter);
 
 // Error handling middleware
 app.use(globalErrorHandler);
