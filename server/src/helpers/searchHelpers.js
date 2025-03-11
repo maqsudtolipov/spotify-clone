@@ -1,4 +1,3 @@
-const Song = require("../models/songModel");
 exports.getPaginationResults = async (Model, filter, limit, page) => {
   limit = Math.max(parseInt(limit) || 10);
   page = Math.max(parseInt(page) || 1);

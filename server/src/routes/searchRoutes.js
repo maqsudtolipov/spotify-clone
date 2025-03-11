@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.route("/").get(ensureAuthenticated, searchController.search);
 router.route("/songs").get(ensureAuthenticated, searchController.searchSongs);
-router.route('/playlists').get(ensureAuthenticated, searchController.searchPlaylists)
+router.route('/playlists').get(ensureAuthenticated, searchController.searchPlaylists);
+router.route('/artists').get(ensureAuthenticated, searchController.searchArtists)
 
 module.exports = router;
