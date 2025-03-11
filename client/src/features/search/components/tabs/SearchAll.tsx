@@ -3,49 +3,38 @@ import CardsList from '../../../../ui/CardsList/CardsList.tsx';
 import { useAppSelector } from '../../../../redux/hooks.ts';
 import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 
-interface CardItem {
-  img: string;
-  name: string;
-  description: string;
-  type: string;
-}
-
-interface Item {
-  img: string;
-  name: string;
-  artist: string;
-  plays: number;
-  isLiked: boolean;
-}
-
 const SearchAll = () => {
   const songs = useAppSelector(state => state.search.mainSearch.songs)
   const artists = useAppSelector((state) => state.search.mainSearch.artists);
   const playlists = useAppSelector((state) => state.search.mainSearch.playlists);
   const users = useAppSelector((state) => state.search.mainSearch.users);
 
+  if (!songs?.length && !artists?.length && !playlists?.length && !users?.length) {
+    return <p className='py-16 text-center text-neutral-400'>No matches found, try searching a different title.</p>
+  }
+
   return (
     <div>
-      {songs && (
+      {songs.length && (
         <div className="mb-10">
           <Heading2>Songs</Heading2>
           <SortedTable items={songs} />
         </div>
       )}
 
-      {artists && (
+      {artists.length && (
         <div className="mb-10">
           <CardsList title="Artists" shrink={true} items={artists} />
         </div>
       )}
 
-      {playlists && (
+      {artists.length && (
         <div className="mb-10">
           <CardsList title="Playlists" shrink={true} items={playlists} />
         </div>
       )}
 
-      {users && (
+      {artists.length && (
         <div className="mb-10">
           <CardsList title="Profiles" shrink={true} items={users} />
         </div>
