@@ -1,7 +1,7 @@
 .cardImage {
   @apply mb-2;
   @apply relative;
-  @apply rounded-md overflow-hidden;
+  @apply rounded-md overflow-hidden shadow-xl shadow-black/20;
 
   img {
     @apply w-full aspect-square;

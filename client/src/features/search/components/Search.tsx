@@ -1,10 +1,10 @@
 import SearchTabs from './SearchTabs.tsx';
 import { useState } from 'react';
-import SearchSongs from './sub/SearchSongs.tsx';
-import SearchArtists from './sub/SearchArtists.tsx';
-import SearchPlaylists from './sub/SearchPlaylists.tsx';
-import SearchProfiles from './sub/SearchProfiles.tsx';
-import SearchAll from './sub/SearchAll.tsx';
+import SearchSongs from './tabs/SearchSongs.tsx';
+import SearchArtists from './tabs/SearchArtists.tsx';
+import SearchPlaylists from './tabs/SearchPlaylists.tsx';
+import SearchProfiles from './tabs/SearchProfiles.tsx';
+import SearchAll from './tabs/SearchAll.tsx';
 
 type Tabs = 'all' | 'artists' | 'playlists' | 'songs' | 'profiles';
 

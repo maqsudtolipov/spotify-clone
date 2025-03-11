@@ -40,6 +40,8 @@ const SortedTable = ({ items }: SortedTableProps) => {
       </p>
     );
 
+  console.log(items);
+
   return (
     <Table>
       <TableHeader>

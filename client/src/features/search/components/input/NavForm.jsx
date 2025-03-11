@@ -2,13 +2,19 @@ import styles from './NavForm.module.scss';
 import { RiCloseLargeLine, RiSearchLine } from 'react-icons/ri';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../../../redux/hooks.ts';
+import { searchMain } from '../../searchThunks.ts';
 
 const NavForm = () => {
+  // useAppSelector((state) => state.app);
+  const dispatch = useAppDispatch();
+
   const [showBtn, setShowBtn] = useState(false);
   const { register, handleSubmit, watch, reset } = useForm();
 
   const handleFormSubmit = (data) => {
-    console.log('form submitted:', data);
+    console.log('form submitted:', data.input);
+    dispatch(searchMain(data.input))
   };
 
   // Shows the close button when input is at least 3 characters
