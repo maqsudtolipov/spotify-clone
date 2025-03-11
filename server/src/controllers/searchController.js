@@ -41,7 +41,12 @@ exports.searchSongs = async (req, res, next) => {
 
     const songs = await Song.find(filter)
       .limit(limit)
-      .skip((validPage - 1) * limit);
+      .skip((validPage - 1) * limit)
+      .select("name duration song img")
+      .populate([
+        { path: "song img", select: "url" },
+        { path: "artist", select: "name" },
+      ]);
 
     res.status(200).json({
       status: "success",
@@ -49,32 +54,6 @@ exports.searchSongs = async (req, res, next) => {
       currentPage: validPage,
       totalPages,
       totalCount,
-    });
-  } catch (e) {
-    next(e);
-  }
-};
-
-exports.searchSongs = async (req, res, next) => {
-  try {
-    const filter = { name: { $regex: req.query.name, $options: "i" } };
-
-    const { limit, totalCount, totalPages, validPage } =
-      await getPaginationResults(Song, filter, req.query.limit, req.query.page);
-
-    const songs = await Song.find(filter)
-      .limit(limit)
-      .skip((validPage - 1) * limit);
-
-    res.status(200).json({
-      status: "success",
-      songs,
-      pagination: {
-        limit,
-        currentPage: validPage,
-        totalPages,
-        totalCount,
-      },
     });
   } catch (e) {
     next(e);
@@ -95,7 +74,12 @@ exports.searchPlaylists = async (req, res, next) => {
 
     const playlists = await Playlist.find(filter)
       .limit(limit)
-      .skip((validPage - 1) * limit);
+      .skip((validPage - 1) * limit)
+      .select("name img user")
+      .populate([
+        { path: "img", select: "url" },
+        { path: "user", select: "name" },
+      ]);
 
     res.status(200).json({
       status: "success",
@@ -124,7 +108,9 @@ exports.searchArtists = async (req, res, next) => {
 
     const artists = await User.find(filter)
       .limit(limit)
-      .skip((validPage - 1) * limit);
+      .skip((validPage - 1) * limit)
+      .select("name img")
+      .populate({ path: "img", select: "url" });
 
     res.status(200).json({
       status: "success",
@@ -153,7 +139,9 @@ exports.searchUsers = async (req, res, next) => {
 
     const users = await User.find(filter)
       .limit(limit)
-      .skip((validPage - 1) * limit);
+      .skip((validPage - 1) * limit)
+      .select("name img")
+      .populate({ path: "img", select: "url" });
 
     res.status(200).json({
       status: "success",
@@ -169,4 +157,3 @@ exports.searchUsers = async (req, res, next) => {
     next(e);
   }
 };
-
