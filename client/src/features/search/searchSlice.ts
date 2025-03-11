@@ -7,6 +7,7 @@ const initialState: SearchState = {
   query: '',
   mainSearch: {
     songs: [],
+    lastQuery: '',
   },
   songs: {
     songs: [],
@@ -46,6 +47,7 @@ const searchSlice = createSlice({
     builder
       .addCase(searchMain.fulfilled, (state, action) => {
         state.mainSearch = action.payload.results;
+        state.mainSearch.lastQuery = state.query;
       })
       .addCase(searchSongs.fulfilled, (state, action) => {
         state.songs.songs = action.payload.songs;

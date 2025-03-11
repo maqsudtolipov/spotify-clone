@@ -7,6 +7,7 @@ export interface SearchState {
   query: string;
   mainSearch: {
     songs: Song[];
+    lastQuery: string;
   };
   songs: { songs: Song[]; lastQuery: string };
   playlists: { playlists: Playlist[]; lastQuery: string };

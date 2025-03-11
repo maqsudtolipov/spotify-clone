@@ -5,13 +5,13 @@ import { searchSongs } from '../../searchThunks.ts';
 
 const SearchSongs = () => {
   const songs = useAppSelector((state) => state.search.songs.songs);
-  const songsQuery = useAppSelector((state) => state.search.songs.lastQuery);
+  const songsLastQuery = useAppSelector((state) => state.search.songs.lastQuery);
   const query = useAppSelector((state) => state.search.query);
   const tab = useAppSelector((state) => state.search.tab);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (query === songsQuery) return; // If query not changed, no fetching again
+    if (query === songsLastQuery) return; // If query not changed, don't fetching again
     dispatch(searchSongs(query));
   }, [tab, query]);
 
