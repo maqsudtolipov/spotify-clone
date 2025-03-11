@@ -10,6 +10,7 @@ const SearchSongs = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    if (query === songsQuery) return; // If query not changed, no fetching again
     dispatch(searchSongs(query));
   }, [query]);
 
