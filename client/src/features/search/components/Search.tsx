@@ -20,9 +20,9 @@ const Search = () => {
       <SearchTabs handleTabChange={handleTabChange} />
 
       {tab === 'all' && <SearchAll />}
+      {tab === 'songs' && <SearchSongs />}
       {tab === 'artists' && <SearchArtists />}
       {tab === 'playlists' && <SearchPlaylists />}
-      {tab === 'songs' && <SearchSongs />}
       {tab === 'profiles' && <SearchProfiles />}
     </div>
   );

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SearchState } from './searchTypes.ts';
-import { searchMain } from './searchThunks.ts';
+import { searchMain, searchSongs } from './searchThunks.ts';
 
 const initialState: SearchState = {
   query: '',
@@ -30,9 +30,14 @@ const searchSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(searchMain.fulfilled, (state, action) => {
-      state.mainSearch = action.payload.results;
-    }),
+    builder
+      .addCase(searchMain.fulfilled, (state, action) => {
+        state.mainSearch = action.payload.results;
+      })
+      .addCase(searchSongs.fulfilled, (state, action) => {
+        state.songs.songs = action.payload.songs;
+        state.songs.lastQuery = state.query;
+      }),
 });
 
 export default searchSlice.reducer;
