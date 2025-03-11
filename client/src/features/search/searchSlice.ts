@@ -1,8 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SearchState } from './searchTypes.ts';
 import { searchMain, searchSongs } from './searchThunks.ts';
 
 const initialState: SearchState = {
+  tab: 'all',
   query: '',
   mainSearch: {
     songs: [],
@@ -28,7 +29,16 @@ const initialState: SearchState = {
 const searchSlice = createSlice({
   name: 'search',
   initialState,
-  reducers: {},
+  reducers: {
+    changeTab: (
+      state,
+      action: PayloadAction<
+        'all' | 'artists' | 'playlists' | 'songs' | 'profiles'
+      >,
+    ) => {
+      state.tab = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(searchMain.fulfilled, (state, action) => {
@@ -40,4 +50,5 @@ const searchSlice = createSlice({
       }),
 });
 
+export const { changeTab } = searchSlice.actions;
 export default searchSlice.reducer;

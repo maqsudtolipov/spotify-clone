@@ -1,18 +1,20 @@
 import SearchTabs from './SearchTabs.tsx';
-import { useState } from 'react';
 import SearchSongs from './tabs/SearchSongs.tsx';
 import SearchArtists from './tabs/SearchArtists.tsx';
 import SearchPlaylists from './tabs/SearchPlaylists.tsx';
 import SearchProfiles from './tabs/SearchProfiles.tsx';
 import SearchAll from './tabs/SearchAll.tsx';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
+import { changeTab } from '../searchSlice.ts';
 
 type Tabs = 'all' | 'artists' | 'playlists' | 'songs' | 'profiles';
 
 const Search = () => {
-  const [tab, setTab] = useState<Tabs>('all');
+  const tab = useAppSelector((state) => state.search.tab);
+  const dispatch = useAppDispatch();
 
   const handleTabChange = (tab: Tabs) => {
-    setTab(tab);
+    dispatch(changeTab(tab));
   };
 
   return (

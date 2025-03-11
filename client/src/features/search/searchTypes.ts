@@ -3,6 +3,7 @@ import { Playlist } from '../playlist/playlistTypes.ts';
 import { User } from '../user/userTypes.ts';
 
 export interface SearchState {
+  tab: 'all' | 'artists' | 'playlists' | 'songs' | 'profiles';
   query: string;
   mainSearch: {
     songs: Song[];
