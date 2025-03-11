@@ -7,12 +7,23 @@ const initialState: SearchState = {
   mainSearch: {
     songs: [],
   },
+  songs: {
+    songs: [],
+    lastQuery: '',
+  },
+  playlists: {
+    playlists: [],
+    lastQuery: '',
+  },
+  artists: {
+    artists: [],
+    lastQuery: '',
+  },
+  users: {
+    users: [],
+    lastQuery: '',
+  },
 };
-
-/*
-  * Process:
-  - On fetch: set query and items
- */
 
 const searchSlice = createSlice({
   name: 'search',
