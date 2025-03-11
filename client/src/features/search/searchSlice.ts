@@ -38,6 +38,9 @@ const searchSlice = createSlice({
     ) => {
       state.tab = action.payload;
     },
+    changeQuery: (state: SearchState, action: PayloadAction<string>) => {
+      state.query = action.payload;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -50,5 +53,5 @@ const searchSlice = createSlice({
       }),
 });
 
-export const { changeTab } = searchSlice.actions;
+export const { changeTab, changeQuery } = searchSlice.actions;
 export default searchSlice.reducer;
