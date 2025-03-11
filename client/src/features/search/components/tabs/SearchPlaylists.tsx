@@ -3,13 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { searchPlaylists } from '../../searchThunks.ts';
 import { useEffect } from 'react';
 
-interface CardItem {
-  img: string;
-  name: string;
-  description: string;
-  type: string;
-}
-
 const SearchPlaylists = () => {
   const playlists = useAppSelector((state) => state.search.playlists.playlists);
   const playlistsLastQuery = useAppSelector(

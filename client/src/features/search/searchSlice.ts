@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SearchState } from './searchTypes.ts';
-import { searchMain, searchPlaylists, searchSongs } from './searchThunks.ts';
+import { searchMain, searchPlaylists, searchSongs, searchUsers } from './searchThunks.ts';
 
 const initialState: SearchState = {
   tab: 'all',
@@ -56,6 +56,10 @@ const searchSlice = createSlice({
       .addCase(searchPlaylists.fulfilled, (state, action) => {
         state.playlists.playlists = action.payload.playlists;
         state.playlists.lastQuery = state.query;
+      })
+      .addCase(searchUsers.fulfilled, (state, action) => {
+        state.users.users = action.payload.users;
+        state.users.lastQuery = state.query;
       }),
 });
 

@@ -41,3 +41,16 @@ export const searchPlaylists = createAsyncThunk<
     return rejectWithValue(handleAxiosError(e));
   }
 });
+
+export const searchUsers = createAsyncThunk<
+  unknown,
+  string,
+  { rejectValue: RejectValue }
+>('search/users', async (name, { rejectWithValue }) => {
+  try {
+    const res = await axios.get(`/search/users?name=${name}`);
+    return res.data;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
