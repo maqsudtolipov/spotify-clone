@@ -54,3 +54,16 @@ export const searchUsers = createAsyncThunk<
     return rejectWithValue(handleAxiosError(e));
   }
 });
+
+export const searchArtists = createAsyncThunk<
+  unknown,
+  string,
+  { rejectValue: RejectValue }
+>('search/artists', async (name, { rejectWithValue }) => {
+  try {
+    const res = await axios.get(`/search/artists?name=${name}`);
+    return res.data;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
