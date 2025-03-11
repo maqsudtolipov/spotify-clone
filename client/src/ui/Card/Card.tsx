@@ -18,7 +18,7 @@ const Card = ({ data }: CardProps) => {
 
   return (
     <li className={styles.card}>
-      <CardImage img={img} alt={name} isRounded={type === 'artist'} />
+      <CardImage img={img.url} alt={name} isRounded={type === 'artist'} />
       <CardDescription name={name} description={description} />
     </li>
   );

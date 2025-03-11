@@ -4,7 +4,7 @@ import { searchMain } from './searchThunks.ts';
 
 const initialState: SearchState = {
   query: '',
-  results: {
+  mainSearch: {
     songs: [],
   },
 };
@@ -20,7 +20,7 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder.addCase(searchMain.fulfilled, (state, action) => {
-      state.results = action.payload.results;
+      state.mainSearch = action.payload.results;
     }),
 });
 

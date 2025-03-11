@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
 import Heading2 from '../../../../ui/Typography/Heading2.tsx';
-import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 import CardsList from '../../../../ui/CardsList/CardsList.tsx';
+import { useAppSelector } from '../../../../redux/hooks.ts';
+import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 
 interface CardItem {
   img: string;
@@ -20,59 +19,10 @@ interface Item {
 }
 
 const SearchAll = () => {
-  const [songs, setSongs] = useState<Item[]>();
-  const [artists, setArtists] = useState<CardItem[]>();
-  const [playlists, setPlaylists] = useState<CardItem[]>([]);
-  const [profiles, setProfiles] = useState<CardItem[]>();
-
-  // Songs
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 4 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      artist: faker.person.fullName(),
-      plays: faker.number.int(999),
-      isLiked: faker.datatype.boolean(),
-    }));
-
-    setSongs(fetchedItems);
-  }, []);
-
-  // Artists
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 6 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      description: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: 'artist',
-    }));
-
-    setArtists(fetchedItems);
-  }, []);
-
-  // Playlist
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 6 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      description: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: 'playlist',
-    }));
-
-    setPlaylists(fetchedItems);
-  }, []);
-
-  // Profiles
-  useEffect(() => {
-    const fetchedItems = Array.from({ length: 6 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      description: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: 'artist',
-    }));
-
-    setProfiles(fetchedItems);
-  }, []);
+  const songs = useAppSelector(state => state.search.mainSearch.songs)
+  const artists = useAppSelector((state) => state.search.mainSearch.artists);
+  const playlists = useAppSelector((state) => state.search.mainSearch.playlists);
+  const users = useAppSelector((state) => state.search.mainSearch.users);
 
   return (
     <div>
@@ -95,9 +45,9 @@ const SearchAll = () => {
         </div>
       )}
 
-      {profiles && (
+      {users && (
         <div className="mb-10">
-          <CardsList title="Profiles" shrink={true} items={profiles} />
+          <CardsList title="Profiles" shrink={true} items={users} />
         </div>
       )}
     </div>

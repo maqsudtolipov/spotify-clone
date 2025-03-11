@@ -40,6 +40,8 @@ const SortedTable = ({ items }: SortedTableProps) => {
       </p>
     );
 
+  console.log(items);
+
   return (
     <Table>
       <TableHeader>
@@ -72,7 +74,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
             <InfoCell
               img={item.img.url}
               name={item.name}
-              artist={item.artist.name}
+              artist={'Artist'} // add artist name
             />
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
