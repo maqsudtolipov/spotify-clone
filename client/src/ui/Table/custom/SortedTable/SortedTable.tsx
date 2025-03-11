@@ -74,7 +74,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
             <InfoCell
               img={item.img.url}
               name={item.name}
-              artist={'Artist'} // add artist name
+              artist={item.artist.name}
             />
             <TableCell>{item.plays}</TableCell>
             <LikeCell isLiked={item.isLiked} />

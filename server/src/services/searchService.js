@@ -8,7 +8,7 @@ exports.searchAllModels = async (name, limit) => {
   })
     .limit(limit)
     .select("name duration song img")
-    .populate({ path: "song img", select: "url" });
+    .populate([{ path: "song img", select: "url" }, {path: 'artist', select: 'name'}]);
 
   const playlists = await Playlist.find({
     name: { $regex: name, $options: "i" },
