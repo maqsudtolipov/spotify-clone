@@ -140,3 +140,33 @@ exports.searchArtists = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.searchUsers = async (req, res, next) => {
+  try {
+    const filter = {
+      role: "user",
+      name: { $regex: req.query.name, $options: "i" }, // Search by name, case-insensitive
+    };
+
+    const { limit, totalCount, totalPages, validPage } =
+      await getPaginationResults(User, filter, req.query.limit, req.query.page);
+
+    const users = await User.find(filter)
+      .limit(limit)
+      .skip((validPage - 1) * limit);
+
+    res.status(200).json({
+      status: "success",
+      users,
+      pagination: {
+        limit,
+        currentPage: validPage,
+        totalPages,
+        totalCount,
+      },
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
