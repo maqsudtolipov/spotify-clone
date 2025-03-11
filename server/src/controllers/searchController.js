@@ -78,3 +78,13 @@ exports.searchSongs = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.searchPlaylists = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
