@@ -1,29 +1,20 @@
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
+import { useEffect } from 'react';
 import CardsList from '../../../../ui/CardsList/CardsList.tsx';
-
-interface CardItem {
-  img: string;
-  name: string;
-  description: string;
-  type: string;
-}
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { searchUsers } from '../../searchThunks.ts';
 
 const SearchProfiles = () => {
-  const [items, setItems] = useState<CardItem[]>([]);
+  const { tab, query } = useAppSelector((state) => state.search);
+  const { users, lastQuery } = useAppSelector((state) => state.search.users);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchedItems = Array.from({ length: 23 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      description: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: 'artist',
-    }));
+    // Don't fetch again, if query hadn't changed
+    if (query === lastQuery) return;
+    dispatch(searchUsers(query));
+  }, [tab, query]);
 
-    setItems(fetchedItems);
-  }, []);
-
-  return <CardsList items={items} />;
+  return <CardsList items={users} />;
 };
 
 export default SearchProfiles;

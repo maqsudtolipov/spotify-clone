@@ -15,14 +15,14 @@ const SearchTabs = ({ handleTabChange }: SearchTabsProps) => {
         <Tab value="all" onClick={handleTabChange}>
           All
         </Tab>
-        <Tab value="artists" onClick={handleTabChange}>
-          Artists
+        <Tab value="songs" onClick={handleTabChange}>
+          Songs
         </Tab>
         <Tab value="playlists" onClick={handleTabChange}>
           Playlists
         </Tab>
-        <Tab value="songs" onClick={handleTabChange}>
-          Songs
+        <Tab value="artists" onClick={handleTabChange}>
+          Artists
         </Tab>
         <Tab value="profiles" onClick={handleTabChange}>
           Profiles

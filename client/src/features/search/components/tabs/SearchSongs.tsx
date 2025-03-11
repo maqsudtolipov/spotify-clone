@@ -1,31 +1,21 @@
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
+import { useEffect } from 'react';
 import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
-
-interface Item {
-  img: string;
-  name: string;
-  artist: string;
-  plays: number;
-  isLiked: boolean;
-}
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { searchSongs } from '../../searchThunks.ts';
 
 const SearchSongs = () => {
-  const [items, setItems] = useState<Item[]>();
+  const songs = useAppSelector((state) => state.search.songs.songs);
+  const songsLastQuery = useAppSelector((state) => state.search.songs.lastQuery);
+  const query = useAppSelector((state) => state.search.query);
+  const tab = useAppSelector((state) => state.search.tab);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchedItems = Array.from({ length: 20 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      artist: faker.person.fullName(),
-      plays: faker.number.int(999),
-      isLiked: faker.datatype.boolean(),
-    }));
+    if (query === songsLastQuery) return; // If query not changed, don't fetching again
+    dispatch(searchSongs(query));
+  }, [tab, query]);
 
-    setItems(fetchedItems);
-  }, []);
-
-  return <>{items && <SortedTable items={items} />}</>;
+  return <>{songs && <SortedTable items={songs} />}</>;
 };
 
 export default SearchSongs;

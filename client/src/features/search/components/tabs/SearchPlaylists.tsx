@@ -1,29 +1,23 @@
-import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
 import CardsList from '../../../../ui/CardsList/CardsList.tsx';
-
-interface CardItem {
-  img: string;
-  name: string;
-  description: string;
-  type: string;
-}
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
+import { searchPlaylists } from '../../searchThunks.ts';
+import { useEffect } from 'react';
 
 const SearchPlaylists = () => {
-  const [items, setItems] = useState<CardItem[]>([]);
+  const playlists = useAppSelector((state) => state.search.playlists.playlists);
+  const playlistsLastQuery = useAppSelector(
+    (state) => state.search.playlists.lastQuery,
+  );
+  const query = useAppSelector((state) => state.search.query);
+  const tab = useAppSelector((state) => state.search.tab);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchedItems = Array.from({ length: 23 }, () => ({
-      img: faker.image.url({ height: 160, width: 160 }),
-      name: `${faker.word.adjective()} ${faker.word.noun()}`,
-      description: `${faker.word.adjective()} ${faker.word.noun()}`,
-      type: 'playlist',
-    }));
+    if (query === playlistsLastQuery) return; // If query not changed, don't fetching again
+    dispatch(searchPlaylists(query));
+  }, [tab, query]);
 
-    setItems(fetchedItems);
-  }, []);
-
-  return <CardsList items={items} />;
+  return <CardsList items={playlists} />;
 };
 
 export default SearchPlaylists;
