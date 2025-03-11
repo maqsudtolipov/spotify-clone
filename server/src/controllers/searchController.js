@@ -1,6 +1,7 @@
 const searchService = require("../services/searchService");
 const Song = require("../models/songModel");
 const { getPaginationResults } = require("../helpers/searchHelpers");
+const Playlist = require("../models/playlistModel");
 
 // TODO: no pagination here as this route only returns  top 5-10 results. Could be added later
 // TODO: needs to return only necessary data
@@ -81,8 +82,29 @@ exports.searchSongs = async (req, res, next) => {
 
 exports.searchPlaylists = async (req, res, next) => {
   try {
+    const filter = { name: { $regex: req.query.name, $options: "i" } };
+
+    const { limit, totalCount, totalPages, validPage } =
+      await getPaginationResults(
+        Playlist,
+        filter,
+        req.query.limit,
+        req.query.page,
+      );
+
+    const playlists = await Playlist.find(filter)
+      .limit(limit)
+      .skip((validPage - 1) * limit);
+
     res.status(200).json({
       status: "success",
+      playlists,
+      pagination: {
+        limit,
+        currentPage: validPage,
+        totalPages,
+        totalCount,
+      },
     });
   } catch (e) {
     next(e);
