@@ -7,10 +7,8 @@ exports.search = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
 
-    const { songs, playlists, artists, users } = await searchService.searchAllModels(
-      req.query.name,
-      limit,
-    );
+    const { songs, playlists, artists, users } =
+      await searchService.searchAllModels(req.query.name, limit);
 
     res.status(200).json({
       status: "success",
@@ -20,12 +18,26 @@ exports.search = async (req, res, next) => {
         artists,
         users,
       },
-      // pagination: {
-      //   total: 400,
-      //   page: 2,
-      //   limit: 20,
-      //   totalPages: 20,
-      // },
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.searchSongs = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+
+    res.status(200).json({
+      status: "success",
+      songs: [],
+      pagination: {
+        total: 400,
+        page: 1,
+        limit: 10,
+        totalPages: 40,
+      },
     });
   } catch (e) {
     next(e);
