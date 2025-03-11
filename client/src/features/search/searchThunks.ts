@@ -23,7 +23,19 @@ export const searchSongs = createAsyncThunk<
 >('search/songs', async (name, { rejectWithValue }) => {
   try {
     const res = await axios.get(`/search/songs?name=${name}`);
-    console.log(res.data);
+    return res.data;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
+
+export const searchPlaylists = createAsyncThunk<
+  unknown,
+  string,
+  { rejectValue: RejectValue }
+>('search/playlists', async (name, { rejectWithValue }) => {
+  try {
+    const res = await axios.get(`/search/playlists?name=${name}`);
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
