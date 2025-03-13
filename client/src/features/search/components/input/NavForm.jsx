@@ -37,6 +37,7 @@ const NavForm = () => {
       <input
         type="text"
         placeholder="What do you want to play?"
+        autoComplete='off'
         {...register('input')}
       />
       <RiSearchLine className={styles.searchIcon} />
