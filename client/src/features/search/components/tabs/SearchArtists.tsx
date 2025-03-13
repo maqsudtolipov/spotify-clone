@@ -5,7 +5,7 @@ import { searchArtists } from '../../searchThunks.ts';
 
 const SearchArtists = () => {
   const { tab, query } = useAppSelector((state) => state.search);
-  const { artists, lastQuery } = useAppSelector(
+  const { items, lastQuery } = useAppSelector(
     (state) => state.search.artists,
   );
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ const SearchArtists = () => {
     dispatch(searchArtists(query));
   }, [tab, query]);
 
-  return <CardsList items={artists} type={'artist'} />;
+  return <CardsList items={items} type={'artist'} />;
 };
 
 export default SearchArtists;

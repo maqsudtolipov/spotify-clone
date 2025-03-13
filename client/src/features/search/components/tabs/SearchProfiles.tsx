@@ -5,7 +5,7 @@ import { searchUsers } from '../../searchThunks.ts';
 
 const SearchProfiles = () => {
   const { tab, query } = useAppSelector((state) => state.search);
-  const { users, lastQuery } = useAppSelector((state) => state.search.users);
+  const { items, lastQuery } = useAppSelector((state) => state.search.users);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const SearchProfiles = () => {
     dispatch(searchUsers(query));
   }, [tab, query]);
 
-  return <CardsList items={users} type={'user'} />;
+  return <CardsList items={items} type={'user'} />;
 };
 
 export default SearchProfiles;

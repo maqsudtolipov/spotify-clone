@@ -4,7 +4,7 @@ import { searchPlaylists } from '../../searchThunks.ts';
 import { useEffect } from 'react';
 
 const SearchPlaylists = () => {
-  const playlists = useAppSelector((state) => state.search.playlists.playlists);
+  const items = useAppSelector((state) => state.search.playlists.items);
   const playlistsLastQuery = useAppSelector(
     (state) => state.search.playlists.lastQuery,
   );
@@ -17,7 +17,7 @@ const SearchPlaylists = () => {
     dispatch(searchPlaylists(query));
   }, [tab, query]);
 
-  return <CardsList items={playlists} type={'playlist'} />;
+  return <CardsList items={items} type={'playlist'} />;
 };
 
 export default SearchPlaylists;

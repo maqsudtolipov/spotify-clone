@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { searchSongs } from '../../searchThunks.ts';
 
 const SearchSongs = () => {
-  const songs = useAppSelector((state) => state.search.songs.songs);
+  const songs = useAppSelector((state) => state.search.songs.items);
   const songsLastQuery = useAppSelector(
     (state) => state.search.songs.lastQuery,
   );

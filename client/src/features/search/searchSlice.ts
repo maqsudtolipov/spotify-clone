@@ -28,18 +28,18 @@ const searchSlice = createSlice({
       .addCase(searchSongs.fulfilled, (state, action) => {
         console.log(action.payload);
         state.songs.lastQuery = state.query;
-        state.songs.list.push(...action.payload.songs);
+        state.songs.items.push(...action.payload.songs);
       })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
-        state.playlists.list = action.payload.playlists;
+        state.playlists.items = action.payload.playlists;
         state.playlists.lastQuery = state.query;
       })
       .addCase(searchUsers.fulfilled, (state, action) => {
-        state.users.list = action.payload.users;
+        state.users.items = action.payload.users;
         state.users.lastQuery = state.query;
       })
       .addCase(searchArtists.fulfilled, (state, action) => {
-        state.artists.list = action.payload.artists;
+        state.artists.items = action.payload.artists;
         state.artists.lastQuery = state.query;
       }),
 });
