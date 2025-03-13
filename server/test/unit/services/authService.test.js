@@ -24,9 +24,9 @@ describe("signUp service", () => {
   it("should throw AppError if user already exists", async () => {
     jest
       .spyOn(User, "findOne")
-      .mockResolvedValue({email: "user@example.com"});
+      .mockResolvedValue({ email: "user@example.com" });
     const error = await authService
-      .signUp({email: "user@example.com"})
+      .signUp({ email: "user@example.com" })
       .catch((e) => e);
 
     expect(error).toBeInstanceOf(AppError);
@@ -52,6 +52,7 @@ describe("signUp service", () => {
       email: "user@example.com",
       password: "password",
       img: "defaultImgId",
+      role: "user",
     });
     expect(newUser).toMatchObject({
       email: "user@example.com",
@@ -97,7 +98,7 @@ describe("login service", () => {
       populate: jest.fn().mockResolvedValue({
         email: "user@example.com",
         password: "correctPass",
-        library: {items: []},
+        library: { items: [] },
         toObject: function () {
           return this;
         },
@@ -122,7 +123,7 @@ describe("login service", () => {
     expect(response).toMatchObject({
       email: "user@example.com",
       password: "correctPass",
-      library: {items: []},
+      library: { items: [] },
     });
   });
 });
@@ -160,7 +161,7 @@ describe("refreshToken service", () => {
     jest.spyOn(jwt, "verify").mockResolvedValue();
     jest
       .spyOn(RefreshToken, "findOne")
-      .mockResolvedValue({token: "refreshToken"});
+      .mockResolvedValue({ token: "refreshToken" });
     jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
     jest.spyOn(RefreshToken, "create").mockResolvedValue({});
 
