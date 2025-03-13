@@ -12,7 +12,7 @@ const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.signUp = async (signUpInput) => {
   // Check if the user already exists
-  const existingUser = await User.findOne({email: signUpInput.email});
+  const existingUser = await User.findOne({ email: signUpInput.email });
   if (existingUser) {
     throw new AppError("User already exists", 409);
   }
@@ -20,6 +20,7 @@ exports.signUp = async (signUpInput) => {
   const userInput = {
     ...signUpInput,
     img: await User.getDefaultUserImgId(),
+    role: signUpInput.role === "artist" ? "artist" : "user",
   };
 
   return User.create(userInput);
@@ -28,7 +29,7 @@ exports.signUp = async (signUpInput) => {
 exports.login = async (email, password, res) => {
   // Find user and populate fields
   const user = await User.findOne(
-    {email},
+    { email },
     "id name img password likedPlaylists",
   ).populate([
     {
@@ -39,14 +40,14 @@ exports.login = async (email, password, res) => {
           path: "items.refId",
           select: "name img user createdAt",
           populate: [
-            {path: "user", select: "name", strictPopulate: false},
-            {path: "img", select: "url"},
+            { path: "user", select: "name", strictPopulate: false },
+            { path: "img", select: "url" },
           ],
         },
       ],
     },
-    {path: "likedSongs"},
-    {path: "playlists", select: "name"},
+    { path: "likedSongs" },
+    { path: "playlists", select: "name" },
   ]);
 
   if (!user) {
@@ -64,7 +65,7 @@ exports.login = async (email, password, res) => {
   const refreshToken = attachRefreshCookie(user.id, res);
 
   // Save refresh token to the database
-  await RefreshToken.create({userId: user.id, token: refreshToken});
+  await RefreshToken.create({ userId: user.id, token: refreshToken });
 
   const userObject = user.toObject();
   userObject.library.items = filterLibraryItems(user.library.items);
@@ -93,7 +94,7 @@ exports.refreshToken = async (refreshToken, res) => {
   }
 
   // INFO: this logs out the user from all their devices
-  await RefreshToken.deleteMany({userId: decodedRefreshToken.userId});
+  await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
 
   // Generate new tokens
   attachAccessCookie(decodedRefreshToken.userId, res);
@@ -107,7 +108,7 @@ exports.refreshToken = async (refreshToken, res) => {
 };
 
 exports.logout = async (userId, accessToken) => {
-  await RefreshToken.deleteMany({userId});
+  await RefreshToken.deleteMany({ userId });
 
   await InvalidAccessToken.create({
     token: accessToken.token,
