@@ -4,10 +4,10 @@
 
 .cardsList {
   @apply grid grid-cols-6;
+}
 
-  li:nth-child(n + 7) {
-    @apply hidden;
-  }
+.shrink li:nth-child(n + 7) {
+  @apply hidden;
 }
 
 // 5 x 170
