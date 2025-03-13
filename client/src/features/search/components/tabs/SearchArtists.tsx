@@ -16,7 +16,7 @@ const SearchArtists = () => {
     dispatch(searchArtists(query));
   }, [tab, query]);
 
-  return <CardsList items={artists} />;
+  return <CardsList items={artists} type={'artist'} />;
 };
 
 export default SearchArtists;

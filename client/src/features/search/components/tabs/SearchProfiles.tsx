@@ -14,7 +14,7 @@ const SearchProfiles = () => {
     dispatch(searchUsers(query));
   }, [tab, query]);
 
-  return <CardsList items={users} />;
+  return <CardsList items={users} type={'user'} />;
 };
 
 export default SearchProfiles;

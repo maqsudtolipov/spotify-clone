@@ -13,15 +13,17 @@ interface CardsListProps {
   title?: string;
   shrink?: boolean;
   items: CardDate[];
+  type: 'artist' | 'playlist' | 'user';
 }
 
-const CardsList = ({ title, shrink = false, items }: CardsListProps) => {
+const CardsList = ({ title, shrink = false, items, type }: CardsListProps) => {
   return (
     <div className={styles.cardsListContainer}>
       {title && <Heading2>{title}</Heading2>}
 
       <ul className={`${styles.cardsList} ${shrink ? styles.shrink : ''}`}>
-        {items && items.map((el) => <Card key={el.name} data={el} />)}
+        {items &&
+          items.map((el) => <Card key={el.name} data={el} type={type} />)}
       </ul>
     </div>
   );

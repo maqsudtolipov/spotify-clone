@@ -49,19 +49,34 @@ const SearchAll = () => {
 
       {artists.length && (
         <div className="mb-10">
-          <CardsList title="Artists" shrink={true} items={artists} />
+          <CardsList
+            title="Artists"
+            shrink={true}
+            items={artists}
+            type={'artist'}
+          />
         </div>
       )}
 
       {artists.length && (
         <div className="mb-10">
-          <CardsList title="Playlists" shrink={true} items={playlists} />
+          <CardsList
+            title="Playlists"
+            shrink={true}
+            items={playlists}
+            type={'playlist'}
+          />
         </div>
       )}
 
       {artists.length && (
         <div className="mb-10">
-          <CardsList title="Profiles" shrink={true} items={users} />
+          <CardsList
+            title="Profiles"
+            shrink={true}
+            items={users}
+            type={'user'}
+          />
         </div>
       )}
     </div>
