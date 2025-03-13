@@ -4,9 +4,6 @@ const { getPaginationResults } = require("../helpers/searchHelpers");
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 
-// TODO: no pagination here as this route only returns  top 5-10 results. Could be added later
-// TODO: needs to return only necessary data
-
 exports.search = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
@@ -30,8 +27,8 @@ exports.search = async (req, res, next) => {
 
 exports.searchSongs = async (req, res, next) => {
   try {
-    const limit = Math.max(parseInt(req.query.limit) || 10);
-    const page = Math.max(parseInt(req.query.page) || 1);
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+    const page = Math.min(parseInt(req.query.page) || 1, 50);
 
     const filter = { name: { $regex: req.query.name, $options: "i" } };
 
