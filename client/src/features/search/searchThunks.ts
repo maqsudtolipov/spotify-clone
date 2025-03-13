@@ -21,7 +21,7 @@ export const searchMain = createAsyncThunk<
 
 export const searchSongs = createAsyncThunk<
   unknown,
-  { query: string; isPageRequest: boolean },
+  { query: string; isPageRequest?: boolean },
   { rejectValue: RejectValue }
 >('search/songs', async ({ query }, { rejectWithValue }) => {
   try {

@@ -12,8 +12,8 @@ const SearchSongs = () => {
   const tab = useAppSelector((state) => state.search.tab);
   const dispatch = useAppDispatch();
 
-  const listRef = useRef();
-  const observerRef = useRef();
+  const helperElRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     if (query === songsLastQuery) return; // If query not changed, don't fetching again
@@ -21,7 +21,7 @@ const SearchSongs = () => {
   }, [tab, query]);
 
   useEffect(() => {
-    if (!songs.length || !listRef.current) return;
+    if (!songs.length || !helperElRef.current) return;
 
     if (observerRef.current) observerRef.current.disconnect();
 
@@ -34,8 +34,8 @@ const SearchSongs = () => {
       }
     });
 
-    if (listRef.current) {
-      observer.observe(listRef.current);
+    if (helperElRef.current) {
+      observer.observe(helperElRef.current);
       observerRef.current = observer;
     }
 
@@ -47,7 +47,7 @@ const SearchSongs = () => {
       {songs && (
         <div>
           <SortedTable items={songs} />
-          <div ref={listRef}>I am scroll helper</div>
+          <div ref={helperElRef}>I am scroll helper</div>
         </div>
       )}
     </>
