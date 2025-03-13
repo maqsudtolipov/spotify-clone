@@ -3,13 +3,16 @@ import { RejectValue } from '../../axios/axiosTypes.ts';
 import axios from '../../axios/axios';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
 
+// NOTE: this seems to be based on client width
+const PAGE_LIMIT = 20;
+
 export const searchMain = createAsyncThunk<
   unknown,
   string,
   { rejectValue: RejectValue }
 >('search/searchMain', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search?name=${name}`);
+    const res = await axios.get(`/search?name=${name}&limit=${PAGE_LIMIT}`);
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
@@ -22,7 +25,9 @@ export const searchSongs = createAsyncThunk<
   { rejectValue: RejectValue }
 >('search/songs', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search/songs?name=${name}`);
+    const res = await axios.get(
+      `/search/songs?name=${name}&limit=${PAGE_LIMIT}`,
+    );
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
@@ -35,7 +40,9 @@ export const searchPlaylists = createAsyncThunk<
   { rejectValue: RejectValue }
 >('search/playlists', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search/playlists?name=${name}`);
+    const res = await axios.get(
+      `/search/playlists?name=${name}&limit=${PAGE_LIMIT}`,
+    );
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
@@ -48,7 +55,9 @@ export const searchUsers = createAsyncThunk<
   { rejectValue: RejectValue }
 >('search/users', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search/users?name=${name}`);
+    const res = await axios.get(
+      `/search/users?name=${name}&limit=${PAGE_LIMIT}`,
+    );
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
@@ -61,7 +70,9 @@ export const searchArtists = createAsyncThunk<
   { rejectValue: RejectValue }
 >('search/artists', async (name, { rejectWithValue }) => {
   try {
-    const res = await axios.get(`/search/artists?name=${name}`);
+    const res = await axios.get(
+      `/search/artists?name=${name}&limit=${PAGE_LIMIT}`,
+    );
     return res.data;
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));
