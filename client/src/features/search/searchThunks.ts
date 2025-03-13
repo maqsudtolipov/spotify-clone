@@ -21,12 +21,12 @@ export const searchMain = createAsyncThunk<
 
 export const searchSongs = createAsyncThunk<
   unknown,
-  string,
+  { query: string; isPageRequest: boolean },
   { rejectValue: RejectValue }
->('search/songs', async (name, { rejectWithValue }) => {
+>('search/songs', async ({ query }, { rejectWithValue }) => {
   try {
     const res = await axios.get(
-      `/search/songs?name=${name}&limit=${PAGE_LIMIT}`,
+      `/search/songs?name=${query}&limit=${PAGE_LIMIT}`,
     );
     return res.data;
   } catch (e) {

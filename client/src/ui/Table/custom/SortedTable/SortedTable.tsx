@@ -69,7 +69,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
 
       <TableBody>
         {sortedItems.map((item, index) => (
-          <TableRow key={item.name}>
+          <TableRow key={item.id}>
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell
               img={item.img.url}

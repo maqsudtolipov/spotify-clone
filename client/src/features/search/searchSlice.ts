@@ -50,8 +50,9 @@ const searchSlice = createSlice({
         state.mainSearch.lastQuery = state.query;
       })
       .addCase(searchSongs.fulfilled, (state, action) => {
-        state.songs.songs = action.payload.songs;
+        console.log(action.payload);
         state.songs.lastQuery = state.query;
+        state.songs.songs.push(...action.payload.songs);
       })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
         state.playlists.playlists = action.payload.playlists;
