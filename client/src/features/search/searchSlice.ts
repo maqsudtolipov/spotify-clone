@@ -26,16 +26,12 @@ const searchSlice = createSlice({
         state.mainSearch.lastQuery = state.query;
       })
       .addCase(searchSongs.fulfilled, (state, action) => {
+        if (state.songs.lastQuery === state.query)
+          state.songs.items.push(...action.payload.songs);
+        else state.songs.items = action.payload.songs;
+
         state.songs.lastQuery = state.query;
         state.songs.pagination = action.payload.pagination;
-        state.songs.items.push(...action.payload.songs);
-
-        /* - Pagination
-         * Initially page 1 is loaded
-         * if: (page 1 and has items) && (not last page)
-         * fetch next page and update pagination
-         * else: ignore
-         */
       })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
         state.playlists.items = action.payload.playlists;
