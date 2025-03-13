@@ -18,7 +18,7 @@ const Search = () => {
   };
 
   return (
-    <div className="px-4 py-5">
+    <div className="px-4 py-5 min-h-full">
       <SearchTabs handleTabChange={handleTabChange} />
 
       {tab === 'all' && <SearchAll />}

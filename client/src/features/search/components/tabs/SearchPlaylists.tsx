@@ -17,7 +17,7 @@ const SearchPlaylists = () => {
     dispatch(searchPlaylists(query));
   }, [tab, query]);
 
-  return <CardsList items={playlists} />;
+  return <CardsList items={playlists} type={'playlist'} />;
 };
 
 export default SearchPlaylists;

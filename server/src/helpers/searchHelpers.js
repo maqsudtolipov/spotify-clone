@@ -1,6 +1,6 @@
 exports.getPaginationResults = async (Model, filter, limit, page) => {
-  limit = Math.max(parseInt(limit) || 10);
-  page = Math.max(parseInt(page) || 1);
+  limit = Math.min(parseInt(limit) || 10, 50);
+  page = Math.min(parseInt(page) || 1, 50);
 
   const totalCount = await Model.countDocuments(filter); // Count of matching documents
   const totalPages = Math.ceil(totalCount / limit);
