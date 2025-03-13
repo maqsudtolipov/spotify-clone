@@ -4,17 +4,21 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../redux/hooks.ts';
 import { changeQuery } from '../../searchSlice.ts';
+import { useNavigate } from 'react-router-dom';
 
 const NavForm = () => {
   // useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [showBtn, setShowBtn] = useState(false);
   const { register, handleSubmit, watch, reset } = useForm();
 
-  const handleFormSubmit = (data) => {
-    console.log('form submitted:', data.input);
-    dispatch(changeQuery(data.input));
+  const handleFormSubmit = (formData) => {
+    if (formData.input.length >= 1) {
+      navigate('/search');
+      dispatch(changeQuery(formData.input));
+    }
   };
 
   // Shows the close button when input is at least 3 characters
