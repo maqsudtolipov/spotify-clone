@@ -30,9 +30,11 @@ const searchSlice = createSlice({
         state.songs.apiStatus = 'pending';
       })
       .addCase(searchSongs.fulfilled, (state, action) => {
-        if (state.songs.lastQuery === state.query)
-          state.songs.items.push(...action.payload.songs);
-        else state.songs.items = action.payload.songs;
+        if (state.songs.lastQuery === state.query) {
+          state.songs.items = [...state.songs.items, ...action.payload.songs];
+        } else {
+          state.songs.items = [...action.payload.songs];
+        }
 
         state.songs.lastQuery = state.query;
         state.songs.pagination = action.payload.pagination;

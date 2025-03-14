@@ -32,7 +32,7 @@ const SearchSongs = () => {
     <>
       {songs && (
         <div>
-          <SortedTable items={songs} />
+          <SortedTable items={songs}  />
           <div ref={helperElRef}>I am scroll helper</div>
         </div>
       )}
