@@ -19,6 +19,7 @@ export const initialState: SearchState = {
       limit: 0,
       totalCount: 0,
     },
+    apiStatus: 'idle',
   },
   playlists: {
     items: [],

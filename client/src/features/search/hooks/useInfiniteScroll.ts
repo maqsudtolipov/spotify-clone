@@ -7,12 +7,14 @@ const useInfiniteScroll = (
   currentPage: number,
   totalPages: number,
   items: any[],
+  apiStatus: string,
 ) => {
   const helperElRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (!items.length || !helperElRef.current) return;
+    if (!items.length || !helperElRef.current || apiStatus === 'loading')
+      return;
 
     if (observerRef.current) observerRef.current.disconnect();
 

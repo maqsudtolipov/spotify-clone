@@ -9,6 +9,7 @@ const SearchSongs = () => {
     items: songs,
     lastQuery: songsLastQuery,
     pagination: { currentPage, totalPages },
+    apiStatus,
   } = useAppSelector((state) => state.search.songs);
   const { query, tab } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const SearchSongs = () => {
     currentPage,
     totalPages,
     songs,
+    apiStatus,
   );
 
   return (

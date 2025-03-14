@@ -13,6 +13,7 @@ interface SearchTab<T> {
   items: T[];
   pagination: Pagination;
   lastQuery: string;
+  apiStatus: 'idle' | 'pending' | 'fulfilled' | 'rejected';
 }
 
 export interface SearchState {

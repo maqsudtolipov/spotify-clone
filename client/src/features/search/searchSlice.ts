@@ -25,6 +25,10 @@ const searchSlice = createSlice({
         state.mainSearch = action.payload.results;
         state.mainSearch.lastQuery = state.query;
       })
+      // Songs tab
+      .addCase(searchSongs.pending, (state) => {
+        state.songs.apiStatus = 'pending';
+      })
       .addCase(searchSongs.fulfilled, (state, action) => {
         if (state.songs.lastQuery === state.query)
           state.songs.items.push(...action.payload.songs);
@@ -32,6 +36,9 @@ const searchSlice = createSlice({
 
         state.songs.lastQuery = state.query;
         state.songs.pagination = action.payload.pagination;
+      })
+      .addCase(searchSongs.rejected, (state) => {
+        state.songs.apiStatus = 'rejected';
       })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
         state.playlists.items = action.payload.playlists;
