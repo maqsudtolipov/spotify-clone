@@ -32,7 +32,7 @@ const SearchPlaylists = () => {
 
   return (
     <div>
-      <CardsList items={items} type="playlist" keyIdentifier={query} />
+      <CardsList items={items} type="playlist" />
       <div ref={helperElRef} className="h-px invisible">
         Scroll helper
       </div>

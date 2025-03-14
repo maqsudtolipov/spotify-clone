@@ -7,12 +7,7 @@ const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    changeTab: (
-      state,
-      action: PayloadAction<
-        'all' | 'artists' | 'playlists' | 'songs' | 'profiles'
-      >,
-    ) => {
+    changeTab: (state, action: PayloadAction<'all' | 'artists' | 'playlists' | 'songs' | 'profiles'>) => {
       state.tab = action.payload;
     },
     changeQuery: (state: SearchState, action: PayloadAction<string>) => {
@@ -30,11 +25,9 @@ const searchSlice = createSlice({
         state.songs.apiStatus = 'pending';
       })
       .addCase(searchSongs.fulfilled, (state, action) => {
-        if (state.songs.lastQuery === state.query) {
-          state.songs.items = [...state.songs.items, ...action.payload.songs];
-        } else {
-          state.songs.items = action.payload.songs;
-        }
+        state.songs.items = state.songs.lastQuery === state.query
+          ? [...state.songs.items, ...action.payload.songs]
+          : action.payload.songs;
 
         state.songs.lastQuery = state.query;
         state.songs.pagination = action.payload.pagination;
@@ -44,31 +37,48 @@ const searchSlice = createSlice({
       })
       // Playlists tab
       .addCase(searchPlaylists.pending, (state) => {
-        state.songs.apiStatus = 'pending';
+        state.playlists.apiStatus = 'pending';
       })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
-        if (state.playlists.lastQuery === state.query) {
-          state.playlists.items = [
-            ...state.playlists.items,
-            ...action.payload.playlists,
-          ];
-        } else {
-          state.playlists.items = action.payload.playlists;
-        }
+        state.playlists.items = state.playlists.lastQuery === state.query
+          ? [...state.playlists.items, ...action.payload.playlists]
+          : action.payload.playlists;
 
         state.playlists.lastQuery = state.query;
         state.playlists.pagination = action.payload.pagination;
       })
       .addCase(searchPlaylists.rejected, (state) => {
-        state.songs.apiStatus = 'rejected';
+        state.playlists.apiStatus = 'rejected';
+      })
+      // Users tab
+      .addCase(searchUsers.pending, (state) => {
+        state.users.apiStatus = 'pending';
       })
       .addCase(searchUsers.fulfilled, (state, action) => {
-        state.users.items = action.payload.users;
+        state.users.items = state.users.lastQuery === state.query
+          ? [...state.users.items, ...action.payload.users]
+          : action.payload.users;
+
         state.users.lastQuery = state.query;
+        state.users.pagination = action.payload.pagination;
+      })
+      .addCase(searchUsers.rejected, (state) => {
+        state.users.apiStatus = 'rejected';
+      })
+      // Artists tab
+      .addCase(searchArtists.pending, (state) => {
+        state.artists.apiStatus = 'pending';
       })
       .addCase(searchArtists.fulfilled, (state, action) => {
-        state.artists.items = action.payload.artists;
+        state.artists.items = state.artists.lastQuery === state.query
+          ? [...state.artists.items, ...action.payload.artists]
+          : action.payload.artists;
+
         state.artists.lastQuery = state.query;
+        state.artists.pagination = action.payload.pagination;
+      })
+      .addCase(searchArtists.rejected, (state) => {
+        state.artists.apiStatus = 'rejected';
       }),
 });
 

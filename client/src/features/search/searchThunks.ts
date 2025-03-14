@@ -51,12 +51,12 @@ export const searchPlaylists = createAsyncThunk<
 
 export const searchUsers = createAsyncThunk<
   unknown,
-  string,
+  { query: string; page?: number },
   { rejectValue: RejectValue }
->('search/users', async (name, { rejectWithValue }) => {
+>('search/users', async ({ query, page }, { rejectWithValue }) => {
   try {
     const res = await axios.get(
-      `/search/users?name=${name}&limit=${PAGE_LIMIT}`,
+      `/search/users?name=${query}&limit=${PAGE_LIMIT}&page=${page || 1}`,
     );
     return res.data;
   } catch (e) {
@@ -66,12 +66,12 @@ export const searchUsers = createAsyncThunk<
 
 export const searchArtists = createAsyncThunk<
   unknown,
-  string,
+  { query: string; page?: number },
   { rejectValue: RejectValue }
->('search/artists', async (name, { rejectWithValue }) => {
+>('search/artists', async ({ query, page }, { rejectWithValue }) => {
   try {
     const res = await axios.get(
-      `/search/artists?name=${name}&limit=${PAGE_LIMIT}`,
+      `/search/artists?name=${query}&limit=${PAGE_LIMIT}&page=${page || 1}`,
     );
     return res.data;
   } catch (e) {
