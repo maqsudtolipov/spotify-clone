@@ -33,7 +33,7 @@ const searchSlice = createSlice({
         if (state.songs.lastQuery === state.query) {
           state.songs.items = [...state.songs.items, ...action.payload.songs];
         } else {
-          state.songs.items = [...action.payload.songs];
+          state.songs.items = action.payload.songs;
         }
 
         state.songs.lastQuery = state.query;
@@ -42,9 +42,25 @@ const searchSlice = createSlice({
       .addCase(searchSongs.rejected, (state) => {
         state.songs.apiStatus = 'rejected';
       })
+      // Playlists tab
+      .addCase(searchPlaylists.pending, (state) => {
+        state.songs.apiStatus = 'pending';
+      })
       .addCase(searchPlaylists.fulfilled, (state, action) => {
-        state.playlists.items = action.payload.playlists;
+        if (state.playlists.lastQuery === state.query) {
+          state.playlists.items = [
+            ...state.playlists.items,
+            ...action.payload.playlists,
+          ];
+        } else {
+          state.playlists.items = action.payload.playlists;
+        }
+
         state.playlists.lastQuery = state.query;
+        state.playlists.pagination = action.payload.pagination;
+      })
+      .addCase(searchPlaylists.rejected, (state) => {
+        state.songs.apiStatus = 'rejected';
       })
       .addCase(searchUsers.fulfilled, (state, action) => {
         state.users.items = action.payload.users;

@@ -26,6 +26,7 @@ const SearchSongs = () => {
     totalPages,
     songs,
     apiStatus,
+    searchSongs,
   );
 
   return (

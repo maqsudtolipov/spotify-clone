@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { searchSongs } from '../searchThunks.ts';
 
 const useInfiniteScroll = (
   dispatch: Function,
@@ -8,6 +7,7 @@ const useInfiniteScroll = (
   totalPages: number,
   items: any[],
   apiStatus: string,
+  thunk: Function,
 ) => {
   const helperElRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -20,7 +20,7 @@ const useInfiniteScroll = (
 
     const observer = new IntersectionObserver((el) => {
       if (el[0].isIntersecting && totalPages > currentPage) {
-        dispatch(searchSongs({ query, page: currentPage + 1 }));
+        dispatch(thunk({ query, page: currentPage + 1 }));
       }
     });
 
