@@ -33,7 +33,9 @@ const SearchSongs = () => {
       {songs && (
         <div>
           <SortedTable items={songs} keyIdentifier={query} />
-          <div ref={helperElRef}>I am scroll helper</div>
+          <div ref={helperElRef} className="h-px invisible">
+            Scroll helper
+          </div>
         </div>
       )}
     </>
