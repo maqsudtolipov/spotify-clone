@@ -10,6 +10,7 @@ import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
 import Search from './features/search/components/Search.tsx';
 import Artist from './features/artist/components/Artist.tsx';
+import FullSpinner from './ui/spinner/FullSpinner.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
@@ -20,73 +21,67 @@ const AppRoutes = () => {
     if (!isAuth) dispatch(getCurrent());
   }, [dispatch, isAuth]);
 
+  if (1 === 1 || ((status === 'idle' || status === 'pending') && !isAuth)) {
+    return <FullSpinner />;
+  }
+
   return (
     <Routes>
-      {isAuth ? (
-        <AuthenticatedRoutes />
-      ) : status === 'rejected' ? (
-        <UnauthenticatedRoutes />
-      ) : (
-        <Route path="*" element={<h1>Trying to login</h1>} />
+      {isAuth && (
+        <>
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <Layout>
+                <Search />
+              </Layout>
+            }
+          />
+          <Route
+            path="/playlist/:id"
+            element={
+              <Layout>
+                <Playlist />
+              </Layout>
+            }
+          />
+          <Route
+            path="/artist/:id"
+            element={
+              <Layout>
+                <Artist />
+              </Layout>
+            }
+          />
+          <Route
+            path="/user/:id"
+            element={
+              <Layout>
+                <UserProfile />
+              </Layout>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )}
+
+      {!isAuth && status === 'rejected' && (
+        <>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </>
       )}
     </Routes>
   );
 };
-
-// Component for authenticated routes
-const AuthenticatedRoutes = () => (
-  <>
-    <Route
-      path="/"
-      element={
-        <Layout>
-          <Home />
-        </Layout>
-      }
-    />
-    <Route
-      path="/search"
-      element={
-        <Layout>
-          <Search />
-        </Layout>
-      }
-    />
-    <Route
-      path="/playlist/:id"
-      element={
-        <Layout>
-          <Playlist />
-        </Layout>
-      }
-    />
-    <Route
-      path="/artist/:id"
-      element={
-        <Layout>
-          <Artist />
-        </Layout>
-      }
-    />
-    <Route
-      path="/user/:id"
-      element={
-        <Layout>
-          <UserProfile />
-        </Layout>
-      }
-    />
-    <Route path="*" element={<Navigate to="/" />} />
-  </>
-);
-
-// Component for unauthenticated routes
-const UnauthenticatedRoutes = () => (
-  <>
-    <Route path="/login" element={<Login />} />
-    <Route path="/signup" element={<SignUp />} />
-    <Route path="*" element={<Navigate to="/login" />} />
-  </>
-);
 
 export default AppRoutes;
