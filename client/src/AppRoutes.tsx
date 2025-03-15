@@ -22,73 +22,71 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {isAuth && (
-        <>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <Home />
-              </Layout>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <Layout>
-                <Search />
-              </Layout>
-            }
-          />
-          <Route
-            path="/playlist/:id"
-            element={
-              <Layout>
-                <Playlist />
-              </Layout>
-            }
-          />
-          <Route
-            path="/artist/:id"
-            element={
-              <Layout>
-                <Artist />
-              </Layout>
-            }
-          />
-          {/*<Route*/}
-          {/*  path="/userPage"*/}
-          {/*  element={*/}
-          {/*    <Layout>*/}
-          {/*      <UserPage />*/}
-          {/*    </Layout>*/}
-          {/*  }*/}
-          {/*/>*/}
-          <Route
-            path="/user/:id"
-            element={
-              <Layout>
-                <UserProfile />
-              </Layout>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" />} />
-        </>
-      )}
-
-      {!isAuth && status === 'rejected' && (
-        <>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </>
-      )}
-
-      {(status === 'idle' || status === 'pending') && !isAuth && (
+      {isAuth ? (
+        <AuthenticatedRoutes />
+      ) : status === 'rejected' ? (
+        <UnauthenticatedRoutes />
+      ) : (
         <Route path="*" element={<h1>Trying to login</h1>} />
       )}
     </Routes>
   );
 };
+
+// Component for authenticated routes
+const AuthenticatedRoutes = () => (
+  <>
+    <Route
+      path="/"
+      element={
+        <Layout>
+          <Home />
+        </Layout>
+      }
+    />
+    <Route
+      path="/search"
+      element={
+        <Layout>
+          <Search />
+        </Layout>
+      }
+    />
+    <Route
+      path="/playlist/:id"
+      element={
+        <Layout>
+          <Playlist />
+        </Layout>
+      }
+    />
+    <Route
+      path="/artist/:id"
+      element={
+        <Layout>
+          <Artist />
+        </Layout>
+      }
+    />
+    <Route
+      path="/user/:id"
+      element={
+        <Layout>
+          <UserProfile />
+        </Layout>
+      }
+    />
+    <Route path="*" element={<Navigate to="/" />} />
+  </>
+);
+
+// Component for unauthenticated routes
+const UnauthenticatedRoutes = () => (
+  <>
+    <Route path="/login" element={<Login />} />
+    <Route path="/signup" element={<SignUp />} />
+    <Route path="*" element={<Navigate to="/login" />} />
+  </>
+);
 
 export default AppRoutes;
