@@ -4,7 +4,7 @@ interface TableRowProps {
   children: ReactNode;
 }
 
-const TableRow = ({ children }: TableRowProps) => {
+const TableRow = ({children }: TableRowProps) => {
   return <tr>{children}</tr>;
 };
 

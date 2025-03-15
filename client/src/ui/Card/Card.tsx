@@ -1,6 +1,7 @@
 import styles from './Card.module.scss';
 import CardImage from './CardImage.tsx';
 import CardDescription from './CardDescription.tsx';
+import { useNavigate } from 'react-router-dom';
 
 interface CardData {
   img: string;
@@ -13,12 +14,21 @@ interface CardProps {
   data: CardData;
 }
 
-const Card = ({ data }: CardProps) => {
-  const { img, name, description, type } = data;
+const Card = ({ data, type }: CardProps) => {
+  const navigate = useNavigate();
+
+  const { id, img, name, description } = data;
+
+  const handleNavigate = () => {
+    if (type === 'artist') navigate(`/artist/${id}`, { replace: true });
+    else if (type === 'playlist')
+      navigate(`/playlist/${id}`, { replace: true });
+    else if (type === 'user') navigate(`/user/${id}`, { replace: true });
+  };
 
   return (
-    <li className={styles.card}>
-      <CardImage img={img} alt={name} isRounded={type === 'artist'} />
+    <li className={styles.card} onClick={handleNavigate}>
+      <CardImage img={img.url} alt={name} isRounded={type === 'artist'} />
       <CardDescription name={name} description={description} />
     </li>
   );

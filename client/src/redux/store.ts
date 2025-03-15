@@ -5,6 +5,7 @@ import artistReducer from '../features/artist/artistSlice.ts';
 import userPageReducer from '../features/userPage/userPageSlice.ts';
 import playlistReducer from '../features/playlist/playlistSlice.ts';
 import queueReducer from '../features/queue/queueSlice.ts';
+import searchReducer from '../features/search/searchSlice.ts';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     userPage: userPageReducer,
     playlist: playlistReducer,
     queue: queueReducer,
+    search: searchReducer,
   },
 });
 

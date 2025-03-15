@@ -8,7 +8,7 @@ import { getCurrent } from './features/user/userThunks.ts';
 import SignUp from './features/user/components/SignUp.tsx';
 import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
-import Search from './features/search/Search.tsx';
+import Search from './features/search/components/Search.tsx';
 import Artist from './features/artist/components/Artist.tsx';
 
 const AppRoutes = () => {

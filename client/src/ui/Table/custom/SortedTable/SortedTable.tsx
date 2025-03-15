@@ -21,9 +21,10 @@ interface Item {
 
 interface SortedTableProps {
   items: Item[];
+  keyIdentifier?: string; // Unique key identifier
 }
 
-const SortedTable = ({ items }: SortedTableProps) => {
+const SortedTable = ({ items, keyIdentifier }: SortedTableProps) => {
   const {
     sortedItems,
     sortBy,
@@ -67,7 +68,7 @@ const SortedTable = ({ items }: SortedTableProps) => {
 
       <TableBody>
         {sortedItems.map((item, index) => (
-          <TableRow key={item.name}>
+          <TableRow key={`${item.id}-${keyIdentifier ? keyIdentifier : 'default'}`}>
             <IndexCell>{index + 1}</IndexCell>
             <InfoCell
               img={item.img.url}
