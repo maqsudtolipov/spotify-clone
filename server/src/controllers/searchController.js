@@ -27,14 +27,15 @@ exports.search = async (req, res, next) => {
 
 exports.searchSongs = async (req, res, next) => {
   try {
-    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
-    const page = Math.min(parseInt(req.query.page) || 1, 50);
-
     const filter = { name: { $regex: req.query.name, $options: "i" } };
 
-    const totalCount = await Song.countDocuments(filter); // Count of matching documents
-    const totalPages = Math.ceil(totalCount / limit);
-    const validPage = Math.min(page, totalPages || 1); // Prevent over-paging
+    const { limit, totalCount, totalPages, validPage } =
+      await getPaginationResults(
+        Playlist,
+        filter,
+        req.query.limit,
+        req.query.page,
+      );
 
     const songs = await Song.find(filter)
       .limit(limit)
@@ -48,9 +49,12 @@ exports.searchSongs = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       songs,
-      currentPage: validPage,
-      totalPages,
-      totalCount,
+      pagination: {
+        limit,
+        currentPage: validPage,
+        totalPages,
+        totalCount,
+      },
     });
   } catch (e) {
     next(e);

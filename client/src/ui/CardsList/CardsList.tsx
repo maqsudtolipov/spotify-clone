@@ -22,8 +22,7 @@ const CardsList = ({ title, shrink = false, items, type }: CardsListProps) => {
       {title && <Heading2>{title}</Heading2>}
 
       <ul className={`${styles.cardsList} ${shrink ? styles.shrink : ''}`}>
-        {items &&
-          items.map((el) => <Card key={el.name} data={el} type={type} />)}
+        {items && items.map((el) => <Card key={el.id} data={el} type={type} />)}
       </ul>
     </div>
   );
