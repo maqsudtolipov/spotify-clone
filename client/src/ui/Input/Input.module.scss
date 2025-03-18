@@ -1,3 +1,7 @@
+.container {
+  @apply mb-2.5;
+}
+
 .label {
   @apply inline-block;
   @apply mb-0.5 text-base;
@@ -31,6 +35,13 @@
     box-shadow: inset 0 0 20px 20px #232323;
   }
 }
+
+
+.error {
+  @apply mt-2;
+  @apply text-sm text-neutral-400 leading-tight;
+}
+
 
 .inputFile {
   @apply p-0;

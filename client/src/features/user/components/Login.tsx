@@ -5,6 +5,7 @@ import { RiLoaderFill } from 'react-icons/ri';
 import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { login } from '../userThunks.ts';
+import Input from '../../../ui/Input/Input.tsx';
 
 interface FormInput {
   email: string;
@@ -40,32 +41,22 @@ const Login = () => {
           onSubmit={handleSubmit((data) => handleFormSubmit(data))}
         >
           <p className={styles.title}>Spotify</p>
-          <div className={styles.container}>
-            <input
-              className={`${styles.input} ${errors['email'] ? styles.inputInvalid : ''}`}
-              type="email"
-              placeholder="Enter your email"
-              {...register('email', { required: true })}
-            />
 
-            {errors?.email?.type === 'required' && (
-              <p className={styles.error}>This field is required</p>
-            )}
-          </div>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            register={register('email', { required: true })}
+            error={errors.email}
+            errorMessages={{ required: 'This field is required' }}
+          />
 
-          <div className={styles.container}>
-            <input
-              className={`${styles.input} ${errors['password'] ? styles.inputInvalid : ''}`}
-              type="password"
-              placeholder="Enter your password"
-              {...register('password', {
-                required: true,
-              })}
-            />
-            {errors?.email?.type === 'required' && (
-              <p className={styles.error}>This field is required</p>
-            )}
-          </div>
+          <Input
+            type="password"
+            placeholder="Enter your password"
+            register={register('password', { required: true })}
+            error={errors.password}
+            errorMessages={{ required: 'This field is required' }}
+          />
 
           <button className={styles.button} type="submit">
             {status === 'pending' && <RiLoaderFill />}
