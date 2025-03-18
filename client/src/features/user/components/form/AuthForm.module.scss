@@ -1,11 +1,11 @@
 .form {
-  @apply w-72  px-6 py-8 pt-6;
+  @apply w-72  p-6;
   @apply flex flex-col gap-2.5;
   @apply bg-neutral-800 rounded-2xl;
 }
 
 .title {
-  @apply mb-8;
+  @apply mb-6;
   @apply text-center text-3xl font-bold text-green-500;
 }
 

@@ -108,7 +108,7 @@ const SignUp = () => {
           }}
         />
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <input
             className={styles.checkbox}
             type="checkbox"
