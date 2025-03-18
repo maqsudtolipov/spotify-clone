@@ -10,7 +10,7 @@ import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
 import Search from './features/search/components/Search.tsx';
 import Artist from './features/artist/components/Artist.tsx';
-import FullSpinner from './ui/spinner/FullSpinner.tsx';
+import FullSpinner from './ui/statusScreens/FullSpinner.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);

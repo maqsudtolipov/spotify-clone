@@ -5,14 +5,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { useEffect } from 'react';
 import { getArtist } from '../artistThunks.ts';
-import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
+import LoadingScreen from '../../../ui/statusScreens/LoadingScreen.tsx';
 import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import { followUser, unfollowUser } from '../../user/userThunks.ts';
 import UploadSongDialog from './forms/uploadSong/UploadSongDialog.tsx';
-import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
-import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
+import NotFound from '../../../ui/statusScreens/NotFound.tsx';
+import ServerError from '../../../ui/statusScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
@@ -43,8 +43,6 @@ const Artist = () => {
       dispatch(unfollowUser({ id, type: 'artist' }));
     }
   };
-
-  console.log(status, statusCode);
 
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
