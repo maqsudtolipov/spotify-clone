@@ -6,7 +6,7 @@
     <style>
         .spinner {
         animation: spinner-animation 1.05s infinite;
-        fill: #FFFFFF;
+        fill: #22c55e;
         }
 
         .spinner-delay-1 {
