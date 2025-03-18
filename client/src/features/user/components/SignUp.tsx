@@ -11,6 +11,7 @@ interface FormInput {
   email: string;
   password: string;
   passwordConfirm: string;
+  isArtist: boolean;
 }
 
 const Login = () => {
@@ -29,6 +30,7 @@ const Login = () => {
       email: '',
       password: '',
       passwordConfirm: '',
+      isArtist: false,
     },
   });
 
@@ -146,15 +148,17 @@ const Login = () => {
             <input
               className={styles.checkbox}
               type="checkbox"
-              id="role"
-              name="role"
+              id="isArtist"
+              {...register('isArtist')}
             />
           </div>
           <div>
-
-          <label className="text-sm select-none cursor-pointer" htmlFor="role">
-            Become artist
-          </label>
+            <label
+              className="text-sm select-none cursor-pointer"
+              htmlFor="isArtist"
+            >
+              Become artist
+            </label>
           </div>
         </div>
 

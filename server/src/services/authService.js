@@ -20,7 +20,7 @@ exports.signUp = async (signUpInput) => {
   const userInput = {
     ...signUpInput,
     img: await User.getDefaultUserImgId(),
-    role: signUpInput.role === "artist" ? "artist" : "user",
+    role: signUpInput.isArtist ? "artist" : "user",
   };
 
   return User.create(userInput);
