@@ -1,10 +1,8 @@
 import { useForm } from 'react-hook-form';
-import styles from './AuthForm.module.scss';
 import AuthContainer from './AuthContainer.tsx';
-import { RiLoaderFill } from 'react-icons/ri';
-import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { login } from '../userThunks.ts';
+import AuthForm from './form/AuthForm.tsx';
 import Input from '../../../ui/Input/Input.tsx';
 
 interface FormInput {
@@ -13,7 +11,6 @@ interface FormInput {
 }
 
 const Login = () => {
-  const { isAuth } = useAppSelector((state) => state.user);
   const { status } = useAppSelector((state) => state.user.api.login);
   const dispatch = useAppDispatch();
 
@@ -21,54 +18,36 @@ const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  } = useForm<FormInput>({ defaultValues: { email: '', password: '' } });
 
-  const handleFormSubmit = async (input: FormInput) => {
-    dispatch(login(input));
-  };
+  const handleFormSubmit = (input: FormInput) => dispatch(login(input));
 
-  if (isAuth) return <Navigate to="/" />;
-  else
-    return (
-      <AuthContainer>
-        <form
-          className={styles.form}
-          onSubmit={handleSubmit((data) => handleFormSubmit(data))}
-        >
-          <p className={styles.title}>Spotify</p>
+  return (
+    <AuthContainer>
+      <AuthForm
+        buttonText="Login"
+        isLoading={status === 'pending'}
+        link={{ text: 'Sign Up here', to: '/signup' }}
+        onSubmit={handleSubmit(handleFormSubmit)}
+      >
+        <Input
+          type="email"
+          placeholder="Enter your email"
+          register={register('email', { required: true })}
+          error={errors.email}
+          errorMessages={{ required: 'This field is required' }}
+        />
 
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            register={register('email', { required: true })}
-            error={errors.email}
-            errorMessages={{ required: 'This field is required' }}
-          />
-
-          <Input
-            type="password"
-            placeholder="Enter your password"
-            register={register('password', { required: true })}
-            error={errors.password}
-            errorMessages={{ required: 'This field is required' }}
-          />
-
-          <button className={styles.button} type="submit">
-            {status === 'pending' && <RiLoaderFill />}
-            Login
-          </button>
-
-          <Link className={styles.link} to="/signup">
-            Sign Up here
-          </Link>
-        </form>
-      </AuthContainer>
-    );
+        <Input
+          type="password"
+          placeholder="Enter your password"
+          register={register('password', { required: true })}
+          error={errors.password}
+          errorMessages={{ required: 'This field is required' }}
+        />
+      </AuthForm>
+    </AuthContainer>
+  );
 };
 
 export default Login;

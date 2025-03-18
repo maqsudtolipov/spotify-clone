@@ -11,7 +11,7 @@ interface InputProps {
   placeholder?: string;
   isValid?: boolean;
   onChange?: (arg0: any) => any;
-  errorMessages?: Record<string, string>
+  errorMessages?: Record<string, string>;
 }
 
 const Input = ({
@@ -20,7 +20,7 @@ const Input = ({
   defaultValue,
   label,
   placeholder,
-  isValid,
+  // isValid,
   error,
   register,
   errorMessages,
@@ -33,9 +33,11 @@ const Input = ({
           {label}
         </label>
       )}
+
+      {/* Is valid should be added:  ${isValid ? '' : styles.inputInvalid} */}
       <input
         id={name}
-        className={`${styles.input} ${type === 'file' ? styles.inputFile : ''} ${isValid ? '' : styles.inputInvalid} ${error ? styles.inputInvalid : ''}`}
+        className={`${styles.input} ${type === 'file' ? styles.inputFile : ''} ${error ? styles.inputInvalid : ''}`}
         type={type}
         name={name}
         placeholder={placeholder}

@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 import styles from './AuthForm.module.scss';
 import AuthContainer from './AuthContainer.tsx';
-import { RiLoaderFill } from 'react-icons/ri';
-import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { signUp } from '../userThunks.ts';
+import AuthForm from './form/AuthForm.tsx';
+import Input from '../../../ui/Input/Input.tsx';
 
 interface FormInput {
   name: string;
@@ -14,8 +14,7 @@ interface FormInput {
   isArtist: boolean;
 }
 
-const Login = () => {
-  const { isAuth } = useAppSelector((state) => state.user);
+const SignUp = () => {
   const { status } = useAppSelector((state) => state.user.api.signUp);
   const dispatch = useAppDispatch();
 
@@ -34,145 +33,98 @@ const Login = () => {
     },
   });
 
-  const handleFormSubmit = async (input: FormInput) => {
-    dispatch(signUp(input));
-  };
-
-  if (isAuth) return <Navigate to="/" />;
+  const handleFormSubmit = (input: FormInput) => dispatch(signUp(input));
 
   return (
     <AuthContainer>
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit((data) => handleFormSubmit(data))}
+      <AuthForm
+        buttonText="Sign Up"
+        isLoading={status === 'pending'}
+        link={{ text: 'Login here', to: '/login' }}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
-        <p className={styles.title}>Spotify</p>
+        <Input
+          type="text"
+          placeholder="Enter your name"
+          register={register('name', {
+            required: true,
+            minLength: 3,
+            maxLength: 24,
+          })}
+          error={errors.name}
+          errorMessages={{
+            required: 'This field is required',
+            minLength: 'Name must be between 3 and 24 characters.',
+            maxLength: 'Name must be between 3 and 24 characters.',
+          }}
+        />
 
-        <div>
-          <input
-            className={`${styles.input} ${errors['name'] ? styles.inputInvalid : ''}`}
-            type="text"
-            placeholder="Enter your name"
-            {...register('name', {
-              required: true,
-              minLength: 3,
-              maxLength: 24,
-            })}
-          />
+        <Input
+          type="email"
+          placeholder="Enter your email"
+          register={register('email', {
+            required: true,
+            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          })}
+          error={errors.email}
+          errorMessages={{
+            required: 'This field is required',
+            pattern: 'Please provide a valid email',
+          }}
+        />
 
-          {errors?.name?.type === 'required' && (
-            <p className={styles.error}>This field is required</p>
-          )}
-          {(errors?.name?.type === 'minLength' ||
-            errors?.name?.type === 'maxLength') && (
-            <p className={styles.error}>
-              Name must be between 3 and 24 characters.
-            </p>
-          )}
-        </div>
+        <Input
+          type="password"
+          placeholder="Enter your password"
+          register={register('password', {
+            required: true,
+            minLength: 8,
+            maxLength: 16,
+            pattern:
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          })}
+          error={errors.password}
+          errorMessages={{
+            required: 'This field is required',
+            minLength: 'Password must be at least 8 characters',
+            maxLength: 'Password cannot exceed 16 characters',
+            pattern:
+              'Password must include uppercase, lowercase, number, and special character',
+          }}
+        />
 
-        <div>
-          <input
-            className={`${styles.input} ${errors['email'] ? styles.inputInvalid : ''}`}
-            type="email"
-            placeholder="Enter your email"
-            {...register('email', {
-              required: true,
-              pattern: /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/,
-            })}
-          />
-
-          {errors?.email?.type === 'required' && (
-            <p className={styles.error}>This field is required</p>
-          )}
-          {errors?.email?.type === 'pattern' && (
-            <p className={styles.error}>Please provide valid email</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            className={`${styles.input} ${errors['password'] ? styles.inputInvalid : ''}`}
-            type="password"
-            placeholder="Enter your password"
-            {...register('password', {
-              required: true,
-              minLength: 8,
-              maxLength: 16,
-              pattern:
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            })}
-          />
-
-          {errors?.password?.type === 'required' && (
-            <p className={styles.error}>This field is required</p>
-          )}
-
-          {(errors?.password?.type === 'minLength' ||
-            errors?.password?.type === 'maxLength') && (
-            <p className={styles.error}>
-              Password must be between 8 and 16 characters.
-            </p>
-          )}
-
-          {errors?.password?.type === 'pattern' && (
-            <p className={styles.error}>
-              Password must include an uppercase letter, lowercase letter,
-              number, and special character ($, !, %, &, *).
-            </p>
-          )}
-        </div>
-
-        <div>
-          <input
-            className={`${styles.input} ${errors['passwordConfirm'] ? styles.inputInvalid : ''}`}
-            type="password"
-            placeholder="Confirm your password"
-            {...register('passwordConfirm', {
-              required: true,
-              validate: (value: string) => {
-                if (watch('password') !== value) return false;
-              },
-            })}
-          />
-          {errors?.passwordConfirm?.type === 'required' && (
-            <p className={styles.error}>This field is required</p>
-          )}
-          {errors?.passwordConfirm?.type === 'validate' && (
-            <p className={styles.error}>Passwords do not match</p>
-          )}
-        </div>
+        <Input
+          type="password"
+          placeholder="Confirm your password"
+          register={register('passwordConfirm', {
+            required: true,
+            validate: (value) =>
+              value === watch('password') || 'Passwords do not match',
+          })}
+          error={errors.passwordConfirm}
+          errorMessages={{
+            required: 'This field is required',
+            validate: 'Passwords do not match',
+          }}
+        />
 
         <div className="flex items-center gap-1">
-          <div>
-            <input
-              className={styles.checkbox}
-              type="checkbox"
-              id="isArtist"
-              {...register('isArtist')}
-            />
-          </div>
-          <div>
-            <label
-              className="text-sm select-none cursor-pointer"
-              htmlFor="isArtist"
-            >
-              Become artist
-            </label>
-          </div>
+          <input
+            className={styles.checkbox}
+            type="checkbox"
+            id="isArtist"
+            {...register('isArtist')}
+          />
+          <label
+            className="text-sm select-none cursor-pointer"
+            htmlFor="isArtist"
+          >
+            Become artist
+          </label>
         </div>
-
-        <button className={styles.button} type="submit">
-          {status === 'pending' && <RiLoaderFill />}
-          Sign Up
-        </button>
-
-        <Link className={styles.link} to="/login">
-          Login here
-        </Link>
-      </form>
+      </AuthForm>
     </AuthContainer>
   );
 };
 
-export default Login;
+export default SignUp;
