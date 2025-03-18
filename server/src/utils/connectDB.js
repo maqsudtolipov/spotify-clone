@@ -13,10 +13,7 @@ const connectDB = async () => {
       console.log(`🟠 No MongoDB URI found for environment: ${env}`);
     }
 
-    await mongoose.connect(DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(DB_URL);
 
     console.log(`🟢 DATABASE CONNECTED to ${env} database`);
   } catch (err) {
