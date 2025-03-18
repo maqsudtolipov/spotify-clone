@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    const DB = process.env.DB_URL.replace("<db_password>", process.env.DB_PASS);
+    const DB = process.env;
     await mongoose.connect(DB);
     console.log(`🟢 DATABASE CONNECTED`);
   } catch (err) {
