@@ -84,8 +84,6 @@ const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state) => {
         state.api.logout.status = 'rejected';
-        state.data = null;
-        state.isAuth = false;
       })
       // Like
       .addCase(likeSong.fulfilled, (state, action) => {

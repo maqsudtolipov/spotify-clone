@@ -4,8 +4,16 @@ import Dropdown from '../../../ui/Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../../ui/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
+import { useAppDispatch } from '../../../redux/hooks.ts';
+import { logout } from '../../../features/user/userThunks.ts';
 
 const UserDropdown = () => {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    dispatch(logout());
+  };
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -24,7 +32,7 @@ const UserDropdown = () => {
         <DropdownItem>Home</DropdownItem>
         <DropdownItem>Profile</DropdownItem>
         <DropdownItem underline={true}>Settings</DropdownItem>
-        <DropdownItem>Logout</DropdownItem>
+        <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
       </DropdownList>
     </Dropdown>
   );

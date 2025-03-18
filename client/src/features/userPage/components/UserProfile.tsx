@@ -1,5 +1,5 @@
 import GradientBackground from '../../../ui/GradientBackground/GradientBackground.tsx';
-import LoadingScreen from '../../../ui/StatusScreens/LoadingScreen.tsx';
+import LoadingScreen from '../../../ui/statusScreens/LoadingScreen.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { followUser, unfollowUser } from '../../user/userThunks.ts';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import { getUser } from '../userPageThunks.ts';
 import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
-import NotFound from '../../../ui/StatusScreens/NotFound.tsx';
-import ServerError from '../../../ui/StatusScreens/ServerError.tsx';
+import NotFound from '../../../ui/statusScreens/NotFound.tsx';
+import ServerError from '../../../ui/statusScreens/ServerError.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);

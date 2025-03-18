@@ -10,6 +10,7 @@ import UserProfile from './features/userPage/components/UserProfile.tsx';
 import Playlist from './features/playlist/components/Playlist.tsx';
 import Search from './features/search/components/Search.tsx';
 import Artist from './features/artist/components/Artist.tsx';
+import FullSpinner from './ui/statusScreens/FullSpinner.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
@@ -19,6 +20,10 @@ const AppRoutes = () => {
   useEffect(() => {
     if (!isAuth) dispatch(getCurrent());
   }, [dispatch, isAuth]);
+
+  if ((status === 'idle' || status === 'pending') && !isAuth) {
+    return <FullSpinner />;
+  }
 
   return (
     <Routes>
@@ -56,14 +61,6 @@ const AppRoutes = () => {
               </Layout>
             }
           />
-          {/*<Route*/}
-          {/*  path="/userPage"*/}
-          {/*  element={*/}
-          {/*    <Layout>*/}
-          {/*      <UserPage />*/}
-          {/*    </Layout>*/}
-          {/*  }*/}
-          {/*/>*/}
           <Route
             path="/user/:id"
             element={
@@ -82,10 +79,6 @@ const AppRoutes = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </>
-      )}
-
-      {(status === 'idle' || status === 'pending') && !isAuth && (
-        <Route path="*" element={<h1>Trying to login</h1>} />
       )}
     </Routes>
   );

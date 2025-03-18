@@ -12,7 +12,7 @@ const authService = require("../services/authService");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const {email, name, password, passwordConfirm, role} = req.body;
+    const {email, name, password, passwordConfirm, isArtist} = req.body;
 
     if (!email || !name || !password || !passwordConfirm) {
       return next(
@@ -28,7 +28,7 @@ exports.signUp = async (req, res, next) => {
       email,
       password,
       passwordConfirm,
-      role
+      isArtist
     });
 
     res.status(201).json({
