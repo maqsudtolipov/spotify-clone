@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import AuthContainer from './AuthContainer.tsx';
+import AuthContainer from './authContainer/AuthContainer.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { login } from '../userThunks.ts';
 import AuthForm from './form/AuthForm.tsx';

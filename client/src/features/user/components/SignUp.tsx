@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
-import styles from './AuthForm.module.scss';
-import AuthContainer from './AuthContainer.tsx';
+import AuthContainer from './authContainer/AuthContainer.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { signUp } from '../userThunks.ts';
 import AuthForm from './form/AuthForm.tsx';
 import Input from '../../../ui/Input/Input.tsx';
+import RoleCheckbox from './roleCheckbox/RoleCheckbox.tsx';
 
 interface FormInput {
   name: string;
@@ -108,20 +108,7 @@ const SignUp = () => {
           }}
         />
 
-        <div className="flex items-center gap-1.5">
-          <input
-            className={styles.checkbox}
-            type="checkbox"
-            id="isArtist"
-            {...register('isArtist')}
-          />
-          <label
-            className="text-sm select-none cursor-pointer"
-            htmlFor="isArtist"
-          >
-            Become artist
-          </label>
-        </div>
+        <RoleCheckbox register={register('isArtist')} />
       </AuthForm>
     </AuthContainer>
   );

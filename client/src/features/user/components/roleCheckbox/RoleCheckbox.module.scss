@@ -1,3 +1,7 @@
+.container {
+  @apply flex items-center gap-1.5;
+}
+
 .checkbox {
   appearance: none;
   background-color: #232323;
@@ -30,4 +34,8 @@
   &:checked::before {
     transform: scale(1);
   }
+}
+
+.label {
+  @apply text-sm select-none cursor-pointer;
 }
