@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "cross-env  NODE_ENV=development nodemon server.js",
-    "prod": "cross-env  NODE_ENV=production nodemon server.js",
+    "prod": "node server.js",
     "test-unit": "jest --runInBand --testPathPattern=test/unit",
     "test-e2e": "jest --runInBand --testPathPattern=test/e2e"
   },
