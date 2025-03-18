@@ -141,6 +141,23 @@ const Login = () => {
           )}
         </div>
 
+        <div className="flex items-center gap-1">
+          <div>
+            <input
+              className={styles.checkbox}
+              type="checkbox"
+              id="role"
+              name="role"
+            />
+          </div>
+          <div>
+
+          <label className="text-sm select-none cursor-pointer" htmlFor="role">
+            Become artist
+          </label>
+          </div>
+        </div>
+
         <button className={styles.button} type="submit">
           {status === 'pending' && <RiLoaderFill />}
           Sign Up
