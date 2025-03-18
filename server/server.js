@@ -10,7 +10,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // DotENV
-dotenv.config({ path: "./.env" });
+dotenv.config();
 checkEnvVariables();
 
 // Connect to mongoDb
