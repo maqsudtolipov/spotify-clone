@@ -21,36 +21,59 @@ beforeEach(() => {
 });
 
 describe("signUp service", () => {
-  it("should throw AppError if user already exists", async () => {
-    jest
-      .spyOn(User, "findOne")
-      .mockResolvedValue({ email: "user@example.com" });
-    const error = await authService
+  it("should throw 422 error if required fields are missing", async () => {
+    const resError = await authService
       .signUp({ email: "user@example.com" })
       .catch((e) => e);
 
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(409);
-    expect(error.message).toBe("User already exists");
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 422,
+      message: "Please provide name, email, password and passwordConfirm",
+    });
   });
+  it("should throw 409 if the user already exists", async () => {
+    jest
+      .spyOn(User, "findOne")
+      .mockResolvedValue({ email: "user@example.com" });
+    const resError = await authService
+      .signUp({
+        name: "User",
+        email: "user@example.com",
+        password: "pass1234",
+        passwordConfirm: "pass1234",
+      })
+      .catch((e) => e);
 
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 409,
+      message: "User already exists",
+    });
+  });
   it("should create a user with the default img id", async () => {
     jest.spyOn(User, "findOne").mockResolvedValue(null);
     jest.spyOn(User, "getDefaultUserImgId").mockResolvedValue("defaultImgId");
     jest.spyOn(User, "create").mockResolvedValue({
-      email: "user@example.com",
       img: "defaultImgId",
+      email: "user@example.com",
     });
 
     const newUser = await authService.signUp({
+      name: "User",
       email: "user@example.com",
-      password: "password",
+      password: "pass1234",
+      passwordConfirm: "pass1234",
     });
 
     expect(User.getDefaultUserImgId).toHaveBeenCalled();
     expect(User.create).toHaveBeenCalledWith({
+      name: "User",
       email: "user@example.com",
-      password: "password",
+      password: "pass1234",
+      passwordConfirm: "pass1234",
       img: "defaultImgId",
       role: "user",
     });
