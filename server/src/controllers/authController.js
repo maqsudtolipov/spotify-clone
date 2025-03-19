@@ -21,13 +21,8 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return next(new AppError("Please provide email and password", 422));
-    }
-
-    const user = await authService.login(email, password, res);
+    const inputData = req.body;
+    const user = await authService.login(inputData, res);
 
     res.status(200).json({
       status: "success",

@@ -40,7 +40,37 @@ exports.signUp = async (signUpInput) => {
   return User.create(newUser);
 };
 
-exports.login = async (email, password, res) => {
+exports.login = async (loginInput, res) => {
+  const { email, password } = loginInput;
+
+  // Check required fields
+  if (!email || !password) {
+    throw new AppError("Please provide email and password", 422);
+  }
+
+  const user = await User.findOne({ email }).select("id name password");
+
+  // Check if the user exists
+  if (!user) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  // Validate password
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  // Generate and attach tokens
+  attachAccessCookie(user.id, res);
+  const refreshToken = attachRefreshCookie(user.id, res);
+  await RefreshToken.create({ userId: user.id, token: refreshToken });
+
+  return { id: user.id, name: user.name, img: user.img };
+};
+
+// Old login - too much client dependant
+exports.loginOld = async (email, password, res) => {
   // Find user and populate fields
   const user = await User.findOne(
     { email },
