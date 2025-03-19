@@ -98,7 +98,6 @@ describe("login service", () => {
       message: "Please provide email and password",
     });
   });
-
   it("should throw 401 if user does not exist", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       select: () => null,
@@ -107,7 +106,6 @@ describe("login service", () => {
     const resError = await loginService
       .login({ email: "user@example.com", password: "pass1234" })
       .catch((e) => e);
-    console.log(resError);
 
     expect(resError).toBeInstanceOf(AppError);
     expect(resError).toMatchObject({
@@ -116,7 +114,6 @@ describe("login service", () => {
       message: "Invalid email or password",
     });
   });
-
   it("should throw 401 if passwords does not match", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       select: jest.fn().mockResolvedValue({
@@ -138,7 +135,6 @@ describe("login service", () => {
       message: "Invalid email or password",
     });
   });
-
   it("should generate cookies and save to database", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       select: jest.fn().mockResolvedValue({
@@ -162,7 +158,6 @@ describe("login service", () => {
       token: "refreshToken",
     });
   });
-
   it("should return user data", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       select: jest.fn().mockResolvedValue({
