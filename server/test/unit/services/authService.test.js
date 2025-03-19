@@ -1,4 +1,4 @@
-const app = require("../../../src/app");
+const app = require("../../../src/config/app.config");
 const User = require("../../../src/models/userModel");
 const authService = require("../../../src/services/authService");
 const AppError = require("../../../src/utils/AppError");

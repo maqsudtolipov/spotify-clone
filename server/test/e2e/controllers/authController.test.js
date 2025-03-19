@@ -2,7 +2,7 @@ const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
 } = require("../../helpers/databaseHelpers");
-const app = require("../../../src/app");
+const app = require("../../../src/config/app.config");
 const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const request = require("supertest");
 const {testUsers} = require("../../testData");

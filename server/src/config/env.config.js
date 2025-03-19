@@ -1,4 +1,4 @@
-const checkEnvVariables = () => {
+const envConfig = () => {
   const envVariables = [
     "NODE_ENV",
     "ACCESS_TOKEN_SECRET",
@@ -25,4 +25,4 @@ const checkEnvVariables = () => {
   }
 };
 
-module.exports = checkEnvVariables;
+module.exports = envConfig;

@@ -1,4 +1,4 @@
-const app = require("../../src/app");
+const app = require("../../src/config/app.config");
 const Song = require("../../src/models/songModel");
 const fs = require("node:fs");
 const {resolve} = require("node:path");

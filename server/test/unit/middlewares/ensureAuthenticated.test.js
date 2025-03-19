@@ -1,5 +1,5 @@
 const ensureAuthenticated = require("../../../src/middlewares/ensureAuthenticated");
-const app = require("../../../src/app");
+const app = require("../../../src/config/app.config");
 const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const middlewareMock = require("../../helpers/middlewareMock");

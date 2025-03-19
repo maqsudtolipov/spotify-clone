@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
-const app = require("./src/app");
-const checkEnvVariables = require("./src/utils/ checkEnvVariables");
-const connectDB = require("./src/utils/connectDB");
+const app = require("./src/config/app.config");
+const checkEnvVariables = require("./src/config/env.config");
+const connectDB = require("./src/config/db.config");
 
 // Uncaught Exception
 process.on("uncaughtException", (err) => {
