@@ -38,7 +38,7 @@ const ensureAuthenticated = async (req, res, next) => {
       );
     }
 
-    // Attach user info to request object
+    // Attach user data to request object
     req.user = {
       id: user.id,
       likedSongs: String(user.likedSongs),
