@@ -1,8 +1,5 @@
 const checkEnvVariables = () => {
   const envVariables = [
-    "DB_URL",
-    "DB_TEST_URL",
-    "DB_PASS",
     "NODE_ENV",
     "ACCESS_TOKEN_SECRET",
     "ACCESS_TOKEN_EXPIRATION",
