@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 
 jest.mock("../../../src/models/userModel");
+jest.mock("../../../src/models/RefreshTokenModel");
 jest.mock("../../../src/utils/attachCookieTokens");
 jest.mock("jsonwebtoken");
 
@@ -85,68 +86,105 @@ describe("signUp service", () => {
 });
 
 describe("login service", () => {
-  it("should throw error if user does not exist", async () => {
-    jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue(),
+  it("should throw 422 error if required fields are missing", async () => {
+    const resError = await authService
+      .login({ email: "user@example.com" })
+      .catch((e) => e);
+
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 422,
+      message: "Please provide email and password",
     });
-
-    const error = await loginService.login("user@example.com").catch((e) => e);
-
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(401);
-    expect(error.message).toBe("Invalid email or password");
   });
 
-  it("should throw error if passwords does not match", async () => {
+  it("should throw 401 if user does not exist", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue({
+      select: () => null,
+    });
+
+    const resError = await loginService
+      .login({ email: "user@example.com", password: "pass1234" })
+      .catch((e) => e);
+    console.log(resError);
+
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 401,
+      message: "Invalid email or password",
+    });
+  });
+
+  it("should throw 401 if passwords does not match", async () => {
+    jest.spyOn(User, "findOne").mockReturnValue({
+      select: jest.fn().mockResolvedValue({
         email: "user@example.com",
         password: "correctPass",
       }),
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
-    const error = await loginService
-      .login("user@example.com", "wrongPass")
+    const resError = await loginService
+      .login({ email: "user@example.com", password: "wrongPass" })
       .catch((e) => e);
 
     expect(bcrypt.compare).toHaveBeenCalledWith("wrongPass", "correctPass");
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(401);
-    expect(error.message).toBe("Invalid email or password");
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 401,
+      message: "Invalid email or password",
+    });
   });
 
-  it("should attach cookies to response and return user", async () => {
+  it("should generate cookies and save to database", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue({
-        email: "user@example.com",
-        password: "correctPass",
-        library: { items: [] },
-        toObject: function () {
-          return this;
-        },
+      select: jest.fn().mockResolvedValue({
+        id: "userId",
+        name: "User",
+        img: "user.png",
       }),
     });
-
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
+    attachAccessCookie.mockReturnValue("accessToken");
+    attachRefreshCookie.mockReturnValue("refreshToken");
+    jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
 
-    attachAccessCookie.mockImplementation(() => ({}));
-    attachRefreshCookie.mockImplementation(() => ({}));
-
-    jest.spyOn(RefreshToken, "create").mockResolvedValue();
-
-    const res = {};
-    const response = await authService
-      .login("user@example.com", "correctPass", res)
-      .catch((e) => e);
-
-    expect(attachAccessCookie).toHaveBeenCalled();
-    expect(attachRefreshCookie).toHaveBeenCalled();
-    expect(RefreshToken.create).toHaveBeenCalled();
-    expect(response).toMatchObject({
+    await loginService.login({
       email: "user@example.com",
-      password: "correctPass",
-      library: { items: [] },
+      password: "pass1234",
+    });
+
+    expect(RefreshToken.create).toHaveBeenCalledWith({
+      userId: "userId",
+      token: "refreshToken",
+    });
+  });
+
+  it("should return user data", async () => {
+    jest.spyOn(User, "findOne").mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        id: "userId",
+        name: "User",
+        img: "user.png",
+      }),
+    });
+    jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
+    attachAccessCookie.mockReturnValue("accessToken");
+    attachRefreshCookie.mockReturnValue("refreshToken");
+    jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
+
+    const res = await loginService.login({
+      email: "user@example.com",
+      password: "pass1234",
+    });
+
+    expect(res).toMatchObject({
+      id: "userId",
+      name: "User",
+      img: "user.png",
     });
   });
 });
