@@ -25,7 +25,7 @@ const AppRoutes = () => {
     if (!isAuth || (isAuth && !userId)) dispatch(getCurrent());
   }, [isAuth, userId, dispatch]);
 
-  if ((status === 'idle' || status === 'pending') && !isAuth) {
+  if ((status === 'idle' || status === 'pending')) { // this had also (& !auth)
     return <FullSpinner />;
   }
 
