@@ -38,7 +38,7 @@ const userSlice = createSlice({
       })
       .addCase(getCurrent.fulfilled, (state, action) => {
         state.api.getCurrent.status = 'fulfilled';
-        state.data = action.payload;
+        // state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(getCurrent.rejected, (state) => {
@@ -64,7 +64,7 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.api.login.status = 'fulfilled';
-        state.data = action.payload;
+        // state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(login.rejected, (state, action) => {

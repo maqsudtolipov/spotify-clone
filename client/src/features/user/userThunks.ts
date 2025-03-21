@@ -9,15 +9,22 @@ import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
 import toast from 'react-hot-toast';
 
-// Checks whether the user is authenticated using cookies
-export const getCurrent = createAsyncThunk(
-  'user/getCurrent',
-  async (_, { dispatch }) => {
+// Also checks whether the user is authenticated using cookies
+export const getCurrent = createAsyncThunk<
+  User,
+  void,
+  { rejectValue: RejectValue }
+>('user/getCurrent', async (_, { dispatch, rejectWithValue }) => {
+  try {
     const res = await axios.get('/users/current');
     dispatch(setLibraryItems(res.data.user.library.items));
+    toast.success('Welcome back!');
+
     return res.data.user;
-  },
-);
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
 
 interface SigUpInput {
   name: string;
@@ -41,7 +48,7 @@ export const signUp = createAsyncThunk<
 });
 
 export const login = createAsyncThunk<
-  User,
+  null,
   { email: string; password: string },
   { rejectValue: RejectValue }
 >('user/login', async (input, { dispatch, rejectWithValue }) => {

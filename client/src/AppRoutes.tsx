@@ -19,7 +19,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     if (!isAuth) dispatch(getCurrent());
-  }, [dispatch, isAuth]);
+  }, [isAuth, dispatch]);
 
   if ((status === 'idle' || status === 'pending') && !isAuth) {
     return <FullSpinner />;
