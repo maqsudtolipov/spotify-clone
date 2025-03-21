@@ -14,12 +14,16 @@ import FullSpinner from './ui/statusScreens/FullSpinner.tsx';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
+  const userId = useAppSelector((state) => state.user?.data?.id);
   const { status } = useAppSelector((state) => state.user.api.getCurrent);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isAuth) dispatch(getCurrent());
-  }, [isAuth, dispatch]);
+    // NOTE: Auth checks
+    // 1. (!isAuth) runs for auto login when user returns back to app
+    // 2. (isAuth && !userId) runs for fetching user data after login
+    if (!isAuth || (isAuth && !userId)) dispatch(getCurrent());
+  }, [isAuth, userId, dispatch]);
 
   if ((status === 'idle' || status === 'pending') && !isAuth) {
     return <FullSpinner />;
@@ -27,7 +31,7 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {isAuth && (
+      {isAuth && userId && (
         <>
           <Route
             path="/"

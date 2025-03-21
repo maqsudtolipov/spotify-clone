@@ -54,8 +54,6 @@ export const login = createAsyncThunk<
 >('user/login', async (input, { dispatch, rejectWithValue }) => {
   try {
     const res = await axios.post('/auth/login', input);
-    dispatch(setLibraryItems(res.data.user.library.items));
-    toast.success('Welcome back!');
 
     return res.data.user;
   } catch (e) {

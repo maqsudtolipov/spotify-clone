@@ -62,9 +62,8 @@ const userSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.api.login.status = 'pending';
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state) => {
         state.api.login.status = 'fulfilled';
-        // state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(login.rejected, (state, action) => {
