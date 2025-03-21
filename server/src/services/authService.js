@@ -123,6 +123,10 @@ exports.loginOld = async (email, password, res) => {
 };
 
 exports.refreshToken = async (refreshToken, res) => {
+  if (!refreshToken) {
+    throw new AppError("No refresh token provided", 401);
+  }
+
   let decodedRefreshToken;
 
   try {
