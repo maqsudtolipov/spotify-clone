@@ -63,8 +63,13 @@ exports.login = async (loginInput, res) => {
 
   // Generate and attach tokens
   attachAccessCookie(user.id, res);
-  const refreshToken = attachRefreshCookie(user.id, res);
-  await RefreshToken.create({ userId: user.id, token: refreshToken });
+  const { refreshToken, expiresAt } = attachRefreshCookie(user.id, res);
+
+  await RefreshToken.create({
+    userId: user.id,
+    token: refreshToken,
+    expiresAt,
+  });
 
   return { id: user.id, name: user.name, img: user.img };
 };
@@ -142,12 +147,16 @@ exports.refreshToken = async (refreshToken, res) => {
 
   // Generate new tokens
   attachAccessCookie(decodedRefreshToken.userId, res);
-  const newRefreshToken = attachRefreshCookie(decodedRefreshToken.userId, res);
+  const { refreshToken: newRefreshToken, expiresAt } = attachRefreshCookie(
+    decodedRefreshToken.userId,
+    res,
+  );
 
   // Save new refresh token to the database
   await RefreshToken.create({
     userId: decodedRefreshToken.userId,
     token: newRefreshToken,
+    expiresAt,
   });
 };
 
