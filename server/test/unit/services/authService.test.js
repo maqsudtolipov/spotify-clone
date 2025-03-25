@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
 const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 
 jest.mock("../../../src/models/userModel");
-jest.mock("../../../src/models/RefreshTokenModel");
+jest.mock("../../../src/models/refreshTokenModel");
 jest.mock("../../../src/utils/attachCookieTokens");
 jest.mock("jsonwebtoken");
 
