@@ -226,7 +226,7 @@ describe("authController", () => {
 
     it("should delete all refresh tokens and blacklist current access token", async () => {
       const res = await request(app)
-        .get("/api/auth/logout")
+        .post("/api/auth/logout")
         .set("Cookie", [`accessToken=${accessToken}`]);
 
       const refreshTokens = await RefreshToken.find({user: user.id});

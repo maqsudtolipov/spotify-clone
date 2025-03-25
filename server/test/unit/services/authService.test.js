@@ -190,7 +190,9 @@ describe("refreshToken service", () => {
       throw new Error();
     });
 
-    const error = await authService.refreshToken().catch((e) => e);
+    const error = await authService
+      .refreshToken("refreshToken")
+      .catch((e) => e);
 
     expect(error).toBeInstanceOf(AppError);
     expect(error.statusCode).toBe(401);
@@ -204,7 +206,7 @@ describe("refreshToken service", () => {
     });
     jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
 
-    const error = await authService.refreshToken().catch((e) => e);
+    const error = await authService.refreshToken("refreshToken").catch((e) => e);
 
     expect(RefreshToken.findOne).toHaveBeenCalled();
     expect(error).toBeInstanceOf(AppError);
@@ -224,7 +226,7 @@ describe("refreshToken service", () => {
     attachAccessCookie.mockImplementation(() => ({}));
     attachRefreshCookie.mockImplementation(() => ({}));
 
-    await authService.refreshToken();
+    await authService.refreshToken("refreshToken");
 
     expect(RefreshToken.deleteMany).toHaveBeenCalled();
     expect(attachAccessCookie).toHaveBeenCalled();
