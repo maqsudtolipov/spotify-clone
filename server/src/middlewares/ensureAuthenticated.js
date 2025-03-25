@@ -8,7 +8,9 @@ const ensureAuthenticated = async (req, res, next) => {
     const { accessToken } = req.cookies;
 
     if (!accessToken) {
-      return next(new AppError("Access token not found", 401));
+      return next(
+        new AppError("Access token not found", 401, "AccessTokenMissing"),
+      );
     }
 
     // Check if access token is blacklisted

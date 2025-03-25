@@ -13,13 +13,15 @@ axiosInstance.interceptors.response.use(
 
     if (
       error.response.status === 401 &&
-      error.response.data.code === 'AccessTokenExpired' &&
+      (error.response.data.code === 'AccessTokenExpired' || error.response.data.code === 'AccessTokenMissing') &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
 
       try {
-        await axiosInstance.post('/auth/refresh-token');
+        await axiosInstance.post('/auth/refresh-token', {}, {
+          withCredentials: true,
+        });
         return axiosInstance(originalRequest);
       } catch (error) {
         return Promise.reject(error);
