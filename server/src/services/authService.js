@@ -124,7 +124,7 @@ exports.loginOld = async (email, password, res) => {
 
 exports.refreshToken = async (refreshToken, res) => {
   if (!refreshToken) {
-    throw new AppError("No refresh token provided", 401);
+    throw new AppError("No refresh token provided", 401, "AuthReset");
   }
 
   let decodedRefreshToken;
@@ -135,7 +135,7 @@ exports.refreshToken = async (refreshToken, res) => {
       process.env.REFRESH_TOKEN_SECRET,
     );
   } catch (e) {
-    throw new AppError("Refresh token is invalid or expired", 401);
+    throw new AppError("Refresh token is invalid or expired", 401, "AuthReset");
   }
 
   const userRefreshToken = await RefreshToken.findOne({
@@ -143,7 +143,7 @@ exports.refreshToken = async (refreshToken, res) => {
     userId: decodedRefreshToken.userId,
   });
   if (!userRefreshToken) {
-    throw new AppError("Refresh token is invalid or expired", 401);
+    throw new AppError("Refresh token is invalid or expired", 401, "AuthReset");
   }
 
   // INFO: this logs out the user from all their devices
