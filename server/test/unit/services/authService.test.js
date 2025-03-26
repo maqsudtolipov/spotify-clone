@@ -145,7 +145,10 @@ describe("login service", () => {
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
     attachAccessCookie.mockReturnValue("accessToken");
-    attachRefreshCookie.mockReturnValue("refreshToken");
+    attachRefreshCookie.mockReturnValue({
+      refreshToken: "refreshToken",
+      expiresAt: "dd/MM/yyyy",
+    });
     jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
 
     await loginService.login({
@@ -154,8 +157,9 @@ describe("login service", () => {
     });
 
     expect(RefreshToken.create).toHaveBeenCalledWith({
-      userId: "userId",
       token: "refreshToken",
+      userId: "userId",
+      expiresAt: "dd/MM/yyyy",
     });
   });
   it("should return user data", async () => {
@@ -206,7 +210,9 @@ describe("refreshToken service", () => {
     });
     jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
 
-    const error = await authService.refreshToken("refreshToken").catch((e) => e);
+    const error = await authService
+      .refreshToken("refreshToken")
+      .catch((e) => e);
 
     expect(RefreshToken.findOne).toHaveBeenCalled();
     expect(error).toBeInstanceOf(AppError);
