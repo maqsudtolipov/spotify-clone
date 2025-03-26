@@ -3,16 +3,19 @@ import { meta } from 'eslint-plugin-react/lib/rules/jsx-props-no-spread-multi';
 import { Playlist } from '../../features/playlist/playlistSlice.ts';
 import { Link } from 'react-router-dom';
 import secondsToHourAndMins from '../../features/playlist/helpers/secondsToHourAndMins.ts';
+import useDominantColor from '../../hooks/useDominantColor.ts';
 
 interface ImageHeaderProps {
   data: Playlist;
+  color: string;
+  textColor: string;
   type: 'playlist' | 'user';
 }
 
 // TODO: Refactor if needed
-const ImageHeader = ({ data, type }: ImageHeaderProps) => {
+const ImageHeader = ({ data, color, textColor, type }: ImageHeaderProps) => {
   const gradient = {
-    background: `linear-gradient(${data.color}, ${data.color}), linear-gradient(#171717, #171717)`,
+    background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
   };
 
   return (
@@ -27,7 +30,9 @@ const ImageHeader = ({ data, type }: ImageHeaderProps) => {
         <span className={styles.type}>
           {type === 'playlist' ? 'Playlist' : 'User'}
         </span>
-        <h1 className={styles.name}>{data.name}</h1>
+        <h1 className={styles.name} style={{ color: textColor }}>
+          {data.name}
+        </h1>
 
         {data.description && (
           <p className={styles.description}>{data.description}</p>

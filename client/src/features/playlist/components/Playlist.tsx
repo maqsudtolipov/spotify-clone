@@ -10,6 +10,7 @@ import PlaylistActions from './PlaylistActions.tsx';
 import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import styles from './Playlist.module.scss';
 import PlaylistTable from './PlaylistTable.tsx';
+import useDominantColor from '../../../hooks/useDominantColor.ts';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -19,6 +20,8 @@ const Playlist = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const { bg, text } = useDominantColor(data?.img?.url);
 
   useEffect(() => {
     if (id) dispatch(getPlaylist(id));
@@ -31,10 +34,12 @@ const Playlist = () => {
   }
   if (status === 'pending' || !data) return <LoadingScreen />;
 
+
+
   return (
     <div className={styles.playlist}>
-      <ImageHeader data={data} type="playlist" />
-      <GradientBackground color={data.color}>
+      <ImageHeader data={data} type="playlist" color={bg} textColor={text} />
+      <GradientBackground color={bg}>
         <PlaylistActions data={data} />
         <PlaylistTable songs={data.songs} />
       </GradientBackground>
