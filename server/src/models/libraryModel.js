@@ -10,7 +10,6 @@ const librarySchema = new mongoose.Schema(
             return this.itemType === "playlist" ? "Playlist" : "User";
           },
           required: [true, "Please provide a refId"],
-          unique: [true, "Item already exists"],
         },
         itemType: {
           type: String,
