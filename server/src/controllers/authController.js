@@ -1,35 +1,10 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
-const RefreshToken = require("../models/refreshTokenModel");
 const AppError = require("../utils/AppError");
-const InvalidAccessToken = require("../models/invalidAccessTokenModel");
-const {
-  attachAccessCookie,
-  attachRefreshCookie,
-} = require("../utils/attachCookieTokens");
 const authService = require("../services/authService");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const {email, name, password, passwordConfirm, isArtist} = req.body;
-
-    if (!email || !name || !password || !passwordConfirm) {
-      return next(
-        new AppError(
-          "Please provide name, email, password and passwordConfirm",
-          422,
-        ),
-      );
-    }
-
-    const newUser = await authService.signUp({
-      name,
-      email,
-      password,
-      passwordConfirm,
-      isArtist
-    });
+    const inputData = req.body;
+    const newUser = await authService.signUp(inputData);
 
     res.status(201).json({
       status: "success",
@@ -46,13 +21,8 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const {email, password} = req.body;
-
-    if (!email || !password) {
-      return next(new AppError("Please provide email and password", 422));
-    }
-
-    const user = await authService.login(email, password, res);
+    const inputData = req.body;
+    const user = await authService.login(inputData, res);
 
     res.status(200).json({
       status: "success",
@@ -65,15 +35,10 @@ exports.login = async (req, res, next) => {
 
 exports.refreshToken = async (req, res, next) => {
   try {
-    const {refreshToken} = req.cookies;
-
-    if (!refreshToken) {
-      return next(new AppError("No refresh token provided", 401));
-    }
-
+    const { refreshToken } = req.cookies;
     await authService.refreshToken(refreshToken, res);
 
-    res.status(200).json({status: "success"});
+    res.status(200).json({ status: "success" });
   } catch (e) {
     next(e);
   }

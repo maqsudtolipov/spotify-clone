@@ -11,23 +11,31 @@ import Playlist from './features/playlist/components/Playlist.tsx';
 import Search from './features/search/components/Search.tsx';
 import Artist from './features/artist/components/Artist.tsx';
 import FullSpinner from './ui/statusScreens/FullSpinner.tsx';
+import useAuthInterceptor from './hooks/useAuthInterceptor.ts';
 
 const AppRoutes = () => {
   const { isAuth } = useAppSelector((state) => state.user);
+  const userId = useAppSelector((state) => state.user?.data?.id);
   const { status } = useAppSelector((state) => state.user.api.getCurrent);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!isAuth) dispatch(getCurrent());
-  }, [dispatch, isAuth]);
+  useAuthInterceptor(dispatch);
 
-  if ((status === 'idle' || status === 'pending') && !isAuth) {
+  useEffect(() => {
+    // NOTE: Auth checks
+    // 1. (!isAuth) runs for auto login when user returns back to app
+    // 2. (isAuth && !userId) runs for fetching user data after login
+    if (!isAuth || (isAuth && !userId)) dispatch(getCurrent());
+  }, [isAuth, userId, dispatch]);
+
+  if (status === 'idle' || status === 'pending') {
+    // this had also (& !auth)
     return <FullSpinner />;
   }
 
   return (
     <Routes>
-      {isAuth && (
+      {isAuth && userId && (
         <>
           <Route
             path="/"

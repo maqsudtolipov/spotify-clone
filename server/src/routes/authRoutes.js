@@ -7,6 +7,6 @@ const router = express.Router();
 router.route("/signup").post(authController.signUp);
 router.route("/login").post(authController.login);
 router.route("/refresh-token").post(authController.refreshToken);
-router.route("/logout").get(ensureAuthenticated, authController.logout);
+router.route("/logout").post(ensureAuthenticated, authController.logout);
 
 module.exports = router;

@@ -4,19 +4,26 @@ const AppError = require("../utils/AppError");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 
 const ensureAuthenticated = async (req, res, next) => {
-  const { accessToken } = req.cookies;
-
-  if (!accessToken) {
-    return next(new AppError("Access token not found", 401));
-  }
-
-  if (await InvalidAccessToken.findOne({ token: accessToken })) {
-    return next(
-      new AppError("Access token invalid", 401, "AccessTokenInvalid"),
-    );
-  }
-
   try {
+    const { accessToken } = req.cookies;
+
+    if (!accessToken) {
+      return next(
+        new AppError("Access token not found", 401, "AccessTokenMissing"),
+      );
+    }
+
+    // Check if access token is blacklisted
+    const isTokenInvalid = await InvalidAccessToken.findOne({
+      token: accessToken,
+    });
+    if (isTokenInvalid) {
+      return next(
+        new AppError("Access token invalid", 401, "AccessTokenInvalid"),
+      );
+    }
+
+    // Verify JWT token
     const decodedAccessToken = jwt.verify(
       accessToken,
       process.env.ACCESS_TOKEN_SECRET,
@@ -33,8 +40,7 @@ const ensureAuthenticated = async (req, res, next) => {
       );
     }
 
-    // TODO: Check if the user changed their password after the token was issued
-
+    // Attach user data to request object
     req.user = {
       id: user.id,
       likedSongs: String(user.likedSongs),

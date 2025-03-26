@@ -21,6 +21,7 @@ const productionError = (err, res) => {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
+      code: err.code,
     });
   } else {
     res.status(500).json({
@@ -34,6 +35,7 @@ const developmentError = (prodError, devError, res) => {
   res.status(prodError.statusCode).json({
     status: prodError.status,
     message: prodError.message,
+    code: prodError.code,
     dev: {
       status: devError.status,
       message: devError.message,

@@ -5,7 +5,7 @@
 
     <style>
         .spinner {
-        animation: spinner-animation 1.05s infinite;
+        animation: spinner-animation 2s infinite;
         fill: #22c55e;
         }
 
@@ -18,19 +18,20 @@
         }
 
         @keyframes spinner-animation {
-        0%, 57.14% {
+        0%, 25% {
         animation-timing-function: cubic-bezier(0.33, .66, .66, 1);
         transform: translate(0);
         }
 
-        28.57% {
+        12.5% {
         animation-timing-function: cubic-bezier(0.33, 0, .66, .33);
         transform: translateY(-6px);
         }
 
-        100% {
+        50%, 100% {
         transform: translate(0);
         }
         }
+
     </style>
 </svg>

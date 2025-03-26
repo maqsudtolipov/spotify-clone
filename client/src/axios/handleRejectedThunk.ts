@@ -11,9 +11,12 @@ const handleRejectedThunk = (
     state.api[apiLink].statusCode = action.payload.statusCode;
     state.api[apiLink].error = action.payload.message;
 
+    console.log(action.payload);
+
     if (
       action.payload.statusCode !== 404 &&
       action.payload.statusCode !== 500
+      && !action.payload.code
     ) {
       toast.error(action.payload.message);
     }

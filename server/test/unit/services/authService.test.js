@@ -1,4 +1,4 @@
-const app = require("../../../src/app");
+const app = require("../../../src/config/app.config");
 const User = require("../../../src/models/userModel");
 const authService = require("../../../src/services/authService");
 const AppError = require("../../../src/utils/AppError");
@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
 
 jest.mock("../../../src/models/userModel");
+jest.mock("../../../src/models/refreshTokenModel");
 jest.mock("../../../src/utils/attachCookieTokens");
 jest.mock("jsonwebtoken");
 
@@ -21,36 +22,59 @@ beforeEach(() => {
 });
 
 describe("signUp service", () => {
-  it("should throw AppError if user already exists", async () => {
-    jest
-      .spyOn(User, "findOne")
-      .mockResolvedValue({ email: "user@example.com" });
-    const error = await authService
+  it("should throw 422 error if required fields are missing", async () => {
+    const resError = await authService
       .signUp({ email: "user@example.com" })
       .catch((e) => e);
 
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(409);
-    expect(error.message).toBe("User already exists");
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 422,
+      message: "Please provide name, email, password and passwordConfirm",
+    });
   });
+  it("should throw 409 if the user already exists", async () => {
+    jest
+      .spyOn(User, "findOne")
+      .mockResolvedValue({ email: "user@example.com" });
+    const resError = await authService
+      .signUp({
+        name: "User",
+        email: "user@example.com",
+        password: "pass1234",
+        passwordConfirm: "pass1234",
+      })
+      .catch((e) => e);
 
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 409,
+      message: "User already exists",
+    });
+  });
   it("should create a user with the default img id", async () => {
     jest.spyOn(User, "findOne").mockResolvedValue(null);
     jest.spyOn(User, "getDefaultUserImgId").mockResolvedValue("defaultImgId");
     jest.spyOn(User, "create").mockResolvedValue({
-      email: "user@example.com",
       img: "defaultImgId",
+      email: "user@example.com",
     });
 
     const newUser = await authService.signUp({
+      name: "User",
       email: "user@example.com",
-      password: "password",
+      password: "pass1234",
+      passwordConfirm: "pass1234",
     });
 
     expect(User.getDefaultUserImgId).toHaveBeenCalled();
     expect(User.create).toHaveBeenCalledWith({
+      name: "User",
       email: "user@example.com",
-      password: "password",
+      password: "pass1234",
+      passwordConfirm: "pass1234",
       img: "defaultImgId",
       role: "user",
     });
@@ -62,68 +86,104 @@ describe("signUp service", () => {
 });
 
 describe("login service", () => {
-  it("should throw error if user does not exist", async () => {
+  it("should throw 422 error if required fields are missing", async () => {
+    const resError = await authService
+      .login({ email: "user@example.com" })
+      .catch((e) => e);
+
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 422,
+      message: "Please provide email and password",
+    });
+  });
+  it("should throw 401 if user does not exist", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue(),
+      select: () => null,
     });
 
-    const error = await loginService.login("user@example.com").catch((e) => e);
+    const resError = await loginService
+      .login({ email: "user@example.com", password: "pass1234" })
+      .catch((e) => e);
 
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(401);
-    expect(error.message).toBe("Invalid email or password");
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 401,
+      message: "Invalid email or password",
+    });
   });
-
-  it("should throw error if passwords does not match", async () => {
+  it("should throw 401 if passwords does not match", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue({
+      select: jest.fn().mockResolvedValue({
         email: "user@example.com",
         password: "correctPass",
       }),
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
-    const error = await loginService
-      .login("user@example.com", "wrongPass")
+    const resError = await loginService
+      .login({ email: "user@example.com", password: "wrongPass" })
       .catch((e) => e);
 
     expect(bcrypt.compare).toHaveBeenCalledWith("wrongPass", "correctPass");
-    expect(error).toBeInstanceOf(AppError);
-    expect(error.statusCode).toBe(401);
-    expect(error.message).toBe("Invalid email or password");
+    expect(resError).toBeInstanceOf(AppError);
+    expect(resError).toMatchObject({
+      status: "fail",
+      statusCode: 401,
+      message: "Invalid email or password",
+    });
   });
-
-  it("should attach cookies to response and return user", async () => {
+  it("should generate cookies and save to database", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
-      populate: jest.fn().mockResolvedValue({
-        email: "user@example.com",
-        password: "correctPass",
-        library: { items: [] },
-        toObject: function () {
-          return this;
-        },
+      select: jest.fn().mockResolvedValue({
+        id: "userId",
+        name: "User",
+        img: "user.png",
       }),
     });
-
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
+    attachAccessCookie.mockReturnValue("accessToken");
+    attachRefreshCookie.mockReturnValue({
+      refreshToken: "refreshToken",
+      expiresAt: "dd/MM/yyyy",
+    });
+    jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
 
-    attachAccessCookie.mockImplementation(() => ({}));
-    attachRefreshCookie.mockImplementation(() => ({}));
-
-    jest.spyOn(RefreshToken, "create").mockResolvedValue();
-
-    const res = {};
-    const response = await authService
-      .login("user@example.com", "correctPass", res)
-      .catch((e) => e);
-
-    expect(attachAccessCookie).toHaveBeenCalled();
-    expect(attachRefreshCookie).toHaveBeenCalled();
-    expect(RefreshToken.create).toHaveBeenCalled();
-    expect(response).toMatchObject({
+    await loginService.login({
       email: "user@example.com",
-      password: "correctPass",
-      library: { items: [] },
+      password: "pass1234",
+    });
+
+    expect(RefreshToken.create).toHaveBeenCalledWith({
+      token: "refreshToken",
+      userId: "userId",
+      expiresAt: "dd/MM/yyyy",
+    });
+  });
+  it("should return user data", async () => {
+    jest.spyOn(User, "findOne").mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        id: "userId",
+        name: "User",
+        img: "user.png",
+      }),
+    });
+    jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
+    attachAccessCookie.mockReturnValue("accessToken");
+    attachRefreshCookie.mockReturnValue("refreshToken");
+    jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
+
+    const res = await loginService.login({
+      email: "user@example.com",
+      password: "pass1234",
+    });
+
+    expect(res).toMatchObject({
+      id: "userId",
+      name: "User",
+      img: "user.png",
     });
   });
 });
@@ -134,7 +194,9 @@ describe("refreshToken service", () => {
       throw new Error();
     });
 
-    const error = await authService.refreshToken().catch((e) => e);
+    const error = await authService
+      .refreshToken("refreshToken")
+      .catch((e) => e);
 
     expect(error).toBeInstanceOf(AppError);
     expect(error.statusCode).toBe(401);
@@ -148,7 +210,9 @@ describe("refreshToken service", () => {
     });
     jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
 
-    const error = await authService.refreshToken().catch((e) => e);
+    const error = await authService
+      .refreshToken("refreshToken")
+      .catch((e) => e);
 
     expect(RefreshToken.findOne).toHaveBeenCalled();
     expect(error).toBeInstanceOf(AppError);
@@ -168,7 +232,7 @@ describe("refreshToken service", () => {
     attachAccessCookie.mockImplementation(() => ({}));
     attachRefreshCookie.mockImplementation(() => ({}));
 
-    await authService.refreshToken();
+    await authService.refreshToken("refreshToken");
 
     expect(RefreshToken.deleteMany).toHaveBeenCalled();
     expect(attachAccessCookie).toHaveBeenCalled();

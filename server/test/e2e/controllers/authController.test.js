@@ -2,7 +2,7 @@ const {
   connectToDatabase,
   cleanupDatabaseAndDisconnect,
 } = require("../../helpers/databaseHelpers");
-const app = require("../../../src/app");
+const app = require("../../../src/config/app.config");
 const createUsersAndLogin = require("../../helpers/createUsersAndLogin");
 const request = require("supertest");
 const {testUsers} = require("../../testData");
@@ -226,7 +226,7 @@ describe("authController", () => {
 
     it("should delete all refresh tokens and blacklist current access token", async () => {
       const res = await request(app)
-        .get("/api/auth/logout")
+        .post("/api/auth/logout")
         .set("Cookie", [`accessToken=${accessToken}`]);
 
       const refreshTokens = await RefreshToken.find({user: user.id});

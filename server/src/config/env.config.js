@@ -1,8 +1,5 @@
-const checkEnvVariables = () => {
+const envConfig = () => {
   const envVariables = [
-    "DB_URL",
-    "DB_TEST_URL",
-    "DB_PASS",
     "NODE_ENV",
     "ACCESS_TOKEN_SECRET",
     "ACCESS_TOKEN_EXPIRATION",
@@ -28,4 +25,4 @@ const checkEnvVariables = () => {
   }
 };
 
-module.exports = checkEnvVariables;
+module.exports = envConfig;

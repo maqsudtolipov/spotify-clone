@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
+import {
+  dislikeSong,
+  getCurrent,
+  likeSong,
+  login,
+  logout,
+  signUp,
+} from './userThunks.ts';
 import { InitialState } from './userTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -28,6 +35,12 @@ const userSlice = createSlice({
     },
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
+    },
+    manualLogout: (state) => {
+      if (state.data) {
+        state.data = null;
+        state.isAuth = false;
+      }
     },
   },
   extraReducers: (builder) =>
@@ -62,9 +75,8 @@ const userSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.api.login.status = 'pending';
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state) => {
         state.api.login.status = 'fulfilled';
-        state.data = action.payload;
         state.isAuth = true;
       })
       .addCase(login.rejected, (state, action) => {
@@ -94,6 +106,10 @@ const userSlice = createSlice({
       }),
 });
 
-export const { followingsUpdated, playlistsUpdated, likedPlaylistsUpdated } =
-  userSlice.actions;
+export const {
+  followingsUpdated,
+  playlistsUpdated,
+  likedPlaylistsUpdated,
+  manualLogout,
+} = userSlice.actions;
 export default userSlice.reducer;
