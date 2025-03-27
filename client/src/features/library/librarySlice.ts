@@ -88,6 +88,18 @@ const librarySlice = createSlice({
         state.searchQuery,
       );
     },
+    updateLibraryPlaylist(state, action) {
+      state.originalItems = state.originalItems.map((playlist) =>
+        playlist.id === action.payload.id ? { ...action.payload } : playlist,
+      );
+
+      state.items = processItems(
+        state.originalItems,
+        state.sortBy,
+        state.filter,
+        state.searchQuery,
+      );
+    },
   },
 });
 
@@ -97,5 +109,6 @@ export const {
   filterLibraryItems,
   searchLibraryItems,
   addItemToLibrary,
+  updateLibraryPlaylist,
 } = librarySlice.actions;
 export default librarySlice.reducer;

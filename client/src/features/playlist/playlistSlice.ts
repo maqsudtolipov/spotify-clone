@@ -49,10 +49,11 @@ const playlistSlice = createSlice({
       })
       .addCase(editPlaylist.fulfilled, (state, action) => {
         state.api.editPlaylist.status = 'fulfilled';
-        console.log(action);
+     
         state.data.name = action.payload.name;
         state.data.img.url = action.payload.img.url;
         state.data.description = action.payload.description;
+        state.data.isPublic = action.payload.isPublic;
       })
       .addCase(editPlaylist.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'editPlaylist');

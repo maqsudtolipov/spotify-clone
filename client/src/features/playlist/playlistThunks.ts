@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
-import { addItemToLibrary, setLibraryItems } from '../library/librarySlice.ts';
+import { addItemToLibrary, setLibraryItems, updateLibraryPlaylist } from '../library/librarySlice.ts';
 import { addItemToPlaylists, likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
 import { RejectValue } from '../../axios/axiosTypes.ts';
@@ -20,11 +20,6 @@ export const getPlaylist = createAsyncThunk<
   }
 });
 
-/*
- - New structure
- - Add new playlist id to users playlists array
- - Add new playlist data to library
- */
 export const createPlaylist = createAsyncThunk<
   any,
   any,
@@ -32,9 +27,6 @@ export const createPlaylist = createAsyncThunk<
 >('playlist/createPlaylist', async (_, { dispatch, rejectWithValue }) => {
   try {
     const res = await axios.post(`/playlists/`);
-
-    // dispatch(setLibraryItems(res.data.library.items));
-    // dispatch(playlistsUpdated(res.data.playlists));
 
     dispatch(addItemToLibrary(res.data.playlist));
     dispatch(
@@ -50,19 +42,41 @@ export const createPlaylist = createAsyncThunk<
   }
 });
 
+/*
+- Update playlist data
+* Update playlist on library
+* Update playlist on user playlists array
+*/
 export const editPlaylist = createAsyncThunk<
   Playlist,
   { id: string; formData: FormData },
   { rejectValue: RejectValue }
->('playlist/editPlaylist', async ({ id, formData }, { rejectWithValue }) => {
-  try {
-    const res = await axios.patch(`/playlists/${id}`, formData);
-    toast.success('Playlist is updated');
-    return res.data.playlist;
-  } catch (e) {
-    return rejectWithValue(handleAxiosError(e));
-  }
-});
+>(
+  'playlist/editPlaylist',
+  async ({ id, formData }, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await axios.patch(`/playlists/${id}`, formData);
+      const playlist = await res.data.playlist;
+
+      dispatch(
+        updateLibraryPlaylist({
+          id: playlist.id,
+          name: playlist.name,
+          user: playlist.user.name,
+          img: playlist.img.url,
+          isPinned: false,
+          itemType: 'playlist',
+          createdAt: playlist.createdAt,
+        }),
+      );
+
+      toast.success('Playlist is updated');
+      return res.data.playlist;
+    } catch (e) {
+      return rejectWithValue(handleAxiosError(e));
+    }
+  },
+);
 
 export const deletePlaylist = createAsyncThunk(
   'playlist/deletePlaylist',

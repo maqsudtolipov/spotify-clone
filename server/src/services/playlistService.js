@@ -121,11 +121,7 @@ exports.updatePlaylist = async (playlistInput) => {
     .select("+isPublic +isLikedSongs")
     .populate([
       { path: "img", select: "url isDefault fileId" },
-      {
-        path: "user",
-        select: "name img role",
-        populate: [{ path: "img", select: "url" }],
-      },
+      { path: "user", select: "id" },
     ]);
 
   if (!playlist || playlist.user.id !== playlistInput.userId) {
@@ -163,9 +159,16 @@ exports.updatePlaylist = async (playlistInput) => {
       new: true,
       runValidators: true,
     },
-  )
-    .select("name description img")
-    .populate({ path: "img", select: "url" });
+  ).populate([
+    {
+      path: "user",
+      select: "name",
+    },
+    {
+      path: "img",
+      select: "url",
+    },
+  ]);
 };
 
 exports.deletePlaylist = async (playlistInput) => {
