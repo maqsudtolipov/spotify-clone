@@ -30,7 +30,6 @@ const userSlice = createSlice({
     },
     // new
     addItemToPlaylists: (state, action) => {
-      console.log(action.payload);
       if (state.data) state.data.playlists.push(action.payload);
     },
     updateItemUserPlaylists: (state, action) => {
@@ -39,6 +38,12 @@ const userSlice = createSlice({
           playlist._id === action.payload._id ? action.payload : playlist,
         );
       }
+    },
+    removeItemFromPlaylists: (state, action) => {
+      if (state.data)
+        state.data.playlists = state.data.playlists.map(
+          (item) => item._id !== action.payload,
+        );
     },
 
     likedPlaylistsUpdated: (state, action) => {
@@ -121,5 +126,6 @@ export const {
   manualLogout,
   addItemToPlaylists,
   updateItemUserPlaylists,
+  removeItemFromPlaylists,
 } = userSlice.actions;
 export default userSlice.reducer;

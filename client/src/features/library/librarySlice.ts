@@ -100,6 +100,18 @@ const librarySlice = createSlice({
         state.searchQuery,
       );
     },
+    removePlaylistFromLibrary(state, action) {
+      state.originalItems = state.originalItems.filter(
+        (item) => item.id !== action.payload,
+      );
+
+      state.items = processItems(
+        state.originalItems,
+        state.sortBy,
+        state.filter,
+        state.searchQuery,
+      );
+    },
   },
 });
 
@@ -110,5 +122,6 @@ export const {
   searchLibraryItems,
   addItemToLibrary,
   updateLibraryPlaylist,
+  removePlaylistFromLibrary,
 } = librarySlice.actions;
 export default librarySlice.reducer;

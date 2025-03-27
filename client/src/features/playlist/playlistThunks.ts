@@ -1,10 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
-import { addItemToLibrary, setLibraryItems, updateLibraryPlaylist } from '../library/librarySlice.ts';
+import {
+  addItemToLibrary,
+  removePlaylistFromLibrary,
+  setLibraryItems,
+  updateLibraryPlaylist
+} from '../library/librarySlice.ts';
 import {
   addItemToPlaylists,
   likedPlaylistsUpdated,
-  playlistsUpdated,
+  removeItemFromPlaylists,
   updateItemUserPlaylists
 } from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
@@ -47,11 +52,6 @@ export const createPlaylist = createAsyncThunk<
   }
 });
 
-/*
-- Update playlist data
-* Update playlist on library
-* Update playlist on user playlists array
-*/
 export const editPlaylist = createAsyncThunk<
   Playlist,
   { id: string; formData: FormData },
@@ -93,10 +93,10 @@ export const deletePlaylist = createAsyncThunk(
   'playlist/deletePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
     try {
-      const res = await axios.delete(`/playlists/${id}`);
+      await axios.delete(`/playlists/${id}`);
 
-      dispatch(setLibraryItems(res.data.library.items));
-      dispatch(playlistsUpdated(res.data.playlists));
+      dispatch(removePlaylistFromLibrary(id));
+      dispatch(removeItemFromPlaylists(id));
 
       toast.success('Playlist deleted successfully');
     } catch (e) {
@@ -105,7 +105,6 @@ export const deletePlaylist = createAsyncThunk(
   },
 );
 
-// Additional
 export const savePlaylist = createAsyncThunk(
   'playlist/savePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
