@@ -24,13 +24,13 @@ exports.createPlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const {library, playlists} =
-      await playlistService.createPlaylist(playlistInput);
+    // const { library, playlists } =
+    //   await playlistService.createPlaylist(playlistInput);
+    const { playlist } = await playlistService.createPlaylist(playlistInput);
 
     res.status(201).send({
       status: "success",
-      library,
-      playlists,
+      playlist,
     });
   } catch (e) {
     next(e);
@@ -67,7 +67,7 @@ exports.deletePlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const {library, playlists} =
+    const { library, playlists } =
       await playlistService.deletePlaylist(playlistInput);
 
     res.status(200).send({
@@ -87,7 +87,7 @@ exports.savePlaylistToLibrary = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const {library, likedPlaylists} =
+    const { library, likedPlaylists } =
       await playlistService.savePlaylistToLibrary(playlistInput);
 
     res.status(200).send({
@@ -107,7 +107,7 @@ exports.removePlaylistFromLibrary = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    const {library, likedPlaylists} =
+    const { library, likedPlaylists } =
       await playlistService.removePlaylistFromLibrary(playlistInput);
 
     res.status(200).send({

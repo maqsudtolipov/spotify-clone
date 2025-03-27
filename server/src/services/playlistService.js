@@ -41,42 +41,74 @@ exports.getPlaylist = async (playlistInput) => {
   return playlist;
 };
 
+// - TODO: too dependant to client
+// - remove new library query and dont sent it
+// - remove sending whole new playlists array
 exports.createPlaylist = async (playlistInput) => {
+  // Create new playlist
   const newPlaylist = await Playlist.create({
     name: playlistInput.name,
     user: playlistInput.userId,
   });
 
-  const user = await User.findByIdAndUpdate(
-    playlistInput.userId,
-    {
-      $addToSet: { playlists: newPlaylist.id },
-    },
-    { new: true },
-  ).populate([{ path: "playlists", select: "name" }]);
+  // Add playlist to users playlists
+  await User.findByIdAndUpdate(playlistInput.userId, {
+    $addToSet: { playlists: newPlaylist.id },
+  });
 
-  const library = await Library.findByIdAndUpdate(
-    playlistInput.libraryId,
+  // Save playlist to user's library
+  await Library.findByIdAndUpdate(playlistInput.libraryId, {
+    $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
+  });
+
+  // Populate created playlist
+  const playlist = await Playlist.findById(newPlaylist.id).populate([
     {
-      $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
+      path: "user",
+      select: "name",
     },
-    { new: true },
-  )
-    .populate([
-      {
-        path: "items.refId",
-        select: "name img user createdAt",
-        populate: [
-          { path: "user", select: "name role", strictPopulate: false },
-          { path: "img", select: "url" },
-        ],
+  ]);
+
+  return {
+    playlist: {
+      id: playlist.id,
+      name: playlist.name,
+      user: {
+        name: playlist.user.name,
       },
-    ])
-    .lean();
-  library.id = library._id;
-  library.items = filterLibraryItems(library.items);
+    },
+  };
 
-  return { library, playlists: user.playlists };
+  // Legacy - could be usefull
+  // const user = await User.findByIdAndUpdate(
+  //   playlistInput.userId,
+  //   {
+  //     $addToSet: { playlists: newPlaylist.id },
+  //   },
+  //   { new: true },
+  // ).populate([{ path: "playlists", select: "name" }]);
+  //
+  // const library = await Library.findByIdAndUpdate(
+  //   playlistInput.libraryId,
+  //   {
+  //     $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
+  //   },
+  //   { new: true },
+  // )
+  //   .populate([
+  //     {
+  //       path: "items.refId",
+  //       select: "name img user createdAt",
+  //       populate: [
+  //         { path: "user", select: "name role", strictPopulate: false },
+  //         { path: "img", select: "url" },
+  //       ],
+  //     },
+  //   ])
+  //   .lean();
+  // library.id = library._id;
+  // library.items = filterLibraryItems(library.items);
+  // return { library, playlists: user.playlists };
 };
 
 exports.updatePlaylist = async (playlistInput) => {
