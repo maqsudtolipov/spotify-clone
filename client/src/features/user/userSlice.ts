@@ -30,6 +30,7 @@ const userSlice = createSlice({
     },
     // new
     addItemToPlaylists: (state, action) => {
+      console.log(action.payload);
       if (state.data) state.data.playlists.push(action.payload);
     },
     updateItemUserPlaylists: (state, action) => {

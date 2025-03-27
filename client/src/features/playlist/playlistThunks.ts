@@ -36,7 +36,7 @@ export const createPlaylist = createAsyncThunk<
     dispatch(addItemToLibrary(res.data.playlist));
     dispatch(
       addItemToPlaylists({
-        _id: res.data.playlist._id,
+        _id: res.data.playlist.id,
         name: res.data.playlist.name,
       }),
     );
