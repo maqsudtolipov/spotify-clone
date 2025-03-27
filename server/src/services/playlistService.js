@@ -67,15 +67,20 @@ exports.createPlaylist = async (playlistInput) => {
       path: "user",
       select: "name",
     },
+    {
+      path: "img",
+      select: "url",
+    },
   ]);
 
   return {
     playlist: {
       id: playlist.id,
       name: playlist.name,
-      user: {
-        name: playlist.user.name,
-      },
+      user: playlist.user.name,
+      img: playlist.img.url,
+      itemType: "playlist",
+      createdAt: playlist.createdAt,
     },
   };
 

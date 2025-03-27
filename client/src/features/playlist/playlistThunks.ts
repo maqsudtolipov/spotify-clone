@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
-import { setLibraryItems } from '../library/librarySlice.ts';
-import { likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
+import { addItemToLibrary, setLibraryItems } from '../library/librarySlice.ts';
+import { addItemToPlaylists, likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
@@ -20,6 +20,11 @@ export const getPlaylist = createAsyncThunk<
   }
 });
 
+/*
+ - New structure
+ - Add new playlist id to users playlists array
+ - Add new playlist data to library
+ */
 export const createPlaylist = createAsyncThunk<
   any,
   any,
@@ -27,8 +32,18 @@ export const createPlaylist = createAsyncThunk<
 >('playlist/createPlaylist', async (_, { dispatch, rejectWithValue }) => {
   try {
     const res = await axios.post(`/playlists/`);
-    dispatch(setLibraryItems(res.data.library.items));
-    dispatch(playlistsUpdated(res.data.playlists));
+
+    // dispatch(setLibraryItems(res.data.library.items));
+    // dispatch(playlistsUpdated(res.data.playlists));
+
+    dispatch(addItemToLibrary(res.data.playlist));
+    dispatch(
+      addItemToPlaylists({
+        id: res.data.playlist.id,
+        name: res.data.playlist.name,
+      }),
+    );
+
     toast.success('New playlist is created');
   } catch (e) {
     return rejectWithValue(handleAxiosError(e));

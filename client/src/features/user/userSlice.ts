@@ -1,12 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  dislikeSong,
-  getCurrent,
-  likeSong,
-  login,
-  logout,
-  signUp,
-} from './userThunks.ts';
+import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
 import { InitialState } from './userTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -30,8 +23,14 @@ const userSlice = createSlice({
     followingsUpdated: (state, action) => {
       if (state.data) state.data.followings = action.payload;
     },
+
+    // Legacy
     playlistsUpdated: (state, action) => {
       if (state.data) state.data.playlists = action.payload;
+    },
+    // new
+    addItemToPlaylists: (state, action) => {
+      if (state.data) state.data.playlists.push(action.payload);
     },
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
@@ -111,5 +110,6 @@ export const {
   playlistsUpdated,
   likedPlaylistsUpdated,
   manualLogout,
+  addItemToPlaylists,
 } = userSlice.actions;
 export default userSlice.reducer;

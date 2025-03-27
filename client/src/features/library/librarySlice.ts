@@ -24,7 +24,7 @@ const initialState: LibraryState = {
   items: [],
   sortBy: 'alphabetical',
   filter: 'none',
-  searchQuery: ''
+  searchQuery: '',
 };
 
 const librarySlice = createSlice({
@@ -33,26 +33,26 @@ const librarySlice = createSlice({
   reducers: {
     sortLibraryItems: (
       state,
-      action: PayloadAction<'alphabetical' | 'recentlyAdded'>
+      action: PayloadAction<'alphabetical' | 'recentlyAdded'>,
     ) => {
       state.sortBy = action.payload;
       state.items = processItems(
         state.originalItems,
         state.sortBy,
         state.filter,
-        state.searchQuery
+        state.searchQuery,
       );
     },
     filterLibraryItems: (
       state,
-      action: PayloadAction<'artist' | 'playlist' | 'none'>
+      action: PayloadAction<'artist' | 'playlist' | 'none'>,
     ) => {
       state.filter = action.payload;
       state.items = processItems(
         state.originalItems,
         state.sortBy,
         state.filter,
-        state.searchQuery
+        state.searchQuery,
       );
     },
     searchLibraryItems: (state, action: PayloadAction<string>) => {
@@ -61,29 +61,41 @@ const librarySlice = createSlice({
         state.originalItems,
         state.sortBy,
         state.filter,
-        state.searchQuery
+        state.searchQuery,
       );
     },
+    // needs to go in future
     setLibraryItems: (state, action) => {
       state.originalItems = state.originalItems = structuredClone(
-        action.payload
+        action.payload,
       );
 
-      // console.log(state.originalItems);
       state.items = processItems(
         state.originalItems,
         state.sortBy,
         state.filter,
-        state.searchQuery
+        state.searchQuery,
       );
-    }
-  }
+    },
+    // new library updates
+    addItemToLibrary(state, action) {
+      state.originalItems.push({ ...action.payload, isPinned: false });
+
+      state.items = processItems(
+        state.originalItems,
+        state.sortBy,
+        state.filter,
+        state.searchQuery,
+      );
+    },
+  },
 });
 
 export const {
   setLibraryItems,
   sortLibraryItems,
   filterLibraryItems,
-  searchLibraryItems
+  searchLibraryItems,
+  addItemToLibrary,
 } = librarySlice.actions;
 export default librarySlice.reducer;
