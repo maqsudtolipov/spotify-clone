@@ -32,6 +32,14 @@ const userSlice = createSlice({
     addItemToPlaylists: (state, action) => {
       if (state.data) state.data.playlists.push(action.payload);
     },
+    updateItemUserPlaylists: (state, action) => {
+      if (state.data) {
+        state.data.playlists = state.data.playlists.map((playlist) =>
+          playlist._id === action.payload._id ? action.payload : playlist,
+        );
+      }
+    },
+
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
     },
@@ -111,5 +119,6 @@ export const {
   likedPlaylistsUpdated,
   manualLogout,
   addItemToPlaylists,
+  updateItemUserPlaylists,
 } = userSlice.actions;
 export default userSlice.reducer;

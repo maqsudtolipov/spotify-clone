@@ -1,7 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
 import { addItemToLibrary, setLibraryItems, updateLibraryPlaylist } from '../library/librarySlice.ts';
-import { addItemToPlaylists, likedPlaylistsUpdated, playlistsUpdated } from '../user/userSlice.ts';
+import {
+  addItemToPlaylists,
+  likedPlaylistsUpdated,
+  playlistsUpdated,
+  updateItemUserPlaylists
+} from '../user/userSlice.ts';
 import toast from 'react-hot-toast';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
@@ -31,7 +36,7 @@ export const createPlaylist = createAsyncThunk<
     dispatch(addItemToLibrary(res.data.playlist));
     dispatch(
       addItemToPlaylists({
-        id: res.data.playlist.id,
+        _id: res.data.playlist._id,
         name: res.data.playlist.name,
       }),
     );
@@ -67,6 +72,12 @@ export const editPlaylist = createAsyncThunk<
           isPinned: false,
           itemType: 'playlist',
           createdAt: playlist.createdAt,
+        }),
+      );
+      dispatch(
+        updateItemUserPlaylists({
+          _id: playlist._id,
+          name: playlist.name,
         }),
       );
 
