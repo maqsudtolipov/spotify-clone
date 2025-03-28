@@ -303,5 +303,4 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
       },
     },
   });
-  return null;
 };

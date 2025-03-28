@@ -8,6 +8,7 @@ import {
 } from '../library/librarySlice.ts';
 import {
   addItemToPlaylists,
+  addToLikedPlaylists,
   likedPlaylistsUpdated,
   removeItemFromPlaylists,
   updateItemUserPlaylists
@@ -107,11 +108,13 @@ export const deletePlaylist = createAsyncThunk(
 
 export const savePlaylist = createAsyncThunk(
   'playlist/savePlaylist',
-  async ({ id }: { id: string }, { dispatch }) => {
+  async ({ playlist }: { playlist: any }, { dispatch }) => {
     try {
-      const res = await axios.post(`/playlists/save/${id}`);
-      dispatch(setLibraryItems(res.data.library.items));
-      dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
+      dispatch(addItemToLibrary(playlist));
+      dispatch(addToLikedPlaylists(playlist.id));
+
+      await axios.post(`/playlists/save/${playlist.id}`);
+
       toast.success('Playlist saved to your library');
     } catch (e) {
       console.log('savePlaylist thunk', e);

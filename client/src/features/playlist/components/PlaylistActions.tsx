@@ -25,8 +25,18 @@ const PlaylistActions = ({ data }: Playlist) => {
   const handlePlay = () => {
     dispatch(setItems(data.songs));
   };
-  const handleSave = (id: string) => {
-    dispatch(savePlaylist({ id }));
+  const handleSave = () => {
+    // For optimistic UI
+    const playlist = {
+      id: data.id,
+      name: data.name,
+      user: data.user.name,
+      img: data.img.url,
+      itemType: 'playlist',
+      isPinned: false,
+      createdAt: data.createdAt,
+    };
+    dispatch(savePlaylist({ playlist }));
   };
   const handleRemove = (id: string) => {
     dispatch(removePlaylist({ id }));
@@ -37,7 +47,7 @@ const PlaylistActions = ({ data }: Playlist) => {
 
   return (
     <PlayHeader>
-      <PlayButton onClick={handlePlay}/>
+      <PlayButton onClick={handlePlay} />
       {!isPersonalPlaylist && (
         <TransparentButton
           text={isLiked(data.id, likedPlaylists) ? 'Remove' : 'Save'}
