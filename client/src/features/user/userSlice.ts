@@ -52,6 +52,13 @@ const userSlice = createSlice({
         state.data.likedPlaylists.push(action.payload);
       }
     },
+    removeFromLikedPlaylists: (state, action) => {
+      if (state.data) {
+        state.data.likedPlaylists = state.data.likedPlaylists.filter(
+          (item) => item !== action.payload,
+        );
+      }
+    },
 
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
@@ -134,6 +141,7 @@ export const {
   addItemToPlaylists,
   updateItemUserPlaylists,
   removeItemFromPlaylists,
-  addToLikedPlaylists
+  addToLikedPlaylists,
+  removeFromLikedPlaylists
 } = userSlice.actions;
 export default userSlice.reducer;

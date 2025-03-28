@@ -38,6 +38,7 @@ const PlaylistActions = ({ data }: Playlist) => {
     };
     dispatch(savePlaylist({ playlist }));
   };
+
   const handleRemove = (id: string) => {
     dispatch(removePlaylist({ id }));
   };

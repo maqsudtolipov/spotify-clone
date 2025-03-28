@@ -1,15 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
-import {
-  addItemToLibrary,
-  removePlaylistFromLibrary,
-  setLibraryItems,
-  updateLibraryPlaylist
-} from '../library/librarySlice.ts';
+import { addItemToLibrary, removePlaylistFromLibrary, updateLibraryPlaylist } from '../library/librarySlice.ts';
 import {
   addItemToPlaylists,
   addToLikedPlaylists,
-  likedPlaylistsUpdated,
+  removeFromLikedPlaylists,
   removeItemFromPlaylists,
   updateItemUserPlaylists
 } from '../user/userSlice.ts';
@@ -112,10 +107,9 @@ export const savePlaylist = createAsyncThunk(
     try {
       dispatch(addItemToLibrary(playlist));
       dispatch(addToLikedPlaylists(playlist.id));
+      toast.success('Playlist saved to your library');
 
       await axios.post(`/playlists/save/${playlist.id}`);
-
-      toast.success('Playlist saved to your library');
     } catch (e) {
       console.log('savePlaylist thunk', e);
     }
@@ -126,10 +120,11 @@ export const removePlaylist = createAsyncThunk(
   'playlist/removePlaylist',
   async ({ id }: { id: string }, { dispatch }) => {
     try {
-      const res = await axios.delete(`/playlists/remove/${id}`);
-      dispatch(setLibraryItems(res.data.library.items));
-      dispatch(likedPlaylistsUpdated(res.data.likedPlaylists));
+      dispatch(removePlaylistFromLibrary(id));
+      dispatch(removeFromLikedPlaylists(id));
       toast.success('Playlist removed from your library');
+
+      await axios.delete(`/playlists/remove/${id}`);
     } catch (e) {
       console.log('removePlaylist thunk', e);
     }
