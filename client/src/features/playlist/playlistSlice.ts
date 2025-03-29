@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createPlaylist, editPlaylist, getPlaylist, removeSongFromPlaylistThunk } from './playlistThunks.ts';
-import { LibraryState } from './playlistTypes.ts';
+import { PlaylistState } from './playlistTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
-const initialState: LibraryState = {
+const initialState: PlaylistState = {
   data: null,
   api: {
     getPlaylist: { status: 'idle', error: '' },
