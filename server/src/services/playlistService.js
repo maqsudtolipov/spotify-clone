@@ -5,8 +5,8 @@ const { imagekitDelete } = require("../utils/ImageKit");
 const File = require("../models/fileModel");
 const Library = require("../models/libraryModel");
 const uploadFiles = require("../utils/uploadFiles");
-const filterLibraryItems = require("../utils/filterLibraryItems");
 
+// TODO: add pagination and querying as option
 exports.getPlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic")
@@ -41,9 +41,6 @@ exports.getPlaylist = async (playlistInput) => {
   return playlist;
 };
 
-// - TODO: too dependant to client
-// - remove new library query and dont sent it
-// - remove sending whole new playlists array
 exports.createPlaylist = async (playlistInput) => {
   // Create new playlist
   const newPlaylist = await Playlist.create({
@@ -83,37 +80,6 @@ exports.createPlaylist = async (playlistInput) => {
       createdAt: playlist.createdAt,
     },
   };
-
-  // Legacy - could be usefull
-  // const user = await User.findByIdAndUpdate(
-  //   playlistInput.userId,
-  //   {
-  //     $addToSet: { playlists: newPlaylist.id },
-  //   },
-  //   { new: true },
-  // ).populate([{ path: "playlists", select: "name" }]);
-  //
-  // const library = await Library.findByIdAndUpdate(
-  //   playlistInput.libraryId,
-  //   {
-  //     $addToSet: { items: { refId: newPlaylist.id, itemType: "playlist" } },
-  //   },
-  //   { new: true },
-  // )
-  //   .populate([
-  //     {
-  //       path: "items.refId",
-  //       select: "name img user createdAt",
-  //       populate: [
-  //         { path: "user", select: "name role", strictPopulate: false },
-  //         { path: "img", select: "url" },
-  //       ],
-  //     },
-  //   ])
-  //   .lean();
-  // library.id = library._id;
-  // library.items = filterLibraryItems(library.items);
-  // return { library, playlists: user.playlists };
 };
 
 exports.updatePlaylist = async (playlistInput) => {
@@ -132,6 +98,7 @@ exports.updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
+  // Upload req img to cloud and save to DB
   let imgFile = playlist.img.id;
   if (playlistInput.imgBuffer) {
     const uploadedFile = await uploadFiles(
@@ -234,6 +201,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
+  // Add playlist id to users liked songs arr
   await User.findByIdAndUpdate(
     playlistInput.userId,
     {
@@ -246,6 +214,7 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
     },
   );
 
+  // Add playlist to users library
   await Library.findByIdAndUpdate(playlistInput.libraryId, {
     $addToSet: {
       items: {
@@ -283,6 +252,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
+  // Remove playlist from users liked songs arr
   await User.findByIdAndUpdate(
     playlistInput.userId,
     {
@@ -295,6 +265,7 @@ exports.removePlaylistFromLibrary = async (playlistInput) => {
     },
   );
 
+  // Remove playlist from users library
   await Library.findByIdAndUpdate(playlistInput.libraryId, {
     $pull: {
       items: {
