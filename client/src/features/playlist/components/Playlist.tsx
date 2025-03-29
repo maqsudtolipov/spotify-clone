@@ -17,9 +17,10 @@ const Playlist = () => {
     (state) => state.playlist.api.getPlaylist,
   );
   const { data } = useAppSelector((state) => state.playlist);
+  const dispatch = useAppDispatch();
+
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const { bg, text } = useDominantColor(data?.img?.url);
 
@@ -27,24 +28,25 @@ const Playlist = () => {
     if (id) dispatch(getPlaylist(id));
   }, [id]);
 
+  if (status === 'pending') return <LoadingScreen />;
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
     if (statusCode === 500) return <ServerError />;
-    else navigate('/');
+    navigate('/');
   }
-  if (status === 'pending' || !data) return <LoadingScreen />;
 
+  if (data)
+    return (
+      <div className={styles.playlistContainer}>
+        <ImageHeader data={data} type="playlist" color={bg} textColor={text} />
+        <GradientBackground color={bg}>
+          <PlaylistActions data={data} />
+          <PlaylistTable songs={data.songs} />
+        </GradientBackground>
+      </div>
+    );
 
-
-  return (
-    <div className={styles.playlist}>
-      <ImageHeader data={data} type="playlist" color={bg} textColor={text} />
-      <GradientBackground color={bg}>
-        <PlaylistActions data={data} />
-        <PlaylistTable songs={data.songs} />
-      </GradientBackground>
-    </div>
-  );
+  return <LoadingScreen />;
 };
 
 export default Playlist;

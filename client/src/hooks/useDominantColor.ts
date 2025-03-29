@@ -1,5 +1,5 @@
 // Built by ChatGPT
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
 const DEFAULT_BG = "rgba(0,0,0,0.5)";
 const DEFAULT_TEXT = "#FFFFFF";
@@ -35,7 +35,7 @@ const ensureTextContrast = (
   return Math.abs(bgL - textL) < 0.4 ? blendWithWhite(textR, textG, textB, 0.8) : [textR, textG, textB];
 };
 
-const useDominantColor = (imageUrl: string | null) => {
+const useDominantColor = (imageUrl: string | undefined) => {
   const [colors, setColors] = useState<{ bg: string; text: string }>({
     bg: DEFAULT_BG,
     text: DEFAULT_TEXT,

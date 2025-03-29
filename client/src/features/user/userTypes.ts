@@ -12,6 +12,7 @@ export interface User {
   followersCount: number;
   followings: string[];
   followingsCount: number;
+  likedPlaylists: string[];
   likedSongs: {
     id: string;
     songs: string[];
