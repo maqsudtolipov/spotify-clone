@@ -1,6 +1,7 @@
 import { Playlist } from '../../playlistTypes.ts';
 import secondsToHourAndMins from '../../helpers/secondsToHourAndMins.ts';
 import styles from '../../../../ui/ImageHeader/ImageHeader.module.scss';
+import { Link } from 'react-router-dom';
 
 interface ImageHeaderProps {
   data: Playlist;
@@ -28,6 +29,16 @@ const PlaylistHeader = ({ data, bgColor, textColor }: ImageHeaderProps) => {
         )}
 
         <div className={styles.statistics}>
+          {data.user && (
+            <Link
+              to={`/${data.user.role}/${data.user.id}`}
+              className={styles.user}
+            >
+              <img src={data.user.img.url} alt={data.user.name} />
+              <span>{data.user.name}</span>
+            </Link>
+          )}
+
           {`• ${data.length} songs, ${secondsToHourAndMins(data.duration)}`}
         </div>
       </div>
