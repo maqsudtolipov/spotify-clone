@@ -8,7 +8,7 @@ import ServerError from '../../../ui/statusScreens/ServerError.tsx';
 import LoadingScreen from '../../../ui/statusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
 import styles from './Playlist.module.scss';
-import PlaylistTable from './PlaylistTable.tsx';
+import PlaylistTable from './table/PlaylistTable.tsx';
 import useDominantColor from '../../../hooks/useDominantColor.ts';
 import PlaylistHeader from './header/PlaylistHeader.tsx';
 

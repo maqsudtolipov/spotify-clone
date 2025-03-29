@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
-
-interface Item {
-  id: string;
-  img: string;
-  name: string;
-  artist: string;
-  plays: number;
-  isLiked: boolean;
-}
+import { Song } from '../../../../../features/playlist/playlistTypes.ts';
 
 // TODO: sort by likes and duration
-const useSortBy = (items: Item[]) => {
-  const [sortedItems, setSortedItems] = useState<Item[]>([]);
+const useSortBy = (items: Song[]) => {
+  const [sortedItems, setSortedItems] = useState<Song[]>([]);
   const [isAscending, setIsAscending] = useState(true);
   const [sortBy, setSortBy] = useState<'alphabetically' | 'plays' | 'default'>(
     'default',
