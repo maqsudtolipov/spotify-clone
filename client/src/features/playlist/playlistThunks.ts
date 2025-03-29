@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
 import { Playlist } from './playlistTypes.ts';
+import { removeSongFromPlaylist } from './playlistSlice.ts';
 
 export const getPlaylist = createAsyncThunk<
   Playlist,
@@ -151,17 +152,24 @@ export const saveSongToPlaylist = createAsyncThunk(
   },
 );
 
-export const removeSongFromPlaylist = createAsyncThunk<
-  string,
-  { songId: string; playlistId: string },
+export const removeSongFromPlaylistThunk = createAsyncThunk<
+  void,
+  {
+    song: {
+      id: string;
+      duration: number;
+    };
+    playlistId: string;
+  },
   { rejectValue: RejectValue }
 >(
   'playlist/removeSong',
-  async ({ songId, playlistId }, { rejectWithValue }) => {
+  async ({ song, playlistId }, { dispatch, rejectWithValue }) => {
     try {
-      await axios.delete(`/songs/${songId}/remove/${playlistId}`);
+      dispatch(removeSongFromPlaylist(song));
       toast.success(`Song removed from your playlist`);
-      return songId;
+
+      await axios.delete(`/songs/${song.id}/remove/${playlistId}`);
     } catch (e) {
       return rejectWithValue(handleAxiosError(e));
     }

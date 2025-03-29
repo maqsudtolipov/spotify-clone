@@ -45,7 +45,6 @@ const PlaylistTable = ({ songs }) => {
     sortByPlays,
   } = useSortBy(songs);
 
-
   if (sortedItems.length < 1)
     return (
       <p className="py-16 text-neutral-400 text-center">
@@ -109,7 +108,7 @@ const PlaylistTable = ({ songs }) => {
                 {' '}
                 {secondsToTimeFormat(item.duration)}
               </TableCell>
-              <PlaylistActionsCell id={item.id} />
+              <PlaylistActionsCell id={item.id} duration={item.duration} />
             </TableRow>
           ))}
         </TableBody>

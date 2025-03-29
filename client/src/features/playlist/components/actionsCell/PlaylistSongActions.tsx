@@ -7,13 +7,14 @@ import { RiDeleteBin6Line, RiMoreFill } from 'react-icons/ri';
 import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import AddToPlaylistItem from '../../../../ui/Dropdown/custom/AddToPlaylistItem.tsx';
-import { removeSongFromPlaylist } from '../../playlistThunks.ts';
+import { removeSongFromPlaylistThunk } from '../../playlistThunks.ts';
 
 interface PlaylistSongActionsProps {
   id: string;
+  duration: number;
 }
 
-const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
+const PlaylistSongActions = ({ id, duration }: PlaylistSongActionsProps) => {
   const userId = useAppSelector((state) => state.user?.data?.id);
   const playlistUserId = useAppSelector(
     (state) => state.playlist?.data?.user?.id,
@@ -38,7 +39,9 @@ const PlaylistSongActions = ({ id }: PlaylistSongActionsProps) => {
   const { ref } = useOutsideClick(closeDropdown);
 
   const handleRemoveSong = (songId: string, playlistId: string) => {
-    dispatch(removeSongFromPlaylist({ songId, playlistId }));
+    dispatch(
+      removeSongFromPlaylistThunk({ song: { id, duration }, playlistId }),
+    );
   };
 
   return (

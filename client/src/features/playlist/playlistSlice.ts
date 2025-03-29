@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createPlaylist, editPlaylist, getPlaylist, removeSongFromPlaylist } from './playlistThunks.ts';
+import { createPlaylist, editPlaylist, getPlaylist, removeSongFromPlaylistThunk } from './playlistThunks.ts';
 import { LibraryState } from './playlistTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -16,7 +16,20 @@ const initialState: LibraryState = {
 const playlistSlice = createSlice({
   name: 'playlist',
   initialState,
-  reducers: {},
+  reducers: {
+    removeSongFromPlaylist: (state, action) => {
+      if (state.data) {
+        // Subtract song duration from playlist duration
+        state.data.duration -= action.payload.duration;
+        state.data.length -= 1;
+
+        // Remove song from songs array
+        state.data.songs = [...state.data.songs].filter(
+          (song) => song.id !== action.payload.id,
+        );
+      }
+    },
+  },
   extraReducers: (builder) =>
     builder
       // GET playlist
@@ -49,7 +62,7 @@ const playlistSlice = createSlice({
       })
       .addCase(editPlaylist.fulfilled, (state, action) => {
         state.api.editPlaylist.status = 'fulfilled';
-     
+
         state.data.name = action.payload.name;
         state.data.img.url = action.payload.img.url;
         state.data.description = action.payload.description;
@@ -60,21 +73,16 @@ const playlistSlice = createSlice({
       })
 
       // Remove
-      .addCase(removeSongFromPlaylist.pending, (state) => {
+      .addCase(removeSongFromPlaylistThunk.pending, (state) => {
         state.api.removeSong.status = 'pending';
       })
-      .addCase(removeSongFromPlaylist.fulfilled, (state, action) => {
+      .addCase(removeSongFromPlaylistThunk.fulfilled, (state) => {
         state.api.removeSong.status = 'fulfilled';
-
-        if (state.data?.songs) {
-          state.data.songs = [...state.data.songs].filter(
-            (song) => song.id !== action.payload,
-          );
-        }
       })
-      .addCase(removeSongFromPlaylist.rejected, (state, action) => {
+      .addCase(removeSongFromPlaylistThunk.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'removeSong');
       }),
 });
 
+export const { removeSongFromPlaylist } = playlistSlice.actions;
 export default playlistSlice.reducer;
