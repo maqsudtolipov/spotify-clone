@@ -4,13 +4,13 @@ import styles from '../../../../ui/ImageHeader/ImageHeader.module.scss';
 
 interface ImageHeaderProps {
   data: Playlist;
-  color: string;
+  bgColor: string;
   textColor: string;
 }
 
-const PlaylistHeader = ({ data, color, textColor }: ImageHeaderProps) => {
+const PlaylistHeader = ({ data, bgColor, textColor }: ImageHeaderProps) => {
   const gradient = {
-    background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
+    background: `linear-gradient(${bgColor}, ${bgColor}), linear-gradient(#171717, #171717)`,
   };
 
   return (

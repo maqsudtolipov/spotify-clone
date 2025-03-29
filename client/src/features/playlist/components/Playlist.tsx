@@ -7,10 +7,10 @@ import NotFound from '../../../ui/statusScreens/NotFound.tsx';
 import ServerError from '../../../ui/statusScreens/ServerError.tsx';
 import LoadingScreen from '../../../ui/statusScreens/LoadingScreen.tsx';
 import PlaylistActions from './PlaylistActions.tsx';
-import ImageHeader from '../../../ui/ImageHeader/ImageHeader.tsx';
 import styles from './Playlist.module.scss';
 import PlaylistTable from './PlaylistTable.tsx';
 import useDominantColor from '../../../hooks/useDominantColor.ts';
+import PlaylistHeader from './header/PlaylistHeader.tsx';
 
 const Playlist = () => {
   const { status, statusCode, error } = useAppSelector(
@@ -22,7 +22,7 @@ const Playlist = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { bg, text } = useDominantColor(data?.img?.url);
+  const { bgColor, textColor } = useDominantColor(data?.img?.url);
 
   useEffect(() => {
     if (id) dispatch(getPlaylist(id));
@@ -38,8 +38,8 @@ const Playlist = () => {
   if (data)
     return (
       <div className={styles.playlistContainer}>
-        <ImageHeader data={data} type="playlist" color={bg} textColor={text} />
-        <GradientBackground color={bg}>
+        <PlaylistHeader data={data} bgColor={bgColor} textColor={textColor} />
+        <GradientBackground color={bgColor}>
           <PlaylistActions data={data} />
           <PlaylistTable songs={data.songs} />
         </GradientBackground>
