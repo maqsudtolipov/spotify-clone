@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { DropdownContext } from '../../../../ui/Dropdown/Dropdown.tsx';
 import useOutsideClick from '../../../../hooks/useOutsideClick.tsx';
@@ -15,53 +15,39 @@ interface PlaylistSongActionsProps {
 }
 
 const PlaylistSongActions = ({ id, duration }: PlaylistSongActionsProps) => {
-  const userId = useAppSelector((state) => state.user?.data?.id);
-  const playlistUserId = useAppSelector(
-    (state) => state.playlist?.data?.user?.id,
-  );
-  const playlistId = useAppSelector((state) => state.playlist?.data?.id);
-  const likedSongsPlaylistId = useAppSelector(
-    (state) => state.user?.data?.likedSongs._id,
-  );
-  const context = useContext(DropdownContext);
-  if (
-    !context ||
-    !userId ||
-    !playlistUserId ||
-    !playlistId ||
-    !likedSongsPlaylistId
-  )
-    return null;
-
   const dispatch = useAppDispatch();
+  const context = useContext(DropdownContext);
+
+  if (!context) return null;
 
   const { closeDropdown } = context;
   const { ref } = useOutsideClick(closeDropdown);
 
-  const handleRemoveSong = (songId: string, playlistId: string) => {
-    dispatch(
-      removeSongFromPlaylistThunk({ song: { id, duration }, playlistId }),
-    );
+  const userId = useAppSelector((state) => state.user?.data?.id);
+  const playlistUserId = useAppSelector((state) => state.playlist?.data?.user?.id);
+  const playlistId = useAppSelector((state) => state.playlist?.data?.id);
+  const likedSongsPlaylistId = useAppSelector((state) => state.user?.data?.likedSongs.id);
+
+  if (!userId || !playlistUserId || !playlistId || !likedSongsPlaylistId) return null;
+
+  const handleRemoveSong = () => {
+    dispatch(removeSongFromPlaylistThunk({ song: { id, duration }, playlistId }));
   };
+
+  const canRemoveSong = userId === playlistUserId && likedSongsPlaylistId !== playlistId;
 
   return (
     <>
       <DropdownTrigger>
         <RiMoreFill />
       </DropdownTrigger>
-      <DropdownList ref={ref} removeOutsideClick={true}>
-        {userId === playlistUserId && likedSongsPlaylistId !== playlistId && (
-          <DropdownItem
-            PreIcon={RiDeleteBin6Line}
-            underline={true}
-            onClick={() => handleRemoveSong(id, playlistId)}
-          >
+      <DropdownList ref={ref} removeOutsideClick>
+        {canRemoveSong && (
+          <DropdownItem PreIcon={RiDeleteBin6Line} underline onClick={handleRemoveSong}>
             Remove
           </DropdownItem>
         )}
         <AddToPlaylistItem id={id} />
-        {/*<DropdownItem PreIcon={RiHeartFill}>Save to Liked Songs</DropdownItem>*/}
-        {/*<DropdownItem PreIcon={RiUserHeartLine}>Go to Artist</DropdownItem>*/}
       </DropdownList>
     </>
   );
