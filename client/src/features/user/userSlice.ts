@@ -1,12 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  dislikeSong,
-  getCurrent,
-  likeSong,
-  login,
-  logout,
-  signUp,
-} from './userThunks.ts';
+import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
 import { InitialState } from './userTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -30,9 +23,43 @@ const userSlice = createSlice({
     followingsUpdated: (state, action) => {
       if (state.data) state.data.followings = action.payload;
     },
+
+    // Legacy
     playlistsUpdated: (state, action) => {
       if (state.data) state.data.playlists = action.payload;
     },
+    // new
+    addItemToPlaylists: (state, action) => {
+      if (state.data) state.data.playlists.push(action.payload);
+    },
+    updateItemUserPlaylists: (state, action) => {
+      if (state.data) {
+        state.data.playlists = state.data.playlists.map((playlist) =>
+          playlist._id === action.payload._id ? action.payload : playlist,
+        );
+      }
+    },
+    removeItemFromPlaylists: (state, action) => {
+      if (state.data)
+        state.data.playlists = state.data.playlists.map(
+          (item) => item._id !== action.payload,
+        );
+    },
+
+    // Save/remove
+    addToLikedPlaylists: (state, action) => {
+      if (state.data) {
+        state.data.likedPlaylists.push(action.payload);
+      }
+    },
+    removeFromLikedPlaylists: (state, action) => {
+      if (state.data) {
+        state.data.likedPlaylists = state.data.likedPlaylists.filter(
+          (item) => item !== action.payload,
+        );
+      }
+    },
+
     likedPlaylistsUpdated: (state, action) => {
       if (state.data) state.data.likedPlaylists = action.payload;
     },
@@ -111,5 +138,10 @@ export const {
   playlistsUpdated,
   likedPlaylistsUpdated,
   manualLogout,
+  addItemToPlaylists,
+  updateItemUserPlaylists,
+  removeItemFromPlaylists,
+  addToLikedPlaylists,
+  removeFromLikedPlaylists
 } = userSlice.actions;
 export default userSlice.reducer;

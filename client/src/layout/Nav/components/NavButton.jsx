@@ -1,4 +1,5 @@
 import styles from './NavButton.module.scss';
+import { Link, useNavigate } from 'react-router-dom';
 
 const NavButton = ({
   isTransparent = false,
@@ -6,14 +7,17 @@ const NavButton = ({
   icon = 'icon is required',
   rest,
 }) => {
+  const navigate = useNavigate();
+
   return (
-    <button
+    <div
       className={`${styles.btn} ${isTransparent ? styles.transparent : ''} ${isSmall ? styles.small : ''}`}
       role="button"
+      onClick={() => navigate('/')}
       {...rest}
     >
       {icon}
-    </button>
+    </div>
   );
 };
 

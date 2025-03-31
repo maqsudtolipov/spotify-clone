@@ -9,7 +9,7 @@ interface DropdownListProps {
   children: ReactNode;
 }
 
-const DropdownList = forwardRef<HTMLDivElement, DropdownListProps>(
+const DropdownList = forwardRef<HTMLDivElement | HTMLUListElement | null, DropdownListProps>(
   (
     {
       position = 'bottom-left',

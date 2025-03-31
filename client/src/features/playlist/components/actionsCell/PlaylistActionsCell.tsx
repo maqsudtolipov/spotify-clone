@@ -5,13 +5,14 @@ import PlaylistSongActions from './PlaylistSongActions.tsx';
 
 interface PlaylistActionsCellProps {
   id: string;
+  duration: number;
 }
 
-const PlaylistActionsCell = ({ id }: PlaylistActionsCellProps) => {
+const PlaylistActionsCell = ({ id, duration }: PlaylistActionsCellProps) => {
   return (
     <TableCell className={styles.actionsCell} minimize={true}>
       <Dropdown>
-        <PlaylistSongActions id={id} />
+        <PlaylistSongActions id={id} duration={duration} />
       </Dropdown>
     </TableCell>
   );

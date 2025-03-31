@@ -14,7 +14,12 @@ createRoot(root).render(
     <Provider store={store}>
       <BrowserRouter>
         <AppRoutes />
-        <Toaster position="top-right" />
+        <Toaster
+          position="bottom-center"
+          containerStyle={{
+            bottom: 120,
+          }}
+        />
       </BrowserRouter>
     </Provider>
   </StrictMode>,
