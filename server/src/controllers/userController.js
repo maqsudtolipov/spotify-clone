@@ -38,6 +38,7 @@ exports.current = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
   try {
+    console.log(req.file);
     const userInput = {
       userId: req.user?.id,
       name: req.body?.name,

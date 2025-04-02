@@ -12,7 +12,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-exports.uploadUserImg = upload.single("userImg");
+exports.uploadUserImg = upload.single("img");
 
 exports.resizeUserImg = async (req, res, next) => {
   try {

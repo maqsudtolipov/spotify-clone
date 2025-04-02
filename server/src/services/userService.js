@@ -69,7 +69,7 @@ exports.updateCurrentUser = async (userInput) => {
     updatedUserData.name = userInput.name;
   }
 
-  if (userInput.img.file) {
+  if (userInput.img) {
     const imgFile = await uploadFiles(
       {
         file: userInput.img.file,
