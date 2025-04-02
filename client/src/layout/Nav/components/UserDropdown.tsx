@@ -1,13 +1,14 @@
 import NavTooltip from './NavTooltip.jsx';
-import { Avatar, AvatarFallback } from '../../../ui/Avatar/Avatar.tsx';
 import Dropdown from '../../../ui/Dropdown/Dropdown.tsx';
 import DropdownTrigger from '../../../ui/Dropdown/DropdownTrigger.tsx';
 import DropdownList from '../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
-import { useAppDispatch } from '../../../redux/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { logout } from '../../../features/user/userThunks.ts';
+import { User } from '../../../features/user/userTypes.ts';
 
 const UserDropdown = () => {
+  const data = useAppSelector((state) => state.user.data) as User;
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
@@ -19,12 +20,15 @@ const UserDropdown = () => {
       <DropdownTrigger>
         <NavTooltip
           trigger={
-            <Avatar>
-              <AvatarFallback>M</AvatarFallback>
-            </Avatar>
+            <div className="size-12 p-0.5 flex items-center justify-center bg-neutral-800 rounded-full overflow-hidden">
+              <img src={data.img.url} alt={`${data.name} profile photo`} />
+            </div>
+            // <Avatar>
+            //   <AvatarFallback>M</AvatarFallback>
+            // </Avatar>
           }
           position="bottom-left"
-          content="Maqsud Tolipov"
+          content={data.name}
         />
       </DropdownTrigger>
 
