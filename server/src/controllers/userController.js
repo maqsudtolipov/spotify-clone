@@ -4,7 +4,7 @@ exports.getAll = async (req, res, next) => {
   try {
     const users = await userService.getAllUsers();
 
-    res.status(200).json({status: "success", users});
+    res.status(200).json({ status: "success", users });
   } catch (e) {
     next(e);
   }
@@ -17,7 +17,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const user = await userService.getUserById(userInput);
 
-    res.status(200).json({status: "success", user});
+    res.status(200).json({ status: "success", user });
   } catch (e) {
     next(e);
   }
@@ -30,7 +30,7 @@ exports.current = async (req, res, next) => {
     };
     const user = await userService.getCurrentUser(userInput);
 
-    res.status(200).json({status: "success", user});
+    res.status(200).json({ status: "success", user });
   } catch (e) {
     next(e);
   }
@@ -39,13 +39,13 @@ exports.current = async (req, res, next) => {
 exports.updateMe = async (req, res, next) => {
   try {
     const userInput = {
-      userId: req.params?.id,
+      userId: req.user?.id,
       name: req.body?.name,
       img: req.file
         ? {
-          file: req.file.buffer,
-          fileName: req.file.filename,
-        }
+            file: req.file.buffer,
+            fileName: req.file.filename,
+          }
         : undefined,
     };
     const user = await userService.updateCurrentUser(userInput);

@@ -83,10 +83,12 @@ exports.updateCurrentUser = async (userInput) => {
     updatedUserData.img = imgFile.id;
   }
 
-  return await User.findByIdAndUpdate(userInput.userId, updatedUserData, {
+  return User.findByIdAndUpdate(userInput.userId, updatedUserData, {
     new: true,
     runValidators: true,
-  });
+  })
+    .select("name")
+    .populate("img", "url");
 };
 
 exports.handleFollowUnfollow = async (followInput, action) => {
