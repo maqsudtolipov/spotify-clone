@@ -60,7 +60,7 @@ exports.getCurrentUser = async (userInput) => {
 exports.updateCurrentUser = async (userInput) => {
   const user = await User.findById(userInput.userId).populate(
     "img",
-    "id fileId url",
+    "id fileId isDefault",
   );
 
   const updatedUserData = {};
