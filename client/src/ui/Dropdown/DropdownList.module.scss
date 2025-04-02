@@ -1,7 +1,9 @@
 .listContainer {
   @apply p-1;
-  @apply absolute z-20;
+  @apply absolute;
   @apply bg-neutral-800 rounded shadow-lg shadow-black/[0.5];
+
+  z-index: 8000;
 }
 
 .bottom-left {
