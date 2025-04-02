@@ -5,16 +5,14 @@ import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import { RiFileCopyLine } from 'react-icons/ri';
 import { handleCopyLink } from '../../../../helpers/handleCopyLink.ts';
 import EditUserDialog from '../editUserDialog.tsx';
-import useOutsideClick from '../../../../hooks/useOutsideClick.tsx';
 import { useContext } from 'react';
 
 const UserDropdownList = () => {
-  const { closeDropdown } = useContext(DropdownContext);
-  const { ref, exceptionRef } = useOutsideClick(closeDropdown);
+  const { ignoreRef } = useContext(DropdownContext); // Outside click does not work inside ignoreRef
 
   return (
-    <DropdownList ref={ref} position="bottom-right" removeOutsideClick={true}>
-      <EditUserDialog ref={exceptionRef} />
+    <DropdownList position="bottom-right">
+      <EditUserDialog ref={ignoreRef} />
       <DropdownItem PreIcon={RiFileCopyLine} onClick={handleCopyLink}>
         Copy link
       </DropdownItem>
