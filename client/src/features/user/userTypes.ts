@@ -7,7 +7,9 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  img: string;
+  img: {
+    url: string;
+  };
   followers: string[];
   followersCount: number;
   followings: string[];
