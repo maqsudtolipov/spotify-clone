@@ -7,8 +7,8 @@ import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 import { useAppDispatch } from '../../../redux/hooks.ts';
 import { deletePlaylist } from '../playlistThunks.ts';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import EditPlaylistDialog from './editPlaylistDialog/EditPlaylistDialog.tsx';
+import { handleCopyLink } from '../../../helpers/handleCopyLink.ts';
 
 interface PlaylistHeaderActionsProps {
   id: string;
@@ -25,11 +25,6 @@ const PlaylistHeaderActions = ({
   const handleDeletePlaylist = async (id: string) => {
     await dispatch(deletePlaylist({ id }));
     navigate('/');
-  };
-
-  const handleCopyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    toast.success('Link copied to clipboard');
   };
 
   return (

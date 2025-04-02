@@ -11,6 +11,7 @@ import useDominantColor from '../../../hooks/useDominantColor.ts';
 import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
 import { followUser, unfollowUser } from '../../user/userThunks.ts';
+import UserActions from './actionsDropdown/UserActions.tsx';
 
 const isFollowed = (id: string, followings: string[]) => {
   return followings.includes(id);
