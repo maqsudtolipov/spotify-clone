@@ -3,12 +3,50 @@ import Input from '../../../../ui/Input/Input.tsx';
 import Button from '../../../../ui/Button/Button.tsx';
 import { RiPencilLine } from 'react-icons/ri';
 import { useAppSelector } from '../../../../redux/hooks.ts';
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+
+const validateForm = (formData: FormData) => {
+  const img = formData.get('img') as File;
+  const name = formData.get('name') as string;
+  const errors = { name: '', img: '' };
+
+  if (name.length < 3 || name.length > 24) {
+    errors.name = 'Song name must be between 3 and 24 characters.';
+  }
+  if (
+    img &&
+    img.size &&
+    !['image/jpeg', 'image/png', 'image/webp'].includes(img.type)
+  ) {
+    errors.img = 'Image must be in JPEG, PNG, or WEBP format.';
+  }
+
+  return errors;
+};
 
 const EditUserForm = () => {
   const user = useAppSelector((state) => state.user.data);
 
-  const imgRef = useRef(null);
+  const [errors, setErrors] = useState({ img: '', name: '' });
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    const formData = new FormData(formRef.current);
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
+
+    if (!errors.name && !errors.img) {
+      // dispatch(editPlaylist({ id: playlist.id, formData }));
+      console.log('EDIT FORM VALUES');
+      for (const [key, value] of formData) {
+        console.log('»', key, value);
+      }
+    }
+  };
 
   const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!imgRef.current || !e.target.files) return;
@@ -20,7 +58,11 @@ const EditUserForm = () => {
   };
 
   return (
-    <form className={styles.dialogForm}>
+    <form
+      ref={formRef}
+      className={styles.dialogForm}
+      onSubmit={handleFormSubmit}
+    >
       <div className="flex flex-col gap-2">
         <div
           className={`${styles.imgContainer} `} //${errors.img ? styles.imgInvalid : ''}
@@ -39,10 +81,19 @@ const EditUserForm = () => {
             onChange={handleChangeImg}
           />
         </div>
-        {/*{errors.img && <p className={styles.error}>{errors.img}</p>}*/}
+        {errors.img && <p className={styles.error}>{errors.img}</p>}
       </div>
       <div>
-        <Input type="text" name="name" placeholder="User name" />
+        <Input
+          label="Username"
+          type="text"
+          name="name"
+          isValid={!errors.name}
+          placeholder="Username"
+          defaultValue={user.name}
+        />
+        {errors.name && <p className={styles.error}>{errors.name}</p>}
+
         <Button type="submit">
           Update
           {/*{status === 'pending' ? 'Updating' : 'Update'}*/}
