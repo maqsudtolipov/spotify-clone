@@ -12,7 +12,7 @@ exports.getUserById = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
     "id name img color followers followersCount followings followingsCount",
-  ).populate([{path: "img", select: "id url"}]);
+  ).populate([{ path: "img", select: "id url" }]);
 
   if (!user) {
     throw new AppError("User not found", 404);
@@ -35,8 +35,8 @@ exports.getCurrentUser = async (userInput) => {
             path: "items.refId",
             select: "name img user createdAt",
             populate: [
-              {path: "user", select: "name", strictPopulate: false},
-              {path: "img", select: "url"},
+              { path: "user", select: "name", strictPopulate: false },
+              { path: "img", select: "url" },
             ],
           },
         ],
@@ -44,7 +44,8 @@ exports.getCurrentUser = async (userInput) => {
       {
         path: "likedSongs",
       },
-      {path: "playlists", select: "name"},
+      { path: "playlists", select: "name" },
+      { path: "img", select: "url" },
     ])
     .lean();
   // NOTE: virtual does not work with lean()
@@ -102,7 +103,7 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const {updatedUser, updatedCandidate} =
+  const { updatedUser, updatedCandidate } =
     await userHelpers.updateFollowStatus(currentUser, candidateUser, action);
 
   let library;
