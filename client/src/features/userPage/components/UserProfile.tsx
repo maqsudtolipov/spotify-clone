@@ -61,6 +61,7 @@ const UserProfile = () => {
               onClick={() => toggleFollow()}
             ></TransparentButton>
           )}
+          <UserActions />
         </div>
       </GradientBackground>
     </>
