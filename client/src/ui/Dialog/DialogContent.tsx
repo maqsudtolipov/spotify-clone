@@ -6,12 +6,13 @@ import DialogHeader from './DialogHeader.tsx';
 
 interface DialogContentProps {
   title: string;
+  onBackgroundClick?: () => void;
   ref?: Ref<HTMLDivElement>;
   children: ReactNode;
 }
 
 const DialogContent = forwardRef(
-  ({ title, children }: DialogContentProps, ref) => {
+  ({ title, onBackgroundClick, children }: DialogContentProps, ref) => {
     const context = useContext(DialogContext);
     if (!context) {
       throw new Error('DialogContent should be used within the Dialog');
@@ -21,6 +22,7 @@ const DialogContent = forwardRef(
 
     const handleClose = (e: MouseEvent<HTMLDivElement>) => {
       if (e.target !== e.currentTarget) return;
+      if (onBackgroundClick) onBackgroundClick();
       closeDialog();
     };
 
