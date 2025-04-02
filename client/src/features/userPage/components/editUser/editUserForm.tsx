@@ -2,8 +2,9 @@ import styles from '../../../artist/components/forms/Forms.module.scss';
 import Input from '../../../../ui/Input/Input.tsx';
 import Button from '../../../../ui/Button/Button.tsx';
 import { RiPencilLine } from 'react-icons/ri';
-import { useAppSelector } from '../../../../redux/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { updateMe } from '../../../user/userThunks.ts';
 
 const validateForm = (formData: FormData) => {
   const img = formData.get('img') as File;
@@ -26,6 +27,7 @@ const validateForm = (formData: FormData) => {
 
 const EditUserForm = () => {
   const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState({ img: '', name: '' });
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -40,7 +42,8 @@ const EditUserForm = () => {
     setErrors(newErrors);
 
     if (!errors.name && !errors.img) {
-      // dispatch(editPlaylist({ id: playlist.id, formData }));
+      dispatch(updateMe(formData));
+
       console.log('EDIT FORM VALUES');
       for (const [key, value] of formData) {
         console.log('»', key, value);
@@ -65,7 +68,7 @@ const EditUserForm = () => {
     >
       <div className="flex flex-col gap-2">
         <div
-          className={`${styles.imgContainer} `} //${errors.img ? styles.imgInvalid : ''}
+          className={`${styles.imgContainer} ${errors.img ? styles.imgInvalid : ''}`}
         >
           <label htmlFor="img" className={styles.previewImg}>
             <img ref={imgRef} src={user.img.url} alt="Img preview" />
@@ -85,11 +88,11 @@ const EditUserForm = () => {
       </div>
       <div>
         <Input
-          label="Username"
+          label="Name"
           type="text"
           name="name"
           isValid={!errors.name}
-          placeholder="Username"
+          placeholder="Name"
           defaultValue={user.name}
         />
         {errors.name && <p className={styles.error}>{errors.name}</p>}

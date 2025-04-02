@@ -26,6 +26,25 @@ export const getCurrent = createAsyncThunk<
   }
 });
 
+export const updateMe = createAsyncThunk<
+  {
+    name: string;
+    img: { url: string };
+  },
+  FormData,
+  { rejectValue: RejectValue }
+>('user/updateMe', async (formData, { rejectWithValue }) => {
+  try {
+    const res = await axios.patch('/users/updateMe', formData);
+
+    toast.success('Your profile updated');
+
+    return res.data.user;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
+
 interface SigUpInput {
   name: string;
   email: string;

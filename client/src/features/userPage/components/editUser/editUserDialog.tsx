@@ -19,7 +19,7 @@ const EditDialogContent = forwardRef((_, ref) => {
   return (
     <DialogContent
       ref={ref}
-      title="Edit playlist"
+      title="Edit details"
       onBackgroundClick={() => handleBackgroundClick()}
     >
       <EditUserForm />
