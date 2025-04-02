@@ -6,10 +6,12 @@ import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { logout } from '../../../features/user/userThunks.ts';
 import { User } from '../../../features/user/userTypes.ts';
+import { useNavigate } from 'react-router-dom';
 
 const UserDropdown = () => {
   const data = useAppSelector((state) => state.user.data) as User;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     dispatch(logout());
@@ -20,8 +22,12 @@ const UserDropdown = () => {
       <DropdownTrigger>
         <NavTooltip
           trigger={
-            <div className="size-12 p-0.5 flex items-center justify-center bg-neutral-800 rounded-full overflow-hidden">
-              <img src={data.img.url} alt={`${data.name} profile photo`} />
+            <div className="size-12 p-1 flex items-center justify-center bg-neutral-800 rounded-full overflow-hidden">
+              <img
+                src={data.img.url}
+                alt={`${data.name} profile photo`}
+                className="rounded-full"
+              />
             </div>
             // <Avatar>
             //   <AvatarFallback>M</AvatarFallback>
@@ -34,7 +40,9 @@ const UserDropdown = () => {
 
       <DropdownList>
         <DropdownItem>Home</DropdownItem>
-        <DropdownItem>Profile</DropdownItem>
+        <DropdownItem onClick={() => navigate(`/${data.role}/${data.id}`)}>
+          Profile
+        </DropdownItem>
         <DropdownItem underline={true}>Settings</DropdownItem>
         <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
       </DropdownList>

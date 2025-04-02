@@ -24,7 +24,7 @@ exports.getUserById = async (userInput) => {
 exports.getCurrentUser = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
-    "id name email img followers followersCount followings followingsCount likedPlaylists",
+    "id name email img role followers followersCount followings followingsCount likedPlaylists",
   )
     .populate([
       {
@@ -69,7 +69,7 @@ exports.updateCurrentUser = async (userInput) => {
     updatedUserData.name = userInput.name;
   }
 
-  if (userInput.file) {
+  if (userInput.img.file) {
     const imgFile = await uploadFiles(
       {
         file: userInput.img.file,
