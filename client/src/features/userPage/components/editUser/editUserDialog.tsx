@@ -1,10 +1,11 @@
-import Dialog from '../../../ui/Dialog/Dialog.tsx';
-import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
-import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
+import Dialog from '../../../../ui/Dialog/Dialog.tsx';
+import DialogTrigger from '../../../../ui/Dialog/DialogTrigger.tsx';
+import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import { RiEditLine } from 'react-icons/ri';
-import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
+import DialogContent from '../../../../ui/Dialog/DialogContent.tsx';
 import { forwardRef, useContext } from 'react';
-import { DropdownContext } from '../../../ui/Dropdown/Dropdown.tsx';
+import { DropdownContext } from '../../../../ui/Dropdown/Dropdown.tsx';
+import EditUserForm from './editUserForm.tsx';
 
 const EditDialogContent = forwardRef((_, ref) => {
   const contextValue = useContext(DropdownContext);
@@ -21,7 +22,7 @@ const EditDialogContent = forwardRef((_, ref) => {
       title="Edit playlist"
       onBackgroundClick={() => handleBackgroundClick()}
     >
-      edit me
+      <EditUserForm />
     </DialogContent>
   );
 });

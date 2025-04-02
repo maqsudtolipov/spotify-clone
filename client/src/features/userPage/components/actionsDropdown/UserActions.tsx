@@ -4,7 +4,7 @@ import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import { RiFileCopyLine } from 'react-icons/ri';
 import { handleCopyLink } from '../../../../helpers/handleCopyLink.ts';
-import EditUserDialog from '../editUserDialog.tsx';
+import EditUserDialog from '../editUser/editUserDialog.tsx';
 import { useContext } from 'react';
 
 const UserDropdownList = () => {
