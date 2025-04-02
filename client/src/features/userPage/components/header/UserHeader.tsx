@@ -1,8 +1,8 @@
 import styles from '../../../../ui/ImageHeader/ImageHeader.module.scss';
-import { User } from '../../../user/userTypes.ts';
+import { UserPage } from '../../userPageTypes.ts';
 
 interface UserHeaderProps {
-  data: User;
+  data: UserPage;
   bgColor: string;
   textColor: string;
 }
