@@ -1,5 +1,11 @@
 import { useEffect, useRef } from 'react';
 
+
+/**
+ * NOTE: outside close does not work when used with portals
+ * @param handler
+ * @param ignore
+ */
 const useOutsideClick = (handler: () => void, ignore?: boolean) => {
   if (ignore) return { ref: null };
 

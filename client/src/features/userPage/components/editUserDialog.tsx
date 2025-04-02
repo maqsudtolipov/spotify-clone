@@ -3,10 +3,10 @@ import DialogTrigger from '../../../ui/Dialog/DialogTrigger.tsx';
 import DropdownItem from '../../../ui/Dropdown/DropdownItem.tsx';
 import { RiEditLine } from 'react-icons/ri';
 import DialogContent from '../../../ui/Dialog/DialogContent.tsx';
-import { useContext } from 'react';
+import { forwardRef, useContext } from 'react';
 import { DropdownContext } from '../../../ui/Dropdown/Dropdown.tsx';
 
-const EditDialogContent = () => {
+const EditDialogContent = forwardRef((_, ref) => {
   const contextValue = useContext(DropdownContext);
   if (!contextValue)
     throw new Error('EditUserDialog requires DropdownContext value.');
@@ -17,15 +17,16 @@ const EditDialogContent = () => {
 
   return (
     <DialogContent
+      ref={ref}
       title="Edit playlist"
       onBackgroundClick={() => handleBackgroundClick()}
     >
       edit me
     </DialogContent>
   );
-};
+});
 
-const EditUserDialog = () => {
+const EditUserDialog = forwardRef((_, ref) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -33,9 +34,9 @@ const EditUserDialog = () => {
           Edit Details
         </DropdownItem>
       </DialogTrigger>
-      <EditDialogContent />
+      <EditDialogContent ref={ref} />
     </Dialog>
   );
-};
+});
 
 export default EditUserDialog;
