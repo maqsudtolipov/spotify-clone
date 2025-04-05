@@ -27,6 +27,7 @@ const validateForm = (formData: FormData) => {
 
 const EditUserForm = () => {
   const user = useAppSelector((state) => state.user.data);
+  const status = useAppSelector((state) => state.user.api.updateMe.status);
   const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState({ img: '', name: '' });
@@ -98,8 +99,7 @@ const EditUserForm = () => {
         {errors.name && <p className={styles.error}>{errors.name}</p>}
 
         <Button type="submit">
-          Update
-          {/*{status === 'pending' ? 'Updating' : 'Update'}*/}
+          {status === 'pending' ? 'Updating' : 'Update'}
         </Button>
       </div>
 

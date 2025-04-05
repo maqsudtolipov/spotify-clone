@@ -32,5 +32,6 @@ export interface InitialState {
     signUp: ApiStatus;
     login: ApiStatus;
     logout: ApiStatus;
+    updateMe: ApiStatus;
   };
 }
