@@ -22,6 +22,12 @@ const userPageSlice = createSlice({
         state.data.followersCount = action.payload;
       }
     },
+    userPageUpdateData: (state, action) => {
+      if (state.data) {
+        state.data.name = action.payload.name;
+        state.data.img.url = action.payload.img.url;
+      }
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -44,5 +50,6 @@ const userPageSlice = createSlice({
       }),
 });
 
-export const { followersCountUpdated } = userPageSlice.actions;
+export const { followersCountUpdated, userPageUpdateData } =
+  userPageSlice.actions;
 export default userPageSlice.reducer;

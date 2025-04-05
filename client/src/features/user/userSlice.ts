@@ -136,8 +136,13 @@ const userSlice = createSlice({
       .addCase(updateMe.pending, (state) => {
         state.api.updateMe.status = 'pending';
       })
-      .addCase(updateMe.fulfilled, (state) => {
+      .addCase(updateMe.fulfilled, (state, action) => {
         state.api.updateMe.status = 'fulfilled';
+
+        if (state.data) {
+          state.data.name = action.payload.name;
+          state.data.img.url = action.payload.img.url;
+        }
       })
       .addCase(updateMe.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'updateMe');

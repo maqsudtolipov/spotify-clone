@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
 import { followingsUpdated } from './userSlice.ts';
-import { followersCountUpdated } from '../userPage/userPageSlice.ts';
+import { followersCountUpdated, userPageUpdateData } from '../userPage/userPageSlice.ts';
 import { listenersCountUpdated } from '../artist/artistSlice.ts';
 import { setLibraryItems } from '../library/librarySlice.ts';
 import { User } from './userTypes.ts';
@@ -33,11 +33,12 @@ export const updateMe = createAsyncThunk<
   },
   FormData,
   { rejectValue: RejectValue }
->('user/updateMe', async (formData, { rejectWithValue }) => {
+>('user/updateMe', async (formData, { dispatch, rejectWithValue }) => {
   try {
     const res = await axios.patch('/users/updateMe', formData);
-
     toast.success('Your profile updated');
+
+    dispatch(userPageUpdateData(res.data.user));
 
     return res.data.user;
   } catch (e) {
