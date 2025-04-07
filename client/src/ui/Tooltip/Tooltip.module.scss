@@ -3,7 +3,8 @@
 }
 
 .content {
-  @apply px-2 py-1 inline-block absolute text-sm text-white/[0.8]  whitespace-nowrap bg-neutral-900 rounded-lg shadow-lg shadow-black/[0.5] z-50;
+  @apply px-2 py-1 inline-block absolute text-sm text-white/[0.8]  whitespace-nowrap bg-neutral-900 rounded-lg shadow-lg shadow-black/[0.5];
+  z-index: 10000;
 }
 
 // Top

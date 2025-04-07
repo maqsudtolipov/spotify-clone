@@ -9,7 +9,10 @@ interface DropdownListProps {
   children: ReactNode;
 }
 
-const DropdownList = forwardRef<HTMLDivElement | HTMLUListElement | null, DropdownListProps>(
+const DropdownList = forwardRef<
+  HTMLDivElement | HTMLUListElement | null,
+  DropdownListProps
+>(
   (
     {
       position = 'bottom-left',
@@ -23,11 +26,12 @@ const DropdownList = forwardRef<HTMLDivElement | HTMLUListElement | null, Dropdo
       throw new Error('DropdownList should be used within the Dropdown');
     }
 
-    const { isOpen, closeDropdown } = context;
+    const { isOpen, closeDropdown, ignoreRef } = context;
 
     const { ref: outsideRef } = useOutsideClick(
       closeDropdown,
       removeOutsideClick,
+      ignoreRef,
     );
 
     if (!isOpen) return null;

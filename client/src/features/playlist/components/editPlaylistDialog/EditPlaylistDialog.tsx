@@ -4,8 +4,12 @@ import DialogContent from '../../../../ui/Dialog/DialogContent.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import { RiEditLine } from 'react-icons/ri';
 import EditPlaylistForm from './EditPlaylistForm.tsx';
+import { useContext } from 'react';
+import { DropdownContext } from '../../../../ui/Dropdown/Dropdown.tsx';
 
 const EditPlaylistDialog = () => {
+  const { ignoreRef } = useContext(DropdownContext);
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -13,7 +17,7 @@ const EditPlaylistDialog = () => {
           Edit Details
         </DropdownItem>
       </DialogTrigger>
-      <DialogContent title="Edit playlist">
+      <DialogContent ref={ignoreRef} title="Edit playlist">
         <EditPlaylistForm />
       </DialogContent>
     </Dialog>

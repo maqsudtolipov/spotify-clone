@@ -7,7 +7,10 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  img: string;
+  role: string;
+  img: {
+    url: string;
+  };
   followers: string[];
   followersCount: number;
   followings: string[];
@@ -29,5 +32,6 @@ export interface InitialState {
     signUp: ApiStatus;
     login: ApiStatus;
     logout: ApiStatus;
+    updateMe: ApiStatus;
   };
 }

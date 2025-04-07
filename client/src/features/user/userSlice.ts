@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dislikeSong, getCurrent, likeSong, login, logout, signUp } from './userThunks.ts';
+import { dislikeSong, getCurrent, likeSong, login, logout, signUp, updateMe } from './userThunks.ts';
 import { InitialState } from './userTypes.ts';
 import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
@@ -13,6 +13,7 @@ const initialState: InitialState = {
     signUp: { status: 'idle', error: '' },
     login: { status: 'idle', error: '' },
     logout: { status: 'idle', error: '' },
+    updateMe: { status: 'idle', error: '' },
   },
 };
 
@@ -20,8 +21,14 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    followingsUpdated: (state, action) => {
-      if (state.data) state.data.followings = action.payload;
+    addToFollowings: (state, action) => {
+      if (state.data) state.data.followings.push(action.payload);
+    },
+    removeFromFollowings: (state, action) => {
+      if (state.data)
+        state.data.followings = state.data.followings.filter(
+          (item) => item !== action.payload,
+        );
     },
 
     // Legacy
@@ -130,18 +137,34 @@ const userSlice = createSlice({
       })
       .addCase(dislikeSong.fulfilled, (state, action) => {
         if (state.data) state.data.likedSongs.songs = action.payload;
+      })
+      // Update Me
+      .addCase(updateMe.pending, (state) => {
+        state.api.updateMe.status = 'pending';
+      })
+      .addCase(updateMe.fulfilled, (state, action) => {
+        state.api.updateMe.status = 'fulfilled';
+
+        if (state.data) {
+          state.data.name = action.payload.name;
+          state.data.img.url = action.payload.img.url;
+        }
+      })
+      .addCase(updateMe.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'updateMe');
       }),
 });
 
 export const {
-  followingsUpdated,
   playlistsUpdated,
   likedPlaylistsUpdated,
+  addToFollowings,
+  removeFromFollowings,
   manualLogout,
   addItemToPlaylists,
   updateItemUserPlaylists,
   removeItemFromPlaylists,
   addToLikedPlaylists,
-  removeFromLikedPlaylists
+  removeFromLikedPlaylists,
 } = userSlice.actions;
 export default userSlice.reducer;
