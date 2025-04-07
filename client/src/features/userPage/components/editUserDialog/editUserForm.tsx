@@ -5,6 +5,7 @@ import { RiPencilLine } from 'react-icons/ri';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { updateMe } from '../../../user/userThunks.ts';
+import { User } from '../../../user/userTypes.ts';
 
 const validateForm = (formData: FormData) => {
   const img = formData.get('img') as File;
@@ -26,7 +27,7 @@ const validateForm = (formData: FormData) => {
 };
 
 const EditUserForm = () => {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user.data) as User;
   const status = useAppSelector((state) => state.user.api.updateMe.status);
   const dispatch = useAppDispatch();
 
@@ -44,11 +45,6 @@ const EditUserForm = () => {
 
     if (!errors.name && !errors.img) {
       dispatch(updateMe(formData));
-
-      console.log('EDIT FORM VALUES');
-      for (const [key, value] of formData) {
-        console.log('»', key, value);
-      }
     }
   };
 

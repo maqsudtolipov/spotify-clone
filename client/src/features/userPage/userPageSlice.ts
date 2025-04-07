@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUser } from './userPageThunks.ts';
-import toast from 'react-hot-toast';
 import { InitialState } from './userPageTypes.ts';
+import handleRejectedThunk from '../../axios/handleRejectedThunk.ts';
 
 const initialState: InitialState = {
   data: null,
@@ -37,17 +37,10 @@ const userPageSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.api.getUser.status = 'fulfilled';
-        state.data = action.payload;
+        if (state.data) state.data = action.payload;
       })
-      .addCase(getUser.rejected, (state, { payload }) => {
-        state.api.getUser.status = 'rejected';
-        state.api.getUser.statusCode = payload.statusCode;
-        state.api.getUser.error = payload.message;
-        state.data = null;
-
-        if (payload.statusCode !== 404 && payload.statusCode !== 500) {
-          toast.error(`Error: ${payload.status} - ${payload.message}`);
-        }
+      .addCase(getUser.rejected, (state, action) => {
+        handleRejectedThunk(state, action, 'getUser');
       }),
 });
 

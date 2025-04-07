@@ -4,14 +4,19 @@ import DropdownList from '../../../../ui/Dropdown/DropdownList.tsx';
 import DropdownItem from '../../../../ui/Dropdown/DropdownItem.tsx';
 import { RiFileCopyLine, RiMoreFill } from 'react-icons/ri';
 import { handleCopyLink } from '../../../../helpers/handleCopyLink.ts';
-import EditUserDialog from '../editUser/editUserDialog.tsx';
+import EditUserDialog from '../editUserDialog/editUserDialog.tsx';
 import { useContext } from 'react';
 import { useAppSelector } from '../../../../redux/hooks.ts';
 import styles from '../../../playlist/components/PlaylistActions.module.scss';
 
 const UserDropdownList = ({ profileId }: { profileId: string }) => {
+  const contextValue = useContext(DropdownContext);
+  if (!contextValue)
+    throw new Error('UserDropdownList requires DropdownContext value.');
+
   const id = useAppSelector((state) => state?.user?.data?.id) || '';
-  const { ignoreRef } = useContext(DropdownContext); // Outside click does not work inside ignoreRef
+
+  const { ignoreRef } = contextValue; // Outside click does not work inside ignoreRef
 
   return (
     <DropdownList position="bottom-right">

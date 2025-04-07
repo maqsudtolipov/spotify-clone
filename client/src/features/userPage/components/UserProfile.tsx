@@ -69,23 +69,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-// <GradientBackground color={data.color}>
-//   <div className="p-5 pt-0">
-//     {/*<CardsList*/}
-//     {/*  title="Public Playlists"*/}
-//     {/*  shrink={true}*/}
-//     {/*  items={items.slice(0, 6)}*/}
-//     {/*/>*/}
-//     {/*<CardsList*/}
-//     {/*  title="Followers"*/}
-//     {/*  shrink={true}*/}
-//     {/*  items={items.slice(6, 12)}*/}
-//     {/*/>*/}
-//     {/*<CardsList*/}
-//     {/*  title="Followings"*/}
-//     {/*  shrink={true}*/}
-//     {/*  items={items.slice(12, 18)}*/}
-//     {/*/>*/}
-//   </div>
-// </GradientBackground>
