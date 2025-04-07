@@ -105,12 +105,14 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const { updatedUser, updatedCandidate } =
-    await userHelpers.updateFollowStatus(currentUser, candidateUser, action);
+  const updatedCandidate = await userHelpers.updateFollowStatus(
+    currentUser,
+    candidateUser,
+    action,
+  );
 
-  let library;
   if (candidateUser.role === "artist") {
-    library = await userHelpers.updateLibrary(
+    await userHelpers.updateLibrary(
       followInput.userLibraryId,
       candidateUser.id,
       action,
@@ -118,8 +120,12 @@ exports.handleFollowUnfollow = async (followInput, action) => {
   }
 
   return {
-    followings: updatedUser.followings,
-    candidateFollowersCount: updatedCandidate.followersCount,
-    library,
+    candidateUser: {
+      id: updatedCandidate.id,
+      name: updatedCandidate.name,
+      img: updatedCandidate.img.url,
+      itemType: "artist",
+      createdAt: updatedCandidate.createdAt,
+    },
   };
 };
