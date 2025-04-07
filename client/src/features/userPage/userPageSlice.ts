@@ -17,10 +17,11 @@ const userPageSlice = createSlice({
   name: 'userPage',
   initialState,
   reducers: {
-    followersCountUpdated: (state, action) => {
-      if (state.data) {
-        state.data.followersCount = action.payload;
-      }
+    increaseFollowersCount: (state) => {
+      if (state.data) state.data.followersCount += 1;
+    },
+    decreaseFollowersCount: (state) => {
+      if (state.data) state.data.followersCount -= 1;
     },
     userPageUpdateData: (state, action) => {
       if (state.data) {
@@ -50,6 +51,9 @@ const userPageSlice = createSlice({
       }),
 });
 
-export const { followersCountUpdated, userPageUpdateData } =
-  userPageSlice.actions;
+export const {
+  increaseFollowersCount,
+  decreaseFollowersCount,
+  userPageUpdateData,
+} = userPageSlice.actions;
 export default userPageSlice.reducer;

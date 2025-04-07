@@ -64,7 +64,6 @@ const librarySlice = createSlice({
         state.searchQuery,
       );
     },
-    // needs to go in future
     setLibraryItems: (state, action) => {
       state.originalItems = state.originalItems = structuredClone(
         action.payload,
@@ -77,9 +76,20 @@ const librarySlice = createSlice({
         state.searchQuery,
       );
     },
-    // new library updates
     addItemToLibrary(state, action) {
       state.originalItems.push({ ...action.payload, isPinned: false });
+
+      state.items = processItems(
+        state.originalItems,
+        state.sortBy,
+        state.filter,
+        state.searchQuery,
+      );
+    },
+    removeItemFromLibrary(state, action) {
+      state.originalItems = state.originalItems.filter(
+        (item) => item.id !== action.payload,
+      );
 
       state.items = processItems(
         state.originalItems,
@@ -121,6 +131,7 @@ export const {
   filterLibraryItems,
   searchLibraryItems,
   addItemToLibrary,
+  removeItemFromLibrary,
   updateLibraryPlaylist,
   removePlaylistFromLibrary,
 } = librarySlice.actions;

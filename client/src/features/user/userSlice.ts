@@ -21,8 +21,14 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    followingsUpdated: (state, action) => {
-      if (state.data) state.data.followings = action.payload;
+    addToFollowings: (state, action) => {
+      if (state.data) state.data.followings.push(action.payload);
+    },
+    removeFromFollowings: (state, action) => {
+      if (state.data)
+        state.data.followings = state.data.followings.filter(
+          (item) => item !== action.payload,
+        );
     },
 
     // Legacy
@@ -150,9 +156,10 @@ const userSlice = createSlice({
 });
 
 export const {
-  followingsUpdated,
   playlistsUpdated,
   likedPlaylistsUpdated,
+  addToFollowings,
+  removeFromFollowings,
   manualLogout,
   addItemToPlaylists,
   updateItemUserPlaylists,
