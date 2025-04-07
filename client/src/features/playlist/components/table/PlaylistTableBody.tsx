@@ -9,12 +9,14 @@ import PlaylistActionsCell from '../actionsCell/PlaylistActionsCell.tsx';
 import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { Song } from '../../playlistTypes.ts';
+import visualizerSvg from '../../../../assets/icons/visualizer.svg';
 
 interface PlaylistTableBodyProps {
   sortedItems: Song[];
 }
 
 const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
+  const currentSong = useAppSelector((state) => state.queue.items[0]);
   const likedSongs = useAppSelector(
     (state) => state.user?.data?.likedSongs?.songs ?? [],
   );
@@ -27,14 +29,22 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
     <TableBody>
       {sortedItems.map((song, index) => {
         const isLiked = likedSongs.includes(song.id);
+        const isActiveSong = currentSong?.id === song.id;
 
         return (
           <TableRow key={song.name}>
-            <IndexCell>{index + 1}</IndexCell>
+            <IndexCell>
+              {isActiveSong ? (
+                <img src={visualizerSvg} alt="Audio visualizer" />
+              ) : (
+                index + 1
+              )}
+            </IndexCell>
             <InfoCell
               img={song.img.url}
               name={song.name}
               artist={song.artist.name}
+              isActive={isActiveSong}
             />
             <TableCell>{song.plays}</TableCell>
             <LikeCell
