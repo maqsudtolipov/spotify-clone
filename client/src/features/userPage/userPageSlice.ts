@@ -37,7 +37,7 @@ const userPageSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.api.getUser.status = 'fulfilled';
-        if (state.data) state.data = action.payload;
+        state.data = action.payload;
       })
       .addCase(getUser.rejected, (state, action) => {
         handleRejectedThunk(state, action, 'getUser');
