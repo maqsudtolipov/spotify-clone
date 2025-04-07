@@ -89,42 +89,59 @@ export const logout = createAsyncThunk('user/logout', async () => {
 // Follow
 export const followUser = createAsyncThunk(
   'user/followUser',
-  async ({ id, type }: { id: string; type: string }, { dispatch }) => {
-    const res = await axios.post(`/users/follow/${id}`, id);
-    const candidateUser = res.data.data.candidateUser;
-
-    dispatch(addToFollowings(candidateUser.id));
+  async (
+    {
+      id,
+      type,
+      artistData,
+    }: {
+      id: string;
+      type: string;
+      artistData?: {
+        id: string;
+        name: string;
+        img: string;
+        createdAt: Date;
+      };
+    },
+    { dispatch },
+  ) => {
+    // ⚡ OPTIMISTIC UI
+    dispatch(addToFollowings(id));
     if (type === 'user') {
       dispatch(increaseFollowersCount());
     }
-    if (type === 'artist') {
+    if (type === 'artist' && artistData) {
       dispatch(increaseListenersCount());
       dispatch(
         addItemToLibrary({
-          id: candidateUser.id,
-          name: candidateUser.name,
-          img: candidateUser.img,
+          id: artistData.id,
+          name: artistData.name,
+          img: artistData.img,
           itemType: 'artist',
-          createdAt: candidateUser.createdAt,
+          createdAt: artistData.createdAt,
         }),
       );
     }
+
+    await axios.post(`/users/follow/${id}`, id);
   },
 );
 
 export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
   async ({ id, type }: { id: string; type: string }, { dispatch }) => {
-    const res = await axios.post(`/users/unfollow/${id}`, id);
-
-    dispatch(removeFromFollowings(res.data.data.candidateUser.id));
+    // ⚡ OPTIMISTIC UI
+    dispatch(removeFromFollowings(id));
     if (type === 'user') {
       dispatch(decreaseFollowersCount());
     }
     if (type === 'artist') {
       dispatch(decreaseListenersCount());
-      dispatch(removeItemFromLibrary(res.data.data.candidateUser.id));
+      dispatch(removeItemFromLibrary(id));
     }
+
+    await axios.post(`/users/unfollow/${id}`, id);
   },
 );
 

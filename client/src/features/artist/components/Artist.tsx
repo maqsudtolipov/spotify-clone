@@ -33,8 +33,19 @@ const Artist = () => {
   }, [id]);
 
   const handleFollow = () => {
-    if (id) {
-      dispatch(followUser({ id, type: 'artist' }));
+    if (id && data) {
+      dispatch(
+        followUser({
+          id,
+          type: 'artist',
+          artistData: {
+            id: data.id,
+            name: data.name,
+            img: data.img.url,
+            createdAt: data.createdAt,
+          },
+        }),
+      );
     }
   };
 
