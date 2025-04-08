@@ -35,6 +35,18 @@ const useAudioPlayer = () => {
     }
   }, [duration, isPlaying]);
 
+  useEffect(() => {
+    if (isPlaying) {
+      audioElementRef.current?.play();
+      animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
+    } else {
+      audioElementRef.current?.pause();
+      if (animationFrameRef.current)
+        cancelAnimationFrame(animationFrameRef.current);
+      // animationFrameRef.current = null;
+    }
+  }, [isPlaying]);
+
   const resetPlayer = () => {
     if (progressElementRef.current) {
       progressElementRef.current.value = '0';
@@ -46,15 +58,15 @@ const useAudioPlayer = () => {
   const togglePlayPause = () => {
     dispatch(playerTogglePlay());
 
-    if (!isPlaying) {
-      audioElementRef.current?.play();
-      animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
-    } else {
-      audioElementRef.current?.pause();
-      if (animationFrameRef.current)
-        cancelAnimationFrame(animationFrameRef.current);
-      // animationFrameRef.current = null;
-    }
+    // if (!isPlaying) {
+    //   audioElementRef.current?.play();
+    //   animationFrameRef.current = requestAnimationFrame(animationWhilePlaying);
+    // } else {
+    //   audioElementRef.current?.pause();
+    //   if (animationFrameRef.current)
+    //     cancelAnimationFrame(animationFrameRef.current);
+    //   // animationFrameRef.current = null;
+    // }
   };
 
   const handlePlayNext = () => {
