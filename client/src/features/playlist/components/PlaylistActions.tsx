@@ -5,7 +5,7 @@ import { Playlist } from '../playlistTypes.ts';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
 import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
-import { playerSetList, setItems } from '../../queue/queueSlice.ts';
+import { playerSetList, playerTogglePlay, setItems } from '../../queue/queueSlice.ts';
 
 interface PlaylistActionsProps {
   data: Playlist;
@@ -25,8 +25,12 @@ const PlaylistActions = ({ data }: PlaylistActionsProps) => {
   const isLikedPlaylist = likedPlaylists.includes(data.id);
 
   const handlePlay = () => {
-    dispatch(setItems(data.songs));
-    dispatch(playerSetList(data.id));
+    if (data.id === currentListId) {
+      dispatch(playerTogglePlay());
+    } else {
+      dispatch(playerSetList(data.id));
+      dispatch(setItems(data.songs));
+    }
   };
 
   const handleLikeToggle = () => {
