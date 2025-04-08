@@ -16,6 +16,7 @@ interface PlaylistTableBodyProps {
 }
 
 const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
+  const isPlaying = useAppSelector((state) => state.queue.isPlaying);
   const currentPlaylistId = useAppSelector((state) => state.playlist.data.id);
   const currentListId = useAppSelector((state) => state.queue.currentListId);
   const currentSong = useAppSelector((state) => state.queue.items[0]);
@@ -37,7 +38,7 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
         return (
           <TableRow key={song.name}>
             <IndexCell>
-              {isActiveSong ? (
+              {isActiveSong && isPlaying ? (
                 <img src={visualizerSvg} alt="Audio visualizer" />
               ) : (
                 index + 1
