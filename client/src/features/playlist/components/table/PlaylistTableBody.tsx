@@ -16,6 +16,8 @@ interface PlaylistTableBodyProps {
 }
 
 const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
+  const currentPlaylistId = useAppSelector((state) => state.playlist.data.id);
+  const currentListId = useAppSelector((state) => state.queue.currentListId);
   const currentSong = useAppSelector((state) => state.queue.items[0]);
   const likedSongs = useAppSelector(
     (state) => state.user?.data?.likedSongs?.songs ?? [],
@@ -29,7 +31,8 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
     <TableBody>
       {sortedItems.map((song, index) => {
         const isLiked = likedSongs.includes(song.id);
-        const isActiveSong = currentSong?.id === song.id;
+        const isActiveSong =
+          currentPlaylistId === currentListId && currentSong?.id === song.id;
 
         return (
           <TableRow key={song.name}>
