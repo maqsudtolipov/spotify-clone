@@ -10,6 +10,7 @@ import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { Song } from '../../playlistTypes.ts';
 import visualizerSvg from '../../../../assets/icons/visualizer.svg';
+import { moveSongToTop } from '../../../queue/queueSlice.ts';
 
 interface PlaylistTableBodyProps {
   sortedItems: Song[];
@@ -28,6 +29,10 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
   const toggleLikeSong = (id: string, isLiked: boolean) =>
     dispatch(isLiked ? dislikeSong({ id }) : likeSong({ id }));
 
+  const handleChangeSong = (id: string) => {
+    dispatch(moveSongToTop(id));
+  };
+
   return (
     <TableBody>
       {sortedItems.map((song, index) => {
@@ -37,7 +42,7 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
 
         return (
           <TableRow key={song.name}>
-            <IndexCell>
+            <IndexCell onClick={() => handleChangeSong(song.id)}>
               {isActiveSong && isPlaying ? (
                 <img src={visualizerSvg} alt="Audio visualizer" />
               ) : (
