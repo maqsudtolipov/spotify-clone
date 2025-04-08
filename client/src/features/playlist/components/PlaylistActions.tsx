@@ -30,6 +30,7 @@ const PlaylistActions = ({ data }: PlaylistActionsProps) => {
     } else {
       dispatch(playerSetList(data.id));
       dispatch(setItems(data.songs));
+      if (!isPlaying) dispatch(playerTogglePlay());
     }
   };
 
