@@ -10,7 +10,7 @@ import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { Song } from '../../playlistTypes.ts';
 import visualizerSvg from '../../../../assets/icons/visualizer.svg';
-import { moveSongToTop } from '../../../queue/queueSlice.ts';
+import { moveSongToTop, playerTogglePlay } from '../../../queue/queueSlice.ts';
 
 interface PlaylistTableBodyProps {
   sortedItems: Song[];
@@ -31,6 +31,7 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
 
   const handleChangeSong = (id: string) => {
     dispatch(moveSongToTop(id));
+    if (!isPlaying) dispatch(playerTogglePlay());
   };
 
   return (

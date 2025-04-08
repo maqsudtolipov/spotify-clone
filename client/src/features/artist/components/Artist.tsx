@@ -7,16 +7,9 @@ import { useEffect } from 'react';
 import { getArtist } from '../artistThunks.ts';
 import LoadingScreen from '../../../ui/statusScreens/LoadingScreen.tsx';
 import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
-import PlayButton from '../../../ui/PlayHeader/PlayButton.tsx';
-import TransparentButton from '../../../ui/Button/TransparentButton.tsx';
-import { followUser, unfollowUser } from '../../user/userThunks.ts';
-import UploadSongDialog from './forms/uploadSong/UploadSongDialog.tsx';
 import NotFound from '../../../ui/statusScreens/NotFound.tsx';
 import ServerError from '../../../ui/statusScreens/ServerError.tsx';
-
-const isFollowed = (id: string, followings: string[]) => {
-  return followings.includes(id);
-};
+import ArtistActions from './ArtistActions.tsx';
 
 const Artist = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +17,6 @@ const Artist = () => {
     (state) => state.artist.api.getArtist,
   );
   const data = useAppSelector((state) => state.artist.data);
-  const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -32,58 +24,19 @@ const Artist = () => {
     if (id) dispatch(getArtist(id));
   }, [id]);
 
-  const handleFollow = () => {
-    if (id && data) {
-      dispatch(
-        followUser({
-          id,
-          type: 'artist',
-          artistData: {
-            id: data.id,
-            name: data.name,
-            img: data.img.url,
-            createdAt: data.createdAt,
-          },
-        }),
-      );
-    }
-  };
-
-  const handleUnfollow = () => {
-    if (id) {
-      dispatch(unfollowUser({ id, type: 'artist' }));
-    }
-  };
-
   if (status === 'rejected') {
     if (statusCode === 404) return <NotFound message={error} />;
     if (statusCode === 500) return <ServerError />;
     else navigate('/');
   }
-  if (status === 'pending' || !data || !id || !userData)
+  if (status === 'pending' || !data || !id)
     return <LoadingScreen />;
-
-  const { followings, id: userId } = userData;
 
   return (
     <div className={styles.artistPage}>
       {data && <ArtistHeader />}
       <GradientBackground color={data.color}>
-        <div className={styles.playerHeader}>
-          <PlayButton />
-
-          {id !== userId && (
-            <TransparentButton
-              text={isFollowed(id, followings) ? 'Unfollow' : 'Follow'}
-              onClick={() =>
-                isFollowed(id, followings) ? handleUnfollow() : handleFollow()
-              }
-            ></TransparentButton>
-          )}
-
-          {id === userId && data.role === 'artist' && <UploadSongDialog />}
-        </div>
-
+        <ArtistActions data={data} />
         <ArtistTable />
       </GradientBackground>
     </div>
