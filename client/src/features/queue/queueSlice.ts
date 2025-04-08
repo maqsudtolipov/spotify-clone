@@ -7,12 +7,16 @@ const initialState: Queue = {
   isOpen: false,
   items: [],
   originalItems: [],
+  isPlaying: false,
 };
 
 const queueSlice = createSlice({
   name: 'queue',
   initialState,
   reducers: {
+    playerTogglePlay: (state) => {
+      state.isPlaying = !state.isPlaying;
+    },
     setItems: (state, action) => {
       state.originalItems = action.payload;
       state.items = action.payload;
@@ -58,5 +62,6 @@ export const {
   toggleIsShuffled,
   openQueue,
   closeQueue,
+  playerTogglePlay,
 } = queueSlice.actions;
 export default queueSlice.reducer;

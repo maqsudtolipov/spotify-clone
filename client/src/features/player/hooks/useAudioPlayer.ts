@@ -1,16 +1,17 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { ReactEventHandler, useEffect, useRef, useState } from 'react';
-import { playNext, playPrev, toggleIsShuffled } from '../../queue/queueSlice.ts';
+import { playerTogglePlay, playNext, playPrev, toggleIsShuffled } from '../../queue/queueSlice.ts';
 
 const useAudioPlayer = () => {
   const songs = useAppSelector((state) => state.queue.items);
   const isShuffled = useAppSelector((state) => state.queue.isShuffled);
+  const isPlaying = useAppSelector((state) => state.queue.isPlaying);
   let dispatch = useAppDispatch();
 
   const isEmpty = songs.length === 0;
   const song = songs[0] || null;
 
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -43,7 +44,7 @@ const useAudioPlayer = () => {
   };
 
   const togglePlayPause = () => {
-    setIsPlaying((prev) => !prev);
+    dispatch(playerTogglePlay());
 
     if (!isPlaying) {
       audioElementRef.current?.play();
