@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Queue = {
   current: 0,
-  isShuffled: true,
+  isShuffled: false,
   isOpen: false,
   items: [],
   originalItems: [],
