@@ -2,6 +2,10 @@
   @apply size-14 p-4;
   @apply text-black bg-green-500 rounded-full cursor-pointer;
 
+  svg {
+    @apply size-6 scale-125;
+  }
+
   &:hover {
     @apply bg-green-400 scale-105;
   }

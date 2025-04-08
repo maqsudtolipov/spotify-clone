@@ -1,5 +1,5 @@
 import { Queue } from './queueTypes.ts';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Queue = {
   current: 0,
@@ -8,6 +8,7 @@ const initialState: Queue = {
   items: [],
   originalItems: [],
   isPlaying: false,
+  currentListId: '',
 };
 
 const queueSlice = createSlice({
@@ -16,6 +17,9 @@ const queueSlice = createSlice({
   reducers: {
     playerTogglePlay: (state) => {
       state.isPlaying = !state.isPlaying;
+    },
+    playerSetList: (state, action: PayloadAction<string>) => {
+      state.currentListId = action.payload;
     },
     setItems: (state, action) => {
       state.originalItems = action.payload;
@@ -63,5 +67,6 @@ export const {
   openQueue,
   closeQueue,
   playerTogglePlay,
+  playerSetList,
 } = queueSlice.actions;
 export default queueSlice.reducer;

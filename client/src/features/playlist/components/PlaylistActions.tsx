@@ -5,7 +5,7 @@ import { Playlist } from '../playlistTypes.ts';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
 import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
-import { setItems } from '../../queue/queueSlice.ts';
+import { playerSetList, setItems } from '../../queue/queueSlice.ts';
 
 interface PlaylistActionsProps {
   data: Playlist;
@@ -13,6 +13,8 @@ interface PlaylistActionsProps {
 
 const PlaylistActions = ({ data }: PlaylistActionsProps) => {
   const user = useAppSelector((state) => state.user.data);
+  const isPlaying = useAppSelector((state) => state.queue.isPlaying);
+  const currentListId = useAppSelector((state) => state.queue.currentListId);
   const dispatch = useAppDispatch();
 
   if (!user) throw new Error('User should not be null inside PlaylistActions');
@@ -22,7 +24,10 @@ const PlaylistActions = ({ data }: PlaylistActionsProps) => {
   const isPersonalPlaylist = data.user.id === userId;
   const isLikedPlaylist = likedPlaylists.includes(data.id);
 
-  const handlePlay = () => dispatch(setItems(data.songs));
+  const handlePlay = () => {
+    dispatch(setItems(data.songs));
+    dispatch(playerSetList(data.id));
+  };
 
   const handleLikeToggle = () => {
     isLikedPlaylist
@@ -42,9 +47,11 @@ const PlaylistActions = ({ data }: PlaylistActionsProps) => {
         );
   };
 
+  const isListPlaying = data.id === currentListId ? !!isPlaying : false;
+
   return (
     <PlayHeader>
-      <PlayButton onClick={handlePlay} />
+      <PlayButton onClick={handlePlay} isPlaying={isListPlaying} />
       {!isPersonalPlaylist && (
         <TransparentButton
           text={isLikedPlaylist ? 'Remove' : 'Save'}

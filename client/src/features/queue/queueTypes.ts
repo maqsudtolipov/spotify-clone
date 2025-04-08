@@ -17,4 +17,5 @@ export interface Queue {
   originalItems: Song[];
   // Global player
   isPlaying: boolean;
+  currentListId: string;
 }
