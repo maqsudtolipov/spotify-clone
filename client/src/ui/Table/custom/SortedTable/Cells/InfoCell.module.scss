@@ -8,6 +8,10 @@
   &Name {
     @apply text-base text-white;
 
+    &Active {
+      @apply text-green-500;
+    }
+
     // TODO: remove after adding Link
     &:hover {
       @apply underline cursor-pointer;

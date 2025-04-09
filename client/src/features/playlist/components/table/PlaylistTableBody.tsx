@@ -9,12 +9,18 @@ import PlaylistActionsCell from '../actionsCell/PlaylistActionsCell.tsx';
 import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { Song } from '../../playlistTypes.ts';
+import visualizerSvg from '../../../../assets/icons/visualizer.svg';
+import { moveSongToTop, playerTogglePlay } from '../../../queue/queueSlice.ts';
 
 interface PlaylistTableBodyProps {
   sortedItems: Song[];
 }
 
 const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
+  const isPlaying = useAppSelector((state) => state.queue.isPlaying);
+  const currentPlaylistId = useAppSelector((state) => state.playlist.data.id);
+  const currentListId = useAppSelector((state) => state.queue.currentListId);
+  const currentSong = useAppSelector((state) => state.queue.items[0]);
   const likedSongs = useAppSelector(
     (state) => state.user?.data?.likedSongs?.songs ?? [],
   );
@@ -23,18 +29,32 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
   const toggleLikeSong = (id: string, isLiked: boolean) =>
     dispatch(isLiked ? dislikeSong({ id }) : likeSong({ id }));
 
+  const handleChangeSong = (id: string) => {
+    dispatch(moveSongToTop(id));
+    if (!isPlaying) dispatch(playerTogglePlay());
+  };
+
   return (
     <TableBody>
       {sortedItems.map((song, index) => {
         const isLiked = likedSongs.includes(song.id);
+        const isActiveSong =
+          currentPlaylistId === currentListId && currentSong?.id === song.id;
 
         return (
           <TableRow key={song.name}>
-            <IndexCell>{index + 1}</IndexCell>
+            <IndexCell onClick={() => handleChangeSong(song.id)}>
+              {isActiveSong && isPlaying ? (
+                <img src={visualizerSvg} alt="Audio visualizer" />
+              ) : (
+                index + 1
+              )}
+            </IndexCell>
             <InfoCell
               img={song.img.url}
               name={song.name}
               artist={song.artist.name}
+              isActive={isActiveSong}
             />
             <TableCell>{song.plays}</TableCell>
             <LikeCell

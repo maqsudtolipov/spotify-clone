@@ -24,17 +24,19 @@ const LibraryCard = ({ data, isCollapsed }: LibraryCardProps) => {
 
   const handleNavigateUser = (type: string, id: string) => {
     let path = `/${type === 'artist' ? 'artist' : 'playlist'}/${id}`;
-    console.log(path);
     navigate(path);
   };
 
   return (
-    <li className={styles.libraryCard} key={data.id}>
+    <li
+      className={styles.libraryCard}
+      key={data.id}
+      onClick={() => handleNavigateUser(data.itemType, data.id)}
+    >
       <CardImage
         src={data.img}
         name={`Cover for ${data.name}`}
         isArtist={data.itemType === 'artist'}
-        onClick={() => handleNavigateUser(data.itemType, data.id)}
       />
       {!isCollapsed && (
         <CardInfo

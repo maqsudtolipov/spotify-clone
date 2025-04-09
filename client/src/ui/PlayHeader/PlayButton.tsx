@@ -1,17 +1,16 @@
-import { RiPlayLargeFill } from 'react-icons/ri';
+import { RiPauseLargeFill, RiPlayLargeFill } from 'react-icons/ri';
 import styles from './PlayButton.module.scss';
 
 interface PlayButtonProps {
   onClick?: () => void;
+  isPlaying: boolean;
 }
 
-const PlayButton = ({ onClick }: PlayButtonProps) => {
+const PlayButton = ({ onClick, isPlaying }: PlayButtonProps) => {
   return (
-    <RiPlayLargeFill
-      className={styles.playButton}
-      role="button"
-      onClick={onClick}
-    />
+    <button className={styles.playButton} onClick={onClick}>
+      {isPlaying ? <RiPauseLargeFill /> : <RiPlayLargeFill />}
+    </button>
   );
 };
 

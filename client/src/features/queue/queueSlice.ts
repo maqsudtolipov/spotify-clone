@@ -1,18 +1,48 @@
 import { Queue } from './queueTypes.ts';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Queue = {
   current: 0,
-  isShuffled: true,
+  isShuffled: false,
   isOpen: false,
   items: [],
   originalItems: [],
+  isPlaying: false,
+  currentListId: '',
 };
 
 const queueSlice = createSlice({
   name: 'queue',
   initialState,
   reducers: {
+    moveSongToTop: (state, action: PayloadAction<string>) => {
+      if (state.items.length > 1) {
+        const songIndex = state.items.findIndex(
+          (item) => item.id === action.payload,
+        );
+
+        if (state.isShuffled) {
+          // Shuffle: Move the song to the top, keeping the shuffle intact
+          state.items = [
+            state.items[songIndex],
+            ...state.items.slice(0, songIndex),
+            ...state.items.slice(songIndex + 1),
+          ];
+        } else {
+          // Normal: Reorder the list with the clicked song at the top
+          state.items = [
+            ...state.items.slice(songIndex),
+            ...state.items.slice(0, songIndex),
+          ];
+        }
+      }
+    },
+    playerTogglePlay: (state) => {
+      state.isPlaying = !state.isPlaying;
+    },
+    playerSetList: (state, action: PayloadAction<string>) => {
+      state.currentListId = action.payload;
+    },
     setItems: (state, action) => {
       state.originalItems = action.payload;
       state.items = action.payload;
@@ -52,11 +82,14 @@ const queueSlice = createSlice({
 });
 
 export const {
+  moveSongToTop,
   setItems,
   playNext,
   playPrev,
   toggleIsShuffled,
   openQueue,
   closeQueue,
+  playerTogglePlay,
+  playerSetList,
 } = queueSlice.actions;
 export default queueSlice.reducer;

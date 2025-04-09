@@ -17,6 +17,7 @@ export interface User {
   followingsCount: number;
   likedPlaylists: string[];
   likedSongs: {
+    _id: string;
     id: string;
     songs: string[];
   };

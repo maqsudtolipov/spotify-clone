@@ -24,17 +24,25 @@ const PlaylistSongActions = ({ id, duration }: PlaylistSongActionsProps) => {
   const { ref } = useOutsideClick(closeDropdown);
 
   const userId = useAppSelector((state) => state.user?.data?.id);
-  const playlistUserId = useAppSelector((state) => state.playlist?.data?.user?.id);
+  const playlistUserId = useAppSelector(
+    (state) => state.playlist?.data?.user?.id,
+  );
   const playlistId = useAppSelector((state) => state.playlist?.data?.id);
-  const likedSongsPlaylistId = useAppSelector((state) => state.user?.data?.likedSongs.id);
+  const likedSongsPlaylistId = useAppSelector(
+    (state) => state.user?.data?.likedSongs._id,
+  );
 
-  if (!userId || !playlistUserId || !playlistId || !likedSongsPlaylistId) return null;
+  if (!userId || !playlistUserId || !playlistId || !likedSongsPlaylistId)
+    return null;
 
   const handleRemoveSong = () => {
-    dispatch(removeSongFromPlaylistThunk({ song: { id, duration }, playlistId }));
+    dispatch(
+      removeSongFromPlaylistThunk({ song: { id, duration }, playlistId }),
+    );
   };
 
-  const canRemoveSong = userId === playlistUserId && likedSongsPlaylistId !== playlistId;
+  const canRemoveSong =
+    userId === playlistUserId && likedSongsPlaylistId !== playlistId;
 
   return (
     <>
@@ -43,7 +51,11 @@ const PlaylistSongActions = ({ id, duration }: PlaylistSongActionsProps) => {
       </DropdownTrigger>
       <DropdownList ref={ref} removeOutsideClick>
         {canRemoveSong && (
-          <DropdownItem PreIcon={RiDeleteBin6Line} underline onClick={handleRemoveSong}>
+          <DropdownItem
+            PreIcon={RiDeleteBin6Line}
+            underline
+            onClick={handleRemoveSong}
+          >
             Remove
           </DropdownItem>
         )}
