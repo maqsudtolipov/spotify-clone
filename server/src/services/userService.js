@@ -51,8 +51,11 @@ exports.getCurrentUser = async (userInput) => {
   // NOTE: virtual does not work with lean()
   user.id = user._id;
 
+  // TODO: Quick fix, one user is broken
+  const filterItems = user.library.items.filter((item) => item.refId);
+
   // Filter library items
-  user.library.items = filterLibraryItems(user.library.items);
+  user.library.items = filterLibraryItems(filterItems);
 
   return user;
 };
