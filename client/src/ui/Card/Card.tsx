@@ -7,7 +7,7 @@ interface CardData {
   img: string;
   name: string;
   description: string;
-  type: string;
+  type: 'artist' | 'playlist' | 'user' | 'song';
 }
 
 interface CardProps {
@@ -27,7 +27,10 @@ const Card = ({ data, type }: CardProps) => {
   };
 
   return (
-    <li className={styles.card} onClick={handleNavigate}>
+    <li
+      className={`${styles.card} ${type === 'song' ? styles.playCard : ''}`}
+      onClick={handleNavigate}
+    >
       <CardImage img={img.url} alt={name} isRounded={type === 'artist'} />
       <CardDescription name={name} description={description} />
     </li>

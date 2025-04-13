@@ -31,31 +31,33 @@ const Home = () => {
   }, []);
 
   return (
-    <GradientBackground className={styles.home} color={'#485133'}>
-      {/*<History handleNewColor={handleNewColor} />*/}
-      <div className="flex flex-col gap-8">
-        <Welcome />
+    <div className="min-h-full">
+      <GradientBackground className={styles.home} color={'#485133'}>
+        {/*<History handleNewColor={handleNewColor} />*/}
+        <div className="flex flex-col gap-8">
+          <Welcome />
 
-        <CardsList
-          title="Most Popular"
-          shrink={true}
-          items={topSongs}
-          type="playlist"
-        />
-        <CardsList
-          title="New Releases"
-          shrink={true}
-          items={newestSongs}
-          type="playlist"
-        />
-        <CardsList
-          title="Your Favourite Artists"
-          shrink={true}
-          items={recommendedArtists}
-          type="artist"
-        />
-      </div>
-    </GradientBackground>
+          <CardsList
+            title="Most Popular"
+            shrink={true}
+            items={topSongs}
+            type="song"
+          />
+          <CardsList
+            title="New Releases"
+            shrink={true}
+            items={newestSongs}
+            type="song"
+          />
+          <CardsList
+            title="Your Favourite Artists"
+            shrink={true}
+            items={recommendedArtists}
+            type="artist"
+          />
+        </div>
+      </GradientBackground>
+    </div>
   );
 };
 
