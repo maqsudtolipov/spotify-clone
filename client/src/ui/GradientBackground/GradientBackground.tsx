@@ -13,11 +13,11 @@ const GradientBackground = ({
 }: GradientBackgroundProps) => {
   const style = {
     height: '100%',
-    backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 40vh),
+    backgroundImage: `linear-gradient(rgba(23, 23, 23, 0.5), rgb(23, 23, 23) 60vh),
         linear-gradient(
         ${color},
-        ${color} 40vh,
-        transparent 40vh,
+        ${color} 60vh,
+        transparent 60vh,
         transparent 100%
     )`,
   };
