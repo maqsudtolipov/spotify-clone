@@ -1,0 +1,7 @@
+.queueList {
+  @apply p-2;
+}
+
+.shadow {
+  @apply h-4 w-full absolute -translate-y-4 bg-transparent shadow-xl shadow-black z-10;
+}

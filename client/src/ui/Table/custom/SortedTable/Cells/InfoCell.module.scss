@@ -1,0 +1,40 @@
+.infoCell {
+  @apply py-2 flex items-center gap-3;
+
+  &Description span {
+    @apply block;
+  }
+
+  &Name {
+    @apply text-base text-white;
+
+    &Active {
+      @apply text-green-500;
+    }
+
+    // TODO: remove after adding Link
+    &:hover {
+      @apply underline cursor-pointer;
+    }
+  }
+
+  &NameFull {
+    grid-template-rows: 1/-1;
+  }
+
+  &Artist {
+    @apply text-sm;
+
+    &:hover {
+      @apply underline  cursor-pointer;
+    }
+  }
+
+  img {
+    @apply w-10 rounded;
+  }
+}
+
+tr:hover .infoCellArtist {
+  @apply text-white;
+}

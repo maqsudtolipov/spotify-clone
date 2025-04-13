@@ -1,0 +1,13 @@
+.tabListWrapper {
+  @apply relative;
+}
+
+.tabsList {
+  @apply flex gap-2;
+  @apply overflow-x-scroll;
+  @apply scroll-smooth rounded-full;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

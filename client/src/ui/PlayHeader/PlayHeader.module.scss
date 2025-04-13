@@ -1,0 +1,7 @@
+.playerHeader {
+  @apply p-5 flex items-center gap-6;
+}
+
+.artistPage {
+  @apply min-h-full grid grid-rows-[auto_1fr];
+}

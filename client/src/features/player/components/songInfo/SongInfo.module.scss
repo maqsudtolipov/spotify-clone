@@ -1,0 +1,23 @@
+.songInfo {
+  @apply flex items-center gap-4;
+
+  img {
+    @apply size-14 rounded rounded-s;
+  }
+
+  .likeBtn {
+    @apply text-base text-neutral-400;
+
+    &Active {
+      @apply text-green-400;
+    }
+  }
+}
+
+.name {
+  @apply text-sm;
+}
+
+.artist {
+  @apply text-xs text-neutral-400;
+}

@@ -1,0 +1,10 @@
+.name {
+  @apply mb-1;
+  @apply block;
+  @apply text-base text-white;
+}
+
+.description {
+  @apply block;
+  @apply text-sm text-neutral-400;
+}

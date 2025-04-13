@@ -1,0 +1,44 @@
+.cardsListContainer {
+  container-type: inline-size;
+}
+
+.cardsList {
+  @apply grid grid-cols-6;
+}
+
+.shrink li:nth-child(n + 7) {
+  @apply hidden;
+}
+
+// 5 x 170
+@container (max-width: 850px) {
+  .cardsList {
+    @apply grid-cols-5;
+  }
+
+  .shrink li:nth-child(n + 6) {
+    @apply hidden;
+  }
+}
+
+// 4 x 150
+@container (max-width: 680px) {
+  .cardsList {
+    @apply grid-cols-4;
+  }
+
+  .shrink li:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+// 4 x 130
+@container (max-width: 510px) {
+  .cardsList {
+    @apply grid-cols-3;
+  }
+
+  .shrink li:nth-child(n + 4) {
+    display: none;
+  }
+}

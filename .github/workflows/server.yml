@@ -1,0 +1,53 @@
+name: Run Jest Tests
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: |
+          cd server
+          npm install
+
+      - name: Set up environment variables
+        run: |
+          cd server
+          touch .env
+          echo "DB_TEST_URL=${{ secrets.DB_TEST_URL }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
+          echo "ACCESS_TOKEN_EXPIRATION=${{ secrets.ACCESS_TOKEN_EXPIRATION }}" >> .env
+          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
+          echo "REFRESH_TOKEN_EXPIRATION=${{ secrets.REFRESH_TOKEN_EXPIRATION }}" >> .env
+          echo "IK_PUBLIC=${{ secrets.IK_PUBLIC }}" >> .env
+          echo "IK_PRIVATE=${{ secrets.IK_PRIVATE }}" >> .env
+          echo "IK_URL=${{ secrets.IK_URL }}" >> .env
+          cat .env  # Output to logs for debugging
+
+      - name: Run unit tests
+        run: |
+          cd server
+          npm run test-unit
+
+      - name: Run integration & e2e tests
+        run: |
+          cd server
+          npm run test-e2e

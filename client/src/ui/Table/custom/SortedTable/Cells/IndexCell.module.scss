@@ -1,0 +1,21 @@
+.indexCell {
+  @apply w-10 text-base text-neutral-400 text-center;
+
+  svg {
+    @apply hidden;
+  }
+
+  img {
+    background: transparent;
+  }
+}
+
+tr:hover .indexCell {
+  span {
+    @apply hidden;
+  }
+
+  svg {
+    @apply block text-white;
+  }
+}

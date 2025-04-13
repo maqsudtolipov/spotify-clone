@@ -1,0 +1,40 @@
+.form {
+  @apply w-72  p-6;
+  @apply flex flex-col gap-2.5;
+  @apply bg-neutral-800 rounded-2xl;
+}
+
+.title {
+  @apply mb-6;
+  @apply text-center text-3xl font-bold text-green-500;
+}
+
+.link {
+  @apply mt-2.5;
+  @apply block;
+  @apply text-sm text-center text-neutral-400 underline;
+}
+
+.button {
+  @apply w-full py-2 px-4;
+  @apply flex items-center justify-center gap-2;
+  @apply text-sm text-center font-bold bg-green-500 text-black rounded-full;
+
+  svg {
+    animation: rotate 3s linear infinite;
+    scale: 1.3;
+  }
+
+  &:hover {
+    @apply bg-green-600;
+  }
+}
+
+@keyframes rotate {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}

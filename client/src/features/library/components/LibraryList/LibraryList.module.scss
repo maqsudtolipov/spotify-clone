@@ -1,0 +1,21 @@
+.listContainer {
+  @apply w-full relative;
+
+  height: calc(100% - 160px);
+}
+
+.listContainerCollapsed {
+  height: calc(100% - 60px);
+}
+
+.list {
+  @apply h-full p-2 overflow-y-scroll;
+}
+
+.listCollapsed {
+  @apply p-0;
+}
+
+.shadow {
+  @apply h-4 w-full absolute top-0 -translate-y-4 bg-transparent shadow-xl shadow-black z-10;
+}

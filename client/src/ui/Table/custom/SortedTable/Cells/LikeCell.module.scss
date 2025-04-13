@@ -1,0 +1,20 @@
+.likeCell svg {
+  @apply w-4 cursor-pointer;
+  transition: color 0.3s ease-out;
+}
+
+.likeCell:not(.likeCellHighlighted) svg {
+  @apply invisible;
+
+  &:hover {
+    @apply text-neutral-200;
+  }
+}
+
+tr:hover .likeCell svg {
+  @apply visible;
+}
+
+.likeCellHighlighted {
+  @apply text-green-500;
+}

@@ -1,0 +1,7 @@
+.app {
+  // Size
+  @apply h-screen w-screen p-2;
+
+  // Display
+  @apply grid grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] gap-2;
+}

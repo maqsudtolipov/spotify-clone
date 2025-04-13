@@ -1,0 +1,13 @@
+.dialogBackground {
+  @apply w-full h-full;
+  @apply flex items-center justify-center;
+  @apply absolute top-0 left-0;
+  @apply bg-black bg-opacity-30 backdrop-blur-sm;
+
+  z-index: 8000;
+}
+
+.dialog {
+  @apply p-6;
+  @apply bg-neutral-800 rounded-lg;
+}

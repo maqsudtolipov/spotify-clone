@@ -1,0 +1,45 @@
+.label {
+  @apply inline-block;
+  @apply mb-0.5 text-base;
+  @apply font-medium;
+}
+
+.input {
+  @apply w-full px-3 py-2;
+  @apply block;
+  @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-40 rounded-md;
+
+  &Invalid {
+    @apply border-red-900;
+  }
+
+  &::placeholder {
+    @apply text-neutral-400;
+  }
+
+  &:focus {
+    @apply outline-none border-opacity-100;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #232323;
+  }
+}
+
+.error {
+  @apply mt-2;
+  @apply text-sm text-neutral-400 leading-tight;
+}
+
+.inputFile {
+  @apply p-0;
+  @apply file:cursor-pointer cursor-pointer file:py-2 file:mr-4 file:px-3 file:bg-neutral-400/50  file:text-white file:border-0 rounded file:placeholder-gray-500;
+
+  //file:hover:bg-gray-200 file:border-0  file:mr-4
+}

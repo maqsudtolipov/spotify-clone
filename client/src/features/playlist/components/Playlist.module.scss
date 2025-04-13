@@ -1,0 +1,43 @@
+.playlistContainer {
+  @apply min-h-full grid grid-rows-[auto_1fr];
+}
+
+.playlistHeader {
+  @apply p-5 grid grid-cols-[auto_1fr] gap-5 items-end;
+
+  height: 300px;
+}
+
+.headerImage {
+  @apply min-w-48 w-48 rounded shadow-2xl;
+}
+
+.playlistName {
+  @apply mb-3 text-8xl font-extrabold overflow-hidden whitespace-nowrap text-ellipsis;
+  container-type: inline-size;
+}
+
+.playlistDescription {
+  @apply mb-3 text-sm text-white text-opacity-70 overflow-hidden whitespace-nowrap text-ellipsis;
+  container-type: inline-size;
+}
+
+.playlistStatistics {
+  @apply flex items-center gap-1 text-sm text-white text-opacity-70;
+}
+
+.playlistUser {
+  @apply flex items-center gap-1;
+
+  img {
+    @apply size-6 rounded-full;
+  }
+
+  span {
+    @apply font-bold text-white text-opacity-100 cursor-pointer;
+  }
+
+  span:hover {
+    @apply underline;
+  }
+}

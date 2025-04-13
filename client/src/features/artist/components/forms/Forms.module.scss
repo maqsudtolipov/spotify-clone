@@ -1,0 +1,108 @@
+.dialogForm {
+  @apply grid grid-cols-[208px_300px] gap-4;
+
+  button {
+    @apply mt-4;
+  }
+}
+
+.editPlaylist {
+  button {
+    @apply mt-0;
+    grid-column: 2/3;
+  }
+}
+
+.imgContainer {
+  @apply relative overflow-hidden;
+  @apply rounded-md shadow-black/40 shadow-2xl;
+
+  input {
+    @apply hidden;
+  }
+
+  &:hover .overlay {
+    @apply flex;
+  }
+}
+
+.imgInvalid {
+  @apply outline outline-2 outline-offset-2 outline-red-900;
+}
+
+.inputsContainer {
+  @apply flex flex-col gap-2;
+}
+
+
+
+.previewImg {
+  @apply w-full;
+  @apply flex items-center justify-center;
+  @apply overflow-hidden;
+  @apply rounded-md;
+
+  img {
+    @apply h-52 w-52;
+    @apply object-cover object-center;
+
+    &:hover {
+      @apply cursor-pointer;
+    }
+  }
+}
+
+.overlay {
+  @apply w-full h-full;
+  @apply hidden flex-col items-center justify-center;
+  @apply absolute;
+  @apply bg-black/75 cursor-pointer;
+
+  svg {
+    @apply mb-2 text-6xl;
+  }
+}
+
+.error {
+  @apply text-sm text-neutral-400 leading-tight;
+}
+
+.warn {
+  @apply text-xs font-semibold;
+  grid-column: 1/-1;
+}
+
+// TEMP
+.label {
+  @apply inline-block;
+  @apply mb-0.5 text-base;
+  @apply font-medium;
+}
+
+.textarea {
+  @apply h-full w-full px-3 py-2;
+  @apply block;
+  @apply leading-none bg-neutral-900 border-2 border-neutral-400 border-opacity-40 rounded-md;
+
+  &Invalid {
+    @apply border-red-900;
+  }
+
+  &::placeholder {
+    @apply text-neutral-400;
+  }
+
+  &:focus {
+    @apply outline-none border-opacity-100;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #232323;
+  }
+}
