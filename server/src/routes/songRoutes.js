@@ -16,6 +16,8 @@ router
     songController.uploadSong,
   );
 
+router.route("/top").get(ensureAuthenticated, songController.getTopSongs);
+
 router
   .route("/:id")
   .patch(
