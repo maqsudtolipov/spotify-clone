@@ -17,6 +17,7 @@ router
   );
 
 router.route("/top").get(ensureAuthenticated, songController.getTopSongs);
+router.route("/newest").get(ensureAuthenticated, songController.getNewestSongs);
 
 router
   .route("/:id")

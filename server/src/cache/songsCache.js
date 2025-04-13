@@ -1,7 +1,9 @@
 const Song = require("../models/songModel");
 
 let topSongsCache = [];
+let newestSongsCache = [];
 
+// Top songs
 const getTopSongsCache = () => topSongsCache;
 
 const updateTopSongsCache = async () => {
@@ -12,8 +14,22 @@ const updateTopSongsCache = async () => {
   return topSongsCache;
 };
 
+// Newest songs
+const getNewestSongsCache = () => newestSongsCache;
+
+const updateNewestSongsCache = async () => {
+  newestSongsCache = await Song.find()
+    .sort({ createdAt: -1 })
+    .limit(10)
+    .populate({ path: "song img", select: "url" });
+  return newestSongsCache;
+};
+
 module.exports = {
   topSongsCache,
+  newestSongsCache,
+  getTopSongsCache,
+  getNewestSongsCache,
   updateTopSongsCache,
-  getTopSongsCache
+  updateNewestSongsCache,
 };
