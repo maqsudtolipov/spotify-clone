@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.tsx';
-import Home from './features/home/Home.tsx';
+import Home from './features/home/components/Home.tsx';
 import Login from './features/user/components/Login.tsx';
 import { useAppDispatch, useAppSelector } from './redux/hooks.ts';
 import { useEffect } from 'react';
