@@ -1,9 +1,9 @@
 import styles from './Home.module.scss';
-import History from '../history/History.tsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import GradientBackground from '../../ui/GradientBackground/GradientBackground.tsx';
 import CardsList from '../../ui/CardsList/CardsList.tsx';
+import Welcome from './Welcome.tsx';
 
 interface CardItem {
   img: string;
@@ -36,8 +36,9 @@ const Home = () => {
   }, []);
 
   return (
-    <GradientBackground className={styles.home} color={gradientColor}>
-      <History handleNewColor={handleNewColor} />
+    <GradientBackground className={styles.home} color={'#485133'}>
+      {/*<History handleNewColor={handleNewColor} />*/}
+      <Welcome />
 
       <CardsList title="Most Popular" shrink={true} items={items.slice(0, 6)} />
       <CardsList title="New Releases" shrink={true} items={items.slice(0, 6)} />
