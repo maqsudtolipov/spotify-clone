@@ -2,6 +2,7 @@ const {
   updateTopSongsCache,
   updateNewestSongsCache,
 } = require("../cache/songsCache");
+const { updateRecommendedArtistsCache } = require("../cache/artistsCache");
 
 const updateCache = async () => {
   console.log("⚪️ Starting updating cache");
@@ -9,6 +10,7 @@ const updateCache = async () => {
   try {
     await updateTopSongsCache();
     await updateNewestSongsCache();
+    await updateRecommendedArtistsCache();
 
     console.log("⚪️ Aggregation cache is updated");
   } catch (e) {
