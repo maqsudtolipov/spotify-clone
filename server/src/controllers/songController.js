@@ -1,5 +1,12 @@
 const AppError = require("../utils/AppError");
 const songService = require("../services/songService");
+const Song = require("../models/songModel");
+const {
+  updateTopSongsCache,
+  getTopSongsCache,
+  getNewestSongsCache,
+  updateNewestSongsCache,
+} = require("../cache/songsCache");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -130,6 +137,40 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.getTopSongs = async (req, res, next) => {
+  try {
+    let songs = [];
+    const topSongsCache = getTopSongsCache();
+
+    if (topSongsCache.length >= 1) songs = topSongsCache;
+    else songs = await updateTopSongsCache();
+
+    res.status(200).json({
+      status: "success",
+      songs,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.getNewestSongs = async (req, res, next) => {
+  try {
+    let songs = [];
+    const newestSongsCache = getNewestSongsCache();
+
+    if (newestSongsCache.length >= 1) songs = newestSongsCache;
+    else songs = await updateNewestSongsCache();
+
+    res.status(200).json({
+      status: "success",
+      songs,
     });
   } catch (e) {
     next(e);
