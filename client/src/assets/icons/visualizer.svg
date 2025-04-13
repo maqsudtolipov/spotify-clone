@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+    <style>
+        .bar {
+        fill: #22c55e;
+        transform-origin: bottom;
+        animation: move 0.5s infinite alternate;
+        }
+
+        .one {
+        animation-delay: 0.1s;
+        }
+
+        .two {
+        animation-delay: 0.2s;
+        }
+
+        .three {
+        animation-delay: 0.3s;
+        }
+
+        .four {
+        animation-delay: 0.4s;
+        }
+
+        @keyframes move {
+        0% {
+        height: 50%;
+        transform: translateY(0);
+        }
+        100% {
+        height: 90%;
+        transform: translateY(-40%);
+        }
+        }
+    </style>
+    <rect class="bar one" x="5" y="50" width="15" height="60"></rect>
+    <rect class="bar two" x="25" y="50" width="15" height="60"></rect>
+    <rect class="bar three" x="45" y="50" width="15" height="60"></rect>
+    <rect class="bar four" x="65" y="50" width="15" height="60"></rect>
+</svg>

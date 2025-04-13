@@ -11,6 +11,10 @@ const refreshTokenSchema = mongoose.Schema(
       ref: "User",
       required: [true, "Please provide a user ID"],
     },
+    expiresAt: {
+      type: Date,
+      required: [true, "Please provide a expiration date"],
+    },
   },
   {
     toObject: { virtuals: true },

@@ -13,7 +13,7 @@ interface CardsListProps {
   title?: string;
   shrink?: boolean;
   items: CardDate[];
-  type: 'artist' | 'playlist' | 'user';
+  type: 'artist' | 'playlist' | 'user' | 'song';
 }
 
 const CardsList = ({ title, shrink = false, items, type }: CardsListProps) => {

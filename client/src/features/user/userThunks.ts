@@ -1,23 +1,50 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios/axios';
-import { followingsUpdated } from './userSlice.ts';
-import { followersCountUpdated } from '../userPage/userPageSlice.ts';
-import { listenersCountUpdated } from '../artist/artistSlice.ts';
-import { setLibraryItems } from '../library/librarySlice.ts';
+import { decreaseFollowersCount, increaseFollowersCount, userPageUpdateData } from '../userPage/userPageSlice.ts';
+import { addItemToLibrary, removeItemFromLibrary, setLibraryItems } from '../library/librarySlice.ts';
 import { User } from './userTypes.ts';
 import { RejectValue } from '../../axios/axiosTypes.ts';
 import handleAxiosError from '../../axios/handleAxiosError.ts';
 import toast from 'react-hot-toast';
+import { addToFollowings, removeFromFollowings } from './userSlice.ts';
+import { decreaseListenersCount, increaseListenersCount } from '../artist/artistSlice.ts';
 
-// Checks whether the user is authenticated using cookies
-export const getCurrent = createAsyncThunk(
-  'user/getCurrent',
-  async (_, { dispatch }) => {
+// Also checks whether the user is authenticated using cookies
+export const getCurrent = createAsyncThunk<
+  User,
+  void,
+  { rejectValue: RejectValue }
+>('user/getCurrent', async (_, { dispatch, rejectWithValue }) => {
+  try {
     const res = await axios.get('/users/current');
     dispatch(setLibraryItems(res.data.user.library.items));
+    toast.success('Welcome back!');
+
     return res.data.user;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
+
+export const updateMe = createAsyncThunk<
+  {
+    name: string;
+    img: { url: string };
   },
-);
+  FormData,
+  { rejectValue: RejectValue }
+>('user/updateMe', async (formData, { dispatch, rejectWithValue }) => {
+  try {
+    const res = await axios.patch('/users/updateMe', formData);
+    toast.success('Your profile updated');
+
+    dispatch(userPageUpdateData(res.data.user));
+
+    return res.data.user;
+  } catch (e) {
+    return rejectWithValue(handleAxiosError(e));
+  }
+});
 
 interface SigUpInput {
   name: string;
@@ -41,14 +68,12 @@ export const signUp = createAsyncThunk<
 });
 
 export const login = createAsyncThunk<
-  User,
+  null,
   { email: string; password: string },
   { rejectValue: RejectValue }
->('user/login', async (input, { dispatch, rejectWithValue }) => {
+>('user/login', async (input, { rejectWithValue }) => {
   try {
     const res = await axios.post('/auth/login', input);
-    dispatch(setLibraryItems(res.data.user.library.items));
-    toast.success('Welcome back!');
 
     return res.data.user;
   } catch (e) {
@@ -57,39 +82,66 @@ export const login = createAsyncThunk<
 });
 
 export const logout = createAsyncThunk('user/logout', async () => {
-  const res = await axios.get('/auth/logout');
+  const res = await axios.post('/auth/logout');
   return res.data;
 });
 
 // Follow
 export const followUser = createAsyncThunk(
   'user/followUser',
-  async ({ id, type }: { id: string; type: string }, { dispatch }) => {
-    const res = await axios.post(`/users/follow/${id}`, id);
-
-    dispatch(followingsUpdated(res.data.data.followings));
-
-    if (type === 'user')
-      dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist') {
-      dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
-      dispatch(setLibraryItems(res.data.data.library.items));
+  async (
+    {
+      id,
+      type,
+      artistData,
+    }: {
+      id: string;
+      type: string;
+      artistData?: {
+        id: string;
+        name: string;
+        img: string;
+        createdAt: Date;
+      };
+    },
+    { dispatch },
+  ) => {
+    // ⚡ OPTIMISTIC UI
+    dispatch(addToFollowings(id));
+    if (type === 'user') {
+      dispatch(increaseFollowersCount());
     }
+    if (type === 'artist' && artistData) {
+      dispatch(increaseListenersCount());
+      dispatch(
+        addItemToLibrary({
+          id: artistData.id,
+          name: artistData.name,
+          img: artistData.img,
+          itemType: 'artist',
+          createdAt: artistData.createdAt,
+        }),
+      );
+    }
+
+    await axios.post(`/users/follow/${id}`, id);
   },
 );
 
 export const unfollowUser = createAsyncThunk(
   'user/unfollowUser',
   async ({ id, type }: { id: string; type: string }, { dispatch }) => {
-    const res = await axios.post(`/users/unfollow/${id}`, id);
-
-    dispatch(followingsUpdated(res.data.data.followings));
-    if (type === 'user')
-      dispatch(followersCountUpdated(res.data.data.candidateFollowersCount));
-    if (type === 'artist') {
-      dispatch(listenersCountUpdated(res.data.data.candidateFollowersCount));
-      dispatch(setLibraryItems(res.data.data.library.items));
+    // ⚡ OPTIMISTIC UI
+    dispatch(removeFromFollowings(id));
+    if (type === 'user') {
+      dispatch(decreaseFollowersCount());
     }
+    if (type === 'artist') {
+      dispatch(decreaseListenersCount());
+      dispatch(removeItemFromLibrary(id));
+    }
+
+    await axios.post(`/users/unfollow/${id}`, id);
   },
 );
 

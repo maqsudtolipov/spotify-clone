@@ -1,6 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { Ref, useEffect, useRef } from 'react';
 
-const useOutsideClick = (handler: () => void, ignore?: boolean) => {
+/**
+ * NOTE: outside close does not work when used with portals
+ * @param handler
+ * @param ignoreRef
+ * @param ignore
+ */
+const useOutsideClick = (
+  handler: () => void,
+  ignore?: boolean,
+  ignoreRef?: Ref<HTMLDivElement | HTMLUListElement | null>,
+) => {
   if (ignore) return { ref: null };
 
   const ref = useRef<HTMLDivElement | HTMLUListElement | null>(null);
@@ -8,6 +18,13 @@ const useOutsideClick = (handler: () => void, ignore?: boolean) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (
+        ignoreRef &&
+        ignoreRef.current &&
+        ignoreRef.current.contains(event.target as Node)
+      )
+        return;
+
       if (
         exceptionRef &&
         exceptionRef.current &&

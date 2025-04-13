@@ -5,11 +5,12 @@ import { RiPlayLargeFill } from 'react-icons/ri';
 
 interface IndexCellProps {
   children: ReactNode;
+  onClick?: () => void;
 }
 
-const IndexCell = ({ children }: IndexCellProps) => {
+const IndexCell = ({ children, onClick }: IndexCellProps) => {
   return (
-    <TableCell className={styles.indexCell}>
+    <TableCell className={styles.indexCell} onClick={onClick}>
       <span>{children}</span>
       <RiPlayLargeFill />
     </TableCell>

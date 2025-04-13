@@ -7,12 +7,17 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  img: string;
+  role: string;
+  img: {
+    url: string;
+  };
   followers: string[];
   followersCount: number;
   followings: string[];
   followingsCount: number;
+  likedPlaylists: string[];
   likedSongs: {
+    _id: string;
     id: string;
     songs: string[];
   };
@@ -28,5 +33,6 @@ export interface InitialState {
     signUp: ApiStatus;
     login: ApiStatus;
     logout: ApiStatus;
+    updateMe: ApiStatus;
   };
 }

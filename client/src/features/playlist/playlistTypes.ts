@@ -7,7 +7,10 @@ export interface ApiStatus {
 export interface Song {
   id: string;
   name: string;
-  artist: string;
+  artist: {
+    id: string;
+    name: string;
+  };
   img: { id: string; url: string };
   song: { id: string; url: string };
   plays: number;
@@ -17,6 +20,7 @@ export interface Song {
 export interface Playlist {
   id: string;
   name: string;
+  description?: string;
   img: {
     id: string;
     url: string;
@@ -24,20 +28,20 @@ export interface Playlist {
   user: {
     id: string;
     name: string;
+    role: 'user' | 'artist';
     img: {
       id: string;
       url: string;
     };
-    role: 'user' | 'artist';
   };
   songs: Song[];
-  description?: string;
-  color: string;
   length: number;
   duration: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface LibraryState {
+export interface PlaylistState {
   data: Playlist | null;
   api: {
     getPlaylist: ApiStatus;

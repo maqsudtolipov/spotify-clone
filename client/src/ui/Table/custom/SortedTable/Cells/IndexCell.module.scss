@@ -1,8 +1,12 @@
 .indexCell {
-  @apply w-10 text-base text-neutral-400 text-right;
+  @apply w-10 text-base text-neutral-400 text-center;
 
   svg {
     @apply hidden;
+  }
+
+  img {
+    background: transparent;
   }
 }
 

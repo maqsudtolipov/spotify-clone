@@ -6,8 +6,55 @@
   &:hover {
     @apply bg-opacity-5;
   }
+}
 
-  &:hover .imageIcon {
-    @apply inline-block;
+.playCard:hover {
+  .imageIcon {
+    @apply bottom-2 visible opacity-100;
+  }
+
+  .gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.25)
+    );
+  }
+}
+
+.cardImage {
+  @apply mb-2;
+  @apply relative;
+  @apply rounded-md overflow-hidden shadow-xl shadow-black/20;
+
+  img {
+    @apply w-full aspect-square;
+  }
+}
+
+.cardImageRounded {
+  @apply rounded-full;
+}
+
+.gradient {
+  @apply absolute top-0 h-full w-full;
+
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+}
+
+.imageIcon {
+  @apply p-3;
+  @apply invisible opacity-0;
+  @apply absolute -bottom-12 right-2;
+  @apply size-12 leading-none text-black bg-green-500 rounded-full shadow-xl cursor-pointer;
+
+  transition: all 250ms;
+
+  &:hover {
+    @apply bg-green-400 scale-105;
+  }
+
+  &:active {
+    @apply bg-green-600 scale-100;
   }
 }

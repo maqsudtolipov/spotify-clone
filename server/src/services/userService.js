@@ -12,7 +12,7 @@ exports.getUserById = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
     "id name img color followers followersCount followings followingsCount",
-  ).populate([{path: "img", select: "id url"}]);
+  ).populate([{ path: "img", select: "id url" }]);
 
   if (!user) {
     throw new AppError("User not found", 404);
@@ -24,7 +24,7 @@ exports.getUserById = async (userInput) => {
 exports.getCurrentUser = async (userInput) => {
   const user = await User.findById(
     userInput.userId,
-    "id name email img followers followersCount followings followingsCount likedPlaylists",
+    "id name email img role followers followersCount followings followingsCount likedPlaylists",
   )
     .populate([
       {
@@ -35,8 +35,8 @@ exports.getCurrentUser = async (userInput) => {
             path: "items.refId",
             select: "name img user createdAt",
             populate: [
-              {path: "user", select: "name", strictPopulate: false},
-              {path: "img", select: "url"},
+              { path: "user", select: "name", strictPopulate: false },
+              { path: "img", select: "url" },
             ],
           },
         ],
@@ -44,14 +44,18 @@ exports.getCurrentUser = async (userInput) => {
       {
         path: "likedSongs",
       },
-      {path: "playlists", select: "name"},
+      { path: "playlists", select: "name" },
+      { path: "img", select: "url" },
     ])
     .lean();
   // NOTE: virtual does not work with lean()
   user.id = user._id;
 
+  // TODO: Quick fix, one user is broken
+  const filterItems = user.library.items.filter((item) => item.refId);
+
   // Filter library items
-  user.library.items = filterLibraryItems(user.library.items);
+  user.library.items = filterLibraryItems(filterItems);
 
   return user;
 };
@@ -59,7 +63,7 @@ exports.getCurrentUser = async (userInput) => {
 exports.updateCurrentUser = async (userInput) => {
   const user = await User.findById(userInput.userId).populate(
     "img",
-    "id fileId url",
+    "id fileId isDefault",
   );
 
   const updatedUserData = {};
@@ -68,7 +72,7 @@ exports.updateCurrentUser = async (userInput) => {
     updatedUserData.name = userInput.name;
   }
 
-  if (userInput.file) {
+  if (userInput.img) {
     const imgFile = await uploadFiles(
       {
         file: userInput.img.file,
@@ -82,10 +86,12 @@ exports.updateCurrentUser = async (userInput) => {
     updatedUserData.img = imgFile.id;
   }
 
-  return await User.findByIdAndUpdate(userInput.userId, updatedUserData, {
+  return User.findByIdAndUpdate(userInput.userId, updatedUserData, {
     new: true,
     runValidators: true,
-  });
+  })
+    .select("name")
+    .populate("img", "url");
 };
 
 exports.handleFollowUnfollow = async (followInput, action) => {
@@ -102,12 +108,14 @@ exports.handleFollowUnfollow = async (followInput, action) => {
     throw new AppError("User cannot follow himself", 400);
   }
 
-  const {updatedUser, updatedCandidate} =
-    await userHelpers.updateFollowStatus(currentUser, candidateUser, action);
+  const updatedCandidate = await userHelpers.updateFollowStatus(
+    currentUser,
+    candidateUser,
+    action,
+  );
 
-  let library;
   if (candidateUser.role === "artist") {
-    library = await userHelpers.updateLibrary(
+    await userHelpers.updateLibrary(
       followInput.userLibraryId,
       candidateUser.id,
       action,
@@ -115,8 +123,12 @@ exports.handleFollowUnfollow = async (followInput, action) => {
   }
 
   return {
-    followings: updatedUser.followings,
-    candidateFollowersCount: updatedCandidate.followersCount,
-    library,
+    candidateUser: {
+      id: updatedCandidate.id,
+      name: updatedCandidate.name,
+      img: updatedCandidate.img.url,
+      itemType: "artist",
+      createdAt: updatedCandidate.createdAt,
+    },
   };
 };

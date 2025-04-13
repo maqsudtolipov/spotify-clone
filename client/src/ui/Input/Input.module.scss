@@ -32,6 +32,11 @@
   }
 }
 
+.error {
+  @apply mt-2;
+  @apply text-sm text-neutral-400 leading-tight;
+}
+
 .inputFile {
   @apply p-0;
   @apply file:cursor-pointer cursor-pointer file:py-2 file:mr-4 file:px-3 file:bg-neutral-400/50  file:text-white file:border-0 rounded file:placeholder-gray-500;

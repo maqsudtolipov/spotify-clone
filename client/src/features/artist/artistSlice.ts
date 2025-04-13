@@ -18,8 +18,11 @@ const artistSlice = createSlice({
   name: 'artist',
   initialState,
   reducers: {
-    listenersCountUpdated: (state, action) => {
-      if (state.data) state.data.followersCount = action.payload;
+    increaseListenersCount: (state) => {
+      if (state.data) state.data.followersCount += 1;
+    },
+    decreaseListenersCount: (state) => {
+      if (state.data) state.data.followersCount -= 1;
     },
   },
   extraReducers: (builder) =>
@@ -78,5 +81,5 @@ const artistSlice = createSlice({
 export const selectArtist = (state: RootState) => state.artist.data;
 export const selectArtistSongs = (state: RootState) => state.artist.data?.songs;
 
-export const { listenersCountUpdated } = artistSlice.actions;
+export const { increaseListenersCount, decreaseListenersCount } = artistSlice.actions;
 export default artistSlice.reducer;

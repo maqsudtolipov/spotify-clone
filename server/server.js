@@ -1,7 +1,10 @@
 const dotenv = require("dotenv");
-const app = require("./src/app");
-const checkEnvVariables = require("./src/utils/ checkEnvVariables");
-const connectDB = require("./src/utils/connectDB");
+const app = require("./src/config/app.config");
+const checkEnvVariables = require("./src/config/env.config");
+const connectDB = require("./src/config/db.config");
+const cron = require("node-cron");
+const cleanupTokens = require("./src/cron/tokensCleanup");
+const updateCache = require("./src/cron/updateCache");
 
 // Uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -10,7 +13,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // DotENV
-dotenv.config({ path: "./.env" });
+dotenv.config();
 checkEnvVariables();
 
 // Connect to mongoDb
@@ -29,3 +32,7 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
+
+// Cron jobs
+cron.schedule("0 */6 * * *", cleanupTokens);
+cron.schedule("0 * * * *", updateCache);
