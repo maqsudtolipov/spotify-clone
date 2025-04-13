@@ -4,6 +4,7 @@ const checkEnvVariables = require("./src/config/env.config");
 const connectDB = require("./src/config/db.config");
 const cron = require("node-cron");
 const cleanupTokens = require("./src/cron/tokensCleanup");
+const updateCache = require("./src/cron/updateCache");
 
 // Uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -34,3 +35,4 @@ process.on("unhandledRejection", (err) => {
 
 // Cron jobs
 cron.schedule("0 */6 * * *", cleanupTokens);
+cron.schedule("0 * * * *", updateCache);
