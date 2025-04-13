@@ -31,7 +31,12 @@ const Card = ({ data, type }: CardProps) => {
       className={`${styles.card} ${type === 'song' ? styles.playCard : ''}`}
       onClick={handleNavigate}
     >
-      <CardImage img={img.url} alt={name} isRounded={type === 'artist'} />
+      <CardImage
+        data={type === 'song' ? data : null}
+        img={img.url}
+        alt={name}
+        isRounded={type === 'artist'}
+      />
       <CardDescription name={name} description={description} />
     </li>
   );

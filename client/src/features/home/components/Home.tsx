@@ -34,7 +34,7 @@ const Home = () => {
     <div className="min-h-full">
       <GradientBackground className={styles.home} color={'#485133'}>
         {/*<History handleNewColor={handleNewColor} />*/}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
           <Welcome />
 
           <CardsList
