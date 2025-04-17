@@ -161,7 +161,10 @@ exports.deletePlaylist = async (playlistInput) => {
   }
 
   // Delete the playlist
-  await Playlist.findByIdAndDelete(playlistInput.playlistId);
+  await Playlist.findByIdAndUpdate(playlistInput.playlistId, {
+    isDeleted: true,
+    deletedAt: Date.now(),
+  });
 
   // Remove the playlist from Users' likedSongs array
   await User.updateMany(

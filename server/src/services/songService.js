@@ -135,7 +135,10 @@ exports.deleteSong = async (songInput) => {
   }
 
   // Remove song from the database
-  await Song.findByIdAndDelete(song.id);
+  await Song.findByIdAndUpdate(song.id, {
+    isDeleted: true,
+    deletedAt: Date.now(),
+  });
 
   // Remove the song from user's songs list
   const user = await User.findById(songInput.userId).populate({
