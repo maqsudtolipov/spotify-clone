@@ -33,6 +33,7 @@ exports.getCurrentUser = async (userInput) => {
         populate: [
           {
             path: "items.refId",
+            match: { isDeleted: false },
             select: "name img user createdAt",
             populate: [
               { path: "user", select: "name", strictPopulate: false },

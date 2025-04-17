@@ -18,10 +18,11 @@ exports.addOrRemoveSongFromPlaylist = async (
 
   const playlist = await Playlist.findOne({
     _id: playlistId,
+    isDeleted: false,
     songs: isAdding
       ? {
-        $ne: songId,
-      }
+          $ne: songId,
+        }
       : songId,
   }).select("+isLikedSongs");
   if (!playlist || String(playlist.user) !== userId) {
@@ -33,7 +34,7 @@ exports.addOrRemoveSongFromPlaylist = async (
   }
 
   await Playlist.findByIdAndUpdate(playlistId, {
-    [updateOperator]: {songs: song.id},
+    [updateOperator]: { songs: song.id },
     $inc: {
       duration: isAdding ? +song.duration : -song.duration,
       length: isAdding ? +1 : -1,

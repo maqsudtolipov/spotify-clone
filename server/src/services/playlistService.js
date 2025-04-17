@@ -8,7 +8,10 @@ const uploadFiles = require("../utils/uploadFiles");
 
 // TODO: add pagination and querying as option
 exports.getPlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId)
+  const playlist = await Playlist.findOne({
+    _id: playlistInput.playlistId,
+    isDeleted: false,
+  })
     .select("+isPublic")
     .populate([
       { path: "img", select: "url" },
@@ -83,7 +86,10 @@ exports.createPlaylist = async (playlistInput) => {
 };
 
 exports.updatePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId)
+  const playlist = await Playlist.findOne({
+    _id: playlistInput.playlistId,
+    isDeleted: false,
+  })
     .select("+isPublic +isLikedSongs")
     .populate([
       { path: "img", select: "url isDefault fileId" },
@@ -114,7 +120,7 @@ exports.updatePlaylist = async (playlistInput) => {
     imgFile = uploadedFile.id;
   }
 
-  return await Playlist.findByIdAndUpdate(
+  return Playlist.findByIdAndUpdate(
     playlistInput.playlistId,
     {
       name: playlistInput.name,
@@ -139,7 +145,10 @@ exports.updatePlaylist = async (playlistInput) => {
 };
 
 exports.deletePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId)
+  const playlist = await Playlist.findOne({
+    _id: playlistInput.playlistId,
+    isDeleted: false,
+  })
     .select("+isPublic +isLikedSongs")
     .populate([
       { path: "img", select: "id fileId isDefault" },
@@ -166,21 +175,25 @@ exports.deletePlaylist = async (playlistInput) => {
     deletedAt: Date.now(),
   });
 
-  // Remove the playlist from Users' likedSongs array
-  await User.updateMany(
-    { likedPlaylists: playlistInput.playlistId },
-    { $pull: { likedPlaylists: playlistInput.playlistId } },
-  );
-
-  // Remove playlist from all libraries
-  await Library.updateMany(
-    { "items.refId": playlistInput.playlistId },
-    { $pull: { items: { refId: playlistInput.playlistId } } },
-  );
+  // Commented due to new soft deltes
+  // // Remove the playlist from Users' likedSongs array
+  // await User.updateMany(
+  //   { likedPlaylists: playlistInput.playlistId },
+  //   { $pull: { likedPlaylists: playlistInput.playlistId } },
+  // );
+  //
+  // // Remove playlist from all libraries
+  // await Library.updateMany(
+  //   { "items.refId": playlistInput.playlistId },
+  //   { $pull: { items: { refId: playlistInput.playlistId } } },
+  // );
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId)
+  const playlist = await Playlist.findOne({
+    _id: playlistInput.playlistId,
+    isDeleted: false,
+  })
     .select("+isPublic +isLikedSongs")
     .populate([
       {
@@ -240,9 +253,10 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
 };
 
 exports.removePlaylistFromLibrary = async (playlistInput) => {
-  const playlist = await Playlist.findById(playlistInput.playlistId).select(
-    "+isPublic +isLikedSongs",
-  );
+  const playlist = await Playlist.findOne({
+    _id: playlistInput.playlistId,
+    isDeleted: false,
+  }).select("+isPublic +isLikedSongs");
 
   if (
     !playlist ||

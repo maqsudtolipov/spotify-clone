@@ -14,6 +14,7 @@ exports.searchAllModels = async (name, limit) => {
     ]);
 
   const playlists = await Playlist.find({
+    isDeleted: false,
     isPublic: true,
     name: { $regex: name, $options: "i" },
   })

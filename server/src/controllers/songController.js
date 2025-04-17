@@ -1,6 +1,5 @@
 const AppError = require("../utils/AppError");
 const songService = require("../services/songService");
-const Song = require("../models/songModel");
 const {
   updateTopSongsCache,
   getTopSongsCache,
