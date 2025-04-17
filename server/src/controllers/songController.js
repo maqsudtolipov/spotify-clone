@@ -142,6 +142,7 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
   }
 };
 
+// Aggregation routes
 exports.getTopSongs = async (req, res, next) => {
   try {
     let songs = [];

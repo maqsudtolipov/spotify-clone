@@ -49,7 +49,10 @@ exports.uploadAndCreateSong = async (songInput) => {
 
 exports.updateSong = async (songInput) => {
   // Validate
-  const song = await Song.findById(songInput.songId).populate("img song");
+  const song = await Song.findOne({
+    isDeleted: false,
+    _id: songInput.songId,
+  }).populate("img song");
 
   if (!song) {
     throw new AppError("Song not found", 404);
@@ -109,7 +112,10 @@ exports.updateSong = async (songInput) => {
 };
 
 exports.deleteSong = async (songInput) => {
-  const song = await Song.findById(songInput.songId);
+  const song = await Song.findOne({
+    isDeleted: false,
+    _id: songInput.songId,
+  });
 
   if (!song) {
     throw new AppError("Song not found", 404);
@@ -161,7 +167,10 @@ exports.deleteSong = async (songInput) => {
 };
 
 exports.likeSong = async (songInput) => {
-  const song = await Song.findById(songInput.songId);
+  const song = await Song.findOne({
+    isDeleted: false,
+    _id: songInput.songId,
+  });
 
   if (!song) {
     throw new AppError("Song not found", 404);
@@ -179,7 +188,10 @@ exports.likeSong = async (songInput) => {
 };
 
 exports.dislikeSong = async (songInput) => {
-  const song = await Song.findById(songInput.songId);
+  const song = await Song.findOne({
+    isDeleted: false,
+    _id: songInput.songId,
+  });
 
   if (!song) {
     throw new AppError("Song not found", 404);

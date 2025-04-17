@@ -11,7 +11,10 @@ exports.addOrRemoveSongFromPlaylist = async (
   const isAdding = action === "add";
   const updateOperator = isAdding ? "$addToSet" : "$pull";
 
-  const song = await Song.findById(songId);
+  const song = await Song.findOne({
+    isDeleted: false,
+    _id: songId,
+  });
   if (!song) {
     throw new AppError("Song not found", 404);
   }

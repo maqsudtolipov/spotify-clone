@@ -22,6 +22,7 @@ exports.getPlaylist = async (playlistInput) => {
       },
       {
         path: "songs",
+        match: { isDeleted: false },
         select: "id name artist plays duration",
         populate: [
           { path: "song img", select: "url" },

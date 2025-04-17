@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 
 exports.searchAllModels = async (name, limit) => {
   const songs = await Song.find({
+    isDeleted: false,
     name: { $regex: name, $options: "i" },
   })
     .limit(limit)

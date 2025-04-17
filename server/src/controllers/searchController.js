@@ -27,7 +27,10 @@ exports.search = async (req, res, next) => {
 
 exports.searchSongs = async (req, res, next) => {
   try {
-    const filter = { name: { $regex: req.query.name, $options: "i" } };
+    const filter = {
+      isDeleted: false,
+      name: { $regex: req.query.name, $options: "i" },
+    };
 
     const { limit, totalCount, totalPages, validPage } =
       await getPaginationResults(
