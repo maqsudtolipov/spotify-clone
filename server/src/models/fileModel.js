@@ -27,6 +27,14 @@ const fileSchema = new mongoose.Schema(
       default: false,
       select: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     toJSON: { virtuals: true },
