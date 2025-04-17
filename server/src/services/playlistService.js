@@ -89,6 +89,7 @@ exports.updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findOne({
     _id: playlistInput.playlistId,
     isDeleted: false,
+    isLikedSongs: false,
   })
     .select("+isPublic +isLikedSongs")
     .populate([
@@ -148,6 +149,7 @@ exports.deletePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findOne({
     _id: playlistInput.playlistId,
     isDeleted: false,
+    isLikedSongs: false,
   })
     .select("+isPublic +isLikedSongs")
     .populate([
