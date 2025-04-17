@@ -45,7 +45,7 @@ exports.getCurrentUser = async (userInput) => {
       {
         path: "likedSongs",
       },
-      { path: "playlists", select: "name" },
+      { path: "playlists", match: { isDeleted: false }, select: "name" },
       { path: "img", select: "url" },
     ])
     .lean();
