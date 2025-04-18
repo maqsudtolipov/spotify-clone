@@ -4,13 +4,19 @@ const User = require("../models/userModel");
 
 exports.searchAllModels = async (name, limit) => {
   const songs = await Song.find({
+    isDeleted: false,
     name: { $regex: name, $options: "i" },
   })
     .limit(limit)
     .select("name duration song img")
-    .populate([{ path: "song img", select: "url" }, {path: 'artist', select: 'name'}]);
+    .populate([
+      { path: "song img", select: "url" },
+      { path: "artist", select: "name" },
+    ]);
 
   const playlists = await Playlist.find({
+    isDeleted: false,
+    isPublic: true,
     name: { $regex: name, $options: "i" },
   })
     .limit(limit)
@@ -36,5 +42,5 @@ exports.searchAllModels = async (name, limit) => {
     .select("name img")
     .populate({ path: "img", select: "url" });
 
-  return {songs, artists, playlists, users};
+  return { songs, artists, playlists, users };
 };
