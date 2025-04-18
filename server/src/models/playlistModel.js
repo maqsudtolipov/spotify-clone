@@ -25,9 +25,6 @@ const playlistSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    color: {
-      type: String,
-    },
     songs: [
       {
         type: mongoose.Schema.Types.ObjectId,
