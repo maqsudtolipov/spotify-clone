@@ -31,16 +31,16 @@ const playlistSchema = new mongoose.Schema(
         ref: "Song",
       },
     ],
-    duration: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    length: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
+    // duration: {
+    //   type: Number,
+    //   default: 0,
+    //   min: 0,
+    // },
+    // length: {
+    //   type: Number,
+    //   default: 0,
+    //   min: 0,
+    // },
     isPublic: {
       type: Boolean,
       default: true,
