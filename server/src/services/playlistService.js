@@ -41,8 +41,13 @@ exports.getPlaylist = async (playlistInput) => {
     throw new AppError("Playlist not found", 404);
   }
 
-  playlist.isPublic = undefined;
-  return playlist;
+  const result = playlist.toObject();
+
+  result.isPublic = undefined;
+  result.length = result.songs.length;
+  result.duration = result.songs.reduce((acc, cur) => acc + cur.duration, 0);
+
+  return result;
 };
 
 exports.createPlaylist = async (playlistInput) => {
