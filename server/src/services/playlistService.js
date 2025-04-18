@@ -182,19 +182,6 @@ exports.deletePlaylist = async (playlistInput) => {
     isDeleted: true,
     deletedAt: Date.now(),
   });
-
-  // Commented due to new soft deltes
-  // // Remove the playlist from Users' likedSongs array
-  // await User.updateMany(
-  //   { likedPlaylists: playlistInput.playlistId },
-  //   { $pull: { likedPlaylists: playlistInput.playlistId } },
-  // );
-  //
-  // // Remove playlist from all libraries
-  // await Library.updateMany(
-  //   { "items.refId": playlistInput.playlistId },
-  //   { $pull: { items: { refId: playlistInput.playlistId } } },
-  // );
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
