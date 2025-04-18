@@ -3,19 +3,13 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useAppSelector } from '../../../redux/hooks.ts';
 import { selectArtist } from '../artistSlice.ts';
 
-const ArtistHeader = ({
-  bgColor,
-  textColor,
-}: {
-  bgColor: string;
-  textColor: string;
-}) => {
+const ArtistHeader = () => {
   const artist = useAppSelector(selectArtist);
   if (!artist) return null;
 
-  const { name, followersCount } = artist;
+  const { name, color, followersCount } = artist;
   const background = {
-    background: `linear-gradient(${bgColor}, ${bgColor}), linear-gradient(#171717, #171717)`,
+    background: `linear-gradient(${color}, ${color}), linear-gradient(#171717, #171717)`,
   };
 
   return (
@@ -24,9 +18,7 @@ const ArtistHeader = ({
         <RiVerifiedBadgeFill />
         <span>Verified Artist</span>
       </div>
-      <h1 className={styles.artistName} style={{ color: textColor }}>
-        {name}
-      </h1>
+      <h1 className={styles.artistName}>{name}</h1>
       <span>{followersCount} listeners</span>
     </header>
   );

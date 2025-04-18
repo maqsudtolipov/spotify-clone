@@ -19,6 +19,7 @@ export interface Artist {
   name: string;
   img: string;
   role: string;
+  color: string;
   followersCount: number;
   songs: Song[];
 }
