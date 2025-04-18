@@ -44,6 +44,7 @@ exports.getCurrentUser = async (userInput) => {
       },
       {
         path: "likedSongs",
+        match: { isDeleted: false },
       },
       { path: "playlists", match: { isDeleted: false }, select: "name" },
       { path: "img", select: "url" },

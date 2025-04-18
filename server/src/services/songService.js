@@ -146,16 +146,6 @@ exports.deleteSong = async (songInput) => {
     deletedAt: Date.now(),
   });
 
-  // // Commented due to new soft deltes
-  // Remove the song from user's songs list
-  // const user = await User.findById(songInput.userId).populate({
-  //   path: "songs",
-  //   select: "id name artist plays duration",
-  //   populate: { path: "song img", select: "url" },
-  // });
-  //
-  // return user.songs;
-
   const user = await User.findById(songInput.userId).populate({
     path: "songs",
     match: { isDeleted: false },
