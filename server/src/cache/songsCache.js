@@ -7,7 +7,7 @@ let newestSongsCache = [];
 const getTopSongsCache = () => topSongsCache;
 
 const updateTopSongsCache = async () => {
-  topSongsCache = await Song.find({ isDeleted: false })
+  topSongsCache = await Song.find()
     .sort({ plays: -1 })
     .limit(10)
     .populate({ path: "song img", select: "url" });
@@ -18,7 +18,7 @@ const updateTopSongsCache = async () => {
 const getNewestSongsCache = () => newestSongsCache;
 
 const updateNewestSongsCache = async () => {
-  newestSongsCache = await Song.find({ isDeleted: false })
+  newestSongsCache = await Song.find()
     .sort({ createdAt: -1 })
     .limit(10)
     .populate({ path: "song img", select: "url" });

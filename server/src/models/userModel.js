@@ -4,6 +4,7 @@ const Playlist = require("./playlistModel");
 const Library = require("./libraryModel");
 const {getCache, setCache} = require("../services/cacheService");
 const File = require("./fileModel");
+const generateRandomColor = require("../utils/generateRandomColor");
 
 const userSchema = new mongoose.Schema(
   {
@@ -28,6 +29,9 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "File",
       required: [true, "Please provide an image"],
+    },
+    color: {
+      type: String,
     },
     role: {
       type: String,
@@ -120,6 +124,9 @@ const userSchema = new mongoose.Schema(
 // Create likedSongs playlist on newUsers
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
+
+  // Generate color
+  this.color = generateRandomColor();
 
   // Create liked songs playlist for the user
   const likedSongsPlaylist = await Playlist.create({
