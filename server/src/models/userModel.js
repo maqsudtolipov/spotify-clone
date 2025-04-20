@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Playlist = require("./playlistModel");
 const Library = require("./libraryModel");
-const {getCache, setCache} = require("../services/cacheService");
+const { getCache, setCache } = require("../services/cacheService");
 const File = require("./fileModel");
 
 const userSchema = new mongoose.Schema(
@@ -110,8 +110,8 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true},
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
   },
 );
@@ -170,7 +170,7 @@ userSchema.statics.getDefaultUserImgId = async function () {
   let cachedImgId = getCache("defaultUserImgId");
   if (cachedImgId) return cachedImgId;
 
-  let defaultFile = await File.findOne({fileId: "user"});
+  let defaultFile = await File.findOne({ fileId: "user" });
 
   if (!defaultFile) {
     defaultFile = await File.create({
@@ -178,7 +178,7 @@ userSchema.statics.getDefaultUserImgId = async function () {
       name: "defaultUser.jpeg",
       size: 0,
       filePath: "spotify/users/defaultUser.jpeg",
-      url: "https://ik.imagekit.io/8cs4gpobr/spotify/users/defaultUser.jpeg",
+      url: process.env.DEFAULT_USER_IMR_URL,
       isDefault: true,
     });
 
