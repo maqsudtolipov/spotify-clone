@@ -10,7 +10,7 @@ const imagekit = new ImageKit({
 });
 
 exports.imagekitUpload = (input) => {
-  const folder = process.env.IK_ENV === "production" ? "spotify/" : "spotify-dev/";
+  const folder = process.env.NODE_ENV === "production" ? "spotify/" : "spotify-dev/";
 
   return imagekit.upload({
     file: input.file,

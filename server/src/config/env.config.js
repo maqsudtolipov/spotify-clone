@@ -9,7 +9,6 @@ const envConfig = () => {
     "IK_PUBLIC",
     "IK_PRIVATE",
     "IK_URL",
-    "IK_ENV",
   ];
 
   const missingEnvVariables = envVariables.reduce((acc, env) => {
