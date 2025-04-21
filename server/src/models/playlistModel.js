@@ -69,14 +69,14 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
       cacheKey: "defaultLikedSongsId",
       fileId: "likedSongs",
       name: "likedSongs.jpeg",
-      filePath: "spotify/playlists/likedSongs.jpeg",
+      filePath: "likedSongs.jpeg",
       url: process.env.LIKED_SONGS_IMG_URL,
     },
     playlist: {
       cacheKey: "defaultPlaylistImgId",
       fileId: "playlist",
       name: "defaultPlaylist.jpeg",
-      filePath: "spotify/playlists/defaultPlaylist.jpeg",
+      filePath: "defaultPlaylist.jpeg",
       url: process.env.LIKED_SONGS_IMG_URL,
     },
   };
