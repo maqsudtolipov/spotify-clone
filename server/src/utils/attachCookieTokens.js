@@ -17,6 +17,7 @@ exports.attachAccessCookie = (userId, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    sameSite: "none",
   });
 
   return accessToken;
@@ -39,6 +40,7 @@ exports.attachRefreshCookie = (userId, res) => {
     httpOnly: true,
     secure: true,
     path: "/api/auth/refresh-token",
+    sameSite: "none",
   });
 
   return { refreshToken, expiresAt };
