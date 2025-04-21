@@ -177,7 +177,7 @@ userSchema.statics.getDefaultUserImgId = async function () {
       fileId: "user",
       name: "defaultUser.jpeg",
       size: 0,
-      filePath: "spotify/users/defaultUser.jpeg",
+      filePath: "defaultUser.jpeg",
       url: process.env.DEFAULT_USER_IMR_URL,
       isDefault: true,
     });
