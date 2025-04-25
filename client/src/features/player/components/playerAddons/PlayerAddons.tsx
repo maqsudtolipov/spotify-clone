@@ -1,6 +1,12 @@
 import styles from '../playerActions/PlayerActions.module.scss';
 import { forwardRef, Ref, useEffect, useRef, useState } from 'react';
-import { IoList, IoVolumeHigh, IoVolumeLow, IoVolumeMedium, IoVolumeOff } from 'react-icons/io5';
+import {
+  IoList,
+  IoVolumeHigh,
+  IoVolumeLow,
+  IoVolumeMedium,
+  IoVolumeOff,
+} from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { closeQueue, openQueue } from '../../../queue/queueSlice.ts';
 
@@ -23,12 +29,14 @@ const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
 
   const handleVolumeChange = () => {
     if (volumeElementRef.current) {
-      setVolume(Number(volumeElementRef.current.value));
+      const newVolume = Number(volumeElementRef.current.value);
+
+      setVolume(newVolume);
       volumeElementRef.current.style.setProperty(
         '--range-width',
         `${volumeElementRef.current.value}%`,
       );
-      if (ref?.current) ref.current.volume = volume / 100;
+      if (ref?.current) ref.current.volume = newVolume / 100;
     }
   };
 
