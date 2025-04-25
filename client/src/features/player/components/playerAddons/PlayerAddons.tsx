@@ -5,6 +5,7 @@ import {
   IoVolumeHigh,
   IoVolumeLow,
   IoVolumeMedium,
+  IoVolumeMute,
   IoVolumeOff,
 } from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
@@ -19,6 +20,7 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
   const isOpen = useAppSelector((state) => state.queue.isOpen);
   const dispatch = useAppDispatch();
   const [volume, setVolume] = useState(100);
+  const [isMuted, setIsMuted] = useState(false);
   const volumeElementRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -31,13 +33,34 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
     if (volumeElementRef.current && ref && 'current' in ref && ref.current) {
       const newVolume = Number(volumeElementRef.current.value);
 
-      setVolume(newVolume);
+      // Dom changes
       volumeElementRef.current.style.setProperty(
         '--range-width',
         `${volumeElementRef.current.value}%`,
       );
 
       ref.current.volume = newVolume / 100;
+
+      // State changes
+      setVolume(newVolume);
+      // If volume is 0 make it muted
+      if (newVolume === 0) setIsMuted(true);
+      else setIsMuted(false);
+    }
+  };
+
+  const toggleMute = () => {
+    // if muted and value is zero, unmute and set volume to 50
+    if (isMuted && volume === 0) {
+      // State changes
+      setIsMuted(false);
+      setVolume(50);
+
+      // DOM changes
+      // Dom changes
+      volumeElementRef.current.style.setProperty('--range-width', `${50}%`);
+
+      ref.current.volume = 0.5;
     }
   };
 
@@ -53,8 +76,8 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
       >
         <IoList />
       </button>
-      <div className={styles.volumeIcon}>
-        {volume === 0 && <IoVolumeOff />}
+      <div className={styles.volumeIcon} onClick={toggleMute}>
+        {isMuted && <IoVolumeMute />}
         {volume > 0 && volume < 34 && <IoVolumeLow />}
         {volume >= 34 && volume < 66 && <IoVolumeMedium />}
         {volume >= 66 && <IoVolumeHigh />}
