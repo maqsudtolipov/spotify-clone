@@ -15,7 +15,7 @@ import { closeQueue, openQueue } from '../../../queue/queueSlice.ts';
 // 2. Add mini on screen player - future
 // 3. Add full screen player + unsplash API - future
 
-const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
+const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
   const isOpen = useAppSelector((state) => state.queue.isOpen);
   const dispatch = useAppDispatch();
   const [volume, setVolume] = useState(100);
@@ -28,7 +28,7 @@ const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
   }, []);
 
   const handleVolumeChange = () => {
-    if (volumeElementRef.current) {
+    if (volumeElementRef.current && ref && 'current' in ref && ref.current) {
       const newVolume = Number(volumeElementRef.current.value);
 
       setVolume(newVolume);
@@ -36,7 +36,8 @@ const PlayerAddons = forwardRef((_, ref: Ref<HTMLAudioElement>) => {
         '--range-width',
         `${volumeElementRef.current.value}%`,
       );
-      if (ref?.current) ref.current.volume = newVolume / 100;
+
+      ref.current.volume = newVolume / 100;
     }
   };
 
