@@ -57,10 +57,17 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
       setVolume(50);
 
       // DOM changes
-      // Dom changes
       volumeElementRef.current.style.setProperty('--range-width', `${50}%`);
 
       ref.current.volume = 0.5;
+    } else if (!isMuted && volume >= 1) {
+      setIsMuted(true);
+      volumeElementRef.current.style.setProperty('--range-width', `${0}%`);
+      ref.current.volume = 0;
+    } else if (isMuted && volume >= 1) {
+      setIsMuted(false);
+      volumeElementRef.current.style.setProperty('--range-width', `${volume}%`);
+      ref.current.volume = volume / 100;
     }
   };
 
@@ -78,9 +85,9 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
       </button>
       <div className={styles.volumeIcon} onClick={toggleMute}>
         {isMuted && <IoVolumeMute />}
-        {volume > 0 && volume < 34 && <IoVolumeLow />}
-        {volume >= 34 && volume < 66 && <IoVolumeMedium />}
-        {volume >= 66 && <IoVolumeHigh />}
+        {!isMuted && volume > 0 && volume < 34 && <IoVolumeLow />}
+        {!isMuted && volume >= 34 && volume < 66 && <IoVolumeMedium />}
+        {!isMuted && volume >= 66 && <IoVolumeHigh />}
       </div>
       <input
         ref={volumeElementRef}
