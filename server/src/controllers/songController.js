@@ -6,6 +6,8 @@ const {
   getNewestSongsCache,
   updateNewestSongsCache,
 } = require("../cache/songsCache");
+const playCountCache = require("../feature/playCount/playCountCache");
+const Song = require("../models/songModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -171,6 +173,23 @@ exports.getNewestSongs = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       songs,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Plays
+exports.play = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id).populate("playCount");
+
+    playCountCache.increaseCount(song.id);
+
+    console.log(playCountCache);
+
+    res.status(200).json({
+      status: "success",
     });
   } catch (e) {
     next(e);

@@ -35,6 +35,8 @@ router
     songController.deleteSong,
   );
 
+router.route("/:id/play").post(ensureAuthenticated, songController.play);
+
 router.route("/:id/like").post(ensureAuthenticated, songController.like);
 router.route("/:id/dislike").post(ensureAuthenticated, songController.dislike);
 
