@@ -18,6 +18,11 @@ class PlayCountCache {
   }
 
   // Reset cache
+  resetCount(songId) {
+    if (this.cache[songId]) {
+      delete this.cache[songId];
+    }
+  }
 }
 
 const testCache = {
@@ -42,5 +47,8 @@ playCountCache.increaseCount("two");
 playCountCache.increaseCount("one");
 playCountCache.increaseCount("one");
 playCountCache.increaseCount("two");
+
+playCountCache.resetCount("two");
+// playCountCache.resetCount("one");
 
 console.log(playCountCache);
