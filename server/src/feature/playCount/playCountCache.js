@@ -3,6 +3,12 @@ class PlayCountCache {
     this.cache = {};
   }
 
+  getPlayCount(songId) {
+    if (!songId) return null;
+
+    return this.cache[songId];
+  }
+
   // Update count
   increaseCount(songId) {
     if (this.cache[songId]) {
@@ -10,7 +16,8 @@ class PlayCountCache {
     } else {
       this.cache[songId] = {
         plays: 1,
-        date: new Date().toISOString().slice(0, 10).replace(/-/g, "-"),
+        // date: new Date().toISOString().slice(0, 10).replace(/-/g, "-"),
+        minutes: new Date().getMinutes(),
       };
     }
 

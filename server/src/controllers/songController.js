@@ -184,7 +184,17 @@ exports.play = async (req, res, next) => {
   try {
     const song = await Song.findById(req.params.id).populate("playCount");
 
-    playCountCache.increaseCount(song.id);
+    playCountCache.increaseCount(song.id); //30 20
+
+    // const lastUpdate =
+    const lastUpdate = playCountCache.getPlayCount(song.id).minutes;
+    const currentTime = new Date().getMinutes();
+
+    console.log(lastUpdate, currentTime);
+    if (currentTime - lastUpdate >= 1) {
+      console.log("DATABASE UPDATE");
+      playCountCache.resetCount(song.id);
+    }
 
     console.log(playCountCache);
 
