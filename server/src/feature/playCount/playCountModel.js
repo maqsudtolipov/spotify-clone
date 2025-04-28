@@ -20,4 +20,4 @@ const playCountSchema = new mongoose.Schema(
 
 const PlayCount = new mongoose.model("PlayCount", playCountSchema);
 
-export default PlayCount;
+module.exports = PlayCount;
