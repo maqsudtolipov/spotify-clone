@@ -11,6 +11,10 @@ const playCountSchema = new mongoose.Schema(
         count: Number,
       },
     ],
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     toJSON: { virtuals: true },

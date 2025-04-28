@@ -12,12 +12,11 @@ class PlayCountCache {
   // Update count
   increaseCount(songId) {
     if (this.cache[songId]) {
-      this.cache[songId].plays += 1;
+      this.cache[songId].count += 1;
     } else {
       this.cache[songId] = {
-        plays: 1,
-        // date: new Date().toISOString().slice(0, 10).replace(/-/g, "-"),
-        minutes: new Date().getMinutes(),
+        count: 1,
+        createdAt: Date.now(),
       };
     }
 
