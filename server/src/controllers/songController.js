@@ -183,7 +183,10 @@ exports.getNewestSongs = async (req, res, next) => {
 // Plays
 exports.play = async (req, res, next) => {
   try {
-    const song = await Song.findById(req.params.id).populate("playCount");
+    const song = await Song.findById(req.params.id).populate(
+      "playCount",
+      "id updatedAt totalPlays",
+    );
 
     playCountCache.increaseCount(song.id);
     const songCache = playCountCache.getPlayCount(song.id);
