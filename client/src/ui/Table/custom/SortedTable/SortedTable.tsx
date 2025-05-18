@@ -75,7 +75,7 @@ const SortedTable = ({ items, keyIdentifier }: SortedTableProps) => {
               name={item.name}
               artist={item.artist.name}
             />
-            <TableCell>{item.plays}</TableCell>
+            <TableCell>{item.playCount.totalPlays}</TableCell>
             <LikeCell isLiked={item.isLiked} />
             <TableCell minimize={true}>2:18</TableCell>
             <ActionsCell id={item.id} />
