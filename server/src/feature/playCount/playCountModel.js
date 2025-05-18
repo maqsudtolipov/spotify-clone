@@ -4,6 +4,7 @@ const playCountSchema = new mongoose.Schema(
   {
     totalPlays: {
       type: Number,
+      default: 0,
     },
     dailyPlays: [
       {
