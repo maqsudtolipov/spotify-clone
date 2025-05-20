@@ -193,7 +193,7 @@ exports.play = async (req, res, next) => {
     const currentTime = Date.now();
     const updateTime = new Date(songCache.createdAt).getTime();
 
-    if (currentTime - updateTime > 20 * 1000) {
+    if (currentTime - updateTime > 24 * 60 * 60 * 1000) {
       const newData = {
         date: updateTime,
         count: songCache.count,
