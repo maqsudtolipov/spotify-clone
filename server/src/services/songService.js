@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const uploadFiles = require("../utils/uploadFiles");
 const Playlist = require("../models/playlistModel");
+const PlayCount = require("../feature/playCount/playCountModel");
 const songHelpers = require("../helpers/songHelpers");
 
 exports.uploadAndCreateSong = async (songInput) => {
@@ -26,12 +27,15 @@ exports.uploadAndCreateSong = async (songInput) => {
     true,
   );
 
+  const playCount = await PlayCount.create({});
+
   const song = await Song.create({
     name: songInput.name,
     song: songFile.id,
     img: imgFile.id,
     artist: songInput.artistId,
     duration: songInput.duration,
+    playCount: playCount.id,
   });
 
   const updatedUser = await User.findOneAndUpdate(

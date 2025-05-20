@@ -10,6 +10,7 @@ const artistRouter = require("../routes/artistRoutes");
 const songRouter = require("../routes/songRoutes");
 const playlistRouter = require("../routes/playlistRoutes");
 const searchRouter = require("../routes/searchRoutes");
+const playCountRouter = require("../feature/playCount/playCountRoutes");
 
 const appConfig = express();
 
@@ -32,6 +33,7 @@ appConfig.use("/api/artists", artistRouter);
 appConfig.use("/api/songs", songRouter);
 appConfig.use("/api/playlists", playlistRouter);
 appConfig.use("/api/search", searchRouter);
+appConfig.use("/api/playCount", playCountRouter);
 
 // Error handling middleware
 appConfig.use(globalErrorHandler);

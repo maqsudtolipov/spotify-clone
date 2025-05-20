@@ -30,6 +30,7 @@ exports.getPlaylist = async (playlistInput) => {
             path: "artist",
             select: "id name",
           },
+          { path: "playCount", select: "totalPlays" },
         ],
       },
     ]);

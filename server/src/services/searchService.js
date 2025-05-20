@@ -12,6 +12,7 @@ exports.searchAllModels = async (name, limit) => {
     .populate([
       { path: "song img", select: "url" },
       { path: "artist", select: "name" },
+      { path: "playCount", select: "totalPlays" },
     ]);
 
   const playlists = await Playlist.find({

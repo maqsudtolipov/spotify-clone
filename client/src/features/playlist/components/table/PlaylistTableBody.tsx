@@ -56,7 +56,7 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
               artist={song.artist.name}
               isActive={isActiveSong}
             />
-            <TableCell>{song.plays}</TableCell>
+            <TableCell>{song.playCount.totalPlays}</TableCell>
             <LikeCell
               isLiked={isLiked}
               onClick={() => toggleLikeSong(song.id, isLiked)}

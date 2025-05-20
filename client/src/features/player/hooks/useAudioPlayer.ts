@@ -1,6 +1,20 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { ReactEventHandler, useEffect, useRef, useState } from 'react';
-import { playerTogglePlay, playNext, playPrev, toggleIsShuffled } from '../../queue/queueSlice.ts';
+import {
+  playerTogglePlay,
+  playNext,
+  playPrev,
+  toggleIsShuffled,
+} from '../../queue/queueSlice.ts';
+import axios from '../../../axios/axios'
+
+const incrementPlayCount = async (songId: string) => {
+  try {
+    await axios.post(`/songs/${songId}/play`);
+  } catch (error) {
+    console.error('Failed to increment play count:', error);
+  }
+};
 
 const useAudioPlayer = () => {
   const songs = useAppSelector((state) => state.queue.items);
@@ -25,6 +39,9 @@ const useAudioPlayer = () => {
     if (song?.song?.url && audioElementRef.current) {
       animationFrameRef.current = undefined;
       audioElementRef.current.src = song.song.url;
+
+      // Call API to increase play count
+      incrementPlayCount(song.id);
     }
   }, [song]);
 

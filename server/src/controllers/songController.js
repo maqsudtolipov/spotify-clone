@@ -6,6 +6,9 @@ const {
   getNewestSongsCache,
   updateNewestSongsCache,
 } = require("../cache/songsCache");
+const playCountCache = require("../feature/playCount/playCountCache");
+const Song = require("../models/songModel");
+const PlayCount = require("../feature/playCount/playCountModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -171,6 +174,44 @@ exports.getNewestSongs = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       songs,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Plays
+exports.play = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id).populate(
+      "playCount",
+      "id updatedAt totalPlays",
+    );
+
+    playCountCache.increaseCount(song.id);
+    const songCache = playCountCache.getPlayCount(song.id);
+
+    const currentTime = Date.now();
+    const updateTime = new Date(songCache.createdAt).getTime();
+
+    if (currentTime - updateTime > 20 * 1000) {
+      const newData = {
+        date: updateTime,
+        count: songCache.count,
+      };
+
+      await PlayCount.findByIdAndUpdate(song.playCount.id, {
+        totalPlays: song.playCount.totalPlays + songCache.count,
+        updatedAt: songCache.createdAt,
+        $push: { dailyPlays: newData },
+      });
+
+      playCountCache.resetCount(song.id);
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Song plays count updated",
     });
   } catch (e) {
     next(e);
