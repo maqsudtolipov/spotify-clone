@@ -16,6 +16,8 @@ exports.searchAllModels = async (name, limit) => {
 
   const playlists = await Playlist.find({
     name: { $regex: name, $options: "i" },
+    isPublic: true,
+    isLikedSongs: false,
   })
     .limit(limit)
     .select("name img user")
@@ -40,5 +42,5 @@ exports.searchAllModels = async (name, limit) => {
     .select("name img")
     .populate({ path: "img", select: "url" });
 
-  return {songs, artists, playlists, users};
+  return { songs, artists, playlists, users };
 };
