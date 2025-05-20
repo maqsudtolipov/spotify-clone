@@ -32,6 +32,18 @@ const songSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    playCount: {
+      ref: "PlayCount",
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     toJSON: { virtuals: true },

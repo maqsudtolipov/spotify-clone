@@ -44,6 +44,7 @@ exports.searchSongs = async (req, res, next) => {
       .populate([
         { path: "song img", select: "url" },
         { path: "artist", select: "name" },
+        { path: "playCount", select: "totalPlays" },
       ]);
 
     res.status(200).json({

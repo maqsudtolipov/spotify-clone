@@ -73,7 +73,7 @@ const ArtistTable = () => {
                   name={item.name}
                   isActive={isActiveSong}
                 />
-                <TableCell>{item.plays}</TableCell>
+                <TableCell>{item.playCount.totalPlays}</TableCell>
 
                 <LikeCell
                   isLiked={isSongLiked(item.id, likedSongs)}

@@ -187,6 +187,7 @@
 
   .volumeIcon {
     @apply h-8 w-8 p-1;
+    @apply cursor-pointer;
   }
 
   svg {

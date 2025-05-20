@@ -13,7 +13,10 @@ exports.getArtistById = async (artistInput) => {
     {
       path: "songs",
       select: "id name artist plays duration",
-      populate: { path: "song img", select: "url" },
+      populate: [
+        { path: "song img", select: "url" },
+        { path: "playCount", select: "totalPlays" },
+      ],
     },
   ]);
 
