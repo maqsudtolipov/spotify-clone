@@ -77,7 +77,7 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
       fileId: "playlist",
       name: "defaultPlaylist.jpeg",
       filePath: "defaultPlaylist.jpeg",
-      url: process.env.LIKED_SONGS_IMG_URL,
+      url: process.env.DEFAULT_PLAYLIST_IMG_URL,
     },
   };
 
