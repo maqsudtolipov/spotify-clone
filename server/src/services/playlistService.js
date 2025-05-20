@@ -8,10 +8,7 @@ const uploadFiles = require("../utils/uploadFiles");
 
 // TODO: add pagination and querying as option
 exports.getPlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findOne({
-    _id: playlistInput.playlistId,
-    isDeleted: false,
-  })
+  const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic")
     .populate([
       { path: "img", select: "url" },
@@ -22,7 +19,6 @@ exports.getPlaylist = async (playlistInput) => {
       },
       {
         path: "songs",
-        match: { isDeleted: false },
         select: "id name artist plays duration",
         populate: [
           { path: "song img", select: "url" },
@@ -42,13 +38,8 @@ exports.getPlaylist = async (playlistInput) => {
     throw new AppError("Playlist not found", 404);
   }
 
-  const result = playlist.toObject();
-
-  result.isPublic = undefined;
-  result.length = result.songs.length;
-  result.duration = result.songs.reduce((acc, cur) => acc + cur.duration, 0);
-
-  return result;
+  playlist.isPublic = undefined;
+  return playlist;
 };
 
 exports.createPlaylist = async (playlistInput) => {
@@ -93,11 +84,7 @@ exports.createPlaylist = async (playlistInput) => {
 };
 
 exports.updatePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findOne({
-    _id: playlistInput.playlistId,
-    isDeleted: false,
-    isLikedSongs: false,
-  })
+  const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
       { path: "img", select: "url isDefault fileId" },
@@ -128,7 +115,7 @@ exports.updatePlaylist = async (playlistInput) => {
     imgFile = uploadedFile.id;
   }
 
-  return Playlist.findByIdAndUpdate(
+  return await Playlist.findByIdAndUpdate(
     playlistInput.playlistId,
     {
       name: playlistInput.name,
@@ -153,11 +140,7 @@ exports.updatePlaylist = async (playlistInput) => {
 };
 
 exports.deletePlaylist = async (playlistInput) => {
-  const playlist = await Playlist.findOne({
-    _id: playlistInput.playlistId,
-    isDeleted: false,
-    isLikedSongs: false,
-  })
+  const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
       { path: "img", select: "id fileId isDefault" },
@@ -179,17 +162,23 @@ exports.deletePlaylist = async (playlistInput) => {
   }
 
   // Delete the playlist
-  await Playlist.findByIdAndUpdate(playlistInput.playlistId, {
-    isDeleted: true,
-    deletedAt: Date.now(),
-  });
+  await Playlist.findByIdAndDelete(playlistInput.playlistId);
+
+  // Remove the playlist from Users' likedSongs array
+  await User.updateMany(
+    { likedPlaylists: playlistInput.playlistId },
+    { $pull: { likedPlaylists: playlistInput.playlistId } },
+  );
+
+  // Remove playlist from all libraries
+  await Library.updateMany(
+    { "items.refId": playlistInput.playlistId },
+    { $pull: { items: { refId: playlistInput.playlistId } } },
+  );
 };
 
 exports.savePlaylistToLibrary = async (playlistInput) => {
-  const playlist = await Playlist.findOne({
-    _id: playlistInput.playlistId,
-    isDeleted: false,
-  })
+  const playlist = await Playlist.findById(playlistInput.playlistId)
     .select("+isPublic +isLikedSongs")
     .populate([
       {
@@ -249,10 +238,9 @@ exports.savePlaylistToLibrary = async (playlistInput) => {
 };
 
 exports.removePlaylistFromLibrary = async (playlistInput) => {
-  const playlist = await Playlist.findOne({
-    _id: playlistInput.playlistId,
-    isDeleted: false,
-  }).select("+isPublic +isLikedSongs");
+  const playlist = await Playlist.findById(playlistInput.playlistId).select(
+    "+isPublic +isLikedSongs",
+  );
 
   if (
     !playlist ||

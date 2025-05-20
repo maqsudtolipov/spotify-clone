@@ -1,5 +1,6 @@
 const AppError = require("../utils/AppError");
 const songService = require("../services/songService");
+const Song = require("../models/songModel");
 const {
   updateTopSongsCache,
   getTopSongsCache,
@@ -145,7 +146,6 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
   }
 };
 
-// Aggregation routes
 exports.getTopSongs = async (req, res, next) => {
   try {
     let songs = [];

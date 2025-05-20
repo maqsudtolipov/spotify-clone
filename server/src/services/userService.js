@@ -33,7 +33,6 @@ exports.getCurrentUser = async (userInput) => {
         populate: [
           {
             path: "items.refId",
-            match: { isDeleted: false },
             select: "name img user createdAt",
             populate: [
               { path: "user", select: "name", strictPopulate: false },
@@ -44,9 +43,8 @@ exports.getCurrentUser = async (userInput) => {
       },
       {
         path: "likedSongs",
-        match: { isDeleted: false },
       },
-      { path: "playlists", match: { isDeleted: false }, select: "name" },
+      { path: "playlists", select: "name" },
       { path: "img", select: "url" },
     ])
     .lean();

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { getCache, setCache } = require("../services/cacheService");
 const File = require("./fileModel");
+const generateRandomColor = require("../utils/generateRandomColor");
 
 // TODO: add length of all songs and count of songs
 
@@ -25,12 +26,25 @@ const playlistSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    color: {
+      type: String,
+    },
     songs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Song",
       },
     ],
+    duration: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    length: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     isPublic: {
       type: Boolean,
       default: true,
@@ -40,14 +54,6 @@ const playlistSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
       select: false,
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    deletedAt: {
-      type: Date,
-      default: null,
     },
   },
   {
@@ -100,6 +106,9 @@ const getDefaultPlaylistImgId = async (type = "playlist") => {
 
 playlistSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
+
+  // Generate color
+  this.color = generateRandomColor();
 
   const defaultPlaylistImgId = await getDefaultPlaylistImgId(
     this.isLikedSongs ? "likedSongs" : "playlist",
