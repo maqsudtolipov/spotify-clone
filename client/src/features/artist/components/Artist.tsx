@@ -10,6 +10,7 @@ import styles from '../../../ui/PlayHeader/PlayHeader.module.scss';
 import NotFound from '../../../ui/statusScreens/NotFound.tsx';
 import ServerError from '../../../ui/statusScreens/ServerError.tsx';
 import ArtistActions from './ArtistActions.tsx';
+import useDominantColor from '../../../hooks/useDominantColor.ts';
 
 const Artist = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +21,8 @@ const Artist = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { bgColor, textColor } = useDominantColor(data?.img?.url);
+
   useEffect(() => {
     if (id) dispatch(getArtist(id));
   }, [id]);
@@ -29,13 +32,12 @@ const Artist = () => {
     if (statusCode === 500) return <ServerError />;
     else navigate('/');
   }
-  if (status === 'pending' || !data || !id)
-    return <LoadingScreen />;
+  if (status === 'pending' || !data || !id) return <LoadingScreen />;
 
   return (
     <div className={styles.artistPage}>
-      {data && <ArtistHeader />}
-      <GradientBackground color={data.color}>
+      {data && <ArtistHeader bgColor={bgColor} textColor={textColor} />}
+      <GradientBackground color={bgColor}>
         <ArtistActions data={data} />
         <ArtistTable />
       </GradientBackground>
