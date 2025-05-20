@@ -8,7 +8,6 @@ const {
   updateNewestSongsCache,
 } = require("../cache/songsCache");
 const playCountCache = require("../feature/playCount/playCountCache");
-const Song = require("../models/songModel");
 const PlayCount = require("../feature/playCount/playCountModel");
 
 exports.uploadSong = async (req, res, next) => {
