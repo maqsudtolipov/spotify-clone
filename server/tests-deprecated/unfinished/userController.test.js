@@ -129,7 +129,7 @@ describe("userController", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
-      expect(res.body.user).toHaveProperty("name", "Jane Doe"); // based on previous deprecated-tests
+      expect(res.body.user).toHaveProperty("name", "Jane Doe"); // based on previous tests-deprecated
     });
   });
 
