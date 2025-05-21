@@ -26,6 +26,7 @@ const getPlaylist = async (playlistInput) => {
       },
     ]);
 
+  // private or not owned by the user
   if (
     !playlist ||
     (!playlist.isPublic && playlist.user.id !== playlistInput.userId)
