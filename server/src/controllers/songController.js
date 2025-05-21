@@ -7,8 +7,8 @@ const {
   getNewestSongsCache,
   updateNewestSongsCache,
 } = require("../cache/songsCache");
-const playCountCache = require("../feature/playCount/playCountCache");
-const PlayCount = require("../feature/playCount/playCountModel");
+const playCountCache = require("../cache/playCountCache");
+const PlayCount = require("../models/playCountModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
