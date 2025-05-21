@@ -1,5 +1,6 @@
 const playlistService = require("../services/playlistService");
 const getPlaylist = require("../services/playlist/getPlaylist");
+const createPlaylist = require("../services/playlist/createPlaylist");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -25,9 +26,8 @@ exports.createPlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    // const { library, playlists } =
-    //   await playlistService.createPlaylist(playlistInput);
-    const { playlist } = await playlistService.createPlaylist(playlistInput);
+
+    const { playlist } = await createPlaylist(playlistInput);
 
     res.status(201).send({
       status: "success",
