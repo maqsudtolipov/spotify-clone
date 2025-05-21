@@ -3,12 +3,17 @@ const AppError = require("../../../src/utils/AppError");
 const User = require("../../../src/models/userModel");
 const loginService = require("../../../src/services/authService");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const RefreshToken = require("../../../src/models/refreshTokenModel");
+const InvalidAccessToken = require("../../../src/models/invalidAccessTokenModel");
+
+jest.mock("jsonwebtoken");
 
 beforeEach(() => {
   jest.resetAllMocks();
 });
 
-describe("createNewUser", () => {
+describe("signupUser", () => {
   it("should throw 422 error if any of inputs are missing", async () => {
     const resError = await authService
       .signupUser({ email: "user@example.com" })
@@ -76,7 +81,7 @@ describe("createNewUser", () => {
   });
 });
 
-describe("verifyAndReturnUserData", () => {
+describe("loginUser", () => {
   it("should throw 422 error for missing inputs", async () => {
     const resError = await authService
       .loginUser({ email: "user@example.com" })
@@ -144,10 +149,13 @@ describe("verifyAndReturnUserData", () => {
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
 
-    const res = await loginService.loginUser({
-      email: "user@example.com",
-      password: "password",
-    }, 'res');
+    const res = await loginService.loginUser(
+      {
+        email: "user@example.com",
+        password: "password",
+      },
+      "res",
+    );
 
     expect(User.findOne).toHaveBeenCalledWith({
       email: "user@example.com",
@@ -162,18 +170,96 @@ describe("verifyAndReturnUserData", () => {
   });
 });
 
-describe("verifyAndCleanTokens", () => {
-  it("should throw 401 if token is not provided", () => {
-    
-  });
-  
-  it("should throw 401 if token is invalid", () => {})
+describe("refreshTokens", () => {
+  it("should throw 401 if token is not provided", async () => {
+    const error = await authService.refreshTokens().catch((e) => e);
 
-  it("should throw 401 if refresh token is not stored in db", () => {
-    
+    expect(error).toBeInstanceOf(AppError);
+    expect(error).toMatchObject({
+      statusCode: 401,
+      status: "fail",
+      message: "No refresh token provided",
+    });
   });
 
-  it("should generate new tokens and attach it into res object", () => {
-    
+  it("should throw 401 if token is invalid", async () => {
+    jest.spyOn(jwt, "verify").mockImplementation(() => {
+      throw new Error();
+    });
+
+    const error = await authService
+      .refreshTokens("invalidToken")
+      .catch((e) => e);
+
+    expect(jwt.verify).toHaveBeenCalled();
+    expect(error).toBeInstanceOf(AppError);
+    expect(error).toMatchObject({
+      statusCode: 401,
+      status: "fail",
+      message: "Refresh token is invalid or expired",
+    });
   });
-})
+
+  it("should throw 401 if refresh token is not stored in db", async () => {
+    jest.spyOn(jwt, "verify").mockReturnValue({
+      token: "refreshToken",
+      userId: "userId",
+    });
+    jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
+
+    const error = await authService
+      .refreshTokens("refreshToken")
+      .catch((e) => e);
+
+    expect(jwt.verify).toHaveBeenCalled();
+    expect(RefreshToken.findOne).toHaveBeenCalledWith({
+      token: "refreshToken",
+      userId: "userId",
+    });
+
+    expect(error).toBeInstanceOf(AppError);
+    expect(error).toMatchObject({
+      statusCode: 401,
+      status: "fail",
+      message: "Refresh token is invalid or expired",
+    });
+  });
+
+  it("should delete old tokens form DB and return user id", async () => {
+    jest.spyOn(jwt, "verify").mockReturnValue({
+      token: "refreshToken",
+      userId: "userId",
+    });
+    jest.spyOn(RefreshToken, "findOne").mockResolvedValue({
+      userId: "userId",
+    });
+    jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
+
+    const res = await authService.refreshTokens("refreshToken");
+
+    console.log(res);
+
+    expect(jwt.verify).toHaveBeenCalled();
+    expect(RefreshToken.findOne).toHaveBeenCalledWith({
+      token: "refreshToken",
+      userId: "userId",
+    });
+    expect(RefreshToken.deleteMany).toHaveBeenCalledWith({ userId: "userId" });
+  });
+});
+
+describe("logoutUser", () => {
+  it("should refresh tokens and block old access token", async () => {
+    jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
+    jest.spyOn(InvalidAccessToken, "create").mockResolvedValue();
+
+    await authService.logoutUser("userId", { token: "token", exp: Date.now() });
+
+    expect(RefreshToken.deleteMany).toHaveBeenCalledWith({ userId: "userId" });
+    expect(InvalidAccessToken.create).toHaveBeenCalledWith({
+      token: "token",
+      userId: "userId",
+      expiresAt: expect.any(Date),
+    });
+  });
+});

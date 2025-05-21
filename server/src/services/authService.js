@@ -2,13 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
-const {
-  attachAccessCookie,
-  attachRefreshCookie,
-} = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
-const filterLibraryItems = require("../utils/filterLibraryItems");
 
 exports.signupUser = async (signUpInput) => {
   const { name, email, password, passwordConfirm, isArtist } = signUpInput;
@@ -91,7 +86,7 @@ exports.refreshTokens = async (refreshToken) => {
   // INFO: this logs out the user from all their devices
   await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
 
-  return decodedRefreshToken;
+  return decodedRefreshToken.userId;
 };
 
 exports.logoutUser = async (userId, accessToken) => {

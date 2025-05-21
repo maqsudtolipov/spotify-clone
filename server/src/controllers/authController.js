@@ -51,21 +51,18 @@ exports.login = async (req, res, next) => {
 exports.refreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
-    const decodedRefreshToken = await authService.refreshTokens(
-      refreshToken,
-      res,
-    );
+    const userId = await authService.refreshTokens(refreshToken, res);
 
     // Generate new tokens
-    attachAccessCookie(decodedRefreshToken.userId, res);
+    attachAccessCookie(userId, res);
     const { refreshToken: newRefreshToken, expiresAt } = attachRefreshCookie(
-      decodedRefreshToken.userId,
+      userId,
       res,
     );
 
     // Save new refresh token to the database
     await RefreshToken.create({
-      userId: decodedRefreshToken.userId,
+      userId: userId,
       token: newRefreshToken,
       expiresAt,
     });
