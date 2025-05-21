@@ -1,5 +1,7 @@
 const AppError = require("../utils/AppError");
 const authService = require("../services/authService");
+const { attachAccessCookie, attachRefreshCookie } = require("../utils/attachCookieTokens");
+const RefreshToken = require("../models/refreshTokenModel");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -23,6 +25,16 @@ exports.login = async (req, res, next) => {
   try {
     const inputData = req.body;
     const user = await authService.login(inputData, res);
+
+    // Generate and attach tokens
+    attachAccessCookie(user.id, res);
+    const { refreshToken, expiresAt } = attachRefreshCookie(user.id, res);
+
+    await RefreshToken.create({
+      userId: user.id,
+      token: refreshToken,
+      expiresAt,
+    });
 
     res.status(200).json({
       status: "success",

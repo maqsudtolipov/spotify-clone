@@ -3,17 +3,6 @@ const AppError = require("../../../src/utils/AppError");
 const User = require("../../../src/models/userModel");
 const loginService = require("../../../src/services/authService");
 const bcrypt = require("bcryptjs");
-const RefreshToken = require("../../../src/models/refreshTokenModel");
-
-jest.mock("../../../src/utils/attachCookieTokens", () => ({
-  attachAccessCookie: jest.fn(),
-  attachRefreshCookie: jest.fn(),
-}));
-
-const {
-  attachAccessCookie,
-  attachRefreshCookie,
-} = require("../../../src/utils/attachCookieTokens");
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -144,7 +133,7 @@ describe("login", () => {
     });
   });
 
-  it("should generate cookies correctly and return user data", async () => {
+  it("should return user data", async () => {
     jest.spyOn(User, "findOne").mockReturnValue({
       select: jest.fn().mockResolvedValue({
         id: "userId",
@@ -154,12 +143,6 @@ describe("login", () => {
       }),
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
-    jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
-
-    attachRefreshCookie.mockReturnValue({
-      refreshToken: "token",
-      expiresAt: "dd/MM/yyyy",
-    });
 
     const res = await loginService.login({
       email: "user@example.com",
@@ -171,19 +154,6 @@ describe("login", () => {
     });
     expect(bcrypt.compare).toHaveBeenCalledWith("password", "password");
 
-    expect(attachAccessCookie).toHaveBeenCalledWith("userId", "res");
-    expect(attachRefreshCookie).toHaveBeenCalledWith("userId", "res");
-    expect(attachRefreshCookie).toHaveReturnedWith({
-      refreshToken: "token",
-      expiresAt: "dd/MM/yyyy",
-    });
-
-    expect(RefreshToken.create).toHaveBeenCalledWith({
-      token: "token",
-      userId: "userId",
-      expiresAt: "dd/MM/yyyy",
-    });
-
     expect(res).toMatchObject({
       id: "userId",
       name: "User",
@@ -191,3 +161,19 @@ describe("login", () => {
     });
   });
 });
+
+describe("refreshToken", () => {
+  it("should throw 401 if token is not provided", () => {
+    
+  });
+  
+  it("should throw 401 if token is invalid", () => {})
+
+  it("should throw 401 if refresh token is not stored in db", () => {
+    
+  });
+
+  it("should generate new tokens and attach it into res object", () => {
+    
+  });
+})

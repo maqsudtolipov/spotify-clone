@@ -40,7 +40,7 @@ exports.signUp = async (signUpInput) => {
   return User.create(newUser);
 };
 
-exports.login = async (loginInput, res) => {
+exports.login = async (loginInput) => {
   const { email, password } = loginInput;
 
   // Check required fields
@@ -60,16 +60,6 @@ exports.login = async (loginInput, res) => {
   if (!isMatch) {
     throw new AppError("Invalid email or password", 401);
   }
-
-  // Generate and attach tokens
-  attachAccessCookie(user.id, res);
-  const { refreshToken, expiresAt } = attachRefreshCookie(user.id, res);
-
-  await RefreshToken.create({
-    userId: user.id,
-    token: refreshToken,
-    expiresAt,
-  });
 
   return { id: user.id, name: user.name, img: user.img };
 };
