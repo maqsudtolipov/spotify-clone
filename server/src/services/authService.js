@@ -74,54 +74,6 @@ exports.login = async (loginInput, res) => {
   return { id: user.id, name: user.name, img: user.img };
 };
 
-// Old login - too much client dependant
-exports.loginOld = async (email, password, res) => {
-  // Find user and populate fields
-  const user = await User.findOne(
-    { email },
-    "id name img password likedPlaylists",
-  ).populate([
-    {
-      path: "library",
-      select: "items",
-      populate: [
-        {
-          path: "items.refId",
-          select: "name img user createdAt",
-          populate: [
-            { path: "user", select: "name", strictPopulate: false },
-            { path: "img", select: "url" },
-          ],
-        },
-      ],
-    },
-    { path: "likedSongs" },
-    { path: "playlists", select: "name" },
-  ]);
-
-  if (!user) {
-    throw new AppError("Invalid email or password", 401);
-  }
-
-  // Validate password
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    throw new AppError("Invalid email or password", 401);
-  }
-
-  // Generate access and refresh tokens
-  attachAccessCookie(user.id, res);
-  const refreshToken = attachRefreshCookie(user.id, res);
-
-  // Save refresh token to the database
-  await RefreshToken.create({ userId: user.id, token: refreshToken });
-
-  const userObject = user.toObject();
-  userObject.library.items = filterLibraryItems(user.library.items);
-
-  return userObject;
-};
-
 exports.refreshToken = async (refreshToken, res) => {
   if (!refreshToken) {
     throw new AppError("No refresh token provided", 401, "AuthReset");
