@@ -1,4 +1,5 @@
 const playlistService = require("../services/playlistService");
+const getPlaylist = require("../services/playlist/getPlaylist");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -6,7 +7,7 @@ exports.getPlaylist = async (req, res, next) => {
       playlistId: req.params.id,
       userId: req.user.id,
     };
-    const playlist = await playlistService.getPlaylist(playlistInput);
+    const playlist = await getPlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",

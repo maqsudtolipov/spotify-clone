@@ -10,6 +10,7 @@
     "test-e2e": "jest --runInBand --testPathPattern=tests/e2e"
   },
   "author": "",
+  "type": "commonjs",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
