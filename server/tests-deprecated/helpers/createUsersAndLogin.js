@@ -43,7 +43,7 @@ const createUsersAndLogin = async (numOfUsers) => {
       email: userData.email,
       password: userData.password,
       accessToken,
-      refreshToken,
+      refreshTokens: refreshToken,
     });
   }
 

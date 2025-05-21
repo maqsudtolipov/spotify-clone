@@ -8,10 +8,10 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-describe("signUp", () => {
+describe("createNewUser", () => {
   it("should throw 422 error if any of inputs are missing", async () => {
     const resError = await authService
-      .signUp({ email: "user@example.com" })
+      .signupUser({ email: "user@example.com" })
       .catch((e) => e);
 
     expect(resError).toBeInstanceOf(AppError);
@@ -27,7 +27,7 @@ describe("signUp", () => {
       .spyOn(User, "findOne")
       .mockResolvedValue({ email: "user@example.com" });
     const resError = await authService
-      .signUp({
+      .signupUser({
         name: "User",
         email: "user@example.com",
         password: "pass1234",
@@ -52,7 +52,7 @@ describe("signUp", () => {
       email: "user@example.com",
     });
 
-    const newUser = await authService.signUp({
+    const newUser = await authService.signupUser({
       name: "User",
       email: "user@example.com",
       password: "pass1234",
@@ -76,10 +76,10 @@ describe("signUp", () => {
   });
 });
 
-describe("login", () => {
+describe("verifyAndReturnUserData", () => {
   it("should throw 422 error for missing inputs", async () => {
     const resError = await authService
-      .login({ email: "user@example.com" })
+      .loginUser({ email: "user@example.com" })
       .catch((e) => e);
 
     expect(resError).toBeInstanceOf(AppError);
@@ -96,7 +96,7 @@ describe("login", () => {
     });
 
     const resError = await loginService
-      .login({ email: "user@example.com", password: "pass1234" })
+      .loginUser({ email: "user@example.com", password: "pass1234" })
       .catch((e) => e);
 
     expect(User.findOne).toHaveBeenCalledWith({ email: "user@example.com" });
@@ -118,7 +118,7 @@ describe("login", () => {
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
     const resError = await loginService
-      .login({ email: "user@example.com", password: "wrongPass" })
+      .loginUser({ email: "user@example.com", password: "wrongPass" })
       .catch((e) => e);
 
     expect(User.findOne).toHaveBeenCalledWith({
@@ -144,7 +144,7 @@ describe("login", () => {
     });
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
 
-    const res = await loginService.login({
+    const res = await loginService.loginUser({
       email: "user@example.com",
       password: "password",
     }, 'res');
@@ -162,7 +162,7 @@ describe("login", () => {
   });
 });
 
-describe("refreshToken", () => {
+describe("verifyAndCleanTokens", () => {
   it("should throw 401 if token is not provided", () => {
     
   });

@@ -47,5 +47,5 @@ exports.attachRefreshCookie = (userId, res) => {
 
   res.cookie("refreshToken", refreshToken, cookieOptions);
 
-  return { refreshToken, expiresAt };
+  return { refreshTokens: refreshToken, expiresAt };
 };

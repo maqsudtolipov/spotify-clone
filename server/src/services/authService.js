@@ -10,7 +10,7 @@ const RefreshToken = require("../models/refreshTokenModel");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 const filterLibraryItems = require("../utils/filterLibraryItems");
 
-exports.signUp = async (signUpInput) => {
+exports.signupUser = async (signUpInput) => {
   const { name, email, password, passwordConfirm, isArtist } = signUpInput;
 
   // Check required fields
@@ -40,7 +40,7 @@ exports.signUp = async (signUpInput) => {
   return User.create(newUser);
 };
 
-exports.login = async (loginInput) => {
+exports.loginUser = async (loginInput) => {
   const { email, password } = loginInput;
 
   // Check required fields
@@ -64,7 +64,7 @@ exports.login = async (loginInput) => {
   return { id: user.id, name: user.name, img: user.img };
 };
 
-exports.refreshToken = async (refreshToken, res) => {
+exports.refreshTokens = async (refreshToken) => {
   if (!refreshToken) {
     throw new AppError("No refresh token provided", 401, "AuthReset");
   }
@@ -91,22 +91,10 @@ exports.refreshToken = async (refreshToken, res) => {
   // INFO: this logs out the user from all their devices
   await RefreshToken.deleteMany({ userId: decodedRefreshToken.userId });
 
-  // Generate new tokens
-  attachAccessCookie(decodedRefreshToken.userId, res);
-  const { refreshToken: newRefreshToken, expiresAt } = attachRefreshCookie(
-    decodedRefreshToken.userId,
-    res,
-  );
-
-  // Save new refresh token to the database
-  await RefreshToken.create({
-    userId: decodedRefreshToken.userId,
-    token: newRefreshToken,
-    expiresAt,
-  });
+  return decodedRefreshToken;
 };
 
-exports.logout = async (userId, accessToken) => {
+exports.logoutUser = async (userId, accessToken) => {
   await RefreshToken.deleteMany({ userId });
 
   await InvalidAccessToken.create({
