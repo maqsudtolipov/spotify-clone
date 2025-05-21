@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Playlist = require("./playlistModel");
 const Library = require("./libraryModel");
-const { getCache, setCache } = require("../services/cacheService");
+const { getCache, setCache } = require("../cache/generalCache");
 const File = require("./fileModel");
 const generateRandomColor = require("../utils/generateRandomColor");
 
