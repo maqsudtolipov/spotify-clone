@@ -1,6 +1,7 @@
 const playlistService = require("../services/playlistService");
 const getPlaylist = require("../services/playlist/getPlaylist");
 const createPlaylist = require("../services/playlist/createPlaylist");
+const updatePlaylist = require("../services/playlist/updatePlaylist");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -50,7 +51,7 @@ exports.updatePlaylist = async (req, res, next) => {
       imgFilename: req.files?.img?.[0]?.filename,
       isPublic: req.body?.isPublic,
     };
-    const updatedPlaylist = await playlistService.updatePlaylist(playlistInput);
+    const updatedPlaylist = await updatePlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",

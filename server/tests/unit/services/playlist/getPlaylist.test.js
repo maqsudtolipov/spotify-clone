@@ -5,6 +5,10 @@ const AppError = require("../../../../src/utils/AppError");
 
 const CastError = mongoose.Error.CastError;
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("getPlaylist", () => {
   it("should throw CastError if id is invalid", async () => {
     const error = await getPlaylist({ playlistId: "123" }).catch((e) => e);
