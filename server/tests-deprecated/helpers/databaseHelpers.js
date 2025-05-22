@@ -13,7 +13,7 @@ exports.connectToDatabase = async () => {
   memoryDB = await MongoMemoryServer.create();
   const dbUrl = memoryDB.getUri();
 
-  // Set env files for test environment
+  // Set env files for tests-deprecated environment
   process.env.NODE_ENV = "production";
   process.env.IK_ENV = "test";
 

@@ -153,7 +153,7 @@ describe("authController", () => {
       const users = await createUsersAndLogin(1);
       user = users[0];
       accessToken = users[0].accessToken;
-      refreshToken = users[0].refreshToken;
+      refreshToken = users[0].refreshTokens;
     });
 
     it("should attach new access and refresh tokens to request", async () => {
@@ -221,7 +221,7 @@ describe("authController", () => {
       const users = await createUsersAndLogin(1);
       user = users[0];
       accessToken = users[0].accessToken;
-      refreshToken = users[0].refreshToken;
+      refreshToken = users[0].refreshTokens;
     });
 
     it("should delete all refresh tokens and blacklist current access token", async () => {

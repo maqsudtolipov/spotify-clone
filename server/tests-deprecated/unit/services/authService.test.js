@@ -24,7 +24,7 @@ beforeEach(() => {
 describe("signUp service", () => {
   it("should throw 422 error if required fields are missing", async () => {
     const resError = await authService
-      .signUp({ email: "user@example.com" })
+      .signupUser({ email: "user@example.com" })
       .catch((e) => e);
 
     expect(resError).toBeInstanceOf(AppError);
@@ -39,7 +39,7 @@ describe("signUp service", () => {
       .spyOn(User, "findOne")
       .mockResolvedValue({ email: "user@example.com" });
     const resError = await authService
-      .signUp({
+      .signupUser({
         name: "User",
         email: "user@example.com",
         password: "pass1234",
@@ -62,7 +62,7 @@ describe("signUp service", () => {
       email: "user@example.com",
     });
 
-    const newUser = await authService.signUp({
+    const newUser = await authService.signupUser({
       name: "User",
       email: "user@example.com",
       password: "pass1234",
@@ -88,7 +88,7 @@ describe("signUp service", () => {
 describe("login service", () => {
   it("should throw 422 error if required fields are missing", async () => {
     const resError = await authService
-      .login({ email: "user@example.com" })
+      .loginUser({ email: "user@example.com" })
       .catch((e) => e);
 
     expect(resError).toBeInstanceOf(AppError);
@@ -104,7 +104,7 @@ describe("login service", () => {
     });
 
     const resError = await loginService
-      .login({ email: "user@example.com", password: "pass1234" })
+      .loginUser({ email: "user@example.com", password: "pass1234" })
       .catch((e) => e);
 
     expect(resError).toBeInstanceOf(AppError);
@@ -124,7 +124,7 @@ describe("login service", () => {
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false);
 
     const resError = await loginService
-      .login({ email: "user@example.com", password: "wrongPass" })
+      .loginUser({ email: "user@example.com", password: "wrongPass" })
       .catch((e) => e);
 
     expect(bcrypt.compare).toHaveBeenCalledWith("wrongPass", "correctPass");
@@ -146,12 +146,12 @@ describe("login service", () => {
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
     attachAccessCookie.mockReturnValue("accessToken");
     attachRefreshCookie.mockReturnValue({
-      refreshToken: "refreshToken",
+      refreshTokens: "refreshToken",
       expiresAt: "dd/MM/yyyy",
     });
     jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
 
-    await loginService.login({
+    await loginService.loginUser({
       email: "user@example.com",
       password: "pass1234",
     });
@@ -175,7 +175,7 @@ describe("login service", () => {
     attachRefreshCookie.mockReturnValue("refreshToken");
     jest.spyOn(RefreshToken, "create").mockResolvedValue(null);
 
-    const res = await loginService.login({
+    const res = await loginService.loginUser({
       email: "user@example.com",
       password: "pass1234",
     });
@@ -195,7 +195,7 @@ describe("refreshToken service", () => {
     });
 
     const error = await authService
-      .refreshToken("refreshToken")
+      .refreshTokens("refreshToken")
       .catch((e) => e);
 
     expect(error).toBeInstanceOf(AppError);
@@ -211,7 +211,7 @@ describe("refreshToken service", () => {
     jest.spyOn(RefreshToken, "findOne").mockResolvedValue(null);
 
     const error = await authService
-      .refreshToken("refreshToken")
+      .refreshTokens("refreshToken")
       .catch((e) => e);
 
     expect(RefreshToken.findOne).toHaveBeenCalled();
@@ -232,7 +232,7 @@ describe("refreshToken service", () => {
     attachAccessCookie.mockImplementation(() => ({}));
     attachRefreshCookie.mockImplementation(() => ({}));
 
-    await authService.refreshToken("refreshToken");
+    await authService.refreshTokens("refreshToken");
 
     expect(RefreshToken.deleteMany).toHaveBeenCalled();
     expect(attachAccessCookie).toHaveBeenCalled();
@@ -246,7 +246,7 @@ describe("logout service", () => {
     jest.spyOn(RefreshToken, "deleteMany").mockResolvedValue();
     jest.spyOn(InvalidAccessToken, "create").mockResolvedValue();
 
-    await authService.logout("userId", "accessToken");
+    await authService.logoutUser("userId", "accessToken");
 
     expect(RefreshToken.deleteMany).toHaveBeenCalled();
     expect(InvalidAccessToken.create).toHaveBeenCalled();

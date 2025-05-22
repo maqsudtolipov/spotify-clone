@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.js",
     "prod": "node server.js",
-    "test-unit": "jest --runInBand --testPathPattern=test/unit",
-    "test-e2e": "jest --runInBand --testPathPattern=test/e2e"
+    "test-unit": "jest --runInBand --testPathPattern=tests/unit",
+    "test-e2e": "jest --runInBand --testPathPattern=tests/e2e"
   },
   "author": "",
+  "type": "commonjs",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,4 +1,7 @@
 const playlistService = require("../services/playlistService");
+const getPlaylist = require("../services/playlist/getPlaylist");
+const createPlaylist = require("../services/playlist/createPlaylist");
+const updatePlaylist = require("../services/playlist/updatePlaylist");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -6,7 +9,7 @@ exports.getPlaylist = async (req, res, next) => {
       playlistId: req.params.id,
       userId: req.user.id,
     };
-    const playlist = await playlistService.getPlaylist(playlistInput);
+    const playlist = await getPlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",
@@ -24,9 +27,8 @@ exports.createPlaylist = async (req, res, next) => {
       userId: req.user.id,
       libraryId: req.user?.library,
     };
-    // const { library, playlists } =
-    //   await playlistService.createPlaylist(playlistInput);
-    const { playlist } = await playlistService.createPlaylist(playlistInput);
+
+    const { playlist } = await createPlaylist(playlistInput);
 
     res.status(201).send({
       status: "success",
@@ -49,7 +51,7 @@ exports.updatePlaylist = async (req, res, next) => {
       imgFilename: req.files?.img?.[0]?.filename,
       isPublic: req.body?.isPublic,
     };
-    const updatedPlaylist = await playlistService.updatePlaylist(playlistInput);
+    const updatedPlaylist = await updatePlaylist(playlistInput);
 
     res.status(200).send({
       status: "success",

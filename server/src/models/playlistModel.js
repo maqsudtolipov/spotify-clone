@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { getCache, setCache } = require("../services/cacheService");
+const { getCache, setCache } = require("../cache/generalCache");
 const File = require("./fileModel");
 const generateRandomColor = require("../utils/generateRandomColor");
 

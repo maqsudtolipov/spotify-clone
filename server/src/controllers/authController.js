@@ -1,10 +1,15 @@
 const AppError = require("../utils/AppError");
 const authService = require("../services/authService");
+const {
+  attachAccessCookie,
+  attachRefreshCookie,
+} = require("../utils/attachCookieTokens");
+const RefreshToken = require("../models/refreshTokenModel");
 
 exports.signUp = async (req, res, next) => {
   try {
     const inputData = req.body;
-    const newUser = await authService.signUp(inputData);
+    const newUser = await authService.signupUser(inputData);
 
     res.status(201).json({
       status: "success",
@@ -22,7 +27,17 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const inputData = req.body;
-    const user = await authService.login(inputData, res);
+    const user = await authService.loginUser(inputData, res);
+
+    // Generate and attach tokens
+    attachAccessCookie(user.id, res);
+    const { refreshToken, expiresAt } = attachRefreshCookie(user.id, res);
+
+    await RefreshToken.create({
+      userId: user.id,
+      token: refreshToken,
+      expiresAt,
+    });
 
     res.status(200).json({
       status: "success",
@@ -36,7 +51,21 @@ exports.login = async (req, res, next) => {
 exports.refreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
-    await authService.refreshToken(refreshToken, res);
+    const userId = await authService.refreshTokens(refreshToken, res);
+
+    // Generate new tokens
+    attachAccessCookie(userId, res);
+    const { refreshToken: newRefreshToken, expiresAt } = attachRefreshCookie(
+      userId,
+      res,
+    );
+
+    // Save new refresh token to the database
+    await RefreshToken.create({
+      userId: userId,
+      token: newRefreshToken,
+      expiresAt,
+    });
 
     res.status(200).json({ status: "success" });
   } catch (e) {
@@ -46,7 +75,7 @@ exports.refreshToken = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   try {
-    await authService.logout(req.user.id, req.accessToken);
+    await authService.logoutUser(req.user.id, req.accessToken);
 
     res.status(204).send();
   } catch (e) {
