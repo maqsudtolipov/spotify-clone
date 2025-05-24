@@ -2,11 +2,17 @@ const playlistService = require("../services/playlistService");
 const getPlaylist = require("../services/playlist/getPlaylist");
 const createPlaylist = require("../services/playlist/createPlaylist");
 const updatePlaylist = require("../services/playlist/updatePlaylist");
+const validateInput = require("../utils/validateInput");
+const {
+  getPlaylistParamSchema,
+} = require("../validations/playlistValidations");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
+    const validatedParams = validateInput(getPlaylistParamSchema, req.params);
+
     const playlistInput = {
-      playlistId: req.params.id,
+      id: validatedParams.id,
       userId: req.user.id,
     };
     const playlist = await getPlaylist(playlistInput);
