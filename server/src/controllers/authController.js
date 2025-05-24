@@ -5,7 +5,7 @@ const {
 } = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
 const validateInput = require("../utils/validateInput");
-const { signUpSchema } = require("../validations/authValidations");
+const { signUpSchema, loginSchema } = require("../validations/authValidations");
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -27,8 +27,8 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const inputData = req.body;
-    const user = await authService.loginUser(inputData, res);
+    const validatedInput = validateInput(loginSchema, req.body);
+    const user = await authService.loginUser(validatedInput);
 
     // Generate and attach tokens
     attachAccessCookie(user.id, res);
