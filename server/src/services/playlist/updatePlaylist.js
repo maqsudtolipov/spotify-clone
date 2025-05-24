@@ -1,6 +1,5 @@
 const Playlist = require("../../models/playlistModel");
 const AppError = require("../../utils/AppError");
-const uploadFiles = require("../../utils/uploadFiles");
 const uploadFile = require("../file/uploadFile");
 
 const updatePlaylist = async (playlistInput) => {
