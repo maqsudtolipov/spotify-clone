@@ -6,6 +6,7 @@ const validateInput = require("../utils/validateInput");
 const {
   getPlaylistParamSchema,
   createPlaylistSchema,
+  deletePlaylistParamSchema,
 } = require("../validations/playlistValidations");
 
 exports.getPlaylist = async (req, res, next) => {
@@ -72,8 +73,12 @@ exports.updatePlaylist = async (req, res, next) => {
 
 exports.deletePlaylist = async (req, res, next) => {
   try {
+    const validatedParams = validateInput(
+      deletePlaylistParamSchema,
+      req.params,
+    );
     const playlistInput = {
-      playlistId: req.params.id,
+      id: validatedParams.id,
       userId: req.user.id,
     };
 

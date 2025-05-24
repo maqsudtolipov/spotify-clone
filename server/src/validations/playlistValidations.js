@@ -9,4 +9,12 @@ const createPlaylistSchema = Joi.object({
   name: Joi.string().min(3).max(24).default("Your Playlist"),
 });
 
-module.exports = { getPlaylistParamSchema, createPlaylistSchema };
+const deletePlaylistParamSchema = Joi.object({
+  id: Joi.string().custom(objectIdValidator, "ObjectId validation").required(),
+});
+
+module.exports = {
+  getPlaylistParamSchema,
+  createPlaylistSchema,
+  deletePlaylistParamSchema,
+};
