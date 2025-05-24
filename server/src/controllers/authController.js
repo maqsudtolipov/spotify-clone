@@ -1,15 +1,16 @@
-const AppError = require("../utils/AppError");
 const authService = require("../services/authService");
 const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
+const validateInput = require("../utils/validateInput");
+const { signUpSchema } = require("../validations/authValidations");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const inputData = req.body;
-    const newUser = await authService.signupUser(inputData);
+    const validatedInput = validateInput(signUpSchema, req.body);
+    const newUser = await authService.signupUser(validatedInput);
 
     res.status(201).json({
       status: "success",
