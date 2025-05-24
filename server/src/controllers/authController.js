@@ -9,8 +9,7 @@ const { signUpSchema, loginSchema } = require("../validations/authValidations");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const validatedInput = validateInput(signUpSchema, req.body);
-    const newUser = await authService.signupUser(validatedInput);
+    const newUser = await authService.signupUser(req.body);
 
     res.status(201).json({
       status: "success",
@@ -27,8 +26,7 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const validatedInput = validateInput(loginSchema, req.body);
-    const user = await authService.loginUser(validatedInput);
+    const user = await authService.loginUser(req.body);
 
     // Generate and attach tokens
     attachAccessCookie(user.id, res);
