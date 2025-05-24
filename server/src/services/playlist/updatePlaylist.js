@@ -1,6 +1,7 @@
 const Playlist = require("../../models/playlistModel");
 const AppError = require("../../utils/AppError");
 const uploadFiles = require("../../utils/uploadFiles");
+const uploadFile = require("../file/uploadFile");
 
 const updatePlaylist = async (playlistInput) => {
   const playlist = await Playlist.findById(playlistInput.playlistId)
@@ -18,22 +19,12 @@ const updatePlaylist = async (playlistInput) => {
     throw new AppError("You don't have permission to perform this action", 403);
   }
 
-  // TODO: too complex
-  // Upload req img to cloud and save to DB
-  let imgFile = playlist.img.id;
-  if (playlistInput.imgBuffer) {
-    const uploadedFile = await uploadFiles(
-      {
-        file: playlistInput.imgBuffer,
-        fileName: playlistInput.imgFilename,
-        folder: "playlists/",
-      },
-      playlist.img.isDefault,
-      playlist.img.fileId,
-      playlist.img.id,
-    );
-    imgFile = uploadedFile.id;
-  }
+  const newFileId = await uploadFile(
+    playlist.img.id,
+    playlistInput.imgFile,
+    "playlists/",
+  );
+  const imgFile = newFileId || playlist.img.id;
 
   return Playlist.findByIdAndUpdate(
     playlistInput.playlistId,

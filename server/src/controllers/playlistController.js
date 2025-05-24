@@ -50,6 +50,7 @@ exports.updatePlaylist = async (req, res, next) => {
       imgBuffer: req.files?.img?.[0]?.buffer,
       imgFilename: req.files?.img?.[0]?.filename,
       isPublic: req.body?.isPublic,
+      imgFile: req.files.img[0],
     };
     const updatedPlaylist = await updatePlaylist(playlistInput);
 
