@@ -7,14 +7,18 @@ const {
   getPlaylistParamSchema,
   createPlaylistSchema,
   deletePlaylistParamSchema,
+  updatePlaylistParamSchema,
+  updatePlaylistSchema,
 } = require("../validations/playlistValidations");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
     const validatedParams = validateInput(getPlaylistParamSchema, req.params);
 
+    console.log(validatedParams);
+
     const playlistInput = {
-      id: validatedParams.id,
+      playlistId: validatedParams.id,
       userId: req.user.id,
     };
     const playlist = await getPlaylist(playlistInput);
@@ -51,15 +55,24 @@ exports.createPlaylist = async (req, res, next) => {
 
 exports.updatePlaylist = async (req, res, next) => {
   try {
-    // FIXME: Too complicated
-    const playlistInput = {
-      userId: req.user?.id,
-      playlistId: req.params?.id,
-      imgFile: req.files.img[0],
+    const validatedParams = validateInput(
+      updatePlaylistParamSchema,
+      req.params,
+    );
+
+    const validatedBody = validateInput(updatePlaylistSchema, {
       name: req.body?.name,
       description: req.body?.description,
       isPublic: req.body?.isPublic,
+      imgFile: req.files?.img?.[0],
+    });
+
+    const playlistInput = {
+      ...validatedBody,
+      playlistId: validatedParams.id,
+      userId: req.user.id,
     };
+
     const updatedPlaylist = await updatePlaylist(playlistInput);
 
     res.status(200).send({
