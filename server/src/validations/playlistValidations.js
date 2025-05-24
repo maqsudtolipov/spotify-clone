@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { objectIdValidator } = require("./helperValidations");
+const { objectIdValidator } = require("./validationHelpers");
 
 // Get playlist
 const getPlaylistParamSchema = Joi.object({
