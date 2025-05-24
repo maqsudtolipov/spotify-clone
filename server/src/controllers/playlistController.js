@@ -9,13 +9,13 @@ const {
   deletePlaylistParamSchema,
   updatePlaylistParamSchema,
   updatePlaylistSchema,
+  removePlaylistSchema,
+  savePlaylistSchema,
 } = require("../validations/playlistValidations");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
     const validatedParams = validateInput(getPlaylistParamSchema, req.params);
-
-    console.log(validatedParams);
 
     const playlistInput = {
       playlistId: validatedParams.id,
@@ -107,8 +107,10 @@ exports.deletePlaylist = async (req, res, next) => {
 
 exports.savePlaylistToLibrary = async (req, res, next) => {
   try {
+    const validatedParams = validateInput(savePlaylistSchema, req.params);
+
     const playlistInput = {
-      playlistId: req.params?.id,
+      playlistId: validatedParams.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };
@@ -126,8 +128,10 @@ exports.savePlaylistToLibrary = async (req, res, next) => {
 
 exports.removePlaylistFromLibrary = async (req, res, next) => {
   try {
+    const validatedParams = validateInput(removePlaylistSchema, req.params);
+
     const playlistInput = {
-      playlistId: req.params?.id,
+      playlistId: validatedParams.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };

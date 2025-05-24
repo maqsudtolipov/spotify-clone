@@ -28,10 +28,22 @@ const deletePlaylistParamSchema = Joi.object({
   id: Joi.string().custom(objectIdValidator, "ObjectId validation").required(),
 });
 
+// Save playlist
+const savePlaylistSchema = Joi.object({
+  id: Joi.string().custom(objectIdValidator, "ObjectId validation").required(),
+});
+
+// Remove playlist
+const removePlaylistSchema = Joi.object({
+  id: Joi.string().custom(objectIdValidator, "ObjectId validation").required(),
+});
+
 module.exports = {
   getPlaylistParamSchema,
   createPlaylistSchema,
   updatePlaylistParamSchema,
   updatePlaylistSchema,
   deletePlaylistParamSchema,
+  savePlaylistSchema,
+  removePlaylistSchema,
 };
