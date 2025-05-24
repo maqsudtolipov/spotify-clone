@@ -6,6 +6,8 @@ const RefreshToken = require("../models/refreshTokenModel");
 const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 
 exports.signupUser = async (signUpInput) => {
+  const { name, email, password, passwordConfirm, isArtist } = signUpInput;
+
   // Check if the user already exists
   const existingUser = await User.findOne({ email: signUpInput.email });
   if (existingUser) {
