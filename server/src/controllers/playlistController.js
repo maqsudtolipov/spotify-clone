@@ -4,7 +4,6 @@ const createPlaylist = require("../services/playlist/createPlaylist");
 const updatePlaylist = require("../services/playlist/updatePlaylist");
 const validateInput = require("../utils/validateInput");
 const {
-  getPlaylistParamSchema,
   createPlaylistSchema,
   deletePlaylistParamSchema,
   updatePlaylistParamSchema,
@@ -15,10 +14,8 @@ const {
 
 exports.getPlaylist = async (req, res, next) => {
   try {
-    const validatedParams = validateInput(getPlaylistParamSchema, req.params);
-
     const playlistInput = {
-      playlistId: validatedParams.id,
+      playlistId: req.params.id,
       userId: req.user.id,
     };
     const playlist = await getPlaylist(playlistInput);
@@ -34,10 +31,8 @@ exports.getPlaylist = async (req, res, next) => {
 
 exports.createPlaylist = async (req, res, next) => {
   try {
-    const validatedInput = validateInput(createPlaylistSchema, req.body);
-
     const playlistInput = {
-      name: validatedInput.name,
+      name: req.body.name,
       userId: req.user.id,
       libraryId: req.user.library,
     };
@@ -55,21 +50,12 @@ exports.createPlaylist = async (req, res, next) => {
 
 exports.updatePlaylist = async (req, res, next) => {
   try {
-    const validatedParams = validateInput(
-      updatePlaylistParamSchema,
-      req.params,
-    );
-
-    const validatedBody = validateInput(updatePlaylistSchema, {
-      name: req.body?.name,
-      description: req.body?.description,
-      isPublic: req.body?.isPublic,
-      imgFile: req.files?.img?.[0],
-    });
-
     const playlistInput = {
-      ...validatedBody,
-      playlistId: validatedParams.id,
+      name: req.body.name,
+      description: req.body.description,
+      isPublic: req.body.isPublic,
+      imgFile: req.files?.img?.[0],
+      playlistId: req.params.id,
       userId: req.user.id,
     };
 
@@ -86,12 +72,8 @@ exports.updatePlaylist = async (req, res, next) => {
 
 exports.deletePlaylist = async (req, res, next) => {
   try {
-    const validatedParams = validateInput(
-      deletePlaylistParamSchema,
-      req.params,
-    );
     const playlistInput = {
-      id: validatedParams.id,
+      playlistId: req.params.id,
       userId: req.user.id,
     };
 
@@ -107,10 +89,8 @@ exports.deletePlaylist = async (req, res, next) => {
 
 exports.savePlaylistToLibrary = async (req, res, next) => {
   try {
-    const validatedParams = validateInput(savePlaylistSchema, req.params);
-
     const playlistInput = {
-      playlistId: validatedParams.id,
+      playlistId: req.params.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };
@@ -128,10 +108,8 @@ exports.savePlaylistToLibrary = async (req, res, next) => {
 
 exports.removePlaylistFromLibrary = async (req, res, next) => {
   try {
-    const validatedParams = validateInput(removePlaylistSchema, req.params);
-
     const playlistInput = {
-      playlistId: validatedParams.id,
+      playlistId: req.params.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };
