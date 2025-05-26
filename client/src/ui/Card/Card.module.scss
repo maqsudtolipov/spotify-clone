@@ -1,7 +1,7 @@
 .card {
   @apply p-3;
   @apply relative;
-  @apply bg-white bg-opacity-0 rounded-md cursor-pointer;
+  @apply bg-white bg-opacity-0 rounded-md cursor-pointer select-none;
 
   &:hover {
     @apply bg-opacity-5;

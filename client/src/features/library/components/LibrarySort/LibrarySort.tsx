@@ -13,7 +13,7 @@ const LibrarySort = () => {
 
   const renderDropdownItem = (
     label: string,
-    sortType: 'alphabetical' | 'recentlyAdded'
+    sortType: 'alphabetical' | 'recentlyAdded',
   ) => {
     return (
       <DropdownItem
@@ -27,7 +27,7 @@ const LibrarySort = () => {
   };
 
   return (
-    <div className={styles.librarySearchFilter}>
+    <div className={styles.librarySearchFilter} role="button">
       <Dropdown>
         <DropdownTrigger className={styles.librarySearchButton}>
           <span>Sort</span>
