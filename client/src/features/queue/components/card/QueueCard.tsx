@@ -31,8 +31,6 @@ const QueueCard = ({
 }: QueueCardProps) => {
   const { img, name, artist } = data;
 
-  console.log(data);
-
   return (
     <li
       className={`${styles.libraryCard} ${isActive ? styles.libraryCardActive : ''}`}
