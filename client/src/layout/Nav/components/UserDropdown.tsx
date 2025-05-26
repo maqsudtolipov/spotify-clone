@@ -22,7 +22,7 @@ const UserDropdown = () => {
       <DropdownTrigger>
         <NavTooltip
           trigger={
-            <div className="size-12 p-1 flex items-center justify-center bg-neutral-800 rounded-full overflow-hidden">
+            <div className="size-12 p-1 flex items-center justify-center bg-neutral-800 rounded-full overflow-hidden select-none cursor-pointer">
               <img
                 src={data.img.url}
                 alt={`${data.name} profile photo`}

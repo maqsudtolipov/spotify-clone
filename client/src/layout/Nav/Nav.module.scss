@@ -7,6 +7,9 @@
   }
 }
 
-.logo {
-  @apply ml-5 text-2xl font-bold;
+.logo,
+.logo:link,
+.logo:visited {
+  @apply inline-block;
+  @apply ml-5 text-xl font-bold select-none;
 }
