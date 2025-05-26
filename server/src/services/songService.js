@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 const AppError = require("../utils/AppError");
 const uploadFiles = require("../utils/uploadFiles");
 const Playlist = require("../models/playlistModel");
-const PlayCount = require("../feature/playCount/playCountModel");
+const PlayCount = require("../models/playCountModel");
 const songHelpers = require("../helpers/songHelpers");
 
 exports.uploadAndCreateSong = async (songInput) => {

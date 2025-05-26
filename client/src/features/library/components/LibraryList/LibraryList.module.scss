@@ -9,7 +9,7 @@
 }
 
 .list {
-  @apply h-full p-2 overflow-y-scroll;
+  @apply h-full p-2 overflow-y-auto;
 }
 
 .listCollapsed {

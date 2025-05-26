@@ -1,33 +1,50 @@
 const Song = require("../models/songModel");
+const redisClient = require("./redisClient");
 
-let topSongsCache = [];
-let newestSongsCache = [];
+const topSongsKey = "cache:topSongs";
+const newestSongsKey = "cache:newestSongs";
 
 // Top songs
-const getTopSongsCache = () => topSongsCache;
+const getTopSongsCache = async () => {
+  const cached = await redisClient.get(topSongsKey);
+  if (cached) return JSON.parse(cached);
+  return updateTopSongsCache();
+};
 
 const updateTopSongsCache = async () => {
-  topSongsCache = await Song.find()
+  const songs = await Song.find()
     .sort({ plays: -1 })
     .limit(10)
     .populate({ path: "song img", select: "url" });
-  return topSongsCache;
+
+  await redisClient.set(topSongsKey, JSON.stringify(songs), {
+    EX: 60 * 60 * 1000, // 1 hour
+  });
+
+  return songs;
 };
 
 // Newest songs
-const getNewestSongsCache = () => newestSongsCache;
+const getNewestSongsCache = async () => {
+  const cached = await redisClient.get(newestSongsKey);
+  if (cached) return JSON.parse(cached);
+  return updateNewestSongsCache();
+};
 
 const updateNewestSongsCache = async () => {
-  newestSongsCache = await Song.find()
+  const songs = await Song.find()
     .sort({ createdAt: -1 })
     .limit(10)
     .populate({ path: "song img", select: "url" });
-  return newestSongsCache;
+
+  await redisClient.set(newestSongsKey, JSON.stringify(songs), {
+    EX: 60 * 60 * 1000, // 1 hour
+  });
+
+  return songs;
 };
 
 module.exports = {
-  topSongsCache,
-  newestSongsCache,
   getTopSongsCache,
   getNewestSongsCache,
   updateTopSongsCache,

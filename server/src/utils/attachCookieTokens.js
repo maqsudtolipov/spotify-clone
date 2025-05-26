@@ -18,7 +18,10 @@ exports.attachAccessCookie = (userId, res) => {
     secure: process.env.NODE_ENV === "production",
     path: "/",
     sameSite: process.env.NODE_ENV === "production" ? "lax" : "strict",
-    domain: process.env.NODE_ENV === "production" ? process.env.CLIENT_DOMAIN : "localhost",
+    domain:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_DOMAIN
+        : "localhost",
   };
 
   res.cookie("accessToken", accessToken, cookieOptions);
@@ -34,7 +37,9 @@ exports.attachAccessCookie = (userId, res) => {
  */
 exports.attachRefreshCookie = (userId, res) => {
   const refreshToken = generateRefreshToken(userId);
-  const expiresAt = new Date(Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION));
+  const expiresAt = new Date(
+    Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION),
+  );
 
   const cookieOptions = {
     expires: expiresAt,
@@ -42,7 +47,10 @@ exports.attachRefreshCookie = (userId, res) => {
     secure: process.env.NODE_ENV === "production",
     path: "/api/auth/refresh-token",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-    domain: process.env.NODE_ENV === "production" ? process.env.CLIENT_DOMAIN : "localhost",
+    domain:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_DOMAIN
+        : "localhost",
   };
 
   res.cookie("refreshToken", refreshToken, cookieOptions);

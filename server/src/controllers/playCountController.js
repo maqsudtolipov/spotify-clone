@@ -1,5 +1,5 @@
-const Song = require("../../models/songModel");
-const PlayCount = require("./playCountModel");
+const Song = require("../models/songModel");
+const PlayCount = require("../models/playCountModel");
 
 exports.migrateCounts = async (req, res, next) => {
   const allSongs = await Song.find().select("id plays");

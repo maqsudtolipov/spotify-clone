@@ -50,7 +50,7 @@ const Home = () => {
             type="song"
           />
           <CardsList
-            title="Your Favourite Artists"
+            title="Recommended Artists"
             shrink={true}
             items={recommendedArtists}
             type="artist"

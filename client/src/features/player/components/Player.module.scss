@@ -1,4 +1,4 @@
 .player {
   @apply p-4;
-  @apply grid grid-cols-[1fr_1fr_1fr] col-[1_/_-1] row-[3_/_4];
+  @apply grid grid-cols-[1fr_1fr_1fr] col-[1_/_-1] row-[3_/_4] select-none;
 }

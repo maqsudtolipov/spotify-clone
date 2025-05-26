@@ -13,12 +13,12 @@ const SongInfo = () => {
     useAppSelector((state) => state.user?.data?.likedSongs?.songs) || [];
   const dispatch = useAppDispatch();
 
-  const handleLikeSong = (id: string) => {
-    dispatch(likeSong({ id }));
-  };
+  const toggleLikeDislike = (e) => {
+    e.currentTarget.blur();
 
-  const handleDislikeSong = (id: string) => {
-    dispatch(dislikeSong({ id }));
+    isSongLiked(song._id, likedSongs)
+      ? dispatch(dislikeSong({ id: song._id }))
+      : dispatch(likeSong({ id: song._id }));
   };
 
   if (!song) return <div></div>;
@@ -34,12 +34,9 @@ const SongInfo = () => {
       </div>
       <button
         className={`${styles.likeBtn} ${isSongLiked(song._id, likedSongs) ? styles.likeBtnActive : ''}`}
+        onClick={toggleLikeDislike}
       >
-        {isSongLiked(song._id, likedSongs) ? (
-          <RiHeartFill onClick={() => handleDislikeSong(song._id)} />
-        ) : (
-          <RiHeartLine onClick={() => handleLikeSong(song._id)} />
-        )}
+        {isSongLiked(song._id, likedSongs) ? <RiHeartFill /> : <RiHeartLine />}
       </button>
     </div>
   );

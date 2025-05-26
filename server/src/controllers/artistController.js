@@ -1,15 +1,11 @@
 const artistService = require("../services/artistService");
-const {
-  getRecommendedArtistsCache,
-  updateRecommendedArtistsCache,
-} = require("../cache/artistsCache");
+const { getRecommendedArtistsCache } = require("../cache/artistsCache");
 
 exports.getArtistById = async (req, res, next) => {
   try {
-    const artistInput = {
+    const artist = await artistService.getArtistById({
       artistId: req.params.id,
-    };
-    const artist = await artistService.getArtistById(artistInput);
+    });
 
     res.status(200).json({ status: "success", artist });
   } catch (e) {
@@ -20,11 +16,7 @@ exports.getArtistById = async (req, res, next) => {
 // Aggregation routes
 exports.getRecommendedArtists = async (req, res, next) => {
   try {
-    let artists = [];
-    const recommendedArtistsCache = getRecommendedArtistsCache();
-
-    if (recommendedArtistsCache.length > 1) artists = recommendedArtistsCache;
-    else artists = await updateRecommendedArtistsCache();
+    let artists = await getRecommendedArtistsCache();
 
     res.status(200).json({ status: "success", artists });
   } catch (e) {
