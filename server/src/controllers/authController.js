@@ -1,15 +1,15 @@
-const AppError = require("../utils/AppError");
 const authService = require("../services/authService");
 const {
   attachAccessCookie,
   attachRefreshCookie,
 } = require("../utils/attachCookieTokens");
 const RefreshToken = require("../models/refreshTokenModel");
+const validateInput = require("../utils/validateInput");
+const { signUpSchema, loginSchema } = require("../validations/authValidations");
 
 exports.signUp = async (req, res, next) => {
   try {
-    const inputData = req.body;
-    const newUser = await authService.signupUser(inputData);
+    const newUser = await authService.signupUser(req.body);
 
     res.status(201).json({
       status: "success",
@@ -26,8 +26,7 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const inputData = req.body;
-    const user = await authService.loginUser(inputData, res);
+    const user = await authService.loginUser(req.body);
 
     // Generate and attach tokens
     attachAccessCookie(user.id, res);

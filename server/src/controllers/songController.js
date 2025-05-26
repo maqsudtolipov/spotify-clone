@@ -12,19 +12,13 @@ const PlayCount = require("../models/playCountModel");
 
 exports.uploadSong = async (req, res, next) => {
   try {
-    if (!req.files.song || !req.files.img || !req.body.name) {
-      return next(
-        new AppError("All fields are required: song, img and name", 400),
-      );
-    }
-
     const songInput = {
       name: req.body.name,
+      artistId: req.user.id,
       songBuffer: req.files.song[0].buffer,
       songFilename: req.files.song[0].filename,
       imgBuffer: req.files.img[0].buffer,
       imgFilename: req.files.img[0].filename,
-      artistId: req.user.id,
       duration: req.files.song[0].duration,
     };
     const songs = await songService.uploadAndCreateSong(songInput);
@@ -114,9 +108,9 @@ exports.dislike = async (req, res, next) => {
 exports.addSongToPlaylist = async (req, res, next) => {
   try {
     const songInput = {
-      userId: req.user.id,
       songId: req.params.songId,
       playlistId: req.params.playlistId,
+      userId: req.user.id,
     };
     await songService.addSongToPlaylist(songInput);
 
@@ -131,9 +125,9 @@ exports.addSongToPlaylist = async (req, res, next) => {
 exports.removeSongFromPlaylist = async (req, res, next) => {
   try {
     const songInput = {
-      userId: req.user.id,
       songId: req.params.songId,
       playlistId: req.params.playlistId,
+      userId: req.user.id,
     };
     await songService.removeSongFromPlaylist(songInput);
 

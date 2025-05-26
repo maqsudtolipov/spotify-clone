@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 
 exports.search = async (req, res, next) => {
   try {
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit);
 
     const { songs, playlists, artists, users } =
       await searchService.searchAllModels(req.query.name, limit);

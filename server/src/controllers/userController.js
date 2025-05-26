@@ -12,7 +12,7 @@ exports.getAll = async (req, res, next) => {
 
 exports.getUserById = async (req, res, next) => {
   const userInput = {
-    userId: req.params?.id,
+    userId: req.params.id,
   };
   try {
     const user = await userService.getUserById(userInput);
@@ -38,10 +38,9 @@ exports.current = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
   try {
-    console.log(req.file);
     const userInput = {
+      name: req.body.name,
       userId: req.user?.id,
-      name: req.body?.name,
       img: req.file
         ? {
             file: req.file.buffer,

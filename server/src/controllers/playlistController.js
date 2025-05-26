@@ -2,6 +2,15 @@ const playlistService = require("../services/playlistService");
 const getPlaylist = require("../services/playlist/getPlaylist");
 const createPlaylist = require("../services/playlist/createPlaylist");
 const updatePlaylist = require("../services/playlist/updatePlaylist");
+const validateInput = require("../utils/validateInput");
+const {
+  createPlaylistSchema,
+  deletePlaylistParamSchema,
+  updatePlaylistParamSchema,
+  updatePlaylistSchema,
+  removePlaylistSchema,
+  savePlaylistSchema,
+} = require("../validations/playlistValidations");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -23,9 +32,9 @@ exports.getPlaylist = async (req, res, next) => {
 exports.createPlaylist = async (req, res, next) => {
   try {
     const playlistInput = {
-      name: "Your Playlist",
+      name: req.body.name,
       userId: req.user.id,
-      libraryId: req.user?.library,
+      libraryId: req.user.library,
     };
 
     const { playlist } = await createPlaylist(playlistInput);
@@ -41,15 +50,15 @@ exports.createPlaylist = async (req, res, next) => {
 
 exports.updatePlaylist = async (req, res, next) => {
   try {
-    // FIXME: Too complicated
     const playlistInput = {
-      userId: req.user?.id,
-      playlistId: req.params?.id,
-      imgFile: req.files.img[0],
-      name: req.body?.name,
-      description: req.body?.description,
-      isPublic: req.body?.isPublic,
+      name: req.body.name,
+      description: req.body.description,
+      isPublic: req.body.isPublic,
+      imgFile: req.files?.img?.[0],
+      playlistId: req.params.id,
+      userId: req.user.id,
     };
+
     const updatedPlaylist = await updatePlaylist(playlistInput);
 
     res.status(200).send({
@@ -81,7 +90,7 @@ exports.deletePlaylist = async (req, res, next) => {
 exports.savePlaylistToLibrary = async (req, res, next) => {
   try {
     const playlistInput = {
-      playlistId: req.params?.id,
+      playlistId: req.params.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };
@@ -100,7 +109,7 @@ exports.savePlaylistToLibrary = async (req, res, next) => {
 exports.removePlaylistFromLibrary = async (req, res, next) => {
   try {
     const playlistInput = {
-      playlistId: req.params?.id,
+      playlistId: req.params.id,
       userId: req.user.id,
       libraryId: req.user?.library,
     };

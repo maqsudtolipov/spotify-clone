@@ -8,14 +8,6 @@ const InvalidAccessToken = require("../models/invalidAccessTokenModel");
 exports.signupUser = async (signUpInput) => {
   const { name, email, password, passwordConfirm, isArtist } = signUpInput;
 
-  // Check required fields
-  if (!email || !name || !password || !passwordConfirm) {
-    throw new AppError(
-      "Please provide name, email, password and passwordConfirm",
-      422,
-    );
-  }
-
   // Check if the user already exists
   const existingUser = await User.findOne({ email: signUpInput.email });
   if (existingUser) {
