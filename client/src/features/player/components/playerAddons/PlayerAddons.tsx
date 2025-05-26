@@ -71,7 +71,9 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
     }
   };
 
-  const toggleIsOpen = () => {
+  const toggleIsOpen = (e) => {
+    e.currentTarget.blur();
+
     isOpen ? dispatch(closeQueue()) : dispatch(openQueue());
   };
 

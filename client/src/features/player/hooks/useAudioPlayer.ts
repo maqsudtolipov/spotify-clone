@@ -98,6 +98,8 @@ const useAudioPlayer = () => {
   };
 
   const togglePlayPause = () => {
+    // e.currentTarget.blur();
+
     dispatch(playerTogglePlay());
 
     // if (!isPlaying) {
@@ -111,12 +113,16 @@ const useAudioPlayer = () => {
     // }
   };
 
-  const handlePlayNext = () => {
+  const handlePlayNext = (e) => {
+    e.currentTarget.blur();
+
     resetPlayer();
     dispatch(playNext());
   };
 
-  const handlePlayPrev = () => {
+  const handlePlayPrev = (e) => {
+    e.currentTarget.blur();
+
     resetPlayer();
     dispatch(playPrev());
   };
@@ -176,11 +182,13 @@ const useAudioPlayer = () => {
     }
   };
 
-  const toggleIsLooping = () => {
+  const toggleIsLooping = (e) => {
+    e.currentTarget.blur();
     setIsLooping((prev) => !prev);
   };
 
-  const handleToggleIsShuffled = () => {
+  const handleToggleIsShuffled = (e) => {
+    e.currentTarget.blur();
     dispatch(toggleIsShuffled());
   };
 
