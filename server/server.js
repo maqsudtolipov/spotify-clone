@@ -35,4 +35,4 @@ process.on("unhandledRejection", (err) => {
 
 // Cron jobs
 cron.schedule("0 */6 * * *", cleanupTokens);
-cron.schedule("0 * * * *", updateCache);
+// cron.schedule("0 * * * *", updateCache);
