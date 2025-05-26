@@ -141,11 +141,7 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
 
 exports.getTopSongs = async (req, res, next) => {
   try {
-    let songs = [];
-    const topSongsCache = getTopSongsCache();
-
-    if (topSongsCache.length >= 1) songs = topSongsCache;
-    else songs = await updateTopSongsCache();
+    let songs = await getTopSongsCache();
 
     res.status(200).json({
       status: "success",
@@ -158,11 +154,7 @@ exports.getTopSongs = async (req, res, next) => {
 
 exports.getNewestSongs = async (req, res, next) => {
   try {
-    let songs = [];
-    const newestSongsCache = getNewestSongsCache();
-
-    if (newestSongsCache.length >= 1) songs = newestSongsCache;
-    else songs = await updateNewestSongsCache();
+    let songs = await getNewestSongsCache();
 
     res.status(200).json({
       status: "success",
