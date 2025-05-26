@@ -1,5 +1,5 @@
 .tableHeader {
-  @apply border-b border-neutral-500 border-opacity-20;
+  @apply border-b border-neutral-500 border-opacity-20 select-none;
 
   td span {
     @apply inline-flex items-center;

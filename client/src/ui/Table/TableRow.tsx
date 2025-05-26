@@ -5,7 +5,7 @@ interface TableRowProps {
 }
 
 const TableRow = ({children }: TableRowProps) => {
-  return <tr>{children}</tr>;
+  return <tr className='select-none'>{children}</tr>;
 };
 
 export default TableRow;
