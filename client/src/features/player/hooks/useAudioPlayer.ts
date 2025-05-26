@@ -6,7 +6,7 @@ import {
   playPrev,
   toggleIsShuffled,
 } from '../../queue/queueSlice.ts';
-import axios from '../../../axios/axios'
+import axios from '../../../axios/axios';
 
 const incrementPlayCount = async (songId: string) => {
   try {
@@ -63,6 +63,31 @@ const useAudioPlayer = () => {
       // animationFrameRef.current = null;
     }
   }, [isPlaying]);
+
+  // Keyboard events
+  useEffect(() => {
+    dispatch(playerTogglePlay());
+
+    const handleSpace = (e) => {
+      const tagName = e.target.tagName.toLowerCase();
+      const isEditable = e.target.isContentEditable;
+      if (
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'button' ||
+        isEditable
+      )
+        return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlayPause();
+      }
+    };
+
+    window.addEventListener('keydown', handleSpace);
+    return () => window.removeEventListener('keydown', handleSpace);
+  }, []);
 
   const resetPlayer = () => {
     if (progressElementRef.current) {
