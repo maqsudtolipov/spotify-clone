@@ -188,6 +188,8 @@ exports.play = async (req, res, next) => {
       await redisClient.hIncrBy(redisKey, "count", 1);
     }
 
+    await redisClient.expire(redisKey, 7 * 24 * 60 * 60); // 7 days
+
     playData = await redisClient.hGetAll(redisKey);
 
     const currentTime = Date.now();
