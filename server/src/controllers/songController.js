@@ -9,6 +9,7 @@ const {
 } = require("../cache/songsCache");
 const playCountCache = require("../cache/playCountCache");
 const PlayCount = require("../models/playCountModel");
+const redisClient = require("../cache/redisClient");
 
 exports.uploadSong = async (req, res, next) => {
   try {
@@ -168,30 +169,46 @@ exports.getNewestSongs = async (req, res, next) => {
 // Plays
 exports.play = async (req, res, next) => {
   try {
-    const song = await Song.findById(req.params.id).populate(
+    const songId = req.params.id;
+    const song = await Song.findById(songId).populate(
       "playCount",
       "id updatedAt totalPlays",
     );
 
-    playCountCache.increaseCount(song.id);
-    const songCache = playCountCache.getPlayCount(song.id);
+    const redisKey = `playcount:${songId}`;
+
+    let playData = await redisClient.hGetAll(redisKey);
+
+    if (!playData.count) {
+      await redisClient.hSet(redisKey, {
+        count: 1,
+        createdAt: Date.now().toString(),
+      });
+    } else {
+      await redisClient.hIncrBy(redisKey, "count", 1);
+    }
+
+    playData = await redisClient.hGetAll(redisKey);
 
     const currentTime = Date.now();
-    const updateTime = new Date(songCache.createdAt).getTime();
+    const createdAt = parseInt(playData.createdAt, 10);
+    const twentyFourHours = 24 * 60 * 60 * 1000;
 
-    if (currentTime - updateTime > 24 * 60 * 60 * 1000) {
+    if (currentTime - createdAt > twentyFourHours) {
+      const count = parseInt(playData.count, 10);
+
       const newData = {
-        date: updateTime,
-        count: songCache.count,
+        date: createdAt,
+        count,
       };
 
       await PlayCount.findByIdAndUpdate(song.playCount.id, {
-        totalPlays: song.playCount.totalPlays + songCache.count,
-        updatedAt: songCache.createdAt,
+        $inc: { totalPlays: count },
+        updatedAt: new Date(createdAt),
         $push: { dailyPlays: newData },
       });
 
-      playCountCache.resetCount(song.id);
+      await redisClient.del(redisKey);
     }
 
     res.status(200).json({
