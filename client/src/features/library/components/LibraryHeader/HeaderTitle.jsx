@@ -16,7 +16,7 @@ const HeaderTitle = ({ isCollapsed, onCollapse }) => {
     <div
       className={`${styles.title} ${isCollapsed ? styles.titleCollapsed : ''}`}
     >
-      <div className={styles.content} onClick={onCollapse}>
+      <div className={styles.content} onClick={onCollapse} role='button'>
         <RiArchiveStackLine />
         <span>Your Library</span>
       </div>

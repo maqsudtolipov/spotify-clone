@@ -34,3 +34,12 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
+
+button,
+[role='button'],
+a,
+svg,
+img,
+label {
+  user-select: none;
+}
