@@ -39,11 +39,14 @@ const UserDropdown = () => {
       </DropdownTrigger>
 
       <DropdownList>
-        <DropdownItem>Home</DropdownItem>
-        <DropdownItem onClick={() => navigate(`/${data.role}/${data.id}`)}>
+        <DropdownItem onClick={() => navigate(`/`)}>Home</DropdownItem>
+        <DropdownItem
+          underline
+          onClick={() => navigate(`/${data.role}/${data.id}`)}
+        >
           Profile
         </DropdownItem>
-        <DropdownItem underline={true}>Settings</DropdownItem>
+        {/*<DropdownItem underline={true}>Settings</DropdownItem>*/}
         <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
       </DropdownList>
     </Dropdown>
