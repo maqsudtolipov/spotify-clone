@@ -8,9 +8,9 @@ const CenterNav = () => {
   return (
     <div className={styles.nav__center}>
       <NavTooltip
-        trigger={<NavButton icon={<RiHome4Line />} />}
+        trigger={<NavButton/>}
         position="bottom"
-        content="Menu"
+        content="Home"
       />
       <NavForm />
     </div>
