@@ -31,6 +31,8 @@ const QueueCard = ({
 }: QueueCardProps) => {
   const { img, name, artist } = data;
 
+  console.log(data);
+
   return (
     <li
       className={`${styles.libraryCard} ${isActive ? styles.libraryCardActive : ''}`}
@@ -41,7 +43,7 @@ const QueueCard = ({
       {...rest}
     >
       <CardImage src={img.url} name={`Cover for ${name}`} />
-      <CardInfo name={name} owner={artist} />
+      <CardInfo name={name} owner={artist.name} />
       <RiDraggable className={styles.cardIcon} />
     </li>
   );
