@@ -1,11 +1,16 @@
 const User = require("../models/userModel");
+const redisClient = require("./redisClient");
 
-let recommendedArtistsCache = [];
+const recommendedArtistsKey = "cache:recommendedArtists";
 
 // Recommended artists
-const getRecommendedArtistsCache = (songId) => recommendedArtistsCache;
+const getRecommendedArtistsCache = async () => {
+  const cached = await redisClient.get(recommendedArtistsKey);
+  if (cached) return JSON.parse(cached);
+  return updateRecommendedArtistsCache();
+};
 
-const updateRecommendedArtistsCache = async (songId) => {
+const updateRecommendedArtistsCache = async () => {
   // Aggregate random 10 artists
   const artistIds = await User.aggregate([
     { $match: { role: "artist" } },
@@ -27,12 +32,14 @@ const updateRecommendedArtistsCache = async (songId) => {
     artists.push(artist);
   }
 
-  recommendedArtistsCache = artists;
-  return recommendedArtistsCache;
+  await redisClient.set(recommendedArtistsKey, JSON.stringify(artists), {
+    EX: 60 * 60 * 1000, // 1 hour
+  });
+
+  return artists;
 };
 
 module.exports = {
-  recommendedArtistsCache,
   getRecommendedArtistsCache,
   updateRecommendedArtistsCache,
 };

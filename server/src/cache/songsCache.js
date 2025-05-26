@@ -1,9 +1,6 @@
 const Song = require("../models/songModel");
 const redisClient = require("./redisClient");
 
-let topSongsCache = [];
-let newestSongsCache = [];
-
 const topSongsKey = "cache:topSongs";
 const newestSongsKey = "cache:newestSongs";
 
@@ -48,8 +45,6 @@ const updateNewestSongsCache = async () => {
 };
 
 module.exports = {
-  topSongsCache,
-  newestSongsCache,
   getTopSongsCache,
   getNewestSongsCache,
   updateTopSongsCache,
