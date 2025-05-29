@@ -34,15 +34,17 @@ const PlaylistHeaderActions = ({
       </DropdownTrigger>
 
       <DropdownList position="bottom-right">
-        <EditPlaylistDialog />
         {isPersonalPlaylist && (
-          <DropdownItem
-            PreIcon={RiDeleteBin6Line}
-            underline={true}
-            onClick={() => handleDeletePlaylist(id)}
-          >
-            Delete
-          </DropdownItem>
+          <>
+            <EditPlaylistDialog />
+            <DropdownItem
+              PreIcon={RiDeleteBin6Line}
+              underline={true}
+              onClick={() => handleDeletePlaylist(id)}
+            >
+              Delete
+            </DropdownItem>
+          </>
         )}
 
         <DropdownItem PreIcon={RiFileCopyLine} onClick={handleCopyLink}>
