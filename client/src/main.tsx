@@ -10,17 +10,15 @@ import { Toaster } from 'react-hot-toast';
 const root = document.getElementById('root') as HTMLDivElement;
 
 createRoot(root).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppRoutes />
-        <Toaster
-          position="bottom-center"
-          containerStyle={{
-            bottom: 120,
-          }}
-        />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <AppRoutes />
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 120,
+        }}
+      />
+    </BrowserRouter>
+  </Provider>,
 );

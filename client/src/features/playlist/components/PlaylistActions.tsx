@@ -5,7 +5,11 @@ import { Playlist } from '../playlistTypes.ts';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts';
 import { removePlaylist, savePlaylist } from '../playlistThunks.ts';
 import PlaylistHeaderActions from './PlaylistHeaderActions.tsx';
-import { playerSetList, playerTogglePlay, setItems } from '../../queue/queueSlice.ts';
+import {
+  playerSetList,
+  playerTogglePlay,
+  setItems,
+} from '../../queue/queueSlice.ts';
 
 interface PlaylistActionsProps {
   data: Playlist;
@@ -28,7 +32,7 @@ const PlaylistActions = ({ data }: PlaylistActionsProps) => {
     if (data.id === currentListId) {
       dispatch(playerTogglePlay());
     } else {
-      dispatch(playerSetList(data.id));
+      dispatch(playerSetList({ id: data.id, name: data.name }));
       dispatch(setItems(data.songs));
       if (!isPlaying) dispatch(playerTogglePlay());
     }

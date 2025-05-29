@@ -9,6 +9,7 @@ const initialState: Queue = {
   originalItems: [],
   isPlaying: false,
   currentListId: '',
+  currentListName: '',
 };
 
 const queueSlice = createSlice({
@@ -40,8 +41,12 @@ const queueSlice = createSlice({
     playerTogglePlay: (state) => {
       state.isPlaying = !state.isPlaying;
     },
-    playerSetList: (state, action: PayloadAction<string>) => {
-      state.currentListId = action.payload;
+    playerSetList: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>,
+    ) => {
+      state.currentListId = action.payload.id;
+      state.currentListName = action.payload.name;
     },
     setItems: (state, action) => {
       state.originalItems = action.payload;

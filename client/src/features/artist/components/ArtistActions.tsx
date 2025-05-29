@@ -44,7 +44,7 @@ const ArtistActions = ({ data }) => {
     if (data.id === currentListId) {
       dispatch(playerTogglePlay());
     } else {
-      dispatch(playerSetList(data.id));
+      dispatch(playerSetList({ id: data.id, name: data.name }));
       dispatch(setItems(data.songs));
       if (!isPlaying) dispatch(playerTogglePlay());
     }
