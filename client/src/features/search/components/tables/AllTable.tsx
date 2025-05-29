@@ -22,7 +22,7 @@ const AllTable = ({ songs, query }) => {
   const currentListId = useAppSelector((state) => state.queue.currentListId);
   const isPlaying = useAppSelector((state) => state.queue.isPlaying);
   const currentSong = useAppSelector((state) => state.queue.items[0]);
-  const playlistId = `allSongs=${query}`;
+  const playlistId = `mainSongs=${query}`;
 
   const likedSongs = useAppSelector(
     (state) => state.user?.data?.likedSongs?.songs ?? [],
@@ -65,7 +65,7 @@ const AllTable = ({ songs, query }) => {
           {songs.map((song, index) => {
             const isLiked = likedSongs.includes(song.id);
             const isActiveSong =
-              `allSongs=${query}` === currentListId &&
+              `mainSongs=${query}` === currentListId &&
               currentSong?.id === song.id;
 
             return (

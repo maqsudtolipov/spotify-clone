@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { searchSongs } from '../../searchThunks.ts';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll.ts';
@@ -17,9 +16,8 @@ const SearchSongs = () => {
 
   useEffect(() => {
     if (query === songsLastQuery) return; // If query not changed, don't fetching again
-    console.log(query, songsLastQuery);
     dispatch(searchSongs({ query }));
-  }, [query, dispatch]);
+  }, [query, songsLastQuery, dispatch]);
 
   const helperElRef = useInfiniteScroll(
     dispatch,
