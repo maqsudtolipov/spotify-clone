@@ -10,7 +10,12 @@ import { dislikeSong, likeSong } from '../../../user/userThunks.ts';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { Song } from '../../playlistTypes.ts';
 import visualizerSvg from '../../../../assets/icons/visualizer.svg';
-import { moveSongToTop, playerTogglePlay } from '../../../queue/queueSlice.ts';
+import {
+  moveSongToTop,
+  playerSetList,
+  playerTogglePlay,
+  setItems,
+} from '../../../queue/queueSlice.ts';
 
 interface PlaylistTableBodyProps {
   sortedItems: Song[];
@@ -18,7 +23,9 @@ interface PlaylistTableBodyProps {
 
 const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
   const isPlaying = useAppSelector((state) => state.queue.isPlaying);
-  const currentPlaylistId = useAppSelector((state) => state.playlist.data.id);
+  const playlistId = useAppSelector((state) => state.playlist.data.id);
+  const playlistName = useAppSelector((state) => state.playlist.data.name);
+  const songs = useAppSelector((state) => state.playlist.data.songs);
   const currentListId = useAppSelector((state) => state.queue.currentListId);
   const currentSong = useAppSelector((state) => state.queue.items[0]);
   const likedSongs = useAppSelector(
@@ -30,8 +37,13 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
     dispatch(isLiked ? dislikeSong({ id }) : likeSong({ id }));
 
   const handleChangeSong = (id: string) => {
+    if (currentListId === playlistId) {
+      if (!isPlaying) dispatch(playerTogglePlay());
+    } else {
+      dispatch(playerSetList({ id: playlistId, name: playlistName }));
+      dispatch(setItems(songs));
+    }
     dispatch(moveSongToTop(id));
-    if (!isPlaying) dispatch(playerTogglePlay());
   };
 
   return (
@@ -39,7 +51,7 @@ const PlaylistTableBody = ({ sortedItems }: PlaylistTableBodyProps) => {
       {sortedItems.map((song, index) => {
         const isLiked = likedSongs.includes(song.id);
         const isActiveSong =
-          currentPlaylistId === currentListId && currentSong?.id === song.id;
+          playlistId === currentListId && currentSong?.id === song.id;
 
         return (
           <TableRow key={song.name}>

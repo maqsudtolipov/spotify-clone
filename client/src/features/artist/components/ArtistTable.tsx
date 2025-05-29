@@ -11,7 +11,12 @@ import { dislikeSong, likeSong } from '../../user/userThunks.ts';
 import { selectArtist } from '../artistSlice.ts';
 import ArtistSongActionsCell from './actionsCell/ArtistSongActionsCell.tsx';
 import visualizerSvg from '../../../assets/icons/visualizer.svg';
-import { moveSongToTop, playerTogglePlay } from '../../queue/queueSlice.ts';
+import {
+  moveSongToTop,
+  playerSetList,
+  playerTogglePlay,
+  setItems,
+} from '../../queue/queueSlice.ts';
 
 const isSongLiked = (id: string, likedSongs: string[]) => {
   return likedSongs.includes(id);
@@ -38,9 +43,19 @@ const ArtistTable = () => {
     dispatch(dislikeSong({ id }));
   };
 
+  // const handleChangeSong = (id: string) => {
+  //   dispatch(moveSongToTop(id));
+  //   if (!isPlaying) dispatch(playerTogglePlay());
+  // };
+
   const handleChangeSong = (id: string) => {
+    if (currentListId === currentPlaylistId) {
+      if (!isPlaying) dispatch(playerTogglePlay());
+    } else {
+      dispatch(playerSetList({ id: currentPlaylistId, name: artist.name }));
+      dispatch(setItems(artist.songs));
+    }
     dispatch(moveSongToTop(id));
-    if (!isPlaying) dispatch(playerTogglePlay());
   };
 
   if (artist.songs.length < 1)
