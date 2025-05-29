@@ -18,4 +18,5 @@ export interface Queue {
   // Global player
   isPlaying: boolean;
   currentListId: string;
+  currentListName: string;
 }
