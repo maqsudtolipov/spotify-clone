@@ -23,6 +23,10 @@ router
   );
 
 router
+  .route("/recommended")
+  .get(ensureAuthenticated, playlistController.getRecommendedPlaylists);
+
+router
   .route("/:id")
   .get(
     ensureAuthenticated,
