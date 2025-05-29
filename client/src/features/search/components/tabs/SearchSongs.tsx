@@ -3,6 +3,7 @@ import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import { searchSongs } from '../../searchThunks.ts';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll.ts';
+import SongsTable from '../tables/SongsTable.tsx';
 
 const SearchSongs = () => {
   const {
@@ -11,13 +12,14 @@ const SearchSongs = () => {
     pagination: { currentPage, totalPages },
     apiStatus,
   } = useAppSelector((state) => state.search.songs);
-  const { query, tab } = useAppSelector((state) => state.search);
+  const { query } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (query === songsLastQuery) return; // If query not changed, don't fetching again
+    console.log(query, songsLastQuery);
     dispatch(searchSongs({ query }));
-  }, [tab, query, songsLastQuery, dispatch]);
+  }, [query, dispatch]);
 
   const helperElRef = useInfiniteScroll(
     dispatch,
@@ -33,7 +35,8 @@ const SearchSongs = () => {
     <>
       {songs && (
         <div>
-          <SortedTable items={songs} keyIdentifier={query} />
+          <SongsTable songs={songs} query={query} />
+          {/*<SortedTable items={songs} keyIdentifier={query} />*/}
           <div ref={helperElRef} className="h-px invisible">
             Scroll helper
           </div>

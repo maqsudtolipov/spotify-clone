@@ -13,6 +13,7 @@ interface LibraryCardData {
 
 const QueueList = () => {
   const items = useAppSelector((state) => state.queue.items);
+  const listId = useAppSelector((state) => state.queue.currentListId);
   const dispatch = useAppDispatch();
 
   const [dragOverId, setDragOverId] = useState<string>('');
@@ -58,7 +59,7 @@ const QueueList = () => {
         {items.length ? (
           items.map((item) => (
             <QueueCard
-              key={item.name}
+              key={`${listId}-${item.id}`}
               data={item}
               isActive={dragOverId === item.id}
               draggable={true}
@@ -71,7 +72,9 @@ const QueueList = () => {
             />
           ))
         ) : (
-          <p className='py-2 text-neutral-400 text-center'>There are no songs in the queue.</p>
+          <p className="py-2 text-neutral-400 text-center">
+            There are no songs in the queue.
+          </p>
         )}
       </ul>
     </div>

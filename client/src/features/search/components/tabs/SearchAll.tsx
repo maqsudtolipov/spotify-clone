@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts';
 import SortedTable from '../../../../ui/Table/custom/SortedTable/SortedTable.tsx';
 import { useEffect } from 'react';
 import { searchMain } from '../../searchThunks.ts';
+import AllTable from '../tables/AllTable.tsx';
 
 const SearchAll = () => {
   const tab = useAppSelector((state) => state.search.tab);
@@ -43,7 +44,7 @@ const SearchAll = () => {
       {songs.length && (
         <div className="mb-10">
           <Heading2>Songs</Heading2>
-          <SortedTable items={songs} />
+          <AllTable songs={songs} query={query} />
         </div>
       )}
 
