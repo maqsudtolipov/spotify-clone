@@ -11,6 +11,8 @@ const {
   removePlaylistSchema,
   savePlaylistSchema,
 } = require("../validations/playlistValidations");
+const { getNewestSongsCache } = require("../cache/songsCache");
+const { getRecommendedPlaylists } = require("../cache/playlistCache");
 
 exports.getPlaylist = async (req, res, next) => {
   try {
@@ -117,6 +119,20 @@ exports.removePlaylistFromLibrary = async (req, res, next) => {
 
     res.status(204).send({
       status: "success",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+// Aggregation
+exports.getRecommendedPlaylists = async (req, res, next) => {
+  try {
+    let playlists = await getRecommendedPlaylists();
+
+    res.status(200).json({
+      status: "success",
+      playlists,
     });
   } catch (e) {
     next(e);
