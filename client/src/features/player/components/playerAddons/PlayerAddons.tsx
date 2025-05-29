@@ -33,6 +33,29 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
     }
   }, []);
 
+  // Keyboard events
+  useEffect(() => {
+    const handleSpace = (e) => {
+      const tagName = e.target.tagName.toLowerCase();
+      const isEditable = e.target.isContentEditable;
+      if (
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'button' ||
+        isEditable
+      )
+        return;
+
+      if (e.code === 'KeyM') {
+        e.preventDefault();
+        toggleMute();
+      }
+    };
+
+    window.addEventListener('keydown', handleSpace);
+    return () => window.removeEventListener('keydown', handleSpace);
+  }, [isMuted]);
+
   const handleVolumeChange = () => {
     if (volumeElementRef.current && ref && 'current' in ref && ref.current) {
       const newVolume = Number(volumeElementRef.current.value);
@@ -112,7 +135,9 @@ const PlayerAddons = forwardRef<HTMLAudioElement, {}>((_, ref) => {
             {!isMuted && volume >= 66 && <IoVolumeHigh />}
           </div>
         </TooltipTrigger>
-        <TooltipContent position="top">{isMuted ? 'Unmute' : 'Mute'}</TooltipContent>
+        <TooltipContent position="top">
+          {isMuted ? 'Unmute' : 'Mute'}
+        </TooltipContent>
       </Tooltip>
 
       <input

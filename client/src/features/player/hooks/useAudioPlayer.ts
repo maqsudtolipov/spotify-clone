@@ -66,7 +66,7 @@ const useAudioPlayer = () => {
 
   // Keyboard events
   useEffect(() => {
-    dispatch(playerTogglePlay());
+    // dispatch(playerTogglePlay());
 
     const handleSpace = (e) => {
       const tagName = e.target.tagName.toLowerCase();
