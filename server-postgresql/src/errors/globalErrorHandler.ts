@@ -7,53 +7,46 @@ interface ResError extends Error {
   code?: string;
 }
 
-const productionError = (resError: ResError, res: Response) => {
-  if (resError.isOperational) {
-    res.status(resError.statusCode).json({
-      status: resError.status,
-      message: resError.message,
-      code: resError.code,
-    });
-  } else {
-    res.status(500).json({
-      status: "error",
-      message: "Something went wrong!",
+const sendError = (resError: ResError, devError: Error, res: Response) => {
+  const isDev = process.env.NODE_ENV === "development";
+  const isOperational = resError.isOperational;
+
+  const baseResponse = {
+    status: isOperational ? resError.status : "error",
+    message: isOperational ? resError.message : "Something went wrong!",
+    code: resError.code,
+  };
+
+  if (isDev) {
+    Object.assign(baseResponse, {
+      dev: {
+        message: devError.message,
+        error: devError,
+        stack: devError.stack,
+      },
     });
   }
-};
 
-const developmentError = (
-  resError: ResError,
-  devError: Error,
-  res: Response,
-) => {
-  res.status(resError.statusCode).json({
-    status: resError.status,
-    message: resError.message,
-    code: resError.code,
-    dev: {
-      message: devError.message,
-      error: devError,
-      stack: devError.stack,
-    },
-  });
+  res.status(resError.statusCode).json(baseResponse);
 };
 
 const globalErrorHandler = (
-  err: ResError,
+  err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-  const resError = Object.assign(err);
+  const resError: ResError = {
+    name: err.name,
+    message: err.message,
+    stack: err.stack,
+    statusCode: (err as any).statusCode || 500,
+    status: (err as any).status || "error",
+    isOperational: (err as any).isOperational ?? false,
+    code: (err as any).code,
+  };
 
-  if (process.env.NODE_ENV === "development") {
-    developmentError(resError, err, res);
-  } else if (process.env.NODE_ENV === "production") {
-    productionError(resError, res);
-  }
+  sendError(resError, err, res);
 };
 
 export default globalErrorHandler;
