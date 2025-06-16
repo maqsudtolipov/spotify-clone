@@ -4,7 +4,5 @@ interface LoginService {
 }
 
 export const loginService = async(data: LoginService) => {
-  res.status(200).json({
-    status: 'success',
-  })
+  return null;
 }
