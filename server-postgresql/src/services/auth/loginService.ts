@@ -12,6 +12,8 @@ export const loginService = async (data: LoginService) => {
   const user = await prisma.user.findUnique({
     where: { email: data.email },
     select: {
+      id: true,
+      name: true,
       password: true,
     },
   });
@@ -21,5 +23,5 @@ export const loginService = async (data: LoginService) => {
   const isMatch = await bcrypt.compare(data.password, user.password);
   if (!isMatch) throw new AppError("Invalid email or password", 401);
 
-  return null;
+  return { id: user.id, name: user.name };
 };
