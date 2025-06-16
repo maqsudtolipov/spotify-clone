@@ -16,19 +16,11 @@ export const signUpController = async (
   next: NextFunction,
 ) => {
   try {
-    // const newUser = {
-    //   name: req.body.name,
-    //   email: req.body.email,
-    //   password: req.body.password,
-    //   imgId: "test",
-    // };
-    //
-    // const user = await prisma.user.create({ data: newUser });
-
     const user = await signUpService(req.body);
 
     res.status(201).json({
       status: "success",
+      message: "User created successfully",
       user,
     });
   } catch (e) {

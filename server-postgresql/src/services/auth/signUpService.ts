@@ -1,5 +1,6 @@
 import prisma from "../../config/prisma.config";
 import { AppError } from "../../errors/AppError";
+import bcrypt from "bcryptjs";
 
 interface SignUpService {
   name: string;
@@ -20,7 +21,17 @@ export const signUpService = async (data: SignUpService) => {
   }
 
   // Hash password
+  const hashedPassword = await bcrypt.hash(data.password, 12);
 
+  const userData = {
+    name: data.name,
+    email: data.email,
+    password: hashedPassword,
+    imgId: "test",
+  };
 
-  return null;
+  return prisma.user.create({
+    data: userData,
+    select: { name: true, email: true },
+  });
 };
