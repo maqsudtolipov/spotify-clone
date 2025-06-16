@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "./../../config/prisma.config";
+import { signUpService } from "../../services/auth/signUpService";
 
 export const signUpController = async (
   req: Request<
@@ -16,14 +16,16 @@ export const signUpController = async (
   next: NextFunction,
 ) => {
   try {
-    const newUser = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      imgId: "test",
-    };
+    // const newUser = {
+    //   name: req.body.name,
+    //   email: req.body.email,
+    //   password: req.body.password,
+    //   imgId: "test",
+    // };
+    //
+    // const user = await prisma.user.create({ data: newUser });
 
-    const user = await prisma.user.create({ data: newUser });
+    const user = await signUpService(req.body);
 
     res.status(201).json({
       status: "success",
