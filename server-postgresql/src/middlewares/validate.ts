@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { Schema } from "joi";
+import { AppError } from "../errors/AppError";
 
 export const validate = <T = any>(
   schema: Schema<T>,
@@ -15,8 +16,7 @@ export const validate = <T = any>(
           .map((d) => d.message.replace(/"/g, ""))
           .join(", ");
 
-        // NOTE: turn into AppError
-        throw new Error(`Validation error: ${messages}`);
+        throw new AppError(`Validation error: ${messages}`, 422);
       }
 
       req[source] = value;
