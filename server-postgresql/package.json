@@ -9,7 +9,10 @@
   "scripts": {
     "build": "tsc --build",
     "start": "node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "prisma-mg-dev": "prisma migrate dev",
+    "prisma-generate": "prisma generate",
+    "prisma-studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
@@ -17,6 +20,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "prettier": "^3.5.3",
     "prisma": "^6.9.0",
     "typescript": "^5.8.3"
   }
