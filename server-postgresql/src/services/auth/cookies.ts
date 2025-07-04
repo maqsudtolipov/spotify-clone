@@ -14,7 +14,8 @@ export const attachAccessToken = (res: Response, userId: string) => {
   const accessToken = jwt.sign({ userId }, secret, { expiresIn: 10 });
 
   // attach cookie
-  const sameSite = process.env.NODE_ENV === "production" ? "lax" : "strict"
+  const sameSite: "lax" | "strict" | "none" =
+    process.env.NODE_ENV === "production" ? "lax" : "strict";
 
   const cookieOptions = {
     expires: new Date(Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION)),
