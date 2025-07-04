@@ -9,20 +9,33 @@ datasource db {
 
 // User Schema
 model User {
-  id              String   @id @default(uuid(4))
-  name            String   @db.VarChar(24)
-  email           String   @unique
+  id              String         @id @default(uuid(4))
+  name            String         @db.VarChar(24)
+  email           String         @unique
   imgId           String // ref: File
-  role            Role     @default(USER)
-  followersCount  Int      @default(0)
-  followingsCount Int      @default(0)
+  role            Role           @default(USER)
+  followersCount  Int            @default(0)
+  followingsCount Int            @default(0)
   password        String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  refreshTokens   RefreshToken[]
 }
 
 enum Role {
   USER
   ARTIST
   ADMIN
+}
+
+// Refresh Token
+model RefreshToken {
+  id     String @id @default(uuid(4))
+  token  String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
