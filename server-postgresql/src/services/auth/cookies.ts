@@ -28,8 +28,9 @@ export const attachToken = (
   const sameSite: "lax" | "strict" | "none" =
     env === "production" ? "lax" : "strict";
 
+  const expiresAt = new Date(Date.now() + expiresIn);
   const cookieOptions = {
-    expires: new Date(Date.now() + expiresIn),
+    expires: expiresAt,
     httpOnly: true,
     secure: env === "production",
     path: tokenType === "access" ? "/" : "/api/auth/refresh-token",
@@ -39,5 +40,5 @@ export const attachToken = (
 
   res.cookie(`${tokenType}Token`, token, cookieOptions);
 
-  return token;
+  return { token, expiresAt };
 };
