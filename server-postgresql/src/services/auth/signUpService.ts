@@ -32,6 +32,6 @@ export const signUpService = async (data: SignUpService) => {
 
   return prisma.user.create({
     data: userData,
-    select: { name: true, email: true },
+    select: { id: true, name: true, email: true },
   });
 };

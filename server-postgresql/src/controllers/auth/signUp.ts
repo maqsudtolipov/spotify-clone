@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { signUpService } from "../../services/auth/signUpService";
+import { attachToken } from "../../services/auth/cookies";
 
 export const signUpController = async (
   req: Request<
@@ -17,6 +18,9 @@ export const signUpController = async (
 ) => {
   try {
     const user = await signUpService(req.body);
+
+    attachToken(res, user.id, "access");
+    attachToken(res, user.id, "refresh");
 
     res.status(201).json({
       status: "success",
