@@ -35,7 +35,7 @@ model RefreshToken {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  expiredAt DateTime
+  expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
