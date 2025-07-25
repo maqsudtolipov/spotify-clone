@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { loginService } from "../../services/auth/loginService";
 import { attachAccessToken } from "../../services/auth/cookies";
 
